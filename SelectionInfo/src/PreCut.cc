@@ -1,4 +1,4 @@
-#include "Selection/SelectionInfo/interface/SelectionInfo.h"
+#include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
 #include "TFile.h"
 
 #include <iostream>
@@ -6,13 +6,21 @@
 using namespace std;
 using namespace sel;
 
-extern bool passMuLoose(){
-    
+
+bool passMuTight(){
+
     return(
-            smgr.passMuPt(10) *
-            smgr.passMuEta(2.5) *
-            smgr.passMuRelIsoR04(0.2) *
-            (smgr.isGlobalMuon() || smgr.isTrackerMuon()) 
+            smgr.passMuPt(26) *
+            smgr.passMuEta(2.1) *
+            smgr.passMuRelIsoR04(0.12) *
+            smgr.MuInnerTrackDxy_PV() *
+            smgr.MuInnerTrackDz() *
+            smgr.MuNMuonhits() *
+            smgr.MuNMatchedStations() *
+            smgr.MuGlobalNormalizedChi2() *
+            smgr.MuNTrackLayersWMeasurement() *
+            smgr.MuNPixelLayers() *
+            smgr.isGlobalMuon()
           );
 }
 
@@ -38,18 +46,18 @@ extern void MakePreCut(TChain* ch, char* name){
         process(ch->GetEntries(),i);
 
 
-        //jet preselection
+        //jet preselection at least four jet
         if (!preJet())
             continue;
     
 
-        //lepton preselection
+        //lepton preselection at least one tight muon
         bool hasLooseMu = false;
         for(int j=0;j<smgr.lsize();j++){
             smgr.SetIndex(j);
 
             if ( smgr.lep_type() == 13 ){
-                if( passMuLoose() )
+                if( passMuTight() )
                     hasLooseMu = true;
             }
         }

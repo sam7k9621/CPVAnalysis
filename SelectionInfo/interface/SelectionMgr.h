@@ -1,7 +1,7 @@
 #ifndef SELECTIONMGR_H
 #define SELECTIONMGR_H
 
-#include "Selection/SelectionInfo/interface/BranchInfo.h"
+#include "CPVAnalysis/SelectionInfo/interface/BranchInfo.h"
 #include "TChain.h"
 #include "TLorentzVector.h"
 #include <vector>

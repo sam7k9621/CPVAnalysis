@@ -1,4 +1,4 @@
-#include "Selection/SelectionInfo/interface/SelectionInfo.h"
+#include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
 #include "TCanvas.h"
 #include "TH1.h"
 
@@ -12,6 +12,16 @@ extern bool passVertex(){
             smgr.passNdof() * 
             smgr.passAbsZ() *
             smgr.passRho() 
+          );
+}
+
+extern bool passMuLoose(){
+    
+    return(
+            smgr.passMuPt(10) *
+            smgr.passMuEta(2.5) *
+            smgr.passMuRelIsoR04(0.2) *
+            (smgr.isGlobalMuon() || smgr.isTrackerMuon()) 
           );
 }
 
@@ -67,22 +77,6 @@ extern vector<TLorentzVector>* getJet(const vector<int>& idx){
     return v;
 }
 
-bool passMuTight(){
-
-    return(
-            smgr.passMuPt(26) *
-            smgr.passMuEta(2.1) *
-            smgr.passMuRelIsoR04(0.12) *
-            smgr.MuInnerTrackDxy_PV() *
-            smgr.MuInnerTrackDz() *
-            smgr.MuNMuonhits() *
-            smgr.MuNMatchedStations() *
-            smgr.MuGlobalNormalizedChi2() *
-            smgr.MuNTrackLayersWMeasurement() *
-            smgr.MuNPixelLayers() *
-            smgr.isGlobalMuon()
-          );
-}
 
 extern void MakeFullCut(TChain* ch){
   

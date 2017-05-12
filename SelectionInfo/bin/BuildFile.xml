@@ -1,4 +1,4 @@
-<use name="Selection/SelectionInfo"/>
+<use name="CPVAnalysis/SelectionInfo"/>
 <use name="boost"/>
 <use name="root"/>
 <use name="roofit"/>
