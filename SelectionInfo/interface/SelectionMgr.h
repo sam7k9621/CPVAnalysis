@@ -28,6 +28,8 @@ namespace sel{
             int    lsize();
             int    jsize();
             int    lep_type();
+            int    runNO();
+            int    lumiNO();
             std::vector<int> getSelJet(std::vector<int>, std::vector<int>);
             TLorentzVector getLorentzVector(std::string);
 

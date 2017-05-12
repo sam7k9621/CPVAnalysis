@@ -1,4 +1,5 @@
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
+#include "CPVAnalysis/SelectionInfo/interface/checkEvtTool.h"
 #include "TFile.h"
 
 #include <iostream>
@@ -39,12 +40,22 @@ extern void MakePreCut(TChain* ch, char* name){
     TFile* newfile = new TFile(name,"recreate");
     TTree* newtree = ch->CloneTree(0);
     
+    checkEvtTool checkEvt;
+    checkEvt.addJson(".txt");
+    checkEvt.makeJsonMap();
+
 
     for(int i=0;i<ch->GetEntries();i++){
         ch->GetEntry(i);
 
         process(ch->GetEntries(),i);
 
+
+        //lumimask
+        if( !checkEvt.isGoodEvt( smgr.runNO(),smgr.lumiNO() ) ){
+            printf("jumpi\n");
+            continue;
+        }
 
         //jet preselection at least four jet
         if (!preJet())

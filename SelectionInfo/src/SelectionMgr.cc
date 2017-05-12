@@ -65,6 +65,14 @@ int SelectionMgr::lep_type(){
     return lep.LeptonType[idx];
 }
 
+int SelectionMgr::runNO(){
+    return evt.RunNo;
+}
+
+int SelectionMgr::lumiNO(){
+    return evt.LumiNo;
+}
+
 TLorentzVector SelectionMgr::getLorentzVector(string type){
 
     TLorentzVector tl;
