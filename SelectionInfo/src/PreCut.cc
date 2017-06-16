@@ -41,7 +41,7 @@ extern void MakePreCut(TChain* ch, char* name){
     TTree* newtree = ch->CloneTree(0);
     
     checkEvtTool checkEvt;
-    checkEvt.addJson(".txt");
+    checkEvt.addJson("/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt");
     checkEvt.makeJsonMap();
 
 
@@ -51,29 +51,30 @@ extern void MakePreCut(TChain* ch, char* name){
         process(ch->GetEntries(),i);
 
 
-        //lumimask
-        if( !checkEvt.isGoodEvt( smgr.runNO(),smgr.lumiNO() ) ){
-            printf("jumpi\n");
-            continue;
+        bool mcflag = true;
+        if(!mcflag){
+            //lumimask
+            if( !checkEvt.isGoodEvt( smgr.runNO(),smgr.lumiNO() ) ){
+                continue;
+            }
         }
-
         //jet preselection at least four jet
         if (!preJet())
             continue;
     
 
         //lepton preselection at least one tight muon
-        bool hasLooseMu = false;
+        bool hasTightMu = false;
         for(int j=0;j<smgr.lsize();j++){
             smgr.SetIndex(j);
 
             if ( smgr.lep_type() == 13 ){
                 if( passMuTight() )
-                    hasLooseMu = true;
+                    hasTightMu = true;
             }
         }
 
-        if(!hasLooseMu)
+        if(!hasTightMu)
             continue;
 
         newtree->Fill();

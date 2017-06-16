@@ -1,6 +1,8 @@
 #include "CPVAnalysis/SelectionInfo/interface/SelectionMgr.h"
 
 #include "TLorentzVector.h"
+#include <TMath.h>
+#include <iostream>
 
 using namespace std;
 using namespace sel;
@@ -85,6 +87,7 @@ TLorentzVector SelectionMgr::getLorentzVector(string type){
                 );
     }
 
+
     else if(type == "jet"){
         tl.SetPxPyPzE(
                 jet.Px[idx],
@@ -93,6 +96,36 @@ TLorentzVector SelectionMgr::getLorentzVector(string type){
                 jet.Energy[idx]
             );
     }
+
+    return tl;
+}
+
+TLorentzVector SelectionMgr::getMET(const TLorentzVector lep){
+   
+
+    double px = lep.Px()+evt.PFMETx;
+    double py = lep.Py()+evt.PFMETy;
+    double e  = lep.E() +evt.PFMET;
+
+
+    double pz2 = e*e -(82.9*82.9) - px*px - py*py;
+   
+    double pz;
+    
+    if(pz2 < 0){
+        pz = 1000000;
+    }
+    else{
+        pz  = -1*(sqrt(pz2)-lep.Pz());
+    }
+
+    TLorentzVector tl;
+    tl.SetPxPyPzE(
+            evt.PFMETx,
+            evt.PFMETy,
+            pz,
+            evt.PFMET
+            );
 
     return tl;
 }

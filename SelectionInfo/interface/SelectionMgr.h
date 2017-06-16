@@ -32,7 +32,7 @@ namespace sel{
             int    lumiNO();
             std::vector<int> getSelJet(std::vector<int>, std::vector<int>);
             TLorentzVector getLorentzVector(std::string);
-
+            TLorentzVector getMET(const TLorentzVector);
 /*******************************************************************************
 *   Vertex selection
 *******************************************************************************/
