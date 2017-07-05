@@ -15,6 +15,94 @@
 #include <vector>
 
 //For CMSSW_3_8_3
+class GenInfoBranches {
+    public:
+        int Size;
+        float Weight;
+        float Pt[MAX_GENS];
+        float Eta[MAX_GENS];
+        float Phi[MAX_GENS];
+        float Mass[MAX_GENS];
+        int PdgID[MAX_GENS];
+        int PhotonFlag[MAX_GENS];   // -1 : unknown or not photon, 0 : prompt photon, 1 : decay in flight, 2 : ISR, 3 : FSR
+        int Status[MAX_GENS];
+        int nMo[MAX_GENS];
+        int nDa[MAX_GENS];
+        int Mo1[MAX_GENS];
+        int Mo2[MAX_GENS];
+        int Da1[MAX_GENS];
+        int Da2[MAX_GENS];
+
+        int Mo1PdgID[MAX_GENS];
+        int Mo2PdgID[MAX_GENS];
+        int Mo1Status[MAX_GENS];
+        int Mo2Status[MAX_GENS];
+        int Da1PdgID[MAX_GENS];
+        int Da2PdgID[MAX_GENS];
+        int GrandMo1PdgID[MAX_GENS];
+        int GrandMo2PdgID[MAX_GENS];
+        int GrandMo1Status[MAX_GENS];
+        int GrandMo2Status[MAX_GENS];
+
+        void RegisterTree(TTree *root) {
+            root->Branch("GenInfo.Size"    , &Size        , "GenInfo.Size/I"            );
+            root->Branch("GenInfo.Weight"    , &Weight        , "GenInfo.Weight/F"            );
+            root->Branch("GenInfo.Pt"    , &Pt[0]    , "GenInfo.Pt[GenInfo.Size]/F"        );
+            root->Branch("GenInfo.Eta"    , &Eta[0]    , "GenInfo.Eta[GenInfo.Size]/F"        );
+            root->Branch("GenInfo.Phi"    , &Phi[0]    , "GenInfo.Phi[GenInfo.Size]/F"        );
+            root->Branch("GenInfo.Mass"    , &Mass[0]    , "GenInfo.Mass[GenInfo.Size]/F"    );
+            root->Branch("GenInfo.PdgID"    , &PdgID[0]    , "GenInfo.PdgID[GenInfo.Size]/I"    );
+            root->Branch("GenInfo.PhotonFlag"    , &PhotonFlag[0]    , "GenInfo.PhotonFlag[GenInfo.Size]/I"    );
+            root->Branch("GenInfo.Status"    , &Status[0]    , "GenInfo.Status[GenInfo.Size]/I"    );
+            root->Branch("GenInfo.nMo"    , &nMo[0]    , "GenInfo.nMo[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.nDa"    , &nDa[0]    , "GenInfo.nDa[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Mo1"    , &Mo1[0]    , "GenInfo.Mo1[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Mo2"    , &Mo2[0]    , "GenInfo.Mo2[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Da1"    , &Da1[0]    , "GenInfo.Da1[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Da2"    , &Da2[0]    , "GenInfo.Da2[GenInfo.Size]/I"        );
+
+            root->Branch("GenInfo.Mo1PdgID"    , &Mo1PdgID[0]    , "GenInfo.Mo1PdgID[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Mo2PdgID"    , &Mo2PdgID[0]    , "GenInfo.Mo2PdgID[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Mo1Status"    , &Mo1Status[0]    , "GenInfo.Mo1Status[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Mo2Status"    , &Mo2Status[0]    , "GenInfo.Mo2Status[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Da1PdgID"    , &Da1PdgID[0]    , "GenInfo.Da1PdgID[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.Da2PdgID"    , &Da2PdgID[0]    , "GenInfo.Da2PdgID[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.GrandMo1PdgID"    , &GrandMo1PdgID[0]    , "GenInfo.GrandMo1PdgID[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.GrandMo2PdgID"    , &GrandMo2PdgID[0]    , "GenInfo.GrandMo2PdgID[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.GrandMo1Status"    , &GrandMo1Status[0]    , "GenInfo.GrandMo1Status[GenInfo.Size]/I"        );
+            root->Branch("GenInfo.GrandMo2Status"    , &GrandMo2Status[0]    , "GenInfo.GrandMo2Status[GenInfo.Size]/I"        );
+        }
+
+        void Register(TTree *root) {
+            root->SetBranchAddress("GenInfo.Size"    , &Size        );
+            root->SetBranchAddress("GenInfo.Weight"    , &Weight        );
+            root->SetBranchAddress("GenInfo.Pt"    , &Pt[0]    );
+            root->SetBranchAddress("GenInfo.Eta"    , &Eta[0]    );
+            root->SetBranchAddress("GenInfo.Phi"    , &Phi[0]    );
+            root->SetBranchAddress("GenInfo.Mass"    , &Mass[0]    );
+            root->SetBranchAddress("GenInfo.PdgID"    , &PdgID[0]    );
+            root->SetBranchAddress("GenInfo.PhotonFlag"    , &PhotonFlag[0]    );
+            root->SetBranchAddress("GenInfo.Status"    , &Status[0]    );
+            root->SetBranchAddress("GenInfo.nMo"    , &nMo[0]    );
+            root->SetBranchAddress("GenInfo.nDa"    , &nDa[0]    );
+            root->SetBranchAddress("GenInfo.Mo1"    , &Mo1[0]    );
+            root->SetBranchAddress("GenInfo.Mo2"    , &Mo2[0]    );
+            root->SetBranchAddress("GenInfo.Da1"    , &Da1[0]    );
+            root->SetBranchAddress("GenInfo.Da2"    , &Da2[0]    );
+            root->SetBranchAddress("GenInfo.Mo1PdgID"    , &Mo1PdgID[0]    );
+            root->SetBranchAddress("GenInfo.Mo2PdgID"    , &Mo2PdgID[0]    );
+            root->SetBranchAddress("GenInfo.Mo1Status"    , &Mo1Status[0]    );
+            root->SetBranchAddress("GenInfo.Mo2Status"    , &Mo2Status[0]    );
+            root->SetBranchAddress("GenInfo.Da1PdgID"    , &Da1PdgID[0]    );
+            root->SetBranchAddress("GenInfo.Da1PdgID"    , &Da1PdgID[0]    );
+            root->SetBranchAddress("GenInfo.Da2PdgID"    , &Da2PdgID[0]    );
+            root->SetBranchAddress("GenInfo.GrandMo1PdgID"    , &GrandMo1PdgID[0]    );
+            root->SetBranchAddress("GenInfo.GrandMo2PdgID"    , &GrandMo2PdgID[0]    );
+            root->SetBranchAddress("GenInfo.GrandMo1Status"    , &GrandMo1Status[0]    );
+            root->SetBranchAddress("GenInfo.GrandMo2Status"    , &GrandMo2Status[0]    );
+        }
+
+};
 
 class EvtInfo {
     public:

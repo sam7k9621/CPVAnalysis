@@ -1,11 +1,13 @@
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
+#include "TChain.h"
 #include "TCanvas.h"
 #include "TH1.h"
 #include <algorithm>
 
 using namespace std;
 using namespace sel;
+using namespace dra;
 
 extern bool passVertex(){
 
@@ -79,60 +81,44 @@ extern vector<TLorentzVector>* getJet(const vector<int>& idx){
     return v;
 }
 
+extern bool passFullVertex(){
 
-extern void MakeFullCut(TChain* ch){
-  
-
-    smgr.SetRoot(ch);
-
-    TH1F* wmass = new TH1F("wmass","wmass",200,0,200);
-    TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
-    TH1F* check_tmass = new TH1F("check_tmass","check_tmass",50,0,500);
-
-    
-    for(int i=0;i<ch->GetEntries();i++){
-        ch->GetEntry(i);
-
-        process(ch->GetEntries(),i);
-
-         
-        //vertex selection
-        bool passV = false;
-        for(int j=0;j<smgr.vsize();j++){
-            smgr.SetIndex(j);
-
-            if(passVertex()){
-                passV=true;
-                break;
-            }
-        }
-
-        if(!passV)
-            continue;
-
-
-        //pass HLT
-        //4809
-        //2748,2749,4174,4809
-        vector<int> hlt = {2748,2749,4174,4809};
-        if (!smgr.passHLT(hlt))
-            continue;
+    bool passV = false;
+    for(int i=0;i<smgr.vsize();i++){
+        smgr.SetIndex(i);
         
-        // muon selection
-        // store every tight muon
-        bool passL = true;
-        bool hasLooseEl = false;
-        vector<int> muidx;
-        for(int j=0;j<smgr.lsize();j++){
-            smgr.SetIndex(j);
-            
+        if(passVertex()){
+            passV = true;
+            break;
+        }
+    }
+
+    return passV;
+        
+}
+
+extern bool passFullHLT(){
+
+    string source = smgr.GetOption<string>("source");
+    vector<int> hlt = GetList<int>("HLT" ,smgr.GetSubTree(source));
+    return smgr.passHLT(hlt);
+
+}
+
+extern bool passFullMuon(vector<int>& muidx){
+    
+    bool passL = true;
+    bool hasLooseEl = false;
+    for(int i=0;i<smgr.lsize();i++){
+        smgr.SetIndex(i);
+
             if(smgr.lep_type() == 13){
                 if(passMuLoose() && !passMuTight()){
                      passL=false;
                      break;
                 }
                 if(passMuTight()){
-                    muidx.push_back(j);
+                    muidx.push_back(i);
                 }
             }
 
@@ -142,16 +128,16 @@ extern void MakeFullCut(TChain* ch){
                     break;
                 }
             }
-        }
-        if(!passL || muidx.size() == 0 || hasLooseEl)
-            continue;
-        
-        // jet selection
-        // store every jet (including 2 bjets)
+    }
+
+    return !(!passL || muidx.size() == 0 || hasLooseEl);
+    
+}
+
+extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx){
+
         int countJ  = 0;
         int countJB = 0;
-        vector<int> jetidx;
-        vector<int> bjetidx;
         for(int j=0;j<smgr.jsize();j++){
             smgr.SetIndex(j);
 
@@ -166,14 +152,83 @@ extern void MakeFullCut(TChain* ch){
             }
         }
 
-        if(countJ < 4 || countJB!=2)
+        return !(countJ < 4 || countJB!=2);
+
+}
+
+extern bool hasMotherT(const int& jet1idx, const int& jet2idx, const int& bjetidx){
+
+    int ptonidx1 = smgr.getPartonID(jet1idx);
+    int ptonidx2 = smgr.getPartonID(jet2idx);
+    int ptonidx3 = smgr.getPartonID(bjetidx);
+
+    if(ptonidx1 < 0 || ptonidx2 < 0 || ptonidx3 < 0){
+        return false;
+    }
+
+
+    if( !smgr.isCommonMo( ptonidx1, ptonidx2, 24 ) )
+        return false;
+
+
+    if( !smgr.isCommonMo( smgr.getMoID(ptonidx1), ptonidx3, 6  ) )
+        return false;
+
+
+return true;
+}
+
+extern void MakeFullCut(){
+ 
+    bool is_data = smgr.GetOption<string>("source") == "data" ? 1 : 0 ;
+    string source = is_data? "data" : "mc";
+    vector<string> sourcelst = GetList<string>("path", smgr.GetSubTree(source));
+
+    TChain* ch = new TChain("root");
+    for(auto& i : sourcelst){
+        ch->Add(i.c_str());
+    }
+
+    smgr.SetRoot(ch);
+
+    TH1F* wmass = new TH1F("wmass","wmass",200,0,200);
+    TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
+    TH1F* check_tmass = new TH1F("check_tmass","check_tmass",50,0,500);
+    
+    for(int i=0;i<ch->GetEntries();i++){
+        ch->GetEntry(i);
+
+        process(ch->GetEntries(),i);
+ 
+        //vertex selection
+        if(!passFullVertex())
             continue;
 
+        //pass HLT
+        if (!passFullHLT())
+            continue;
+        
+        // muon selection
+        // store every tight muon
+        vector<int> muidx;
+        if (!passFullMuon(muidx))
+            continue;
+        
+        // jet selection
+        // store every jet (including 2 bjets)
+        vector<int> jetidx;
+        vector<int> bjetidx;
+        if (!passFullJet(jetidx,bjetidx))
+            continue;
+
+        //cleanign bjet in jetidx
+        for(const auto& b : bjetidx){
+            jetidx.erase(std::remove(jetidx.begin(), jetidx.end(), b), jetidx.end());
+        }
 
         vector<TLorentzVector>* muonhandle = getTightMu(muidx);
         vector<TLorentzVector>* jethandle  = getJet(jetidx);
         vector<TLorentzVector>* bjethandle = getJet(bjetidx);
-        
         
         // cleaning against leptons
         TLorentzVector lephandle;
@@ -198,17 +253,14 @@ extern void MakeFullCut(TChain* ch){
         if(countMu != 1)
             continue;
 
-        // cleaning bjet in jethandle
-        for(const auto& b : *bjethandle){
-           jethandle->erase(std::remove(jethandle->begin(), jethandle->end(), b), jethandle->end());
-       }
-
         // mass constrain method       
-        vector<double> chi2mass;
-        vector<double> seltmass;
-        vector<double> selwmass;
+        double chi2mass = 50;
+        double seltmass = -1;
+        double selwmass = -1;
+        int    bjetindex = -1;
+        int    jet1index = -1;
+        int    jet2index = -1;
 
-        vector<int>    bjetindex;
         
         for(unsigned int i=0;i<jethandle->size();i++){
             for(unsigned int j=(i+1);j<jethandle->size();j++){
@@ -220,40 +272,46 @@ extern void MakeFullCut(TChain* ch){
                     double chi_w  = (w_mass-82.9 )/9.5;
 
                     if( (chi_t*chi_t + chi_w*chi_w) <= 40 ){
-                        chi2mass.push_back( (chi_t*chi_t + chi_w*chi_w) );
-                        seltmass.push_back( t_mass );
-                        selwmass.push_back( w_mass );
+                        
+                        if( (chi_t*chi_t + chi_w*chi_w) < chi2mass){
+                            chi2mass = (chi_t*chi_t + chi_w*chi_w);
+                            seltmass = t_mass;
+                            selwmass = w_mass;
 
-                        bjetindex.push_back( k );
+                            bjetindex = k;
+                            jet1index = i;
+                            jet2index = j;
+                        }
+
                     }
                 }
             }
         }
-       
-        if(chi2mass.empty())
+        if(chi2mass == 50)
             continue;
 
-        int min_pos = distance(chi2mass.begin(),min_element(chi2mass.begin(),chi2mass.end()));
 
-        tmass->Fill(seltmass[min_pos]);
-        wmass->Fill(selwmass[min_pos]);
-
-        for(int i=0;i<2;i++){
-           
-
-            if(i==bjetindex[min_pos])
+        if(!is_data)
+            if( !hasMotherT(jetidx[jet1index], jetidx[jet2index], bjetidx[bjetindex]) )
                 continue;
-          
+
+        tmass->Fill(seltmass);
+        wmass->Fill(selwmass);
+
+        //finding MET component
+        for(int i=0;i<2;i++){
+        
+            if(i==bjetindex)
+                continue;
+
             double ans = (lephandle+(*bjethandle)[i]+smgr.getMET( lephandle )).M();
 
-           
             if(ans < 0)
                 continue;
 
             check_tmass->Fill(ans);
 
-        }
-        
+        }        
         delete muonhandle;
         delete jethandle;
     }

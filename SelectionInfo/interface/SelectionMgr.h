@@ -1,6 +1,11 @@
 #ifndef SELECTIONMGR_H
 #define SELECTIONMGR_H
 
+#include "ManagerUtils/ArgHelper/interface/Common.hpp"
+#include "ManagerUtils/ArgHelper/interface/Readmgr.hpp"
+#include "ManagerUtils/ArgHelper/interface/Pathmgr.hpp"
+#include "ManagerUtils/ArgHelper/interface/Parsermgr.hpp"
+
 #include "CPVAnalysis/SelectionInfo/interface/BranchInfo.h"
 #include "TChain.h"
 #include "TLorentzVector.h"
@@ -8,17 +13,17 @@
 
 namespace sel{
 
-    class SelectionMgr {
+    class SelectionMgr : public dra::Pathmgr, public dra::Readmgr, public dra::Parsermgr{
         public :
 
 /*******************************************************************************
 *  Class initialization 
 *******************************************************************************/
-            
-            SelectionMgr();
+            SelectionMgr(const std::string&);
             ~SelectionMgr();
             void SetIndex(int);
-            void SetRoot(TChain*); 
+            void SetRoot(TChain*);
+            std::string GetFileName(const string&, const string&);
 /*******************************************************************************
 *   Common calculation
 *******************************************************************************/
@@ -27,9 +32,15 @@ namespace sel{
             int    vsize();
             int    lsize();
             int    jsize();
+            int    gsize();
             int    lep_type();
             int    runNO();
             int    lumiNO();
+
+            int     getPartonID(const int&);
+            int     getMoID(const int&);
+            bool    isCommonMo(const int&, const int&, const int&);
+
             std::vector<int> getSelJet(std::vector<int>, std::vector<int>);
             TLorentzVector getLorentzVector(std::string);
             TLorentzVector getMET(const TLorentzVector);
@@ -91,6 +102,7 @@ namespace sel{
             LeptonInfo lep;
             EvtInfo    evt;
             JetInfo    jet;
+            GenInfo    gen;
 
     };
 }

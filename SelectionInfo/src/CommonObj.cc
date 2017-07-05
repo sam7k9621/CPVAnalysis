@@ -6,7 +6,7 @@ using namespace sel;
 *   Global variable
 *******************************************************************************/
 
-SelectionMgr smgr;
+SelectionMgr smgr("SelectionInfo");
 
 /*******************************************************************************
 *   Global function

@@ -7,4 +7,5 @@
 
 
 <bin name="precut"  file="PreselectionCut.cc"/>
+<bin name="hello"  file="hello.cc"/>
 <bin name="fullcut"  file="JetLeptonCut.cc"/>

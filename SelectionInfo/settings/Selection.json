@@ -1,0 +1,25 @@
+{
+    
+    
+
+    "data":{
+        "path":[
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_b.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_c.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_d.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_e.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_f.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_g.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_h1.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_h2.root"
+            ],
+        "HLT":[2748,2749,4174,4809]
+    },
+
+    "mc":{
+        "path":["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_MC.root"],
+        "HLT":[4809]
+    }
+
+}
+

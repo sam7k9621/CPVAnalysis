@@ -6,12 +6,16 @@
 
 using namespace std;
 using namespace sel;
-
+using namespace dra;
 /*******************************************************************************
 *  Class initialization 
 *******************************************************************************/
 
-SelectionMgr::SelectionMgr(){
+SelectionMgr::SelectionMgr(const string& subdir):
+    Pathmgr("CPVAnalysis", subdir),
+    Readmgr(SettingsDir() / "Selection.json"),
+    Parsermgr()
+{
 }
 
 SelectionMgr::~SelectionMgr(){
@@ -27,13 +31,67 @@ void SelectionMgr::SetRoot(TChain* ch){
     lep.Register(ch);
     evt.Register(ch);
     jet.Register(ch);
+    gen.Register(ch);
 }
 
-
+string SelectionMgr::GetFileName(const string& prefix, const string& type){
+    string ans = ""; 
+    for( auto& name : GetNamelist() ){
+        ans += ( "_" + OptName(name) );
+    }
+    if(prefix == ""){
+        ans.erase(ans.begin());
+    }
+    return ResultsDir() / ( prefix+ans+"."+type );
+}
 
 /*******************************************************************************
 *   Common calculation
 *******************************************************************************/
+
+int SelectionMgr::getPartonID(const int& jetidx){
+
+    int pdgid = jet.GenPdgID  [jetidx];
+    float pt    = jet.GenPt   [jetidx];
+    float eta   = jet.GenEta  [jetidx];
+    float phi   = jet.GenPhi  [jetidx];
+   
+    if(pdgid == 0)
+        return -999;
+
+    int ptonid = -999;
+    for(int i=0;i<gsize();i++) {
+        if(pdgid != gen.PdgID[i])
+            continue;
+
+        if(pt == gen.Pt[i] && eta == gen.Eta[i] && phi == gen.Phi[i]){
+            ptonid = i;
+            break;
+        }
+    }
+    
+    return ptonid;
+}
+
+int SelectionMgr::getMoID(const int& jetidx){
+    return gen.Mo1[jetidx];
+}
+
+bool SelectionMgr::isCommonMo(const int& jet1, const int& jet2, const int& moid){
+   
+    if( (gen.Mo1[jet1] != gen.Mo2[jet1]) || (gen.Mo1[jet2] != gen.Mo2[jet2]) )
+        return false;
+
+    if(gen.Mo1PdgID[jet1] != moid && gen.Mo1PdgID[jet1] != (-1)*moid){
+        return false;
+    }
+
+    if(gen.Mo1[jet1] != gen.Mo1[jet2])
+        return false;
+
+    return true;
+
+}
 
 bool SelectionMgr::passHLT(vector<int> hlt){
     for(auto h : hlt){
@@ -61,6 +119,10 @@ int SelectionMgr::lsize(){
 
 int SelectionMgr::jsize(){
     return jet.Size;
+}
+
+int SelectionMgr::gsize(){
+    return gen.Size;
 }
 
 int SelectionMgr::lep_type(){
