@@ -156,28 +156,6 @@ extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx){
 
 }
 
-extern bool hasMotherT(const int& jet1idx, const int& jet2idx, const int& bjetidx){
-
-    int ptonidx1 = smgr.getPartonID(jet1idx);
-    int ptonidx2 = smgr.getPartonID(jet2idx);
-    int ptonidx3 = smgr.getPartonID(bjetidx);
-
-    if(ptonidx1 < 0 || ptonidx2 < 0 || ptonidx3 < 0){
-        return false;
-    }
-
-
-    if( !smgr.isCommonMo( ptonidx1, ptonidx2, 24 ) )
-        return false;
-
-
-    if( !smgr.isCommonMo( smgr.getMoID(ptonidx1), ptonidx3, 6  ) )
-        return false;
-
-
-return true;
-}
-
 extern void MakeFullCut(){
  
     bool is_data = smgr.GetOption<string>("source") == "data" ? 1 : 0 ;
@@ -193,35 +171,20 @@ extern void MakeFullCut(){
 
     TH1F* wmass = new TH1F("wmass","wmass",200,0,200);
     TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
-    TH1F* check_tmass = new TH1F("check_tmass","check_tmass",50,0,500);
+    TH1F* check_tmass = new TH1F("check_tmass","check_tmass",50,0,2000);
+    TH1F* truth_tmass = new TH1F("truth_tmass","truth_tmass",50,0,500);
     
     for(int i=0;i<ch->GetEntries();i++){
         ch->GetEntry(i);
-
         process(ch->GetEntries(),i);
  
-        //vertex selection
-        if(!passFullVertex())
-            continue;
-
-        //pass HLT
-        if (!passFullHLT())
-            continue;
-        
-        // muon selection
-        // store every tight muon
-        vector<int> muidx;
-        if (!passFullMuon(muidx))
-            continue;
-        
-        // jet selection
-        // store every jet (including 2 bjets)
-        vector<int> jetidx;
+        vector<int> muidx;      //store every tight muon
+        vector<int> jetidx;     //store every jet (including 2 bjets)
         vector<int> bjetidx;
-        if (!passFullJet(jetidx,bjetidx))
+        if( !passFullVertex() || !passFullHLT() || !passFullMuon(muidx) || !passFullJet(jetidx,bjetidx) )
             continue;
 
-        //cleanign bjet in jetidx
+        //cleaning bjet in jetidx
         for(const auto& b : bjetidx){
             jetidx.erase(std::remove(jetidx.begin(), jetidx.end(), b), jetidx.end());
         }
@@ -232,11 +195,11 @@ extern void MakeFullCut(){
         
         // cleaning against leptons
         TLorentzVector lephandle;
-        int countMu=0;
+        int countMu = 0;
         bool passDeltaR;
         for(const auto& _mu : *muonhandle){
             
-            passDeltaR=true;
+            passDeltaR = true;
 
             for(const auto& _jet : *jethandle ){
                 if(_jet.DeltaR(_mu) < 0.5){
@@ -258,8 +221,6 @@ extern void MakeFullCut(){
         double seltmass = -1;
         double selwmass = -1;
         int    bjetindex = -1;
-        int    jet1index = -1;
-        int    jet2index = -1;
 
         
         for(unsigned int i=0;i<jethandle->size();i++){
@@ -279,8 +240,6 @@ extern void MakeFullCut(){
                             selwmass = w_mass;
 
                             bjetindex = k;
-                            jet1index = i;
-                            jet2index = j;
                         }
 
                     }
@@ -291,29 +250,32 @@ extern void MakeFullCut(){
             continue;
 
 
-        if(!is_data)
-            if( !hasMotherT(jetidx[jet1index], jetidx[jet2index], bjetidx[bjetindex]) )
-                continue;
 
         tmass->Fill(seltmass);
         wmass->Fill(selwmass);
 
+        truth_tmass->Fill(seltmass);
+
         //finding MET component
-        for(int i=0;i<2;i++){
-        
-            if(i==bjetindex)
-                continue;
+        if (smgr.CheckOption("check")){
+            for(int i=0;i<2;i++){
+            
+                if(i==bjetindex)
+                    continue;
 
-            double ans = (lephandle+(*bjethandle)[i]+smgr.getMET( lephandle )).M();
+                double ans = (lephandle+(*bjethandle)[i]+smgr.getMET( lephandle )).M();
 
-            if(ans < 0)
-                continue;
+                if(ans < 0)
+                    continue;
 
-            check_tmass->Fill(ans);
+                check_tmass->Fill(ans);
 
-        }        
+            }        
+        }
+
         delete muonhandle;
         delete jethandle;
+        delete bjethandle;
     }
 
 
@@ -321,10 +283,12 @@ extern void MakeFullCut(){
     tmass->SetStats(false);
     wmass->SetStats(false);
     check_tmass->SetStats(false);
+    truth_tmass->SetStats(false);
 
     tmass->SetTitle("");
     tmass->GetXaxis()->SetTitle("m_{jjb} [GeV]");
-    tmass->GetYaxis()->SetTitle("x10^{3} Events");
+    tmass->GetYaxis()->SetTitle("Events");
+//    tmass->GetYaxis()->SetTitle("x10^{3} Events");
     
     wmass->SetTitle("");
     wmass->GetXaxis()->SetTitle("m_{W} [GeV]");
@@ -332,16 +296,23 @@ extern void MakeFullCut(){
     
     check_tmass->SetTitle("");
     check_tmass->GetXaxis()->SetTitle("m_{lb} [GeV]");
-    check_tmass->GetYaxis()->SetTitle("x10^{3} Events");
+    check_tmass->GetYaxis()->SetTitle("Events");
+//check_tmass->GetYaxis()->SetTitle("x10^{3} Events");
 
     TCanvas* c = mgr::NewCanvas();
     tmass->Draw();
+
+    truth_tmass->SetLineColor(kGreen+3);
+    truth_tmass->Draw("same");
+
     
     mgr::SetSinglePad(c);
     mgr::SetAxis(tmass);
     tmass->SetMaximum( mgr::GetYmax( tmass ) * 1.6 );
     mgr::DrawCMSLabelOuter(PRELIMINARY);
-    mgr::DrawLuminosity(36811);
+
+    if(is_data)
+        mgr::DrawLuminosity(36811);
 
     TPaveText *pt = mgr::NewTextBox(350,mgr::GetYmax( tmass ) * 1.4,480,mgr::GetYmax( tmass ) * 1.55);
     pt->AddText("Muon Channel");
@@ -355,6 +326,7 @@ extern void MakeFullCut(){
     TLegend* leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
     leg->SetLineColor(kWhite);
     leg->AddEntry("tmass","t#bar{t}+jets", "l");
+    leg->AddEntry("truth_tmass","t#bar{t}+jets (modified)", "l");
     leg->Draw();
     
     c->SaveAs("tmass.pdf");
@@ -368,38 +340,39 @@ extern void MakeFullCut(){
     
 /*************************************/
 
-    TCanvas* cc = mgr::NewCanvas();
-    check_tmass->Draw();
-    
-    mgr::SetSinglePad(cc);
-    mgr::SetAxis(check_tmass);
-    check_tmass->SetMaximum( mgr::GetYmax( check_tmass ) * 1.6 );
-    mgr::DrawCMSLabelOuter(PRELIMINARY);
-    mgr::DrawLuminosity(36811);
+    if (smgr.CheckOption("check")){
+        TCanvas* cc = mgr::NewCanvas();
+        check_tmass->Draw();
+        
+        mgr::SetSinglePad(cc);
+        mgr::SetAxis(check_tmass);
+        check_tmass->SetMaximum( mgr::GetYmax( check_tmass ) * 1.6 );
+        mgr::DrawCMSLabelOuter(PRELIMINARY);
+        mgr::DrawLuminosity(36811);
 
-    TPaveText *ppt = mgr::NewTextBox(350,mgr::GetYmax( check_tmass ) * 1.4,480,mgr::GetYmax( check_tmass ) * 1.55);
-    ppt->AddText("Muon Channel");
-    ppt->Draw();
+        TPaveText *ppt = mgr::NewTextBox(350,mgr::GetYmax( check_tmass ) * 1.4,480,mgr::GetYmax( check_tmass ) * 1.55);
+        ppt->AddText("Muon Channel");
+        ppt->Draw();
 
-    TLine* lline = new TLine(172.5,0,172.5,mgr::GetYmax(check_tmass)*1.6);
-    lline->SetLineColor(kRed);
-    lline->SetLineStyle(8);
-    lline->Draw();
+        TLine* lline = new TLine(172.5,0,172.5,mgr::GetYmax(check_tmass)*1.6);
+        lline->SetLineColor(kRed);
+        lline->SetLineStyle(8);
+        lline->Draw();
 
-    TLegend* lleg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-    lleg->SetLineColor(kWhite);
-    lleg->AddEntry("chekc_tmass","t#bar{t}+jets", "l");
-    lleg->Draw();
-    
-    cc->SaveAs("check_tmass.pdf");
+        TLegend* lleg = mgr::NewLegend(0.65,0.5,0.75,0.7);
+        lleg->SetLineColor(kWhite);
+        lleg->AddEntry("chekc_tmass","t#bar{t}+jets", "l");
+        lleg->Draw();
+        
+        cc->SaveAs("check_tmass.pdf");
    
-    cout<<endl<<mgr::GetYmax(check_tmass)<<endl;
+        cout<<endl<<mgr::GetYmax(check_tmass)<<endl;
 
-    delete ppt;
-    delete lline;
-    delete lleg;
-    delete cc;
-
+        delete ppt;
+        delete lline;
+        delete lleg;
+        delete cc;
+    }
 /*************************************/
 
     TCanvas* c1 = mgr::NewCanvas();
@@ -418,7 +391,9 @@ extern void MakeFullCut(){
     line1->Draw();
 
     mgr::DrawCMSLabelOuter(PRELIMINARY);
-    mgr::DrawLuminosity(36811);
+    
+    if(is_data)
+        mgr::DrawLuminosity(36811);
 
     c1->SaveAs("wmass.pdf");
 

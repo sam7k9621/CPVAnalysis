@@ -37,13 +37,23 @@ namespace sel{
             int    runNO();
             int    lumiNO();
 
-            int     getPartonID(const int&);
-            int     getMoID(const int&);
-            bool    isCommonMo(const int&, const int&, const int&);
-
             std::vector<int> getSelJet(std::vector<int>, std::vector<int>);
             TLorentzVector getLorentzVector(std::string);
             TLorentzVector getMET(const TLorentzVector);
+
+/*******************************************************************************
+*   MC Truth
+*******************************************************************************/
+
+            void    RvalueUP(const double&);
+            int     matchGenlevel(const float&, const float&, const int&);
+            int     getGenParticle(const int&);
+            int     getGenParton(const int&);
+            int     getDirectMother(int);
+            int     getDirectMotherPdgID(const int&);
+            bool    isXGenParticle(const int&, const int&);
+            bool    isCommonMo(const int&, const int&, const int&);
+            int     getPdgID(const int&);
 /*******************************************************************************
 *   Vertex selection
 *******************************************************************************/
@@ -98,6 +108,7 @@ namespace sel{
 
         private:
             int idx;
+            double Rvalue;
             VertexInfo vtx;
             LeptonInfo lep;
             EvtInfo    evt;

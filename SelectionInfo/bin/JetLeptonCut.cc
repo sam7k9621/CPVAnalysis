@@ -15,5 +15,8 @@ int main(int argc, char* argv[]){
     if( run == dra::Parsermgr::HELP_PARSER  ){ return 0; }
     if( run == dra::Parsermgr::FAIL_PARSER ){ return 1; }
 
-    MakeFullCut();
+//    MakeFullCut();
+    CheckJet();
+
+    //checkParticle();
 }

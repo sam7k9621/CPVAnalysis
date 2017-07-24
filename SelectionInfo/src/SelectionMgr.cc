@@ -16,6 +16,7 @@ SelectionMgr::SelectionMgr(const string& subdir):
     Readmgr(SettingsDir() / "Selection.json"),
     Parsermgr()
 {
+    Rvalue = 0;
 }
 
 SelectionMgr::~SelectionMgr(){
@@ -48,51 +49,6 @@ string SelectionMgr::GetFileName(const string& prefix, const string& type){
 /*******************************************************************************
 *   Common calculation
 *******************************************************************************/
-
-int SelectionMgr::getPartonID(const int& jetidx){
-
-    int pdgid = jet.GenPdgID  [jetidx];
-    float pt    = jet.GenPt   [jetidx];
-    float eta   = jet.GenEta  [jetidx];
-    float phi   = jet.GenPhi  [jetidx];
-   
-    if(pdgid == 0)
-        return -999;
-
-    int ptonid = -999;
-    for(int i=0;i<gsize();i++) {
-        if(pdgid != gen.PdgID[i])
-            continue;
-
-        if(pt == gen.Pt[i] && eta == gen.Eta[i] && phi == gen.Phi[i]){
-            ptonid = i;
-            break;
-        }
-    }
-    
-    return ptonid;
-}
-
-int SelectionMgr::getMoID(const int& jetidx){
-    return gen.Mo1[jetidx];
-}
-
-bool SelectionMgr::isCommonMo(const int& jet1, const int& jet2, const int& moid){
-   
-    if( (gen.Mo1[jet1] != gen.Mo2[jet1]) || (gen.Mo1[jet2] != gen.Mo2[jet2]) )
-        return false;
-
-    if(gen.Mo1PdgID[jet1] != moid && gen.Mo1PdgID[jet1] != (-1)*moid){
-        return false;
-    }
-
-    if(gen.Mo1[jet1] != gen.Mo1[jet2])
-        return false;
-
-    return true;
-
-}
-
 bool SelectionMgr::passHLT(vector<int> hlt){
     for(auto h : hlt){
         if(int(evt.TrgBook[h]) == 1)
@@ -195,6 +151,104 @@ TLorentzVector SelectionMgr::getMET(const TLorentzVector lep){
 
 
 
+/*******************************************************************************
+*   MC Truth
+*******************************************************************************/
+
+void SelectionMgr::RvalueUP(const double& up){
+    Rvalue += up;
+}
+
+int SelectionMgr::matchGenlevel(const float& eta, const float& phi, const int& pdgid){
+
+    double delR = 100;
+    int ptonid = -999;
+
+    for(int i=0;i<gsize();i++) {
+        
+        
+        if(pdgid != gen.PdgID[i])
+            continue;
+
+        double deta = eta - gen.Eta[i];
+        double dphi = phi - gen.Phi[i];
+        double _delR = sqrt(deta*deta + dphi*dphi);
+        
+        if(_delR < Rvalue && _delR < delR){
+            ptonid = i;
+            delR = _delR;
+        } 
+    }
+
+    return ptonid;
+}
+
+int SelectionMgr::getGenParticle(const int& idx){
+
+    int pdgid   = lep.GenPdgID[idx];
+    float eta   = lep.GenEta  [idx];
+    float phi   = lep.GenPhi  [idx];
+
+    if(pdgid == 0)
+        return -999;
+    
+    return matchGenlevel(eta,phi,pdgid);
+}
+
+
+int SelectionMgr::getGenParton(const int& idx){
+
+    int pdgid = jet.GenPdgID  [idx];
+    float eta   = jet.GenEta  [idx];
+    float phi   = jet.GenPhi  [idx];
+   
+    if(pdgid == 0)
+        return -999;
+
+    return matchGenlevel(eta,phi,pdgid);
+
+}
+
+int SelectionMgr::getDirectMother(int idx){
+
+    if( gen.Mo1[idx] < 0 )
+        return -999;
+
+    while( gen.Mo1PdgID[idx] == gen.PdgID[idx] ){
+        idx = gen.Mo1[idx];
+    }
+    
+    return gen.Mo1[idx];
+
+}
+
+int SelectionMgr::getDirectMotherPdgID(const int& idx){
+    
+    return gen.PdgID[ getDirectMother(idx) ];
+}
+
+bool SelectionMgr::isXGenParticle(const int& idx, const int& pdgid){
+
+    return ( fabs(gen.PdgID[idx]) == pdgid );
+}
+
+int SelectionMgr::getPdgID(const int& idx){
+    return gen.PdgID[idx];
+}
+
+
+bool SelectionMgr::isCommonMo(const int& idx1, const int& idx2, const int& pdgid){
+   
+
+    if ( getDirectMother(idx1) != getDirectMother(idx2) )
+        return false;
+
+    if ( fabs(getDirectMotherPdgID(idx1)) != pdgid )
+        return false;
+
+    return true;
+
+}
 
 
 
