@@ -148,7 +148,16 @@ TLorentzVector SelectionMgr::getMET(const TLorentzVector lep){
     return tl;
 }
 
+double SelectionMgr:: Phi_mpi_pi(double x){
+    
+    Double_t const  kPI        = TMath::Pi();
+    Double_t const  kTWOPI     = 2.*kPI;
 
+    while (x >= kTWOPI) x -= kTWOPI;
+    while (x <     0.)  x += kTWOPI;
+
+    return x;
+}
 
 
 /*******************************************************************************
@@ -159,28 +168,20 @@ void SelectionMgr::RvalueUP(const double& up){
     Rvalue += up;
 }
 
-int SelectionMgr::matchGenlevel(const float& eta, const float& phi, const int& pdgid){
-
-    double delR = 100;
-    int ptonid = -999;
+int SelectionMgr::matchGenlevel(const float& eta, const float& phi){
 
     for(int i=0;i<gsize();i++) {
-        
-        
-        if(pdgid != gen.PdgID[i])
-            continue;
-
+       
         double deta = eta - gen.Eta[i];
-        double dphi = phi - gen.Phi[i];
-        double _delR = sqrt(deta*deta + dphi*dphi);
-        
-        if(_delR < Rvalue && _delR < delR){
-            ptonid = i;
-            delR = _delR;
-        } 
-    }
+        double dphi = Phi_mpi_pi( (double)(phi - gen.Phi[i]) );
+        double deltaR = TMath::Sqrt( deta*deta+dphi*dphi );
 
-    return ptonid;
+        //prevent from shower particle
+        if(deltaR < Rvalue){
+            return i;
+        }
+    }
+    return -999;
 }
 
 int SelectionMgr::getGenParticle(const int& idx){
@@ -191,21 +192,21 @@ int SelectionMgr::getGenParticle(const int& idx){
 
     if(pdgid == 0)
         return -999;
-    
-    return matchGenlevel(eta,phi,pdgid);
+
+    return matchGenlevel(eta,phi);
 }
 
 
 int SelectionMgr::getGenParton(const int& idx){
 
-    int pdgid = jet.GenPdgID  [idx];
+    int pdgid   = jet.GenPdgID[idx];
     float eta   = jet.GenEta  [idx];
     float phi   = jet.GenPhi  [idx];
    
     if(pdgid == 0)
         return -999;
-
-    return matchGenlevel(eta,phi,pdgid);
+    
+    return matchGenlevel(eta,phi);
 
 }
 
@@ -250,7 +251,33 @@ bool SelectionMgr::isCommonMo(const int& idx1, const int& idx2, const int& pdgid
 
 }
 
+bool SelectionMgr::checkPartonTopo(){
 
+    int count_b = 0;
+    int count_j = 0;
+
+    for(int i=0;i<gsize();i++){
+        
+        if(
+                fabs( gen.PdgID[i] ) == 5 &&
+                fabs( getDirectMotherPdgID(i) ) == 6
+          )
+        {
+            count_b++;
+        }
+
+        if(
+                fabs( getDirectMotherPdgID(i) ) == 24 &&
+                fabs( getDirectMotherPdgID( getDirectMother(i) ) ) == 6
+          )
+        {
+            count_j++;
+        }
+    }
+
+    return (count_b>=2 && count_j>=2);
+
+}
 
 
 

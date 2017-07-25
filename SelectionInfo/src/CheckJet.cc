@@ -159,6 +159,8 @@ extern int MCTruthCut(){
         if( !passMCJet(jetidx,bjetidx) )
             continue;
 
+ /*       if( !smgr.checkPartonTopo() )*/
+            /*continue;*/
 
 /*        vector<TLorentzVector>* jethandle  = getJet(jetidx);*/
         //vector<TLorentzVector>* bjethandle = getJet(bjetidx);
@@ -191,46 +193,41 @@ extern int MCTruthCut(){
 }
 
 extern void CheckJet(){
-    
-    TH1F* teff  = new TH1F("teff","teff",150,0,0.15);
-
   
-    
-    smgr.RvalueUP(0.4);
-    cout<<endl<<MCTruthCut()<<endl;
-    
-    /*  for(double i=1;i<=150;i++){*/
 
-        //cout<<endl<<i<< " th"<<endl;
-        //int count = checkCut();
-        //double eff = (double) count/5015812;
-        //teff -> SetBinContent(i,eff);
+    TH1F* teff = new TH1F("tmass","tmass",200,0,0.2);
+
+      for(int i=1;i<=200;i++){
+
+        cout<<endl<<i<< " th"<<endl;
+        int count = MCTruthCut();
+        double eff = (double) count/3000000;
+        teff -> SetBinContent(i,eff);
         
+        smgr.RvalueUP(0.001);
         
-        //smgr.RvalueUP(0.001);
-        
-    //}
+    }
 
     
-    //teff->SetStats(false);
-    //teff->SetTitle("");
-    //teff->GetXaxis()->SetTitle("delR");
-    //teff->GetYaxis()->SetTitle("Eff");
+    teff->SetStats(false);
+    teff->SetTitle("");
+    teff->GetXaxis()->SetTitle("delR");
+    teff->GetYaxis()->SetTitle("Eff");
 
-    //TCanvas* c = mgr::NewCanvas();
-    //teff->Draw();
+    TCanvas* c = mgr::NewCanvas();
+    teff->Draw();
 
-    //mgr::SetSinglePad(c);
-    //mgr::SetAxis(teff);
-    //teff->SetMaximum( 0.5 );
-    //mgr::DrawCMSLabelOuter(PRELIMINARY);
+    mgr::SetSinglePad(c);
+    mgr::SetAxis(teff);
+    teff->SetMaximum( 0.5 );
+    mgr::DrawCMSLabelOuter(PRELIMINARY);
     
-    //TLegend* leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-    //leg->SetLineColor(kWhite);
-    //leg->AddEntry("teff","efficiency", "l");
-    //leg->Draw();
+    TLegend* leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
+    leg->SetLineColor(kWhite);
+    leg->AddEntry("teff","efficiency", "l");
+    leg->Draw();
     
-    /*c->SaveAs("delR_eff.pdf");*/
+    c->SaveAs("delR_eff.pdf");
 /*
     tmass->SetStats(false);
     tmass->SetTitle("");
