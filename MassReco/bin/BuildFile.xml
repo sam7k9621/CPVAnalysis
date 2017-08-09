@@ -1,8 +1,9 @@
-<use name="CPVAnalysis/SelectionInfo"/>
+<use name="CPVAnalysis/MassReco"/>
 <use name="boost"/>
 <use name="root"/>
 <use name="roofit"/>
 <use name="boost_program_options"/>
 <use name="DataFormats/FWLite"/>
 
-<bin name="precut"  file="PreselectionCut.cc"/>
+<bin name="hello"  file="hello.cc"/>
+<bin name="fullcut"  file="Fullcut.cc"/>

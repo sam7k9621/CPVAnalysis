@@ -1,4 +1,4 @@
-#include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
+#include "CPVAnalysis/MassReco/interface/MassReco.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
 #include "TChain.h"
 #include "TCanvas.h"

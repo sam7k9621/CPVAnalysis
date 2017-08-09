@@ -16,7 +16,7 @@ SelectionMgr::SelectionMgr(const string& subdir):
     Readmgr(SettingsDir() / "Selection.json"),
     Parsermgr()
 {
-    Rvalue = 0;
+    _rvalue = 0;
 }
 
 SelectionMgr::~SelectionMgr(){
@@ -24,7 +24,7 @@ SelectionMgr::~SelectionMgr(){
 }
 
 void SelectionMgr::SetIndex(int i){
-    idx = i;
+    _idx = i;
 }
 
 void SelectionMgr::SetRoot(TChain* ch){
@@ -61,7 +61,7 @@ bool SelectionMgr::passHLT(vector<int> hlt){
 
 double SelectionMgr::RelIsoR04(){
 
-    double rel = (lep.ChargedHadronIsoR04[idx] + max(float (0.), lep.NeutralHadronIsoR04[idx] + lep.PhotonIsoR04[idx] - float (0.5) * lep.sumPUPtR04[idx])) / lep.Pt[idx];
+    double rel = (lep.ChargedHadronIsoR04[_idx] + max(float (0.), lep.NeutralHadronIsoR04[_idx] + lep.PhotonIsoR04[_idx] - float (0.5) * lep.sumPUPtR04[_idx])) / lep.Pt[_idx];
     return rel;
 }
 
@@ -82,7 +82,7 @@ int SelectionMgr::gsize(){
 }
 
 int SelectionMgr::lep_type(){
-    return lep.LeptonType[idx];
+    return lep.LeptonType[_idx];
 }
 
 int SelectionMgr::runNO(){
@@ -93,7 +93,7 @@ int SelectionMgr::lumiNO(){
     return evt.LumiNo;
 }
 
-TLorentzVector SelectionMgr::getLorentzVector(string type){
+TLorentzVector SelectionMgr::getLorentzVector(const string& type, const int& idx){
 
     TLorentzVector tl;
     if(type == "lep"){
@@ -105,17 +105,39 @@ TLorentzVector SelectionMgr::getLorentzVector(string type){
                 );
     }
 
-
     else if(type == "jet"){
         tl.SetPxPyPzE(
                 jet.Px[idx],
                 jet.Py[idx],
                 jet.Pz[idx],
                 jet.Energy[idx]
-            );
+                );
     }
 
     return tl;
+}
+
+TLorentzVector SelectionMgr::getLorentzLep(const int& idx){
+    return getLorentzVector("lep",idx);
+}
+
+vector<TLorentzVector> SelectionMgr::getLorentzJet(const vector<int>& idx){
+    
+    vector<TLorentzVector> tl;
+    for(const auto& i : idx){
+        tl.push_back( getLorentzVector("jet",i) );        
+    }
+
+    return tl;
+}
+
+bool SelectionMgr::isIsoLepton(const int& lepidx, const int& jetidx){
+
+    double deta = (double) (lep.Eta[lepidx] - jet.Eta[jetidx]);
+    double dphi = Phi_mpi_pi( (double) (lep.Phi[lepidx] - jet.Phi[jetidx]) );
+    double deltaR = TMath::Sqrt( deta*deta + dphi*dphi );
+    
+    return deltaR >= 0.4;
 }
 
 TLorentzVector SelectionMgr::getMET(const TLorentzVector lep){
@@ -153,8 +175,8 @@ double SelectionMgr:: Phi_mpi_pi(double x){
     Double_t const  kPI        = TMath::Pi();
     Double_t const  kTWOPI     = 2.*kPI;
 
-    while (x >= kTWOPI) x -= kTWOPI;
-    while (x <     0.)  x += kTWOPI;
+    while (x >=  kPI)  x -= kTWOPI;
+    while (x <  -kPI)  x += kTWOPI;
 
     return x;
 }
@@ -163,32 +185,113 @@ double SelectionMgr:: Phi_mpi_pi(double x){
 /*******************************************************************************
 *   MC Truth
 *******************************************************************************/
+int SelectionMgr::matchBhandle(const int& idx, const int& charge){
+    
+    // flag info : interface/SelectionInfo.h 
+
+    // fake b 
+    if ( !(fabs( gen.PdgID[idx] ) == 5) )
+        return 1 << 1;       
+
+    for( const auto& i : bhandle){
+        
+        if( 
+                getDirectMother(i) == getDirectMother(idx)    
+          )
+        {
+            // correct
+            if( gen.PdgID[idx] * charge < 0 )
+                return 1 << 0;
+            
+            // charge swapped
+            else
+                return 1 << 3;
+        }
+    }
+
+    // mistag
+    return 1 << 2;
+
+
+}
+
+int SelectionMgr::getMuonCharge(const int& idx){
+    return lep.Charge[idx];
+}
+
+int SelectionMgr::bbarDeltaR(const int& bidx, const int& charge){
+
+    int    idx    = -1;
+    double dR     = 999;
+
+    for(int i=0;i<gsize();i++){
+        
+        double deta = (double) (jet.Eta[bidx] - gen.Eta[i]);
+        double dphi = Phi_mpi_pi( (double) (jet.Phi[bidx] - gen.Phi[i] ) );
+        double deltaR = TMath::Sqrt( deta*deta + dphi*dphi );
+       
+        //Choosing the smallest deltaR
+        if( deltaR < 0.4 && deltaR < dR ){
+            dR  = deltaR;
+            idx = i;
+        }
+    }
+
+    if(idx<0)
+        return 1 << 5;
+    
+    return matchBhandle(idx,charge);
+}
 
 void SelectionMgr::RvalueUP(const double& up){
-    Rvalue += up;
+    _rvalue += up;
+}
+
+void SelectionMgr::getRvalue(){
+    cout<<"Rvalue "<<_rvalue<<endl;
 }
 
 int SelectionMgr::matchGenlevel(const float& eta, const float& phi){
 
+    double deta   = 0; 
+    double dphi   = 0;
+    double deltaR = 0;
+
+
     for(int i=0;i<gsize();i++) {
        
-        double deta = eta - gen.Eta[i];
-        double dphi = Phi_mpi_pi( (double)(phi - gen.Phi[i]) );
-        double deltaR = TMath::Sqrt( deta*deta+dphi*dphi );
+        deta   = eta - gen.Eta[i];
+        dphi   = Phi_mpi_pi( (double)(phi - gen.Phi[i]) );
+        deltaR = TMath::Sqrt( deta*deta+dphi*dphi );
 
         //prevent from shower particle
-        if(deltaR < Rvalue){
+        if( deltaR < _rvalue ){
             return i;
         }
     }
+
     return -999;
 }
 
-int SelectionMgr::getGenParticle(const int& idx){
+void SelectionMgr::showGenInfo(const int& i){
 
-    int pdgid   = lep.GenPdgID[idx];
-    float eta   = lep.GenEta  [idx];
-    float phi   = lep.GenPhi  [idx];
+    cout<<"pt  "<<gen.Pt [i]<<endl;
+    cout<<"eta "<<gen.Eta[i]<<endl;
+    cout<<"phi "<<gen.Phi[i]<<endl;
+}
+
+void SelectionMgr::showJetInfo(const int& i){
+ 
+    cout<<"pt  "<<jet.Pt [i]<<endl;
+    cout<<"eta "<<jet.Eta[i]<<endl;
+    cout<<"phi "<<jet.Phi[i]<<endl;
+}
+
+int SelectionMgr::getGenParticle(){
+
+    int pdgid   = lep.GenPdgID[_idx];
+    float eta   = lep.GenEta  [_idx];
+    float phi   = lep.GenPhi  [_idx];
 
     if(pdgid == 0)
         return -999;
@@ -197,17 +300,35 @@ int SelectionMgr::getGenParticle(const int& idx){
 }
 
 
-int SelectionMgr::getGenParton(const int& idx){
+int SelectionMgr::getGenParton(){
 
-    int pdgid   = jet.GenPdgID[idx];
-    float eta   = jet.GenEta  [idx];
-    float phi   = jet.GenPhi  [idx];
+    float eta   = jet.Eta[_idx];
+    float phi   = jet.Phi[_idx];
    
-    if(pdgid == 0)
-        return -999;
-    
     return matchGenlevel(eta,phi);
 
+}
+
+int SelectionMgr::getDirectDa1(int idx){
+    if( gen.Da1[idx] < 0 )
+        return -999;
+
+    while( gen.Da1PdgID[idx] == gen.PdgID[idx] ){
+        idx = gen.Da1[idx];
+    }
+
+    return gen.Da1[idx];
+}
+
+int SelectionMgr::getDirectDa2(int idx){
+    if( gen.Da2[idx] < 0 )
+        return -999;
+
+    while( gen.Da2PdgID[idx] == gen.PdgID[idx] ){
+        idx = gen.Da2[idx];
+    }
+
+    return gen.Da2[idx];
 }
 
 int SelectionMgr::getDirectMother(int idx){
@@ -251,36 +372,29 @@ bool SelectionMgr::isCommonMo(const int& idx1, const int& idx2, const int& pdgid
 
 }
 
+void SelectionMgr::cleanHandle(){
+    bhandle.clear();
+}
+
 bool SelectionMgr::checkPartonTopo(){
 
-    int count_b = 0;
-    int count_j = 0;
-
     for(int i=0;i<gsize();i++){
-        
-        if(
-                fabs( gen.PdgID[i] ) == 5 &&
-                fabs( getDirectMotherPdgID(i) ) == 6
-          )
-        {
-            count_b++;
-        }
 
-        if(
-                fabs( getDirectMotherPdgID(i) ) == 24 &&
-                fabs( getDirectMotherPdgID( getDirectMother(i) ) ) == 6
-          )
-        {
-            count_j++;
+        if( fabs( gen.PdgID[i] ) == 6 ){
+
+            if( fabs( gen.Da1PdgID[i] ) == 5 ){
+                bhandle.push_back( gen.Da1[i] );
+                continue;
+            }
+            if( fabs( gen.Da2PdgID[i] ) == 5 ){
+                bhandle.push_back( gen.Da2[i] );
+            }
         }
     }
 
-    return (count_b>=2 && count_j>=2);
+    return bhandle.size() == 2;
 
 }
-
-
-
 
 
 

@@ -1,23 +1,15 @@
+#include "CPVAnalysis/MassReco/interface/MassReco.h"
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
-using namespace sel;
 
+using namespace std;
+using namespace sel;
 /*******************************************************************************
 *   Global variable
 *******************************************************************************/
 
+SelectionMgr smgr("MassReco");
 
 /*******************************************************************************
 *   Global function
 *******************************************************************************/
-
-extern SelectionMgr& PreMgr(){
-    static SelectionMgr premgr("SelectionInfo");
-    return premgr;
-}
-
-extern void process(int total, int progress){
-    
-    printf("[%d|%d]\r",total,progress);
-    fflush(stdout);
-}
 

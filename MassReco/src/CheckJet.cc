@@ -1,4 +1,4 @@
-#include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
+#include "CPVAnalysis/MassReco/interface/MassReco.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
 #include "TChain.h"
 #include "TCanvas.h"
@@ -23,7 +23,7 @@ extern bool passMCMuon(vector<int>& mu){
     for(int i=0;i<smgr.lsize();i++){
         smgr.SetIndex(i);
 
-        lepidx = smgr.getGenParticle(i);
+        lepidx = smgr.getGenParticle();
        
 
         if(lepidx  > 0)
@@ -44,7 +44,7 @@ extern bool passMCMuon(vector<int>& mu){
                 smgr.isXGenParticle(glepidx,6)
            )
             
-            mu.push_back(i);
+            mu.push_back(lepidx);
     
     }
 
@@ -61,16 +61,18 @@ extern bool passMCJet(vector<int>& jet, vector<int>& bjet){
     int mjetidx = 0;
     int gjetidx = 0;
 
+    //cout<<"jet num "<<smgr.jsize()<<endl;
     for(int i=0;i<smgr.jsize();i++){
         smgr.SetIndex(i);
 
-        jetidx = smgr.getGenParton(i);
+        //smgr.showJetInfo(i);
+        jetidx = smgr.getGenParton();
         
         if(jetidx >= 0)
             mjetidx = smgr.getDirectMother(jetidx);
         else
             continue ;
-
+        
         if(mjetidx >= 0) 
             gjetidx = smgr.getDirectMother(mjetidx) ;
         else
@@ -81,7 +83,7 @@ extern bool passMCJet(vector<int>& jet, vector<int>& bjet){
                 smgr.isXGenParticle(mjetidx,6) 
            )
         {    
-            bjet.push_back(i);
+            bjet.push_back(jetidx);
             continue;
         }
 
@@ -93,38 +95,22 @@ extern bool passMCJet(vector<int>& jet, vector<int>& bjet){
                 smgr.isXGenParticle(gjetidx, 6)
            )
         {
-            jet.push_back(i);
+            jet.push_back(jetidx);
         }
-
-
-
     }
 
     return ( bjet.size() >= 2 && jet.size() >= 2 ) ;
-        
-
 }
 
-extern bool hasCommonT_lep(const int& lep, const int& bjet){
+extern bool hasCommonT_lep(const int& bjetidx, const int& lepidx){
     
-   int lepidx  = smgr.getGenParticle(lep);
-   int bjetidx = smgr.getGenParton  (bjet);
-
-   if(lepidx < 0 || bjetidx < 0)
-       return false;
-
-   return smgr.isCommonMo( smgr.getDirectMother(lepidx), bjetidx, 6 );
+   return smgr.isCommonMo( bjetidx, smgr.getDirectMother(lepidx), 6 );
 }
 
-extern bool hasCommonT_jet(const int& jet, const int& bjet){
+extern bool hasCommonT_jet(const int& bjetidx, const int& jetidx){
     
-   int jetidx  = smgr.getGenParton(jet);
-   int bjetidx = smgr.getGenParton(bjet);
-
-   if(jetidx < 0 || bjetidx < 0)
-       return false;
    
-   return smgr.isCommonMo( smgr.getDirectMother(jetidx), bjetidx, 6 );
+   return smgr.isCommonMo( bjetidx, smgr.getDirectMother(jetidx), 6 );
 }
 
 extern int MCTruthCut(){
@@ -144,9 +130,11 @@ extern int MCTruthCut(){
     int muon_count = 0;
 
     for(int i=0;i<ch->GetEntries();i++){
+    //for(int i=0;i<10;i++){
         ch->GetEntry(i);
         process(ch->GetEntries(),i);
 
+       
         vector<int> muidx;
         vector<int> jetidx;
         vector<int> bjetidx;
@@ -159,56 +147,77 @@ extern int MCTruthCut(){
         if( !passMCJet(jetidx,bjetidx) )
             continue;
 
- /*       if( !smgr.checkPartonTopo() )*/
-            /*continue;*/
-
-/*        vector<TLorentzVector>* jethandle  = getJet(jetidx);*/
-        //vector<TLorentzVector>* bjethandle = getJet(bjetidx);
-
-        //double t_mass = 0;
 
 
-        //if( hasCommonT_lep(muidx[0], bjetidx[0]) && hasCommonT(jetidx[0], bjetidx[1]) ){
-            
-            //t_mass = ((*jethandle)[0]+(*jethandle)[1]+(*bjethandle)[1]).M();
-            //tmass->Fill(t_mass);
-        //}
+        bool passbmu = false;
+        bool passb2j = false;
 
-        //else if ( hasCommonT_lep(muidx[0], bjetidx[1]) && hasCommonT(jetidx[0], bjetidx[0]) ){
-            
-            //t_mass = ((*jethandle)[0]+(*jethandle)[1]+(*bjethandle)[0]).M();
-            //tmass->Fill(t_mass);
-        //}
+        for(const auto& bidx : bjetidx){
+            for(const auto& midx : muidx){
+                
+                if( hasCommonT_lep(bidx, midx) ){
+                    passbmu = true;
+                    break;
+                }
+            }
+        }
+
+        if(!passbmu)
+            continue;
+
+        int count_jidx = 0;
+        for(const auto& bidx : bjetidx){
+            for(const auto& jidx : jetidx){
+
+                if(hasCommonT_jet(bidx,jidx)){
+                    count_jidx++;
+                }
+            }
+
+            if(count_jidx >= 2){
+                passb2j = true;
+                break;
+            }
+        }
+
+        if(!passb2j)
+            continue;
+
         count++;
 
     }
-   
+  
     cout<<endl<<muon_count<<endl;
+    cout<<count<<endl;
 
     return count;
-   /* int total = tmass->Integral();*/
-    //delete ch;
-    //delete tmass;
-    /*return total;*/
 }
 
 extern void CheckJet(){
-  
 
-    TH1F* teff = new TH1F("tmass","tmass",200,0,0.2);
+    TH1F* teff = new TH1F("tmass","tmass",50,0,0.15);
 
-      for(int i=1;i<=200;i++){
+      
+    for(int i=1;i<=50;i++){
 
         cout<<endl<<i<< " th"<<endl;
+        smgr.getRvalue();
+
+        if(i==1){
+            teff -> SetBinContent(i,0);
+            smgr.RvalueUP(0.003);
+            continue;
+        }
+
         int count = MCTruthCut();
-        double eff = (double) count/3000000;
+        double eff = (double) count/5000000;
+        cout<<"efficiency "<<eff<<endl;
         teff -> SetBinContent(i,eff);
+        smgr.RvalueUP(0.003);
         
-        smgr.RvalueUP(0.001);
         
     }
 
-    
     teff->SetStats(false);
     teff->SetTitle("");
     teff->GetXaxis()->SetTitle("delR");
@@ -219,8 +228,13 @@ extern void CheckJet(){
 
     mgr::SetSinglePad(c);
     mgr::SetAxis(teff);
-    teff->SetMaximum( 0.5 );
+    teff->SetMaximum( 1.1 );
     mgr::DrawCMSLabelOuter(PRELIMINARY);
+    
+    TLine* line = new TLine(0,1,0.15,1);
+    line->SetLineColor(kRed);
+    line->SetLineStyle(8);
+    line->Draw();
     
     TLegend* leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
     leg->SetLineColor(kWhite);

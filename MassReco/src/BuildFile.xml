@@ -1,0 +1,10 @@
+<use name="root" />
+<use name="roofit" />
+<use name="boost" />
+<use name="boost_program_options"/>
+<use name="DataFormats/FWLite"/>
+<use name="CPVAnalysis/SelectionInfo"/>
+<use name="ManagerUtils/PlotUtils"/>
+<use name="ManagerUtils/ArgHelper"/>
+
+<export><lib name="1"/></export>

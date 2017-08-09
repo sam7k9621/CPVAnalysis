@@ -1,6 +1,5 @@
 #include "TChain.h"
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
-#include "TChain.h"
 #include <iostream>
 
 using namespace std;

@@ -37,26 +37,37 @@ namespace sel{
             int    runNO();
             int    lumiNO();
 
-            std::vector<int> getSelJet(std::vector<int>, std::vector<int>);
-            TLorentzVector getLorentzVector(std::string);
             TLorentzVector getMET(const TLorentzVector);
             double  Phi_mpi_pi(double);
+            bool isIsoLepton(const int&, const int&);
+            TLorentzVector getLorentzVector(const std::string&, const int&);
+            TLorentzVector getLorentzLep(const int&);
+            std::vector<TLorentzVector> getLorentzJet(const std::vector<int>&);
 
 /*******************************************************************************
 *   MC Truth
 *******************************************************************************/
 
             void    RvalueUP(const double&);
+            void    getRvalue();
             int     matchGenlevel(const float&, const float&);
-            int     getGenParticle(const int&);
-            int     getGenParton(const int&);
+            int     getGenParticle();
+            int     getGenParton();
             int     getDirectMother(int);
+            int     getDirectDa1   (int);
+            int     getDirectDa2   (int);
             int     getDirectMotherPdgID(const int&);
             bool    isXGenParticle(const int&, const int&);
             bool    isCommonMo(const int&, const int&, const int&);
             int     getPdgID(const int&);
             bool    checkPartonTopo();
+            void    cleanHandle();
+            void    showJetInfo(const int&);
+            void    showGenInfo(const int&);
 
+            int     bbarDeltaR(const int&, const int&);
+            int     getMuonCharge(const int&);
+            int     matchBhandle(const int&, const int&);
 /*******************************************************************************
 *   Vertex selection
 *******************************************************************************/
@@ -90,8 +101,8 @@ namespace sel{
 
             bool passElPt(double);
             bool passElEta(double);
-            bool passElLoose();
-            bool passElTight();
+            bool passElIDLoose();
+            bool passElIDTight();
 
 /*******************************************************************************
 * Jet selection
@@ -110,14 +121,15 @@ namespace sel{
             bool JetCSVM();
 
         private:
-            int idx;
-            double Rvalue;
+            int _idx;
+            double _rvalue;
             VertexInfo vtx;
             LeptonInfo lep;
             EvtInfo    evt;
             JetInfo    jet;
             GenInfo    gen;
 
+            std::vector<int> bhandle;
     };
 }
 #endif

@@ -7,31 +7,27 @@
 using namespace std;
 using namespace sel;
 
-
-bool passMuTight(){
+extern bool preMuon(){
 
     return(
-            smgr.passMuPt(26) *
-            smgr.passMuEta(2.1) *
-            smgr.passMuRelIsoR04(0.12) *
-            smgr.MuInnerTrackDxy_PV() *
-            smgr.MuInnerTrackDz() *
-            smgr.MuNMuonhits() *
-            smgr.MuNMatchedStations() *
-            smgr.MuGlobalNormalizedChi2() *
-            smgr.MuNTrackLayersWMeasurement() *
-            smgr.MuNPixelLayers() *
-            smgr.isGlobalMuon()
+            //Tight ID
+            PreMgr().MuInnerTrackDxy_PV() *
+            PreMgr().MuInnerTrackDz() *
+            PreMgr().MuNMuonhits() *
+            PreMgr().MuNMatchedStations() *
+            PreMgr().MuGlobalNormalizedChi2() *
+            PreMgr().MuNTrackLayersWMeasurement() *
+            PreMgr().MuNPixelLayers() *
+            PreMgr().isGlobalMuon()
           );
 }
 
 extern bool preJet(){
-    return (smgr.jsize() >= 4);
+    return (PreMgr().jsize() >= 4);
 }
 
-
 extern void InitPreCut(TChain* ch, char* name){
-    smgr.SetRoot(ch);
+    PreMgr().SetRoot(ch);
     MakePreCut(ch, name);
 }
 
@@ -54,7 +50,7 @@ extern void MakePreCut(TChain* ch, char* name){
         bool mcflag = true;
         if(!mcflag){
             //lumimask
-            if( !checkEvt.isGoodEvt( smgr.runNO(),smgr.lumiNO() ) ){
+            if( !checkEvt.isGoodEvt( PreMgr().runNO(),PreMgr().lumiNO() ) ){
                 continue;
             }
         }
@@ -65,13 +61,11 @@ extern void MakePreCut(TChain* ch, char* name){
 
         //lepton preselection at least one tight muon
         bool hasTightMu = false;
-        for(int j=0;j<smgr.lsize();j++){
-            smgr.SetIndex(j);
+        for(int j=0;j<PreMgr().lsize();j++){
+            PreMgr().SetIndex(j);
 
-            if ( smgr.lep_type() == 13 ){
-                if( passMuTight() )
-                    hasTightMu = true;
-            }
+            if( preMuon() )
+                hasTightMu = true;        
         }
 
         if(!hasTightMu)
@@ -83,6 +77,6 @@ extern void MakePreCut(TChain* ch, char* name){
     newtree->AutoSave();
     delete ch;
     delete newfile;
-    
+
 }
 
