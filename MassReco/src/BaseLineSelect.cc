@@ -37,10 +37,10 @@ extern bool passMuLoose(){
     
     return(
             //Kinematic cut
-            smgr.passMuPt(10) *
-            smgr.passMuEta(2.5) *
+            smgr.passMuPt(15) *
+            smgr.passMuEta(2.4) *
             //Isolation cut
-            smgr.passMuRelIsoR04(0.2) *
+            smgr.passMuRelIsoR04(0.25) *
             //Loose ID
             (smgr.isGlobalMuon() || smgr.isTrackerMuon()) 
           );
@@ -50,10 +50,10 @@ extern bool passMuTight(){
 
     return(
             //Kinematic cut
-            smgr.passMuPt(26) *
+            smgr.passMuPt(30) *
             smgr.passMuEta(2.1) *
             //Isolation cut
-            smgr.passMuRelIsoR04(0.12) *
+            smgr.passMuRelIsoR04(0.15) *
             //Tight ID
             smgr.MuInnerTrackDxy_PV() *
             smgr.MuInnerTrackDz() *
@@ -74,8 +74,8 @@ extern bool passElLoose(){
     
     return(
             //Kinematic
-            smgr.passElPt(20) *
-            smgr.passElEta(2.5) *
+            smgr.passElPt(15) *
+            smgr.passElEta(2.4) *
             //Loose ID
             smgr.passElIDLoose()
           );

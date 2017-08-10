@@ -60,11 +60,11 @@ bool SelectionMgr::MuNPixelLayers(){
 }
 
 bool SelectionMgr::isGlobalMuon(){
-    return !( ( (lep.MuType[_idx]) & 0x02 )== 0 );
+    return (lep.MuType[_idx]) & 0x02;
 }
 
 bool SelectionMgr::isTrackerMuon(){
-    return !( ( (lep.MuType[_idx]) & 0x04 )== 0 );
+    return (lep.MuType[_idx]) & 0x04;
 }
 
 /*******************************************************************************
@@ -95,5 +95,3 @@ bool SelectionMgr::passElIDLoose(){
 bool SelectionMgr::passElIDTight(){
     return lep.EgammaCutBasedEleIdTIGHT[_idx];
 }
-
-
