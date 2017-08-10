@@ -24,14 +24,20 @@ enum MatchType{
 };
 
 /**********************
-*   MassReco          *
+*   MassReco    
 **********************/
 
+/* Data */
 extern bool passFullJet(std::vector<int>&, std::vector<int>&, const int&);
 extern bool passFullMuon(std::vector<int>&);
 
+/* MC */
+extern bool passMCJet(std::vector<int>&, std::vector<int>&);
+extern bool passMCMuon(std::vector<int>&);
+
+
 /**********************
-*   FullCut         *
+*   FullCut       
 **********************/
 
 extern bool isIsolated(const int&, const int&);
@@ -42,18 +48,16 @@ extern int  bbarSeparation(const int&, const int&, const int&);
 extern void MakeFullCut();
 
 /**********************
-*   CheckJet          *
+*   CheckJet        
 **********************/
 
-extern bool passMCJet(std::vector<int>&, std::vector<int>&);
-extern bool passMCMuon(std::vector<int>&);
 extern bool hasCommonT_lep(const int&, const int&);
 extern bool hasCommonT_jet(const int&, const int&);
 extern void CheckJet();
 extern int  MCTruthCut();
 
 /**********************
-*   CheckParticle          *
+*   CheckParticle    
 **********************/
 
 extern void checkParticle();
