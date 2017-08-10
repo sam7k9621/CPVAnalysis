@@ -14,7 +14,7 @@ int main(int argc, char* argv[]){
         ( "check,c", opt::value<string>(), "nope" )
     ;
 
-    SelMgr().AddOptions( de );
+    SelMgr("MassReco").AddOptions( de );
     const int run = SelMgr().ParseOptions( argc, argv );
     if( run == dra::Parsermgr::HELP_PARSER  ){ return 0; }
     if( run == dra::Parsermgr::FAIL_PARSER ){ return 1; }

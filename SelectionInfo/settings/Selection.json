@@ -1,0 +1,14 @@
+{
+    "data":{
+        "path":[""],
+        "HLT":[2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "mc":{
+        "path":["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root"],
+        "HLT":[4809,4815] //HLT_Iso(Tk)Mu24_v4
+    },
+
+    "lumimask":"/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
+}
+

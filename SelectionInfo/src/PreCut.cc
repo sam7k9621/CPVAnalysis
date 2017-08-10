@@ -1,70 +1,69 @@
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
 #include "CPVAnalysis/SelectionInfo/interface/checkEvtTool.h"
+#include "ManagerUtils/PlotUtils/interface/Common.hpp"
+
 #include "TFile.h"
 
 #include <iostream>
 
 using namespace std;
 using namespace sel;
+using namespace dra;
 
-extern bool preMuon(){
 
-    return(
-            //Tight ID
-            PreMgr().MuInnerTrackDxy_PV() *
-            PreMgr().MuInnerTrackDz() *
-            PreMgr().MuNMuonhits() *
-            PreMgr().MuNMatchedStations() *
-            PreMgr().MuGlobalNormalizedChi2() *
-            PreMgr().MuNTrackLayersWMeasurement() *
-            PreMgr().MuNPixelLayers() *
-            PreMgr().isGlobalMuon()
-          );
-}
+extern void MakePreCut(){
 
-extern bool preJet(){
-    return (PreMgr().jsize() >= 4);
-}
+    //Initializing
+    bool is_data = SelMgr().GetOption<string>("source") == "data" ? 1 : 0 ;
+    string source = is_data? "data" : "mc";
 
-extern void InitPreCut(TChain* ch, char* name){
-    PreMgr().SetRoot(ch);
-    MakePreCut(ch, name);
-}
+    vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(source));
+    vector<int>    hlt       = GetList<int>   ("HLT" , SelMgr().GetSubTree(source));       
 
-extern void MakePreCut(TChain* ch, char* name){
+    //Adding files
+    TChain* ch = new TChain("bprimeKit/root");
+    for(auto& i : sourcelst){
+        ch->Add(i.c_str());
+    }
+    SelMgr().SetRoot(ch);
 
-    TFile* newfile = new TFile(name,"recreate");
+    TFile* newfile = new TFile("muon_precut_MC.root","recreate");
     TTree* newtree = ch->CloneTree(0);
     
+    //Running over golden_json 
     checkEvtTool checkEvt;
-    checkEvt.addJson("/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt");
+    checkEvt.addJson( SelMgr().GetSingleData<string>("lumimask") );
     checkEvt.makeJsonMap();
 
-
-    for(int i=0;i<ch->GetEntries();i++){
+    //Looping events
+    int events = SelMgr().CheckOption("test") ? 10000 : ch->GetEntries();
+    for(int i=0;i<events;i++){
         ch->GetEntry(i);
 
-        process(ch->GetEntries(),i);
+        if(SelMgr().CheckOption("count"))
+            process(events,i);
 
-
-        bool mcflag = true;
-        if(!mcflag){
-            //lumimask
-            if( !checkEvt.isGoodEvt( PreMgr().runNO(),PreMgr().lumiNO() ) ){
+        //Lumimask
+        if(is_data){
+            if( !checkEvt.isGoodEvt( SelMgr().runNO(),SelMgr().lumiNO() ) ){
                 continue;
             }
         }
-        //jet preselection at least four jet
+
+        //Pass vertex and hlt
+        if( !passVertex() || !passHLT(hlt) )
+            continue;
+
+        //Jet preselection at least four jet
         if (!preJet())
             continue;
-    
 
-        //lepton preselection at least one tight muon
+        //Lepton preselection at least one tight muon
         bool hasTightMu = false;
-        for(int j=0;j<PreMgr().lsize();j++){
-            PreMgr().SetIndex(j);
+        for(int j=0;j<SelMgr().lsize();j++){
+            SelMgr().SetIndex(j);
 
-            if( preMuon() )
+            if( passMuTight() )
                 hasTightMu = true;        
         }
 
@@ -77,6 +76,5 @@ extern void MakePreCut(TChain* ch, char* name){
     newtree->AutoSave();
     delete ch;
     delete newfile;
-
 }
 

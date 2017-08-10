@@ -1,7 +1,7 @@
 #include "CPVAnalysis/SelectionInfo/interface/SelectionMgr.h"
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
-#include <vector>
 #include "TH1.h"
+
 /*******************************************************************************
 *   Global variables
 *******************************************************************************/
@@ -24,24 +24,15 @@ enum MatchType{
 };
 
 /**********************
-*   BaseLineSelect    *
+*   MassReco          *
 **********************/
 
-extern bool passElLoose();
-extern bool passMuLoose();
-extern bool passMuTight();
-extern bool passVertex();
-extern bool passJet();
-extern bool passBJet();
+extern bool passFullJet(std::vector<int>&, std::vector<int>&, const int&);
+extern bool passFullMuon(std::vector<int>&);
 
 /**********************
 *   FullCut         *
 **********************/
-
-extern bool passFullJet(std::vector<int>&, std::vector<int>&, const int&);
-extern bool passFullVertex();
-extern bool passFullHLT(const std::vector<int>&);
-extern bool passFullMuon(std::vector<int>&);
 
 extern bool isIsolated(const int&, const int&);
 extern bool fillBhandle();

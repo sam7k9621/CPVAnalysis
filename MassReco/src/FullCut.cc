@@ -9,85 +9,6 @@ using namespace std;
 using namespace sel;
 using namespace dra;
 
-extern bool passFullVertex(){
-
-    bool passV = false;
-    for(int i=0;i<SelMgr().vsize();i++){
-        SelMgr().SetIndex(i);
-        
-        if(passVertex()){
-            passV = true;
-            break;
-        }
-    }
-
-    return passV;
-}
-
-extern bool passFullHLT(const vector<int>& hlt){
-
-    return SelMgr().passHLT(hlt);
-}
-
-extern bool passFullMuon(vector<int>& muidx){
-    
-    for(int i=0;i<SelMgr().lsize();i++){
-        SelMgr().SetIndex(i);
-            
-        if(SelMgr().lep_type() == 13){
-            
-            if(passMuTight()){
-                muidx.push_back(i);
-                continue;
-            }
-            
-            if(passMuLoose()){
-                return false;
-            }
-        }
-         
-        else if(SelMgr().lep_type() == 11){
-
-            if( passElLoose() ){
-                return false;
-            }
-        }
-    }
-
-    return muidx.size() > 0;
-}
-
-extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx, const int& muidx){
-
-        for(int j=0;j<SelMgr().jsize();j++){
-            SelMgr().SetIndex(j);
-
-            //Cleaning against leptons (isolated lepton)
-            if( !isIsolated(muidx,j) )
-                continue;
-
-            int mask = 0x01;
-
-            if(passJet()){
-                mask <<= 1;
-            }
-            
-            if(passBJet()){
-                mask <<= 2;
-            }
-    
-            if(mask & 0x02){
-                jetidx.push_back(j);
-            }
-
-            if(mask & 0x08){
-                bjetidx.push_back(j);
-            }
-        }
-
-        return ( jetidx.size() >= 2 && bjetidx.size() == 2 );
-}
-
 extern bool fillBhandle(){
     SelMgr().cleanHandle();
     return SelMgr().checkPartonTopo();
@@ -148,22 +69,19 @@ extern void MakeFullCut(){
     string source = is_data? "data" : "mc";
 
     vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(source));
-    vector<int>    hlt       = GetList<int>   ("HLT" , SelMgr().GetSubTree(source));
 
-
-    TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
-    TH1F* case1 = new TH1F("case1","correct",50,0,500);
-    TH1F* case2 = new TH1F("case2","fake b",50,0,500);
-    TH1F* case3 = new TH1F("case3","mistag",50,0,500);
-    TH1F* case4 = new TH1F("case4","swap",50,0,500);
-    TH1F* case5 = new TH1F("case5","other",50,0,500);
+    TH1F* tmass = new TH1F("tmass","tmass"      ,50,0,500);
+    TH1F* case1 = new TH1F("case1","correct"    ,50,0,500);
+    TH1F* case2 = new TH1F("case2","fake b"     ,50,0,500);
+    TH1F* case3 = new TH1F("case3","mistag"     ,50,0,500);
+    TH1F* case4 = new TH1F("case4","swap"       ,50,0,500);
+    TH1F* case5 = new TH1F("case5","other"      ,50,0,500);
     TH1F* case6 = new TH1F("case6","not matched",50,0,500);
 
-    TH1F* teff   = new TH1F("teff","teff",8,0,8);
     THStack* hs  = new THStack("hs","");
 
     //Adding files
-    TChain* ch = new TChain("root");
+    TChain* ch = new TChain( SelMgr().GetSingleData<string>( "tree" ).c_str() );
     for(auto& i : sourcelst){
         ch->Add(i.c_str());
     }
@@ -177,57 +95,18 @@ extern void MakeFullCut(){
         if(SelMgr().CheckOption("count"))
             process(events,i);
 
-        teff->Fill(0.5);
-       
-        /*****************************/
-        
-        //if(!preJet())
-            //continue;
-
-        //teff->Fill(1.5);
-
-        //bool hasTightMu = false;
-        //for(int j=0;j<SelMgr().lsize();j++){
-            //SelMgr().SetIndex(j);
-
-            //if ( SelMgr().lep_type() == 13 ){
-                //if( passMuTight() )
-                    //hasTightMu = true;
-            //}
-        //}
-
-
-        //if(!hasTightMu)
-            //continue;
-
-        /*teff->Fill(2.5);*/
-     
-        /*****************************/
-
-
         if(!fillBhandle())
             continue;
-
-        teff->Fill(3.5);
 
         vector<int>    muidx;      //store one isolated tight muon
         vector<int>    jetidx;     //store every jets
         vector<int>    bjetidx;    //store two bjets
 
-        if( !passFullVertex() || !passFullHLT(hlt) )
-            continue;
-        
-        teff->Fill(4.5);
-
         if( !passFullMuon(muidx) )
             continue;
 
-        teff->Fill(5.5);
-        
         if( !passFullJet(jetidx,bjetidx,muidx[0]) )
             continue;
-
-        teff->Fill(6.5);
 
         //Get TLorentzVector from index
         TLorentzVector         muonhandle = SelMgr().getLorentzLep(muidx[0]);
@@ -260,8 +139,6 @@ extern void MakeFullCut(){
 
         if(chi2mass == 999)
             continue;
-
-        teff->Fill(7.5);
 
         tmass->Fill(seltmass);
        
@@ -366,101 +243,4 @@ extern void MakeFullCut(){
     delete case5;
     delete case6;
     delete hs;
-/*************************************/
-
-   setHist(teff, "", "Events x10^{6}"); 
-
-   c = mgr::NewCanvas();
-   
-   teff->Draw();
-
-   teff->GetXaxis()->SetBinLabel(1,"Total");
-   teff->GetXaxis()->SetBinLabel(2,">= 4 jets");
-   teff->GetXaxis()->SetBinLabel(3,">= 1 tight muon");
-   teff->GetXaxis()->SetBinLabel(4,"mc truth");
-   teff->GetXaxis()->SetBinLabel(5,"vertex && HLT");
-   teff->GetXaxis()->SetBinLabel(6,"muon cut");
-   teff->GetXaxis()->SetBinLabel(7,"jet  cut");
-   teff->GetXaxis()->SetBinLabel(8,"chi2 cut");
-   
-   mgr::SetSinglePad(c);
-   mgr::SetAxis(teff);
-   teff->SetMaximum( mgr::GetYmax( teff ) * 1.6 );
-   mgr::DrawCMSLabelOuter(PRELIMINARY);
-   
-   leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-   leg->SetLineColor(kWhite);
-   leg->AddEntry("teff","Event", "l");
-   leg->Draw();
-   
-   c->SaveAs("EffTable.pdf");
-
-   delete teff;
-   delete c;
-   delete leg;
-
-
-/*    if (SelMgr().CheckOption("check")){*/
-        //TCanvas* cc = mgr::NewCanvas();
-        //check_tmass->Draw();
-        
-        //mgr::SetSinglePad(cc);
-        //mgr::SetAxis(check_tmass);
-        //check_tmass->SetMaximum( mgr::GetYmax( check_tmass ) * 1.6 );
-        //mgr::DrawCMSLabelOuter(PRELIMINARY);
-        //mgr::DrawLuminosity(36811);
-
-        //TPaveText *ppt = mgr::NewTextBox(350,mgr::GetYmax( check_tmass ) * 1.4,480,mgr::GetYmax( check_tmass ) * 1.55);
-        //ppt->AddText("Muon Channel");
-        //ppt->Draw();
-
-        //TLine* lline = new TLine(172.5,0,172.5,mgr::GetYmax(check_tmass)*1.6);
-        //lline->SetLineColor(kRed);
-        //lline->SetLineStyle(8);
-        //lline->Draw();
-
-        //TLegend* lleg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-        //lleg->SetLineColor(kWhite);
-        //lleg->AddEntry("chekc_tmass","t#bar{t}+jets", "l");
-        //lleg->Draw();
-        
-        //cc->SaveAs("check_tmass.pdf");
-   
-        //cout<<endl<<mgr::GetYmax(check_tmass)<<endl;
-
-        //delete ppt;
-        //delete lline;
-        //delete lleg;
-        /*delete cc;*/
-    //}
-/*************************************/
-
-/*    TCanvas* c1 = mgr::NewCanvas();*/
-    //wmass->Draw();
-    //mgr::SetSinglePad(c1);
-    //mgr::SetAxis(wmass);
-    //wmass->SetMaximum( mgr::GetYmax( wmass  ) * 1.6 );
-
-    //TPaveText *pt1 = mgr::NewTextBox(140,mgr::GetYmax( wmass ) * 1.4,190,mgr::GetYmax( wmass ) * 1.55);
-    //pt1->AddText("Muon Channel");
-    //pt1->Draw();
-    
-    //TLine* line1 = new TLine(82.9,0,82.9,mgr::GetYmax(wmass)*1.6);
-    //line1->SetLineColor(kRed);
-    //line1->SetLineStyle(8);
-    //line1->Draw();
-
-    //mgr::DrawCMSLabelOuter(PRELIMINARY);
-    
-    //if(is_data)
-        //mgr::DrawLuminosity(36811);
-
-    //c1->SaveAs("wmass.pdf");
-
-    //delete pt1;
-    //delete c1;
-    //delete wmass;
-    //delete tmass;
-    /*delete check_tmass;*/
-    
 }

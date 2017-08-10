@@ -1,6 +1,5 @@
 {
-    
-    
+    "tree":"root",
 
     "data":{
         "path":[
@@ -12,15 +11,12 @@
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_g.root",
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_h1.root",
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_h2.root"
-            ],
-        "HLT":[2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+            ]
     },
 
     "mc":{
         //"path":["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root"],
-        "path":["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_MC.root"],
-        "HLT":[4809,4815] //HLT_Iso(Tk)Mu24_v4
+        "path":["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/muon_precut_MC.root"]
     }
-
 }
 
