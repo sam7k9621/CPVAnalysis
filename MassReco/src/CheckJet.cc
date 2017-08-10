@@ -20,28 +20,28 @@ extern bool passMCMuon(vector<int>& mu){
     int glepidx = 0;
 
 
-    for(int i=0;i<smgr.lsize();i++){
-        smgr.SetIndex(i);
+    for(int i=0;i<SelMgr().lsize();i++){
+        SelMgr().SetIndex(i);
 
-        lepidx = smgr.getGenParticle();
+        lepidx = SelMgr().getGenParticle();
        
 
         if(lepidx  > 0)
-            mlepidx = smgr.getDirectMother(lepidx);
+            mlepidx = SelMgr().getDirectMother(lepidx);
         else
             continue ;
         
         if(mlepidx > 0) 
-            glepidx = smgr.getDirectMother(mlepidx);
+            glepidx = SelMgr().getDirectMother(mlepidx);
         else
             continue ;
 
 
 
         if (    
-                smgr.isXGenParticle(lepidx, 13) &&  
-                smgr.isXGenParticle(mlepidx,24) &&
-                smgr.isXGenParticle(glepidx,6)
+                SelMgr().isXGenParticle(lepidx, 13) &&  
+                SelMgr().isXGenParticle(mlepidx,24) &&
+                SelMgr().isXGenParticle(glepidx,6)
            )
             
             mu.push_back(lepidx);
@@ -61,26 +61,26 @@ extern bool passMCJet(vector<int>& jet, vector<int>& bjet){
     int mjetidx = 0;
     int gjetidx = 0;
 
-    //cout<<"jet num "<<smgr.jsize()<<endl;
-    for(int i=0;i<smgr.jsize();i++){
-        smgr.SetIndex(i);
+    //cout<<"jet num "<<SelMgr().jsize()<<endl;
+    for(int i=0;i<SelMgr().jsize();i++){
+        SelMgr().SetIndex(i);
 
-        //smgr.showJetInfo(i);
-        jetidx = smgr.getGenParton();
+        //SelMgr().showJetInfo(i);
+        jetidx = SelMgr().getGenParton();
         
         if(jetidx >= 0)
-            mjetidx = smgr.getDirectMother(jetidx);
+            mjetidx = SelMgr().getDirectMother(jetidx);
         else
             continue ;
         
         if(mjetidx >= 0) 
-            gjetidx = smgr.getDirectMother(mjetidx) ;
+            gjetidx = SelMgr().getDirectMother(mjetidx) ;
         else
             continue ;
         
         if (
-                smgr.isXGenParticle(jetidx, 5) &&
-                smgr.isXGenParticle(mjetidx,6) 
+                SelMgr().isXGenParticle(jetidx, 5) &&
+                SelMgr().isXGenParticle(mjetidx,6) 
            )
         {    
             bjet.push_back(jetidx);
@@ -91,8 +91,8 @@ extern bool passMCJet(vector<int>& jet, vector<int>& bjet){
             continue;
 
         if (
-                smgr.isXGenParticle(mjetidx, 24) &&
-                smgr.isXGenParticle(gjetidx, 6)
+                SelMgr().isXGenParticle(mjetidx, 24) &&
+                SelMgr().isXGenParticle(gjetidx, 6)
            )
         {
             jet.push_back(jetidx);
@@ -104,25 +104,25 @@ extern bool passMCJet(vector<int>& jet, vector<int>& bjet){
 
 extern bool hasCommonT_lep(const int& bjetidx, const int& lepidx){
     
-   return smgr.isCommonMo( bjetidx, smgr.getDirectMother(lepidx), 6 );
+   return SelMgr().isCommonMo( bjetidx, SelMgr().getDirectMother(lepidx), 6 );
 }
 
 extern bool hasCommonT_jet(const int& bjetidx, const int& jetidx){
     
    
-   return smgr.isCommonMo( bjetidx, smgr.getDirectMother(jetidx), 6 );
+   return SelMgr().isCommonMo( bjetidx, SelMgr().getDirectMother(jetidx), 6 );
 }
 
 extern int MCTruthCut(){
 
-    bool is_data = smgr.GetOption<string>("source") == "data" ? 1 : 0 ;
+    bool is_data = SelMgr().GetOption<string>("source") == "data" ? 1 : 0 ;
     string source = is_data? "data" : "mc";
-    vector<string> sourcelst = GetList<string>("path", smgr.GetSubTree(source));
+    vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(source));
     TChain* ch = new TChain("root");
     for(auto& i : sourcelst){
         ch->Add(i.c_str());
     }
-    smgr.SetRoot(ch);
+    SelMgr().SetRoot(ch);
 
 //    TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
 
@@ -201,11 +201,11 @@ extern void CheckJet(){
     for(int i=1;i<=50;i++){
 
         cout<<endl<<i<< " th"<<endl;
-        smgr.getRvalue();
+        SelMgr().getRvalue();
 
         if(i==1){
             teff -> SetBinContent(i,0);
-            smgr.RvalueUP(0.003);
+            SelMgr().RvalueUP(0.003);
             continue;
         }
 
@@ -213,7 +213,7 @@ extern void CheckJet(){
         double eff = (double) count/5000000;
         cout<<"efficiency "<<eff<<endl;
         teff -> SetBinContent(i,eff);
-        smgr.RvalueUP(0.003);
+        SelMgr().RvalueUP(0.003);
         
         
     }

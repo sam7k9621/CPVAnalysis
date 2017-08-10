@@ -16,19 +16,19 @@ extern bool checkComponent(){
     int countw = 0;
     int countm = 0;
 
-    for(int i=0;i<smgr.gsize();i++){
-        smgr.SetIndex(i);
+    for(int i=0;i<SelMgr().gsize();i++){
+        SelMgr().SetIndex(i);
     
-        if( smgr.isXGenParticle(i,13) ){
+        if( SelMgr().isXGenParticle(i,13) ){
             countm++;
             continue;
         }
-        if( smgr.isXGenParticle(i,5 ) ){
+        if( SelMgr().isXGenParticle(i,5 ) ){
             countb++;
             continue;
         }
 
-        if( smgr.isXGenParticle(i,24) )
+        if( SelMgr().isXGenParticle(i,24) )
             countw++;
     }
 
@@ -37,14 +37,14 @@ extern bool checkComponent(){
 
 extern void checkParticle(){
 
-    bool is_data = smgr.GetOption<string>("source") == "data" ? 1 : 0 ;
+    bool is_data = SelMgr().GetOption<string>("source") == "data" ? 1 : 0 ;
     string source = is_data? "data" : "mc";
-    vector<string> sourcelst = GetList<string>("path", smgr.GetSubTree(source));
+    vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(source));
     TChain* ch = new TChain("root");
     for(auto& i : sourcelst){
         ch->Add(i.c_str());
     }
-    smgr.SetRoot(ch);
+    SelMgr().SetRoot(ch);
     
     int count = 0;
     for(int i=0;i<ch->GetEntries();i++){

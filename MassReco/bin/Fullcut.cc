@@ -11,8 +11,8 @@ int main(int argc, char* argv[]){
         ( "test,t",  "run testing events number")
     ;
 
-    smgr.AddOptions( de );
-    const int run = smgr.ParseOptions( argc, argv );
+    SelMgr().AddOptions( de );
+    const int run = SelMgr().ParseOptions( argc, argv );
     if( run == dra::Parsermgr::HELP_PARSER  ){ return 0; }
     if( run == dra::Parsermgr::FAIL_PARSER ){ return 1; }
 

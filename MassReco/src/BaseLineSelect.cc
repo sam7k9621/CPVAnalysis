@@ -10,22 +10,22 @@ extern bool passJet(){
 
     return(
             //Kinematic cut
-            smgr.passJetPt(30) *
-            smgr.passJetEta(2.4) *
+            SelMgr().passJetPt(30) *
+            SelMgr().passJetEta(2.4) *
             //Loose ID
-            smgr.JetNConstituents() *
-            smgr.JetNEF() *
-            smgr.JetNHF() *
-            smgr.JetCHF() *
-            smgr.JetNCH() *
-            smgr.JetCEF() 
+            SelMgr().JetNConstituents() *
+            SelMgr().JetNEF() *
+            SelMgr().JetNHF() *
+            SelMgr().JetCHF() *
+            SelMgr().JetNCH() *
+            SelMgr().JetCEF() 
           );
 }
 
 extern bool passBJet(){
 
     return(
-            smgr.JetCSVM()
+            SelMgr().JetCSVM()
           );
 }
 
@@ -37,12 +37,12 @@ extern bool passMuLoose(){
     
     return(
             //Kinematic cut
-            smgr.passMuPt(15) *
-            smgr.passMuEta(2.4) *
+            SelMgr().passMuPt(15) *
+            SelMgr().passMuEta(2.4) *
             //Isolation cut
-            smgr.passMuRelIsoR04(0.25) *
+            SelMgr().passMuRelIsoR04(0.25) *
             //Loose ID
-            (smgr.isGlobalMuon() || smgr.isTrackerMuon()) 
+            (SelMgr().isGlobalMuon() || SelMgr().isTrackerMuon()) 
           );
 }
 
@@ -50,19 +50,19 @@ extern bool passMuTight(){
 
     return(
             //Kinematic cut
-            smgr.passMuPt(30) *
-            smgr.passMuEta(2.1) *
+            SelMgr().passMuPt(30) *
+            SelMgr().passMuEta(2.1) *
             //Isolation cut
-            smgr.passMuRelIsoR04(0.15) *
+            SelMgr().passMuRelIsoR04(0.15) *
             //Tight ID
-            smgr.MuInnerTrackDxy_PV() *
-            smgr.MuInnerTrackDz() *
-            smgr.MuNMuonhits() *
-            smgr.MuNMatchedStations() *
-            smgr.MuGlobalNormalizedChi2() *
-            smgr.MuNTrackLayersWMeasurement() *
-            smgr.MuNPixelLayers() *
-            smgr.isGlobalMuon()
+            SelMgr().MuInnerTrackDxy_PV() *
+            SelMgr().MuInnerTrackDz() *
+            SelMgr().MuNMuonhits() *
+            SelMgr().MuNMatchedStations() *
+            SelMgr().MuGlobalNormalizedChi2() *
+            SelMgr().MuNTrackLayersWMeasurement() *
+            SelMgr().MuNPixelLayers() *
+            SelMgr().isGlobalMuon()
           );
 }
 
@@ -74,10 +74,10 @@ extern bool passElLoose(){
     
     return(
             //Kinematic
-            smgr.passElPt(15) *
-            smgr.passElEta(2.4) *
+            SelMgr().passElPt(15) *
+            SelMgr().passElEta(2.4) *
             //Loose ID
-            smgr.passElIDLoose()
+            SelMgr().passElIDLoose()
           );
 }
 
@@ -88,10 +88,10 @@ extern bool passElLoose(){
 extern bool passVertex(){
 
     return(
-            !(smgr.IsFake()) * 
-            smgr.passNdof() * 
-            smgr.passAbsZ() *
-            smgr.passRho() 
+            !(SelMgr().IsFake()) * 
+            SelMgr().passNdof() * 
+            SelMgr().passAbsZ() *
+            SelMgr().passRho() 
           );
 }
 

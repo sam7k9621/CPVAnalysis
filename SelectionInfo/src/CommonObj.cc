@@ -11,9 +11,18 @@ using namespace sel;
 *******************************************************************************/
 
 extern SelectionMgr& PreMgr(){
+
     static SelectionMgr premgr("SelectionInfo");
     return premgr;
 }
+
+extern SelectionMgr& SelMgr(){
+
+    static SelectionMgr selmgr("MassReco");
+    return selmgr;
+}
+
+
 
 extern void process(int total, int progress){
     

@@ -1,11 +1,10 @@
 #include "CPVAnalysis/SelectionInfo/interface/SelectionMgr.h"
+#include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
 #include <vector>
 #include "TH1.h"
 /*******************************************************************************
 *   Global variables
 *******************************************************************************/
-
-extern sel::SelectionMgr smgr;
 
 enum MatchType{
 
@@ -23,12 +22,6 @@ enum MatchType{
     // 16 Other  : (2 & 4) and only one mistag
     // 32 None   : not matched
 };
-
-/*******************************************************************************
-*   Global function
-*******************************************************************************/
-
-extern void process(int, int);
 
 /**********************
 *   BaseLineSelect    *

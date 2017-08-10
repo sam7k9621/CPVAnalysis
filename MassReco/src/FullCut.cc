@@ -12,8 +12,8 @@ using namespace dra;
 extern bool passFullVertex(){
 
     bool passV = false;
-    for(int i=0;i<smgr.vsize();i++){
-        smgr.SetIndex(i);
+    for(int i=0;i<SelMgr().vsize();i++){
+        SelMgr().SetIndex(i);
         
         if(passVertex()){
             passV = true;
@@ -26,15 +26,15 @@ extern bool passFullVertex(){
 
 extern bool passFullHLT(const vector<int>& hlt){
 
-    return smgr.passHLT(hlt);
+    return SelMgr().passHLT(hlt);
 }
 
 extern bool passFullMuon(vector<int>& muidx){
     
-    for(int i=0;i<smgr.lsize();i++){
-        smgr.SetIndex(i);
+    for(int i=0;i<SelMgr().lsize();i++){
+        SelMgr().SetIndex(i);
             
-        if(smgr.lep_type() == 13){
+        if(SelMgr().lep_type() == 13){
             
             if(passMuTight()){
                 muidx.push_back(i);
@@ -46,7 +46,7 @@ extern bool passFullMuon(vector<int>& muidx){
             }
         }
          
-        else if(smgr.lep_type() == 11){
+        else if(SelMgr().lep_type() == 11){
 
             if( passElLoose() ){
                 return false;
@@ -59,8 +59,8 @@ extern bool passFullMuon(vector<int>& muidx){
 
 extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx, const int& muidx){
 
-        for(int j=0;j<smgr.jsize();j++){
-            smgr.SetIndex(j);
+        for(int j=0;j<SelMgr().jsize();j++){
+            SelMgr().SetIndex(j);
 
             //Cleaning against leptons (isolated lepton)
             if( !isIsolated(muidx,j) )
@@ -89,13 +89,13 @@ extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx, const int& mu
 }
 
 extern bool fillBhandle(){
-    smgr.cleanHandle();
-    return smgr.checkPartonTopo();
+    SelMgr().cleanHandle();
+    return SelMgr().checkPartonTopo();
 }
 
 extern bool isIsolated(const int& muidx, const int& jetidx){
 
-    return smgr.isIsoLepton(muidx,jetidx);
+    return SelMgr().isIsoLepton(muidx,jetidx);
 }
 
 extern void setHist(TH1* hist, const string& xtitle, const string& ytitle){
@@ -108,13 +108,13 @@ extern void setHist(TH1* hist, const string& xtitle, const string& ytitle){
 
 extern int bbarSeparation(const int& had_b, const int& lep_b, const int& muidx){
 
-    int charge = smgr.getMuonCharge(muidx);
+    int charge = SelMgr().getMuonCharge(muidx);
     
     // hadronic b charge equals to muon
-    int flag1 = smgr.bbarDeltaR(had_b,charge);
+    int flag1 = SelMgr().bbarDeltaR(had_b,charge);
 
     // leptonic b charge is opposite to muon
-    int flag2 = smgr.bbarDeltaR(lep_b,charge*(-1));
+    int flag2 = SelMgr().bbarDeltaR(lep_b,charge*(-1));
   
     // flag info : interface/SelectionInfo.h 
 
@@ -144,11 +144,11 @@ extern int bbarSeparation(const int& had_b, const int& lep_b, const int& muidx){
 extern void MakeFullCut(){
 
     //Initializing
-    bool is_data = smgr.GetOption<string>("source") == "data" ? 1 : 0 ;
+    bool is_data = SelMgr().GetOption<string>("source") == "data" ? 1 : 0 ;
     string source = is_data? "data" : "mc";
 
-    vector<string> sourcelst = GetList<string>("path", smgr.GetSubTree(source));
-    vector<int>    hlt       = GetList<int>   ("HLT" , smgr.GetSubTree(source));
+    vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(source));
+    vector<int>    hlt       = GetList<int>   ("HLT" , SelMgr().GetSubTree(source));
 
 
     TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
@@ -167,14 +167,14 @@ extern void MakeFullCut(){
     for(auto& i : sourcelst){
         ch->Add(i.c_str());
     }
-    smgr.SetRoot(ch);
+    SelMgr().SetRoot(ch);
 
     //Looping events
-    int events = smgr.CheckOption("test") ? 10000 : ch->GetEntries();
+    int events = SelMgr().CheckOption("test") ? 10000 : ch->GetEntries();
     for(int i=0;i<events;i++){
         ch->GetEntry(i);
         
-        if(smgr.CheckOption("count"))
+        if(SelMgr().CheckOption("count"))
             process(events,i);
 
         teff->Fill(0.5);
@@ -187,10 +187,10 @@ extern void MakeFullCut(){
         //teff->Fill(1.5);
 
         //bool hasTightMu = false;
-        //for(int j=0;j<smgr.lsize();j++){
-            //smgr.SetIndex(j);
+        //for(int j=0;j<SelMgr().lsize();j++){
+            //SelMgr().SetIndex(j);
 
-            //if ( smgr.lep_type() == 13 ){
+            //if ( SelMgr().lep_type() == 13 ){
                 //if( passMuTight() )
                     //hasTightMu = true;
             //}
@@ -230,9 +230,9 @@ extern void MakeFullCut(){
         teff->Fill(6.5);
 
         //Get TLorentzVector from index
-        TLorentzVector         muonhandle = smgr.getLorentzLep(muidx[0]);
-        vector<TLorentzVector> jethandle  = smgr.getLorentzJet(jetidx);
-        vector<TLorentzVector> bjethandle = smgr.getLorentzJet(bjetidx);
+        TLorentzVector         muonhandle = SelMgr().getLorentzLep(muidx[0]);
+        vector<TLorentzVector> jethandle  = SelMgr().getLorentzJet(jetidx);
+        vector<TLorentzVector> bjethandle = SelMgr().getLorentzJet(bjetidx);
         
         //Mass constrain method   (bbar separtion)
         double chi2mass = 999;
@@ -400,7 +400,7 @@ extern void MakeFullCut(){
    delete leg;
 
 
-/*    if (smgr.CheckOption("check")){*/
+/*    if (SelMgr().CheckOption("check")){*/
         //TCanvas* cc = mgr::NewCanvas();
         //check_tmass->Draw();
         

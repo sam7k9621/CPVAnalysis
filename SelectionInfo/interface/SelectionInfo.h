@@ -10,6 +10,7 @@
 *******************************************************************************/
 
 extern sel::SelectionMgr& PreMgr();
+extern sel::SelectionMgr& SelMgr();
 
 extern void process(int, int);
 
