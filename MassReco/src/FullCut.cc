@@ -10,6 +10,7 @@ using namespace sel;
 using namespace dra;
 
 extern bool fillBhandle(){
+    
     SelMgr().cleanHandle();
     return SelMgr().checkPartonTopo();
 }
@@ -80,6 +81,15 @@ extern void MakeFullCut(){
 
     THStack* hs  = new THStack("hs","");
 
+    TH1F* chi2_correct = new TH1F("chi2_correct","correct" ,40,0,200);
+    TH1F* chi2_swap    = new TH1F("chi2_swap"   ,"swapped" ,40,0,200);
+    TH1F* chi2_fakeb   = new TH1F("chi2_fakeb"  ,"fake b"  ,40,0,200);
+
+    //TH1F* csvm_correct = new TH1F("csvm_correct","correct" ,40,0,200);
+    //TH1F* csvm_swap    = new TH1F("csvm_swap"   ,"swapped" ,40,0,200);
+    //TH1F* csvm_fakeb   = new TH1F("csvm_fakeb"  ,"fake b"  ,40,0,200);
+    
+
     //Adding files
     TChain* ch = new TChain( SelMgr().GetSingleData<string>( "tree" ).c_str() );
     for(auto& i : sourcelst){
@@ -127,7 +137,7 @@ extern void MakeFullCut(){
                     double chi_t  = (t_mass-172.5)/16.3;
                     double chi_w  = (w_mass-82.9 )/9.5;
 
-                    if( (chi_t*chi_t + chi_w*chi_w) < chi2mass ){
+                    if( (chi_t*chi_t + chi_w*chi_w) < chi2mass && (chi_t*chi_t + chi_w*chi_w) < 40 ){
 
                         chi2mass = (chi_t*chi_t + chi_w*chi_w);
                         seltmass = t_mass;
@@ -145,17 +155,25 @@ extern void MakeFullCut(){
         int lep_b = had_b ? 0 : 1;
         int flag = bbarSeparation(bjetidx[had_b],bjetidx[lep_b],muidx[0]);       
 
-        if(flag == Correct)
+        if(flag == Correct){
             case1->Fill(seltmass);
-        
-        else if(flag == Fakeb)
-            case2->Fill(seltmass);
+            chi2_correct->Fill(chi2mass);
+            //csvm_correct->Fill( SelMgr().getCSV() ) ;
+        }
 
+        else if(flag == Fakeb){
+            case2->Fill(seltmass);
+            chi2_fakeb->Fill(chi2mass);
+            //csvm_fakeb->Fill( SelMgr().getCSV() );
+        }
         else if(flag == Mistag)
             case3->Fill(seltmass);
-        
-        else if(flag == Swap)
+
+        else if(flag == Swap){
             case4->Fill(seltmass);
+            chi2_swap->Fill(chi2mass);
+            //csvm_swap->Fill( SelMgr().getCSV() );
+        }
 
         else if(flag == Other)
             case5->Fill(seltmass);
@@ -218,7 +236,7 @@ extern void MakeFullCut(){
     leg->AddEntry("case6","Gen level not matched","f");
     leg->Draw();
     
-    c->SaveAs("tmass.pdf");
+    c->SaveAs("tmass_chi40.pdf");
    
     cout<<endl<<endl;
 
@@ -243,4 +261,85 @@ extern void MakeFullCut(){
     delete case5;
     delete case6;
     delete hs;
+
+    
+    chi2_correct->SetLineColor(kGreen-6);
+    chi2_fakeb  ->SetLineColor(kAzure-3);
+    chi2_swap   ->SetLineColor(kRed-7);
+
+    chi2_correct->SetLineWidth(2);
+    chi2_fakeb  ->SetLineWidth(2);
+    chi2_swap   ->SetLineWidth(2);
+    
+    setHist(chi2_correct, "#chi^{2}_{min}", "Event");
+
+    c = mgr::NewCanvas();
+    c->SetLogy( kTRUE );
+    chi2_correct->Draw();
+    chi2_fakeb  ->Draw("same");
+    chi2_swap   ->Draw("same");
+    
+    mgr::SetSinglePad(c);
+    mgr::SetAxis(chi2_correct);
+    chi2_correct->SetMaximum( mgr::GetYmax( chi2_correct ) * 1.6 );
+    chi2_correct->SetMinimum( 0.1 );
+    mgr::DrawCMSLabelOuter(PRELIMINARY);
+
+    leg = mgr::NewLegend(0.65,0.65,0.75,0.8);
+    leg->SetLineColor(kWhite);
+    leg->AddEntry("chi2_correct","Correct","l");
+    leg->AddEntry("chi2_fakeb"  ,"Fake b","l");
+    leg->AddEntry("chi2_swap"   ,"Charge swapped","l");
+    leg->Draw();
+    
+    c->SaveAs("chi2_dist_chi40.pdf");
+
+    delete c;
+    delete leg;
+    delete chi2_correct;
+    delete chi2_fakeb;
+    delete chi2_swap;
+    
+/*    csvm_correct->SetLineColor(kGreen-6);*/
+    //csvm_fakeb  ->SetLineColor(kAzure-3);
+    //csvm_swap   ->SetLineColor(kRed-7);
+
+    //csvm_correct->SetLineWidth(2);
+    //csvm_fakeb  ->SetLineWidth(2);
+    //csvm_swap   ->SetLineWidth(2);
+    
+    //setHist(csvm_correct, "CSV", "Event");
+
+    //c = mgr::NewCanvas();
+    //c->SetLogy( kTRUE );
+    //csvm_correct->Draw();
+    //csvm_fakeb  ->Draw("same");
+    //csvm_swap   ->Draw("same");
+    
+    //mgr::SetSinglePad(c);
+    //mgr::SetAxis(csvm_correct);
+    //csvm_correct->SetMaximum( mgr::GetYmax( csvm_correct ) * 1.6 );
+    //csvm_correct->SetMinimum( 0.1 );
+    //mgr::DrawCMSLabelOuter(PRELIMINARY);
+
+    //pt = mgr::NewTextBox(140,mgr::GetYmax( csvm_correct ) * 1.4, 190, mgr::GetYmax( csvm_correct ) * 1.55);
+    //pt->AddText("Muon Channel");
+    //pt->Draw();
+
+    //leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
+    //leg->SetLineColor(kWhite);
+    //leg->AddEntry("csvm_correct","Correct","l");
+    //leg->AddEntry("csvm_fakeb"  ,"Fake b","l");
+    //leg->AddEntry("csvm_swap"   ,"Charge swapped","l");
+    //leg->Draw();
+    
+    //c->SaveAs("csv_dist.pdf");
+
+    //delete c;
+    //delete pt;
+    //delete leg;
+    //delete chi2_correct;
+    //delete chi2_fakeb;
+    /*delete chi2_swap;*/
+    
 }
