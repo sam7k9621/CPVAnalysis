@@ -8,11 +8,11 @@ using namespace sel;
  * Jet selection
 *******************************************************************************/
 
-bool SelectionMgr::passJetPt(double pt ){
+bool SelectionMgr::passJetPt(const double& pt ){
      return (jet.Pt[_idx] > 30);
 }
 
-bool SelectionMgr::passJetEta(double eta){
+bool SelectionMgr::passJetEta(const double& eta){
     return ( fabs(jet.Eta[_idx]) < 2.4 );
 }
 
@@ -41,7 +41,7 @@ bool SelectionMgr::JetCEF(){
 }
 
 //b-tagging 
-bool SelectionMgr::JetCSVM(){
-    return ( jet.pfCombinedInclusiveSecondaryVertexV2BJetTags[_idx] > 0.8484 );
+bool SelectionMgr::JetCSVM(const double& csv){
+    return ( jet.pfCombinedInclusiveSecondaryVertexV2BJetTags[_idx] > csv );
 }
 

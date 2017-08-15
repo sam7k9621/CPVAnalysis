@@ -85,9 +85,6 @@ extern void MakeFullCut(){
     TH1F* chi2_swap    = new TH1F("chi2_swap"   ,"swapped" ,40,0,200);
     TH1F* chi2_fakeb   = new TH1F("chi2_fakeb"  ,"fake b"  ,40,0,200);
 
-    //TH1F* csvm_correct = new TH1F("csvm_correct","correct" ,40,0,200);
-    //TH1F* csvm_swap    = new TH1F("csvm_swap"   ,"swapped" ,40,0,200);
-    //TH1F* csvm_fakeb   = new TH1F("csvm_fakeb"  ,"fake b"  ,40,0,200);
     
 
     //Adding files
@@ -101,9 +98,7 @@ extern void MakeFullCut(){
     int events = SelMgr().CheckOption("test") ? 10000 : ch->GetEntries();
     for(int i=0;i<events;i++){
         ch->GetEntry(i);
-        
-        if(SelMgr().CheckOption("count"))
-            process(events,i);
+        process(events,i);
 
         if(!fillBhandle())
             continue;
@@ -299,47 +294,5 @@ extern void MakeFullCut(){
     delete chi2_correct;
     delete chi2_fakeb;
     delete chi2_swap;
-    
-/*    csvm_correct->SetLineColor(kGreen-6);*/
-    //csvm_fakeb  ->SetLineColor(kAzure-3);
-    //csvm_swap   ->SetLineColor(kRed-7);
-
-    //csvm_correct->SetLineWidth(2);
-    //csvm_fakeb  ->SetLineWidth(2);
-    //csvm_swap   ->SetLineWidth(2);
-    
-    //setHist(csvm_correct, "CSV", "Event");
-
-    //c = mgr::NewCanvas();
-    //c->SetLogy( kTRUE );
-    //csvm_correct->Draw();
-    //csvm_fakeb  ->Draw("same");
-    //csvm_swap   ->Draw("same");
-    
-    //mgr::SetSinglePad(c);
-    //mgr::SetAxis(csvm_correct);
-    //csvm_correct->SetMaximum( mgr::GetYmax( csvm_correct ) * 1.6 );
-    //csvm_correct->SetMinimum( 0.1 );
-    //mgr::DrawCMSLabelOuter(PRELIMINARY);
-
-    //pt = mgr::NewTextBox(140,mgr::GetYmax( csvm_correct ) * 1.4, 190, mgr::GetYmax( csvm_correct ) * 1.55);
-    //pt->AddText("Muon Channel");
-    //pt->Draw();
-
-    //leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-    //leg->SetLineColor(kWhite);
-    //leg->AddEntry("csvm_correct","Correct","l");
-    //leg->AddEntry("csvm_fakeb"  ,"Fake b","l");
-    //leg->AddEntry("csvm_swap"   ,"Charge swapped","l");
-    //leg->Draw();
-    
-    //c->SaveAs("csv_dist.pdf");
-
-    //delete c;
-    //delete pt;
-    //delete leg;
-    //delete chi2_correct;
-    //delete chi2_fakeb;
-    /*delete chi2_swap;*/
     
 }

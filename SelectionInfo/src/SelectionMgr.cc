@@ -23,7 +23,7 @@ SelectionMgr::~SelectionMgr(){
 
 }
 
-void SelectionMgr::SetIndex(int i){
+void SelectionMgr::SetIndex(const int& i){
     _idx = i;
 }
 

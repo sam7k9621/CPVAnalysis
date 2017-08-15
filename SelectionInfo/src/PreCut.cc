@@ -39,9 +39,7 @@ extern void MakePreCut(){
     int events = SelMgr().CheckOption("test") ? 10000 : ch->GetEntries();
     for(int i=0;i<events;i++){
         ch->GetEntry(i);
-
-        if(SelMgr().CheckOption("count"))
-            process(events,i);
+        process(events,i);
 
         //Lumimask
         if(is_data){

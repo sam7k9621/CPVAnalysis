@@ -12,9 +12,11 @@ extern SelectionMgr& SelMgr(const string& subdir){
 }
 
 extern void process(int total, int progress){
-    
-    printf("[%d|%d]\r",total,progress);
-    fflush(stdout);
+   
+    if( SelMgr().CheckOption("count") ){
+        printf("[%d|%d]\r",total,progress);
+        fflush(stdout);
+    }
 }
 
 /*******************************************************************************
@@ -79,7 +81,7 @@ extern bool passJet(){
 extern bool passBJet(){
 
     return(
-            SelMgr().JetCSVM()
+            SelMgr().JetCSVM(0.8484)
           );
 }
 

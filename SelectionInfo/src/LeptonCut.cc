@@ -15,15 +15,15 @@ using namespace sel;
 
  http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_8_0_11/doc/html/de/d37/DataFormats_2MuonReco_2interface_2Muon_8h_source.html
 *******************************************************************************/
-bool SelectionMgr::passMuPt(double pt){
+bool SelectionMgr::passMuPt(const double& pt){
     return (lep.Pt[_idx] > pt);
 }
 
-bool SelectionMgr::passMuEta(double eta){
+bool SelectionMgr::passMuEta(const double& eta){
     return (fabs(lep.Eta[_idx]) < eta);
 }
 
-bool SelectionMgr::passMuRelIsoR04(double rel){
+bool SelectionMgr::passMuRelIsoR04(const double& rel){
     return (RelIsoR04() < rel);
 }
 
@@ -77,11 +77,11 @@ bool SelectionMgr::isTrackerMuon(){
  https://github.com/ntuhep/bprimeKit/blob/master/src/LeptonNtuplizer_Electron.cc#L101
 *******************************************************************************/
 
-bool SelectionMgr::passElPt(double pt){
+bool SelectionMgr::passElPt(const double& pt){
     return (lep.Pt[_idx] > pt);
 }
 
-bool SelectionMgr::passElEta(double eta){
+bool SelectionMgr::passElEta(const double& eta){
     if( fabs(lep.Eta[_idx])<1.566 && fabs(lep.Eta[_idx])>1.4442 )
         return false;
 

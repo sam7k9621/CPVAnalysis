@@ -21,7 +21,7 @@ namespace sel{
 *******************************************************************************/
             SelectionMgr(const std::string&);
             ~SelectionMgr();
-            void SetIndex(int);
+            void SetIndex(const int&);
             void SetRoot(TChain*);
             std::string GetFileName(const string&, const string&);
 /*******************************************************************************
@@ -82,9 +82,9 @@ namespace sel{
 *   Muon selection
 *******************************************************************************/
     
-            bool passMuPt(double);
-            bool passMuEta(double);
-            bool passMuRelIsoR04(double);
+            bool passMuPt(const double&);
+            bool passMuEta(const double&);
+            bool passMuRelIsoR04(const double&);
             bool MuInnerTrackDxy_PV();
             bool MuInnerTrackDz();
             bool MuNMuonhits();
@@ -99,8 +99,8 @@ namespace sel{
 * Electron selection
 *******************************************************************************/
 
-            bool passElPt(double);
-            bool passElEta(double);
+            bool passElPt(const double&);
+            bool passElEta(const double&);
             bool passElIDLoose();
             bool passElIDTight();
 
@@ -108,8 +108,8 @@ namespace sel{
 * Jet selection
 *******************************************************************************/
 
-            bool passJetPt(double);
-            bool passJetEta(double);
+            bool passJetPt(const double&);
+            bool passJetEta(const double&);
             bool JetNConstituents();
             bool JetNEF();
             bool JetNHF();
@@ -118,7 +118,7 @@ namespace sel{
             bool JetCEF();
 
             //b-tagging
-            bool JetCSVM();
+            bool JetCSVM(const double&);
 
         private:
             int _idx;
