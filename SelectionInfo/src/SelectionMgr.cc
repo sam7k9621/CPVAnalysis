@@ -35,16 +35,6 @@ void SelectionMgr::SetRoot(TChain* ch){
     gen.Register(ch);
 }
 
-string SelectionMgr::GetFileName(const string& prefix, const string& type){
-    string ans = ""; 
-    for( auto& name : GetNamelist() ){
-        ans += ( "_" + OptName(name) );
-    }
-    if(prefix == ""){
-        ans.erase(ans.begin());
-    }
-    return ResultsDir() / ( prefix+ans+"."+type );
-}
 
 /*******************************************************************************
 *   Common calculation
@@ -170,7 +160,7 @@ TLorentzVector SelectionMgr::getMET(const TLorentzVector lep){
     return tl;
 }
 
-double SelectionMgr:: Phi_mpi_pi(double x){
+double SelectionMgr::Phi_mpi_pi(double x){
     
     Double_t const  kPI        = TMath::Pi();
     Double_t const  kTWOPI     = 2.*kPI;
@@ -181,6 +171,15 @@ double SelectionMgr:: Phi_mpi_pi(double x){
     return x;
 }
 
+double SelectionMgr::getLepPt(const int& idx){
+
+    return lep.Pt[idx];
+}
+
+double SelectionMgr::getJetPt(const int& idx){
+    
+    return jet.Pt[idx];
+}
 
 /*******************************************************************************
 *   MC Truth
@@ -190,8 +189,10 @@ int SelectionMgr::matchBhandle(const int& idx, const int& charge){
     // flag info : interface/SelectionInfo.h 
 
     // fake b 
-    if ( !(fabs( gen.PdgID[idx] ) == 5) )
+    if ( !(fabs( gen.PdgID[idx] ) == 5) ){
+    
         return 1 << 1;       
+    }
 
     for( const auto& i : bhandle){
         
@@ -226,15 +227,19 @@ int SelectionMgr::bbarDeltaR(const int& bidx, const int& charge){
 
     for(int i=0;i<gsize();i++){
         
-        double deta = (double) (jet.Eta[bidx] - gen.Eta[i]);
-        double dphi = Phi_mpi_pi( (double) (jet.Phi[bidx] - gen.Phi[i] ) );
+        double deta   = jet.GenEta[bidx] - gen.Eta[i];
+        double dphi   = Phi_mpi_pi( jet.GenPhi[bidx] - gen.Phi[i] );
         double deltaR = TMath::Sqrt( deta*deta + dphi*dphi );
        
-        //Choosing the smallest deltaR
+        //Choosing the smallest deltaR #original 0.4
         if( deltaR < 0.4 && deltaR < dR ){
             dR  = deltaR;
             idx = i;
         }
+       /* if( deltaR < 0.1){*/
+            //idx = i;
+            //return matchBhandle(idx,charge);
+        /*}*/
     }
 
     if(idx<0)
@@ -393,7 +398,6 @@ bool SelectionMgr::checkPartonTopo(){
     }
 
     return bhandle.size() == 2;
-
 }
 
 

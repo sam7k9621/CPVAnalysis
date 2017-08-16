@@ -87,6 +87,18 @@ extern bool passBJet(){
 
 /* Muon */
 
+extern bool preMuon(){
+
+   for(int i=0;i<SelMgr().lsize();i++){
+       SelMgr().SetIndex(i);
+
+       if( passMuTight() )
+           return true; 
+   }
+
+   return false;
+}
+
 extern bool passMuLoose(){
 
     return(

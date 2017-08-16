@@ -15,11 +15,6 @@ extern bool fillBhandle(){
     return SelMgr().checkPartonTopo();
 }
 
-extern bool isIsolated(const int& muidx, const int& jetidx){
-
-    return SelMgr().isIsoLepton(muidx,jetidx);
-}
-
 extern void setHist(TH1* hist, const string& xtitle, const string& ytitle){
 
     hist->SetStats(false);
@@ -34,7 +29,7 @@ extern int bbarSeparation(const int& had_b, const int& lep_b, const int& muidx){
     
     // hadronic b charge equals to muon
     int flag1 = SelMgr().bbarDeltaR(had_b,charge);
-
+    
     // leptonic b charge is opposite to muon
     int flag2 = SelMgr().bbarDeltaR(lep_b,charge*(-1));
   
@@ -107,18 +102,26 @@ extern void MakeFullCut(){
         vector<int>    jetidx;     //store every jets
         vector<int>    bjetidx;    //store two bjets
 
+        /*******************************************************************************
+        *  Baseline selection
+        *******************************************************************************/
+
         if( !passFullMuon(muidx) )
             continue;
 
         if( !passFullJet(jetidx,bjetidx,muidx[0]) )
             continue;
 
+        /*******************************************************************************
+        *  High-level cut
+        *******************************************************************************/
+         
         //Get TLorentzVector from index
         TLorentzVector         muonhandle = SelMgr().getLorentzLep(muidx[0]);
         vector<TLorentzVector> jethandle  = SelMgr().getLorentzJet(jetidx);
         vector<TLorentzVector> bjethandle = SelMgr().getLorentzJet(bjetidx);
         
-        //Mass constrain method   (bbar separtion)
+        //Mass constrain method - find hadronic b 
         double chi2mass = 999;
         double seltmass = 0;
         int had_b = -1;
@@ -132,34 +135,32 @@ extern void MakeFullCut(){
                     double chi_t  = (t_mass-172.5)/16.3;
                     double chi_w  = (w_mass-82.9 )/9.5;
 
-                    if( (chi_t*chi_t + chi_w*chi_w) < chi2mass && (chi_t*chi_t + chi_w*chi_w) < 40 ){
+                    if( (chi_t*chi_t + chi_w*chi_w) < chi2mass ){
 
                         chi2mass = (chi_t*chi_t + chi_w*chi_w);
                         seltmass = t_mass;
-                        had_b     = k;
+                        had_b    = k;
                     }
                 }
             }
         }
 
-        if(chi2mass == 999)
+        if( !passChi2Upper(chi2mass) )
             continue;
 
         tmass->Fill(seltmass);
-       
+
         int lep_b = had_b ? 0 : 1;
-        int flag = bbarSeparation(bjetidx[had_b],bjetidx[lep_b],muidx[0]);       
+        int flag  = bbarSeparation(bjetidx[had_b],bjetidx[lep_b],muidx[0]);       
 
         if(flag == Correct){
             case1->Fill(seltmass);
             chi2_correct->Fill(chi2mass);
-            //csvm_correct->Fill( SelMgr().getCSV() ) ;
         }
 
         else if(flag == Fakeb){
             case2->Fill(seltmass);
             chi2_fakeb->Fill(chi2mass);
-            //csvm_fakeb->Fill( SelMgr().getCSV() );
         }
         else if(flag == Mistag)
             case3->Fill(seltmass);
@@ -167,7 +168,6 @@ extern void MakeFullCut(){
         else if(flag == Swap){
             case4->Fill(seltmass);
             chi2_swap->Fill(chi2mass);
-            //csvm_swap->Fill( SelMgr().getCSV() );
         }
 
         else if(flag == Other)
@@ -230,8 +230,8 @@ extern void MakeFullCut(){
     leg->AddEntry("case5","Other","f");
     leg->AddEntry("case6","Gen level not matched","f");
     leg->Draw();
-    
-    c->SaveAs("tmass_chi40.pdf");
+   
+    mgr::SaveToPDF( c, GetResultsName("pdf","tmass") );
    
     cout<<endl<<endl;
 
@@ -287,12 +287,11 @@ extern void MakeFullCut(){
     leg->AddEntry("chi2_swap"   ,"Charge swapped","l");
     leg->Draw();
     
-    c->SaveAs("chi2_dist_chi40.pdf");
+    mgr::SaveToPDF( c, GetResultsName("pdf","chi2_dist") );
 
     delete c;
     delete leg;
     delete chi2_correct;
     delete chi2_fakeb;
     delete chi2_swap;
-    
 }

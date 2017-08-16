@@ -23,7 +23,6 @@ namespace sel{
             ~SelectionMgr();
             void SetIndex(const int&);
             void SetRoot(TChain*);
-            std::string GetFileName(const string&, const string&);
 /*******************************************************************************
 *   Common calculation
 *******************************************************************************/
@@ -43,6 +42,9 @@ namespace sel{
             TLorentzVector getLorentzVector(const std::string&, const int&);
             TLorentzVector getLorentzLep(const int&);
             std::vector<TLorentzVector> getLorentzJet(const std::vector<int>&);
+
+            double getLepPt(const int&);
+            double getJetPt(const int&);
 
 /*******************************************************************************
 *   MC Truth

@@ -6,8 +6,30 @@ using namespace sel;
 /*******************************************************************************
 *   MassReco
 *******************************************************************************/
+/*Common*/
+
+extern string GetResultsName(const string& type, const string& prefix){
+    
+    string ans = SelMgr().OptName(); 
+
+    if(prefix == ""){
+        ans.erase(ans.begin());
+    }
+
+    return ( SelMgr().ResultsDir() / ( prefix+ans+"."+type ) );
+}
+
 
 /* Data */
+
+extern bool passChi2Upper(const double& chi2){
+
+    if( SelMgr().CheckOption("chi2") )
+        return chi2 <= SelMgr().GetOption<double>("chi2");
+
+    else
+        return true;
+}
 
 extern bool passFullMuon(vector<int>& muidx){
     
@@ -37,6 +59,11 @@ extern bool passFullMuon(vector<int>& muidx){
     return muidx.size() > 0;
 }
 
+extern bool isIsolated(const int& muidx, const int& jetidx){
+
+    return SelMgr().isIsoLepton(muidx,jetidx);
+}
+
 extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx, const int& muidx){
 
         for(int j=0;j<SelMgr().jsize();j++){
@@ -60,7 +87,7 @@ extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx, const int& mu
                 jetidx.push_back(j);
             }
 
-            if(mask & 0x08){
+            else if(mask & 0x08){
                 bjetidx.push_back(j);
             }
         }

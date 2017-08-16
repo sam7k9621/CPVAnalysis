@@ -26,6 +26,7 @@ extern bool passJet();
 extern bool passBJet();
 
 /* Muon */
+extern bool preMuon();
 extern bool passMuLoose();
 extern bool passMuTight();
 

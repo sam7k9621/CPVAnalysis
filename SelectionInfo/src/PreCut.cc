@@ -57,15 +57,8 @@ extern void MakePreCut(){
             continue;
 
         //Lepton preselection at least one tight muon
-        bool hasTightMu = false;
-        for(int j=0;j<SelMgr().lsize();j++){
-            SelMgr().SetIndex(j);
-
-            if( passMuTight() )
-                hasTightMu = true;        
-        }
-
-        if(!hasTightMu)
+       
+        if (!preMuon())
             continue;
 
         newtree->Fill();
