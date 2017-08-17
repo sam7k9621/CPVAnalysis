@@ -8,6 +8,7 @@
 
 extern sel::SelectionMgr& SelMgr(const std::string& = "");
 extern void process(int, int);
+extern std::string GetResultsName(const string&, const string& = "");
 
 /*******************************************************************************
 *   SelectionInfo

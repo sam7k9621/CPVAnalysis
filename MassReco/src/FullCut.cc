@@ -3,6 +3,8 @@
 #include "TChain.h"
 #include "TCanvas.h"
 #include "THStack.h"
+#include "TH2.h"
+#include "TStyle.h"
 #include <algorithm>
 
 using namespace std;
@@ -80,6 +82,7 @@ extern void MakeFullCut(){
     TH1F* chi2_swap    = new TH1F("chi2_swap"   ,"swapped" ,40,0,200);
     TH1F* chi2_fakeb   = new TH1F("chi2_fakeb"  ,"fake b"  ,40,0,200);
 
+    TH2F* chi2_mass    = new TH2F("chi2_mass","chi2 to tmass dist.", 50,0,500, 40,0,200);
     
 
     //Adding files
@@ -115,40 +118,17 @@ extern void MakeFullCut(){
         /*******************************************************************************
         *  High-level cut
         *******************************************************************************/
-         
-        //Get TLorentzVector from index
-        TLorentzVector         muonhandle = SelMgr().getLorentzLep(muidx[0]);
-        vector<TLorentzVector> jethandle  = SelMgr().getLorentzJet(jetidx);
-        vector<TLorentzVector> bjethandle = SelMgr().getLorentzJet(bjetidx);
         
-        //Mass constrain method - find hadronic b 
-        double chi2mass = 999;
-        double seltmass = 0;
-        int had_b = -1;
-
-        for(unsigned int i=0;i<jethandle.size();i++){
-            for(unsigned int j=(i+1);j<jethandle.size();j++){
-                for(unsigned int k=0;k<bjethandle.size();k++){
-    
-                    double t_mass = (jethandle[i]+jethandle[j]+bjethandle[k]).M();
-                    double w_mass = (jethandle[i]+jethandle[j]).M();
-                    double chi_t  = (t_mass-172.5)/16.3;
-                    double chi_w  = (w_mass-82.9 )/9.5;
-
-                    if( (chi_t*chi_t + chi_w*chi_w) < chi2mass ){
-
-                        chi2mass = (chi_t*chi_t + chi_w*chi_w);
-                        seltmass = t_mass;
-                        had_b    = k;
-                    }
-                }
-            }
-        }
+        double chi2mass;
+        double seltmass;
+        int    had_b;
+        tie(chi2mass, seltmass, had_b) = getChi2Info(muidx[0], jetidx, bjetidx);
 
         if( !passChi2Upper(chi2mass) )
             continue;
 
         tmass->Fill(seltmass);
+        chi2_mass->Fill(seltmass,chi2mass);
 
         int lep_b = had_b ? 0 : 1;
         int flag  = bbarSeparation(bjetidx[had_b],bjetidx[lep_b],muidx[0]);       
@@ -212,7 +192,7 @@ extern void MakeFullCut(){
     if(is_data)
         mgr::DrawLuminosity(36811);
 
-    TPaveText *pt = mgr::NewTextBox(350,mgr::GetYmax( tmass ) * 1.4,480,mgr::GetYmax( tmass ) * 1.55);
+    TPaveText *pt = mgr::NewTextBox(.73,.81,.93,.87);
     pt->AddText("Muon Channel");
     pt->Draw();
 
@@ -232,6 +212,7 @@ extern void MakeFullCut(){
     leg->Draw();
    
     mgr::SaveToPDF( c, GetResultsName("pdf","tmass") );
+    mgr::SaveToPDF( c, GetResultsName("png","tmass") );  //for hackMD
    
     cout<<endl<<endl;
 
@@ -257,7 +238,6 @@ extern void MakeFullCut(){
     delete case6;
     delete hs;
 
-    
     chi2_correct->SetLineColor(kGreen-6);
     chi2_fakeb  ->SetLineColor(kAzure-3);
     chi2_swap   ->SetLineColor(kRed-7);
@@ -266,7 +246,11 @@ extern void MakeFullCut(){
     chi2_fakeb  ->SetLineWidth(2);
     chi2_swap   ->SetLineWidth(2);
     
-    setHist(chi2_correct, "#chi^{2}_{min}", "Event");
+    setHist(chi2_correct, "#chi^{2}_{min}", "PDF");
+
+    mgr::SetNormToUnity(chi2_correct);
+    mgr::SetNormToUnity(chi2_fakeb);
+    mgr::SetNormToUnity(chi2_swap);
 
     c = mgr::NewCanvas();
     c->SetLogy( kTRUE );
@@ -276,8 +260,8 @@ extern void MakeFullCut(){
     
     mgr::SetSinglePad(c);
     mgr::SetAxis(chi2_correct);
-    chi2_correct->SetMaximum( mgr::GetYmax( chi2_correct ) * 1.6 );
-    chi2_correct->SetMinimum( 0.1 );
+    chi2_correct->SetMaximum( 1 );
+    chi2_correct->SetMinimum( 0.0007 );
     mgr::DrawCMSLabelOuter(PRELIMINARY);
 
     leg = mgr::NewLegend(0.65,0.65,0.75,0.8);
@@ -288,10 +272,25 @@ extern void MakeFullCut(){
     leg->Draw();
     
     mgr::SaveToPDF( c, GetResultsName("pdf","chi2_dist") );
+    mgr::SaveToPDF( c, GetResultsName("png","chi2_dist") ); //for hackMD
 
     delete c;
     delete leg;
     delete chi2_correct;
     delete chi2_fakeb;
     delete chi2_swap;
+
+    setHist(chi2_mass, "M_{jjb}", "#chi^{2}_{min}");
+    c =  mgr::NewCanvas();
+    gStyle->SetPalette(kBird);
+    chi2_mass->Draw("COLZ");
+
+    mgr::SetSinglePadWithPalette(c);
+    mgr::SetAxis(chi2_mass);
+    mgr::DrawCMSLabelOuter(PRELIMINARY);
+
+    mgr::SaveToPDF( c, GetResultsName("pdf","Chi2TmassDist") );
+
+    delete c;
+    delete chi2_mass;
 }

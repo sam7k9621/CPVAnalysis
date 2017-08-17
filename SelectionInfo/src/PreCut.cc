@@ -14,20 +14,20 @@ using namespace dra;
 extern void MakePreCut(){
 
     //Initializing
-    bool is_data = SelMgr().GetOption<string>("source") == "data" ? 1 : 0 ;
-    string source = is_data? "data" : "mc";
+    string src   = SelMgr().GetOption<string>("source");
+    bool is_data = ( src == "mc" ) ? 0 : 1 ;
 
-    vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(source));
-    vector<int>    hlt       = GetList<int>   ("HLT" , SelMgr().GetSubTree(source));       
+    vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(src));
+    vector<int>    hlt       = GetList<int>   ("HLT" , SelMgr().GetSubTree(src));       
 
     //Adding files
     TChain* ch = new TChain("bprimeKit/root");
-    for(auto& i : sourcelst){
-        ch->Add(i.c_str());
-    }
+    for(const auto& i : sourcelst)
+        ch->Add( i.c_str() );
     SelMgr().SetRoot(ch);
 
-    TFile* newfile = new TFile("muon_precut_MC.root","recreate");
+    mgr::CheckPath( GetResultsName("root", "precut") );
+    TFile* newfile = new TFile( GetResultsName("root", "precut").c_str(), "recreate");
     TTree* newtree = ch->CloneTree(0);
     
     //Running over golden_json 

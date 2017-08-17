@@ -19,6 +19,17 @@ extern void process(int total, int progress){
     }
 }
 
+extern string GetResultsName(const string& type, const string& prefix){
+    
+    string ans = SelMgr().OptName(); 
+
+    if(prefix == ""){
+        ans.erase(ans.begin());
+    }
+
+    return ( SelMgr().ResultsDir() / ( prefix+ans+"."+type ) );
+}
+
 /*******************************************************************************
 *   SelectionInfo
 *******************************************************************************/

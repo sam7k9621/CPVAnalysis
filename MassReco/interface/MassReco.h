@@ -1,6 +1,7 @@
 #include "CPVAnalysis/SelectionInfo/interface/SelectionMgr.h"
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
 #include "TH1.h"
+#include <tuple>
 
 /*******************************************************************************
 *   Global variables
@@ -27,18 +28,19 @@ enum MatchType{
 *   MassReco    
 **********************/
 
-/*Common*/
-extern std::string GetResultsName(const string&, const string& = "");
-
 /* Data */
-extern bool passChi2Upper(const double&);
+extern bool passChi2Upper(const double&, const double& = 0);
 extern bool passFullJet(std::vector<int>&, std::vector<int>&, const int&);
 extern bool passFullMuon(std::vector<int>&);
+extern std::tuple<double,double,int> 
+getChi2Info(const int&, const std::vector<int>&, const std::vector<int>&);
 
 /* MC */
 extern bool passMCJet(std::vector<int>&, std::vector<int>&);
 extern bool passMCMuon(std::vector<int>&);
 
+
+extern void Chi2Dist();
 
 /**********************
 *   FullCut       

@@ -1,4 +1,5 @@
 #include "CPVAnalysis/MassReco/interface/MassReco.h"
+#include <climits>
 
 using namespace std;
 using namespace sel;
@@ -6,27 +7,16 @@ using namespace sel;
 /*******************************************************************************
 *   MassReco
 *******************************************************************************/
-/*Common*/
-
-extern string GetResultsName(const string& type, const string& prefix){
-    
-    string ans = SelMgr().OptName(); 
-
-    if(prefix == ""){
-        ans.erase(ans.begin());
-    }
-
-    return ( SelMgr().ResultsDir() / ( prefix+ans+"."+type ) );
-}
-
-
 /* Data */
 
-extern bool passChi2Upper(const double& chi2){
+extern bool passChi2Upper(const double& chi2, const double& upper){
 
     if( SelMgr().CheckOption("chi2") )
         return chi2 <= SelMgr().GetOption<double>("chi2");
 
+    else if(upper != 0)
+        return chi2 <= upper;
+   
     else
         return true;
 }
@@ -93,6 +83,41 @@ extern bool passFullJet(vector<int>& jetidx, vector<int>& bjetidx, const int& mu
         }
 
         return ( jetidx.size() >= 2 && bjetidx.size() == 2 );
+}
+
+extern tuple<double,double,int> 
+getChi2Info(const int& muidx, const vector<int>& jetidx, const vector<int>& bjetidx){
+
+        //Get TLorentzVector from index
+        TLorentzVector         muonhandle = SelMgr().getLorentzLep(muidx);
+        vector<TLorentzVector> jethandle  = SelMgr().getLorentzJet(jetidx);
+        vector<TLorentzVector> bjethandle = SelMgr().getLorentzJet(bjetidx);
+        
+        //Mass constrain method - find hadronic b 
+        double chi2mass = INT_MAX;
+        double seltmass = 0;
+        int had_b = -1;
+
+        for(unsigned int i=0;i<jethandle.size();i++){
+            for(unsigned int j=(i+1);j<jethandle.size();j++){
+                for(unsigned int k=0;k<bjethandle.size();k++){
+    
+                    double t_mass = (jethandle[i]+jethandle[j]+bjethandle[k]).M();
+                    double w_mass = (jethandle[i]+jethandle[j]).M();
+                    double chi_t  = (t_mass-172.5)/16.3;
+                    double chi_w  = (w_mass-82.9 )/9.5;
+
+                    if( (chi_t*chi_t + chi_w*chi_w) < chi2mass ){
+
+                        chi2mass = (chi_t*chi_t + chi_w*chi_w);
+                        seltmass = t_mass;
+                        had_b    = k;
+                    }
+                }
+            }
+        }
+
+        return make_tuple(chi2mass, seltmass, had_b);
 }
 
 /* MC */

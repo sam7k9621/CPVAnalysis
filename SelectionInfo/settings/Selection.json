@@ -1,13 +1,45 @@
 {
-    "data":{
-        "path":[""],
-        "HLT":[2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    "runB":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*.root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runC":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016C-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runD":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016D-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runE":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016E-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runF":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016F-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runG":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runH":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*root",
+                 "/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
     },
 
     "mc":{
-        "path":["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root"],
-        "HLT":[4809,4815] //HLT_Iso(Tk)Mu24_v4
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root"],
+        "HLT"  : [4809,4815] //HLT_Iso(Tk)Mu24_v4
     },
+
 
     "lumimask":"/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/test/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
 }
