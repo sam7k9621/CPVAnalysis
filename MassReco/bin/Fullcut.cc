@@ -19,9 +19,10 @@ int main(int argc, char* argv[]){
     if( run == dra::Parsermgr::FAIL_PARSER ){ return 1; }
 
     SelMgr().SetFileName( {"lepton","source"} );
-    SelMgr().AddCutName( {"chi2","deltaR"} );
+    SelMgr().AddCutName( {"chi2","deltaR","test"} );
 
 
+   
 
     //Chi2Dist();
     MakeFullCut();
