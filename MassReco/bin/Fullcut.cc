@@ -11,6 +11,7 @@ int main(int argc, char* argv[]){
         ( "test,t"  , "run testing events number")
         ( "chi2,u"   , opt::value<double>(),"chi2 upper cut")
         ( "deltaR,r", opt::value<double>(),"deltaR matching upper cut")
+        ( "vertex,v", opt::value<double>(),"vertex per events")
     ;
 
     SelMgr("MassReco").AddOptions( de );
@@ -19,7 +20,7 @@ int main(int argc, char* argv[]){
     if( run == dra::Parsermgr::FAIL_PARSER ){ return 1; }
 
     SelMgr().SetFileName( {"lepton","source"} );
-    SelMgr().AddCutName( {"chi2","deltaR","test"} );
+    SelMgr().AddCutName( {"chi2","deltaR","test","vertex"} );
 
 
    

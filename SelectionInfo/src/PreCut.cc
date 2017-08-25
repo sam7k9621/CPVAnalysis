@@ -15,7 +15,7 @@ extern void MakePreCut(){
 
     //Initializing
     string src   = SelMgr().GetOption<string>("source");
-    bool is_data = ( src == "mc" ) ? 0 : 1 ;
+    bool is_data =  strncmp(src.c_str(), "run", 3 ) ? 0 : 1 ;
 
     vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(src));
     vector<int>    hlt       = GetList<int>   ("HLT" , SelMgr().GetSubTree(src));       

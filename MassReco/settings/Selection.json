@@ -16,7 +16,7 @@
 
     "mc":{
         //"path":["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root"],
-        "path":["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/results/precut_mc.root"]
+        "path":["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/SelectionInfo/results/precut_muon_signal_mc.root"]
     }
 }
 

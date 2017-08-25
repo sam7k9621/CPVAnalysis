@@ -11,6 +11,8 @@ using namespace std;
 using namespace sel;
 using namespace dra;
 
+
+
 extern bool fillBhandle(){
     
     SelMgr().cleanHandle();
@@ -76,7 +78,7 @@ extern void MakeFullCut(){
     TH1F* case5 = new TH1F("case5","other"      ,50,0,500);
     TH1F* case6 = new TH1F("case6","not matched",50,0,500);
 
-    THStack* hs  = new THStack("hs","");
+    THStack* hs  = new THStack();
 
     TH1F* chi2_correct = new TH1F("chi2_correct","correct" ,40,0,200);
     TH1F* chi2_swap    = new TH1F("chi2_swap"   ,"swapped" ,40,0,200);
@@ -84,7 +86,6 @@ extern void MakeFullCut(){
 
     TH2F* chi2_mass    = new TH2F("chi2_mass","chi2 to tmass dist.", 50,0,500, 40,0,200);
     
-
     //Adding files
     TChain* ch = new TChain( SelMgr().GetSingleData<string>( "tree" ).c_str() );
     for(auto& i : sourcelst){
@@ -100,6 +101,10 @@ extern void MakeFullCut(){
 
         if(!fillBhandle())
             continue;
+
+        if(!checkPU())
+            continue;
+
 
         vector<int>    muidx;      //store one isolated tight muon
         vector<int>    jetidx;     //store every jets
@@ -142,6 +147,7 @@ extern void MakeFullCut(){
             case2->Fill(seltmass);
             chi2_fakeb->Fill(chi2mass);
         }
+
         else if(flag == Mistag)
             case3->Fill(seltmass);
 
@@ -153,8 +159,9 @@ extern void MakeFullCut(){
         else if(flag == Other)
             case5->Fill(seltmass);
         
-        else if(flag == None)
+        else 
             case6->Fill(seltmass);
+
     }
 
     case1->SetLineColor(kGreen-6);

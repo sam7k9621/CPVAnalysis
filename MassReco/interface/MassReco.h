@@ -30,6 +30,7 @@ enum MatchType{
 
 /* Data */
 extern bool passChi2Upper(const double&, const double& = 0);
+extern bool checkPU();
 extern bool passFullJet(std::vector<int>&, std::vector<int>&, const int&);
 extern bool passFullMuon(std::vector<int>&);
 extern std::tuple<double,double,int> 

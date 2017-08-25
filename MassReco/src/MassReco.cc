@@ -9,6 +9,14 @@ using namespace sel;
 *******************************************************************************/
 /* Data */
 
+extern bool checkPU(){
+
+    if( SelMgr().CheckOption("vertex") )
+        return SelMgr().vsize() > SelMgr().GetOption<double>("vertex");
+    else 
+        return true;
+}
+
 extern bool passChi2Upper(const double& chi2, const double& upper){
 
     if( SelMgr().CheckOption("chi2") )

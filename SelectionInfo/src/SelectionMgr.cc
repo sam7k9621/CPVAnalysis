@@ -190,8 +190,7 @@ int SelectionMgr::matchBhandle(const int& idx, const int& charge){
 
     // fake b 
     if ( !(fabs( gen.PdgID[idx] ) == 5) ){
-    
-        return 1 << 1;       
+        return 1 << 1 ;
     }
 
     for( const auto& i : bhandle){
