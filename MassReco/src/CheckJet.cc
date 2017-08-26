@@ -10,210 +10,197 @@ using namespace std;
 using namespace sel;
 using namespace dra;
 
-extern bool hasCommonT_jet(const int& bjetidx, const int& jetidx){
-   
-   return SelMgr().isCommonMo( bjetidx, SelMgr().getDirectMother(jetidx), 6 );
+extern bool hasCommonT_jet( const int& bjetidx, const int& jetidx ) {
+    return SelMgr().isCommonMo( bjetidx, SelMgr().getDirectMother( jetidx ), 6 );
 }
 
-extern int MCTruthCut(){
+extern int MCTruthCut() {
+    bool is_data = SelMgr().GetOption<string>( "source" ) == "data" ? 1 : 0 ;
+    string source = is_data ? "data" : "mc";
+    vector<string> sourcelst = GetList<string>( "path", SelMgr().GetSubTree( source ) );
+    TChain* ch = new TChain( "root" );
 
-    bool is_data = SelMgr().GetOption<string>("source") == "data" ? 1 : 0 ;
-    string source = is_data? "data" : "mc";
-    vector<string> sourcelst = GetList<string>("path", SelMgr().GetSubTree(source));
-    TChain* ch = new TChain("root");
-    for(auto& i : sourcelst){
-        ch->Add(i.c_str());
+    for( auto& i : sourcelst ) {
+        ch->Add( i.c_str() );
     }
-    SelMgr().SetRoot(ch);
 
-//    TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
-
+    SelMgr().SetRoot( ch );
+    //    TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
     int count = 0;
     int muon_count = 0;
 
-    for(int i=0;i<ch->GetEntries();i++){
-    //for(int i=0;i<10;i++){
-        ch->GetEntry(i);
-        process(ch->GetEntries(),i);
-
-       
+    for( int i = 0; i < ch->GetEntries(); i++ ) {
+        //for(int i=0;i<10;i++){
+        ch->GetEntry( i );
+        process( ch->GetEntries(), i );
         vector<int> muidx;
         vector<int> jetidx;
         vector<int> bjetidx;
-       
-        if( !passMCMuon(muidx) ) 
+
+        if( !passMCMuon( muidx ) ) {
             continue;
-    
+        }
+
         muon_count++;
 
-        if( !passMCJet(jetidx,bjetidx) )
+        if( !passMCJet( jetidx, bjetidx ) ) {
             continue;
+        }
 
         bool passbmu = false;
         bool passb2j = false;
 
-        for(const auto& bidx : bjetidx){
-            for(const auto& midx : muidx){
-                
-                if( hasCommonT_lep(bidx, midx) ){
+        for( const auto& bidx : bjetidx ) {
+            for( const auto& midx : muidx ) {
+                if( hasCommonT_lep( bidx, midx ) ) {
                     passbmu = true;
                     break;
                 }
             }
         }
 
-        if(!passbmu)
+        if( !passbmu ) {
             continue;
+        }
 
         int count_jidx = 0;
-        for(const auto& bidx : bjetidx){
-            for(const auto& jidx : jetidx){
 
-                if(hasCommonT_jet(bidx,jidx)){
+        for( const auto& bidx : bjetidx ) {
+            for( const auto& jidx : jetidx ) {
+                if( hasCommonT_jet( bidx, jidx ) ) {
                     count_jidx++;
                 }
             }
 
-            if(count_jidx >= 2){
+            if( count_jidx >= 2 ) {
                 passb2j = true;
                 break;
             }
         }
 
-        if(!passb2j)
+        if( !passb2j ) {
             continue;
+        }
 
         count++;
-
     }
-  
-    cout<<endl<<muon_count<<endl;
-    cout<<count<<endl;
 
+    cout << endl << muon_count << endl;
+    cout << count << endl;
     return count;
 }
 
-extern void CheckJet(){
+extern void CheckJet() {
+    TH1F* teff = new TH1F( "tmass", "tmass", 50, 0, 0.15 );
 
-    TH1F* teff = new TH1F("tmass","tmass",50,0,0.15);
-
-      
-    for(int i=1;i<=50;i++){
-
-        cout<<endl<<i<< " th"<<endl;
+    for( int i = 1; i <= 50; i++ ) {
+        cout << endl << i << " th" << endl;
         SelMgr().getRvalue();
 
-        if(i==1){
-            teff -> SetBinContent(i,0);
-            SelMgr().RvalueUP(0.003);
+        if( i == 1 ) {
+            teff -> SetBinContent( i, 0 );
+            SelMgr().RvalueUP( 0.003 );
             continue;
         }
 
         int count = MCTruthCut();
-        double eff = (double) count/5000000;
-        cout<<"efficiency "<<eff<<endl;
-        teff -> SetBinContent(i,eff);
-        SelMgr().RvalueUP(0.003);
-        
-        
+        double eff = ( double ) count / 5000000;
+        cout << "efficiency " << eff << endl;
+        teff -> SetBinContent( i, eff );
+        SelMgr().RvalueUP( 0.003 );
     }
 
-    teff->SetStats(false);
-    teff->SetTitle("");
-    teff->GetXaxis()->SetTitle("delR");
-    teff->GetYaxis()->SetTitle("Eff");
-
+    teff->SetStats( false );
+    teff->SetTitle( "" );
+    teff->GetXaxis()->SetTitle( "delR" );
+    teff->GetYaxis()->SetTitle( "Eff" );
     TCanvas* c = mgr::NewCanvas();
     teff->Draw();
-
-    mgr::SetSinglePad(c);
-    mgr::SetAxis(teff);
+    mgr::SetSinglePad( c );
+    mgr::SetAxis( teff );
     teff->SetMaximum( 1.1 );
-    mgr::DrawCMSLabelOuter(PRELIMINARY);
-    
-    TLine* line = new TLine(0,1,0.15,1);
-    line->SetLineColor(kRed);
-    line->SetLineStyle(8);
+    mgr::DrawCMSLabelOuter( PRELIMINARY );
+    TLine* line = new TLine( 0, 1, 0.15, 1 );
+    line->SetLineColor( kRed );
+    line->SetLineStyle( 8 );
     line->Draw();
-    
-    TLegend* leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-    leg->SetLineColor(kWhite);
-    leg->AddEntry("teff","efficiency", "l");
+    TLegend* leg = mgr::NewLegend( 0.65, 0.5, 0.75, 0.7 );
+    leg->SetLineColor( kWhite );
+    leg->AddEntry( "teff", "efficiency", "l" );
     leg->Draw();
-    
-    c->SaveAs("delR_eff.pdf");
-/*
-    tmass->SetStats(false);
-    tmass->SetTitle("");
-    tmass->GetXaxis()->SetTitle("m_{jjb} [GeV]");
-    tmass->GetYaxis()->SetTitle("x10^{3} Events");
+    c->SaveAs( "delR_eff.pdf" );
+    /*
+        tmass->SetStats(false);
+        tmass->SetTitle("");
+        tmass->GetXaxis()->SetTitle("m_{jjb} [GeV]");
+        tmass->GetYaxis()->SetTitle("x10^{3} Events");
 
-    TCanvas* c = mgr::NewCanvas();
-    tmass->Draw();
+        TCanvas* c = mgr::NewCanvas();
+        tmass->Draw();
 
-    mgr::SetSinglePad(c);
-    mgr::SetAxis(tmass);
-    tmass->SetMaximum( mgr::GetYmax( tmass ) * 1.6 );
-    mgr::DrawCMSLabelOuter(PRELIMINARY);
+        mgr::SetSinglePad(c);
+        mgr::SetAxis(tmass);
+        tmass->SetMaximum( mgr::GetYmax( tmass ) * 1.6 );
+        mgr::DrawCMSLabelOuter(PRELIMINARY);
 
-    if(is_data)
-        mgr::DrawLuminosity(36811);
+        if(is_data)
+            mgr::DrawLuminosity(36811);
 
-    TPaveText *pt = mgr::NewTextBox(350,mgr::GetYmax( tmass ) * 1.4,480,mgr::GetYmax( tmass ) * 1.55);
-    pt->AddText("Muon Channel");
-    pt->Draw();
+        TPaveText *pt = mgr::NewTextBox(350,mgr::GetYmax( tmass ) * 1.4,480,mgr::GetYmax( tmass ) * 1.55);
+        pt->AddText("Muon Channel");
+        pt->Draw();
 
-    TLine* line = new TLine(172.5,0,172.5,mgr::GetYmax(tmass)*1.6);
-    line->SetLineColor(kRed);
-    line->SetLineStyle(8);
-    line->Draw();
+        TLine* line = new TLine(172.5,0,172.5,mgr::GetYmax(tmass)*1.6);
+        line->SetLineColor(kRed);
+        line->SetLineStyle(8);
+        line->Draw();
 
-    TLegend* leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-    leg->SetLineColor(kWhite);
-    leg->AddEntry("tmass","t#bar{t}+jets", "l");
-    leg->Draw();
-    
-    c->SaveAs("MCTruth_tmass_passSelection.pdf");
-  
-    cout<<endl<<mgr::GetYmax(tmass)<<endl;
-    cout<<endl<<tmass->Integral()<<endl;
+        TLegend* leg = mgr::NewLegend(0.65,0.5,0.75,0.7);
+        leg->SetLineColor(kWhite);
+        leg->AddEntry("tmass","t#bar{t}+jets", "l");
+        leg->Draw();
 
-    delete pt;
-    delete line;
-    delete leg;
-    delete c;
-    
-    chi2->SetStats(false);
-    chi2->SetTitle("");
-    chi2->GetXaxis()->SetTitle("chi2");
-    chi2->GetYaxis()->SetTitle("x10^{3} Events");
+        c->SaveAs("MCTruth_tmass_passSelection.pdf");
 
-    TCanvas* cc = mgr::NewCanvas();
-    chi2->Draw();
+        cout<<endl<<mgr::GetYmax(tmass)<<endl;
+        cout<<endl<<tmass->Integral()<<endl;
 
-    mgr::SetSinglePad(cc);
-    mgr::SetAxis(chi2);
-    chi2->SetMaximum( mgr::GetYmax( chi2 ) * 1.6 );
-    mgr::DrawCMSLabelOuter(PRELIMINARY);
+        delete pt;
+        delete line;
+        delete leg;
+        delete c;
 
-    if(is_data)
-        mgr::DrawLuminosity(36811);
+        chi2->SetStats(false);
+        chi2->SetTitle("");
+        chi2->GetXaxis()->SetTitle("chi2");
+        chi2->GetYaxis()->SetTitle("x10^{3} Events");
 
-    TPaveText *ppt = mgr::NewTextBox(350,mgr::GetYmax( chi2 ) * 1.4,480,mgr::GetYmax( chi2 ) * 1.55);
-    ppt->AddText("Muon Channel");
-    ppt->Draw();
+        TCanvas* cc = mgr::NewCanvas();
+        chi2->Draw();
 
-    TLegend* lleg = mgr::NewLegend(0.65,0.5,0.75,0.7);
-    lleg->SetLineColor(kWhite);
-    lleg->AddEntry("chi2","chi2", "l");
-    lleg->Draw();
-    
-    cc->SaveAs("MCTruth_chi2_passSelection.pdf");
-   
-    cout<<endl<<mgr::GetYmax(chi2)<<endl;
+        mgr::SetSinglePad(cc);
+        mgr::SetAxis(chi2);
+        chi2->SetMaximum( mgr::GetYmax( chi2 ) * 1.6 );
+        mgr::DrawCMSLabelOuter(PRELIMINARY);
 
-    delete ppt;
-    delete lleg;
-    delete cc;
- */   
+        if(is_data)
+            mgr::DrawLuminosity(36811);
+
+        TPaveText *ppt = mgr::NewTextBox(350,mgr::GetYmax( chi2 ) * 1.4,480,mgr::GetYmax( chi2 ) * 1.55);
+        ppt->AddText("Muon Channel");
+        ppt->Draw();
+
+        TLegend* lleg = mgr::NewLegend(0.65,0.5,0.75,0.7);
+        lleg->SetLineColor(kWhite);
+        lleg->AddEntry("chi2","chi2", "l");
+        lleg->Draw();
+
+        cc->SaveAs("MCTruth_chi2_passSelection.pdf");
+
+        cout<<endl<<mgr::GetYmax(chi2)<<endl;
+
+        delete ppt;
+        delete lleg;
+        delete cc;
+     */
 }
