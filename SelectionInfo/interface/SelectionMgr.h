@@ -13,7 +13,7 @@
 
 namespace sel {
 
-    class SelectionMgr : public dra::Pathmgr, public dra::Readmgr, public dra::Parsermgr {
+    class SelectionMgr : public mgr::Pathmgr, public mgr::Readmgr, public mgr::Parsermgr {
         public :
 
             /*******************************************************************************

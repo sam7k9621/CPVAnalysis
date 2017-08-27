@@ -7,7 +7,7 @@
 
 using namespace std;
 using namespace sel;
-using namespace dra;
+using namespace mgr;
 
 extern void Chi2Dist() {
     bool is_data = SelMgr().GetOption<string>( "source" ) == "data" ? 1 : 0 ;

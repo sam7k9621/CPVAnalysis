@@ -6,7 +6,7 @@
 
 using namespace std;
 using namespace sel;
-using namespace dra;
+using namespace mgr;
 /*******************************************************************************
 *  Class initialization
 *******************************************************************************/

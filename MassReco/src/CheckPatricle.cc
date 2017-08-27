@@ -8,7 +8,7 @@
 
 using namespace std;
 using namespace sel;
-using namespace dra;
+using namespace mgr;
 
 extern bool checkComponent() {
     int countb = 0;

@@ -2,7 +2,7 @@
 
 using namespace std;
 using namespace sel;
-using namespace dra;
+using namespace mgr;
 
 
 int main( int argc, char* argv[] ) {
@@ -15,11 +15,11 @@ int main( int argc, char* argv[] ) {
     SelMgr( "MassReco" ).AddOptions( de );
     const int run = SelMgr().ParseOptions( argc, argv );
 
-    if( run == dra::Parsermgr::HELP_PARSER  ) {
+    if( run == mgr::Parsermgr::HELP_PARSER  ) {
         return 0;
     }
 
-    if( run == dra::Parsermgr::FAIL_PARSER ) {
+    if( run == mgr::Parsermgr::FAIL_PARSER ) {
         return 1;
     }
 
