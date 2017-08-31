@@ -2,19 +2,21 @@
 #define SELECTIONMGR_H
 
 #include "ManagerUtils/ArgHelper/interface/Common.hpp"
-#include "ManagerUtils/ArgHelper/interface/Readmgr.hpp"
-#include "ManagerUtils/ArgHelper/interface/Pathmgr.hpp"
 #include "ManagerUtils/ArgHelper/interface/Parsermgr.hpp"
+#include "ManagerUtils/ArgHelper/interface/Pathmgr.hpp"
+#include "ManagerUtils/ArgHelper/interface/Readmgr.hpp"
 
 #include "CPVAnalysis/SelectionInfo/interface/BranchInfo.h"
 #include "TChain.h"
 #include "TLorentzVector.h"
 #include <vector>
 
-namespace sel {
+namespace sel{
 
-    class SelectionMgr : public mgr::Pathmgr, public mgr::Readmgr, public mgr::Parsermgr {
-        public :
+    class SelectionMgr : public mgr::Pathmgr,
+                         public mgr::Readmgr,
+                         public mgr::Parsermgr {
+        public:
 
             /*******************************************************************************
             *  Class initialization
@@ -26,7 +28,7 @@ namespace sel {
             /*******************************************************************************
             *   Common calculation
             *******************************************************************************/
-            bool   passHLT( std::vector<int> ) ;
+            bool   passHLT( std::vector<int> );
             double RelIsoR04();
             int    vsize();
             int    lsize();
@@ -36,11 +38,11 @@ namespace sel {
             int    runNO();
             int    lumiNO();
 
-            TLorentzVector getMET( const TLorentzVector );
-            double  Phi_mpi_pi( double );
-            bool isIsoLepton( const int&, const int& );
-            TLorentzVector getLorentzVector( const std::string&, const int& );
-            TLorentzVector getLorentzLep( const int& );
+            TLorentzVector              getMET( const TLorentzVector );
+            double                      Phi_mpi_pi( double );
+            bool                        isIsoLepton( const int&, const int& );
+            TLorentzVector              getLorentzVector( const std::string&, const int& );
+            TLorentzVector              getLorentzLep( const int& );
             std::vector<TLorentzVector> getLorentzJet( const std::vector<int>& );
 
             double getLepPt( const int& );
@@ -50,26 +52,26 @@ namespace sel {
             *   MC Truth
             *******************************************************************************/
 
-            void    RvalueUP( const double& );
-            void    getRvalue();
-            int     matchGenlevel( const float&, const float& );
-            int     getGenParticle();
-            int     getGenParton();
-            int     getDirectMother( int );
-            int     getDirectDa1   ( int );
-            int     getDirectDa2   ( int );
-            int     getDirectMotherPdgID( const int& );
-            bool    isXGenParticle( const int&, const int& );
-            bool    isCommonMo( const int&, const int&, const int& );
-            int     getPdgID( const int& );
-            bool    checkPartonTopo();
-            void    cleanHandle();
-            void    showJetInfo( const int& );
-            void    showGenInfo( const int& );
+            void RvalueUP( const double& );
+            void getRvalue();
+            int  matchGenlevel( const float&, const float& );
+            int  getGenParticle();
+            int  getGenParton();
+            int  getDirectMother( int );
+            int  getDirectDa1( int );
+            int  getDirectDa2( int );
+            int  getDirectMotherPdgID( const int& );
+            bool isXGenParticle( const int&, const int& );
+            bool isCommonMo( const int&, const int&, const int& );
+            int  getPdgID( const int& );
+            bool checkPartonTopo();
+            void cleanHandle();
+            void showJetInfo( const int& );
+            void showGenInfo( const int& );
 
-            int     bbarDeltaR( const int&, const int& );
-            int     getMuonCharge( const int& );
-            int     matchBhandle( const int&, const int& );
+            int bbarDeltaR( const int&, const int& );
+            int getMuonCharge( const int& );
+            int matchBhandle( const int&, const int& );
             /*******************************************************************************
             *   Vertex selection
             *******************************************************************************/
@@ -119,20 +121,20 @@ namespace sel {
             bool JetNCH();
             bool JetCEF();
 
-            //b-tagging
+            // b-tagging
             bool JetCSVM( const double& );
 
         private:
+
             int _idx;
             double _rvalue;
             VertexInfo vtx;
             LeptonInfo lep;
-            EvtInfo    evt;
-            JetInfo    jet;
-            GenInfo    gen;
+            EvtInfo evt;
+            JetInfo jet;
+            GenInfo gen;
 
             std::vector<int> bhandle;
     };
 }
 #endif
-

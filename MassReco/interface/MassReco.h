@@ -1,5 +1,5 @@
-#include "CPVAnalysis/SelectionInfo/interface/SelectionMgr.h"
 #include "CPVAnalysis/SelectionInfo/interface/SelectionInfo.h"
+#include "CPVAnalysis/SelectionInfo/interface/SelectionMgr.h"
 #include "TH1.h"
 #include <tuple>
 
@@ -7,7 +7,8 @@
 *   Global variables
 *******************************************************************************/
 
-enum MatchType {
+enum MatchType
+{
 
     Correct = 1 << 0,
     Fakeb   = 1 << 1,
@@ -29,12 +30,11 @@ enum MatchType {
 **********************/
 
 /* Data */
-extern bool passChi2Upper( const double&, const double& = 0 );
-extern bool checkPU();
-extern bool passFullJet( std::vector<int>&, std::vector<int>&, const int& );
-extern bool passFullMuon( std::vector<int>& );
-extern std::tuple<double, double, int>
-getChi2Info( const int&, const std::vector<int>&, const std::vector<int>& );
+extern bool                            passChi2Upper( const double&, const double& = 0 );
+extern bool                            checkPU();
+extern bool                            passFullJet( std::vector<int>&, std::vector<int>&, const int& );
+extern bool                            passFullMuon( std::vector<int>& );
+extern std::tuple<double, double, int> getChi2Info( const int&, const std::vector<int>&, const std::vector<int>& );
 
 /* MC */
 extern bool passMCJet( std::vector<int>&, std::vector<int>& );
@@ -69,11 +69,3 @@ extern int  MCTruthCut();
 
 extern void checkParticle();
 extern bool checkComponent();
-
-
-
-
-
-
-
-

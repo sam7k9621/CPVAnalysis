@@ -1,7 +1,7 @@
 #include "CPVAnalysis/MassReco/interface/MassReco.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
-#include "TChain.h"
 #include "TCanvas.h"
+#include "TChain.h"
 #include "TH1.h"
 #include <algorithm>
 
@@ -10,75 +10,79 @@ using namespace std;
 using namespace sel;
 using namespace mgr;
 
-extern bool hasCommonT_jet( const int& bjetidx, const int& jetidx ) {
+extern bool
+hasCommonT_jet( const int& bjetidx, const int& jetidx )
+{
     return SelMgr().isCommonMo( bjetidx, SelMgr().getDirectMother( jetidx ), 6 );
 }
 
-extern int MCTruthCut() {
-    bool is_data = SelMgr().GetOption<string>( "source" ) == "data" ? 1 : 0 ;
-    string source = is_data ? "data" : "mc";
+extern int
+MCTruthCut()
+{
+    bool is_data             = SelMgr().GetOption<string>( "source" ) == "data" ? 1 : 0;
+    string source            = is_data ? "data" : "mc";
     vector<string> sourcelst = GetList<string>( "path", SelMgr().GetSubTree( source ) );
-    TChain* ch = new TChain( "root" );
+    TChain* ch               = new TChain( "root" );
 
-    for( auto& i : sourcelst ) {
+    for( auto& i : sourcelst ){
         ch->Add( i.c_str() );
     }
 
     SelMgr().SetRoot( ch );
     //    TH1F* tmass = new TH1F("tmass","tmass",50,0,500);
-    int count = 0;
+    int count      = 0;
     int muon_count = 0;
 
-    for( int i = 0; i < ch->GetEntries(); i++ ) {
-        //for(int i=0;i<10;i++){
+    for( int i = 0; i < ch->GetEntries(); i++ ){
+        // for(int i=0;i<10;i++){
         ch->GetEntry( i );
         process( ch->GetEntries(), i );
         vector<int> muidx;
         vector<int> jetidx;
         vector<int> bjetidx;
 
-        if( !passMCMuon( muidx ) ) {
+        if( !passMCMuon( muidx ) ){
             continue;
         }
 
         muon_count++;
 
-        if( !passMCJet( jetidx, bjetidx ) ) {
+        if( !passMCJet( jetidx, bjetidx ) ){
             continue;
         }
 
         bool passbmu = false;
         bool passb2j = false;
 
-        for( const auto& bidx : bjetidx ) {
-            for( const auto& midx : muidx ) {
-                if( hasCommonT_lep( bidx, midx ) ) {
+        for( const auto& bidx : bjetidx ){
+            for( const auto& midx : muidx ){
+                if( hasCommonT_lep( bidx, midx ) ){
                     passbmu = true;
                     break;
                 }
             }
         }
 
-        if( !passbmu ) {
+        if( !passbmu ){
             continue;
         }
 
         int count_jidx = 0;
 
-        for( const auto& bidx : bjetidx ) {
-            for( const auto& jidx : jetidx ) {
-                if( hasCommonT_jet( bidx, jidx ) ) {
+        for( const auto& bidx : bjetidx ){
+            for( const auto& jidx : jetidx ){
+                if( hasCommonT_jet( bidx, jidx ) ){
                     count_jidx++;
                 }
             }
 
-            if( count_jidx >= 2 ) {
+            if( count_jidx >= 2 ){
                 passb2j = true;
                 break;
             }
         }
 
-        if( !passb2j ) {
+        if( !passb2j ){
             continue;
         }
 
@@ -90,23 +94,25 @@ extern int MCTruthCut() {
     return count;
 }
 
-extern void CheckJet() {
+extern void
+CheckJet()
+{
     TH1F* teff = new TH1F( "tmass", "tmass", 50, 0, 0.15 );
 
-    for( int i = 1; i <= 50; i++ ) {
+    for( int i = 1; i <= 50; i++ ){
         cout << endl << i << " th" << endl;
         SelMgr().getRvalue();
 
-        if( i == 1 ) {
-            teff -> SetBinContent( i, 0 );
+        if( i == 1 ){
+            teff->SetBinContent( i, 0 );
             SelMgr().RvalueUP( 0.003 );
             continue;
         }
 
-        int count = MCTruthCut();
-        double eff = ( double ) count / 5000000;
+        int count  = MCTruthCut();
+        double eff = (double)count / 5000000;
         cout << "efficiency " << eff << endl;
-        teff -> SetBinContent( i, eff );
+        teff->SetBinContent( i, eff );
         SelMgr().RvalueUP( 0.003 );
     }
 
