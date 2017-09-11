@@ -1,0 +1,12 @@
+<use name="root" />
+<use name="roofit" />
+<use name="boost" />
+<use name="boost_program_options"/>
+<use name="DataFormats/FWLite"/>
+<use name="ManagerUtils/ArgHelper"/>
+<use name="ManagerUtils/HistMgr"/>
+<use name="ManagerUtils/SampleMgr"/>
+<use name="ManagerUtils/SysUtils"/>
+<use name="ManagerUtils/PlotUtils"/>
+
+<export><lib name="1"/></export>

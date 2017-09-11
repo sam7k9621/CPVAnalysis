@@ -1,0 +1,90 @@
+{
+    "runB":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*.root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runC":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016C-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runD":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016D-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runE":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016E-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runF":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016F-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runG":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*root"],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "runH":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*root",
+                 "/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*root"
+            ],
+        "HLT"  : [2748,2749,4174,4809,2760,2761,3541,4179,4815]  //HLT_Iso(Tk)Mu24_v*
+    },
+
+    "signal_mc":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root"],
+        "HLT"  : [4809,4815] //HLT_Iso(Tk)Mu24_v4
+    },
+
+    "SingleTop":{
+        "path" : [
+                "/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/*root",
+                "/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*root",
+                "/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*root",
+                "/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/*root",
+                "/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/*root"
+            ],
+        "HLT"  : [4809,4815] //HLT_Iso(Tk)Mu24_v4
+    },
+
+    "DYJet":{
+        "path" : [
+                "/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-1200to2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia/*root8"
+                "/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-2500toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-600to800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-800to1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"
+            ],
+        "HLT"  : [4809,4815] //HLT_Iso(Tk)Mu24_v4
+    },
+
+    "VV":{
+        "path" : [
+                "/wk_cms2/yichen/bpk_ntuple/VV/BPK_80X_WW_TuneCUETP8M1_13TeV-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/VV/BPK_80X_WZ_TuneCUETP8M1_13TeV-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/VV/BPK_80X_ZZ_TuneCUETP8M1_13TeV-pythia8/*root"
+            ],
+        "HLT"  : [4809,4815] //HLT_Iso(Tk)Mu24_v4
+    },
+
+    "WJet":{
+        "path" : [
+                "/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-100To250_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-250To400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-400To600_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root",
+                "/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-600ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root"
+            ],
+        "HLT"  : [4809,4815] //HLT_Iso(Tk)Mu24_v4
+    },
+
+
+    "lumimask":"/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/test/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
+}
+

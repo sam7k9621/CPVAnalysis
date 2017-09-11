@@ -1,0 +1,8 @@
+<use name="boost"/>
+<use name="root"/>
+<use name="roofit"/>
+<use name="boost_program_options"/>
+<use name="DataFormats/FWLite"/>
+<use name="CPVAnalysis/BaseLineSelector"/>
+
+<bin name="precut"  file="PreCut.cc"/>

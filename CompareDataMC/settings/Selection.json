@@ -1,0 +1,53 @@
+{
+    //"samplelst" : ["signal_mc","SingleTop","DYJet","VV","WJet"],
+    "samplelst" : ["signal_mc"],
+
+    "runB" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runB.root"]
+    },
+    
+    "runC" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runC.root"]
+    },
+
+    "runD" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runD.root"]
+    },
+
+    "runE" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runE.root"]
+    },
+
+    "runF" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runF.root"]
+    },
+
+    "runG" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runG.root"]
+    },
+
+    "runH" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runH.root"]
+    },
+
+    "signal_mc" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_signal_mc.root"]
+    },
+
+    "SingleTop" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop.root"]
+    },
+
+    "DYJet" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet.root"]
+    },
+
+    "VV" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_VV.root"]
+    },
+
+    "WJet" : {
+        "path" : ["/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_WJet.root"]
+    }
+
+}
