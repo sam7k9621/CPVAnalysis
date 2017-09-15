@@ -4,7 +4,10 @@ import os
 import sys
 import argparse
 
-dataset = ["runB","runC","runD","runE","runF","runG","runH","signal_mc","SingleTop","DYJet","VV","WJet"]
+# dataset = ["runB","runC","runD","runE","runF","runG","runH","TTbar","SingleTop_s-ch","SingleTop_t-ch","SingleTop_t-ch_anti","SingleTop_tW","SingleTop_tW_anti","DYJet_HT-100to200","DYJet_HT-200to400","DYJet_HT-400to600", "DYJet_HT-600to800", "DYJet_HT-800to1200","DYJet_HT-1200to2500","DYJet_HT-2500toInf", "VV_WW","VV_WZ","VV_ZZ","WJet_Pt-100to250","WJet_Pt-250to400", "WJet_Pt-400to600", "WJet_Pt-600toInf"]
+
+dataset = ["DYJet_HT-200to400", "SingleTop_tW", "SingleTop_tW_anti"]
+
 qsub ="""
 #!/usr/bin/env sh
 

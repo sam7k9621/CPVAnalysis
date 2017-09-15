@@ -12,7 +12,7 @@ extern Selector& CompMgr( const std::string& = "" );
 extern void MakeFullCut();
 extern void FullCut();
 extern void AddHist();
-extern void DrawCompare();
+extern void StoreCompare();
 
 /*******************************************************************************
 *  Charege Pairing

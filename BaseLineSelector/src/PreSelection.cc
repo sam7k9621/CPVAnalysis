@@ -34,8 +34,8 @@ MakePreCut()
     PreMgr().AddSample( src, ch );
 
     // Initialize data
-    vector<int> hlt = mgr::GetList<int>( "HLT", PreMgr().GetSubTree( src ) );
     bool is_data    = strncmp( src.c_str(), "run", 3 ) ? 0 : 1;
+    vector<int> hlt = is_data ? PreMgr().GetListData<int>("data_HLT") : PreMgr().GetListData<int>("mc_HLT");
 
     // Make new root file out of old one
     mgr::CheckPath( PreMgr().GetResultsName( "root", "precut" ) );

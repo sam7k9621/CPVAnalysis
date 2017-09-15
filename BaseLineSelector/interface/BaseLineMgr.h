@@ -28,9 +28,9 @@ class BaseLineMgr : public mgr::HistMgr {
         *******************************************************************************/
         std::tuple<double, double, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
         bool                            isGoodEvt( checkEvtTool& evt ){ return evt.isGoodEvt( _sample->RunNo(), _sample->LumiNo() ); }
-      
+
         bool FillbHandle(){ return _sample->MCTruthBJet(); }
-        int  bbSeparation(const int&, const int&, const int&);
+        int  bbSeparation( const int&, const int&, const int& );
 
         enum MatchType
         {
@@ -40,7 +40,7 @@ class BaseLineMgr : public mgr::HistMgr {
             Swap    = 1 << 3,
             Other   = 1 << 4,
             None    = 1 << 5,
-        
+
             // 1  Correct: correct
             // 2  Fakeb  : not b
             // 4  Mistag : b not from t

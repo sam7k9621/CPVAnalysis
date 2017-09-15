@@ -46,8 +46,19 @@ Selector::AddSample( const string& sample, TChain* ch )
     _samplelst.emplace_back( new BaseLineMgr( sample, ch ) );
 }
 
+vector<TH1*>
+Selector::GetHistlst(const std::string& name)
+{
+    vector<TH1*> lst;
+    for( auto s : _samplelst){
+        lst.push_back( s->Hist(name) );
+    }
+
+    return lst;
+}
+
 string
-Selector::Discript(TH1* h)
+Selector::Discript( TH1* h )
 {
     string tag = GetSample()->GetTag();
     regex pattern( tag + "_" );

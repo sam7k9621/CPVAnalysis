@@ -6,12 +6,10 @@ main( int argc, char* argv[] )
     opt::options_description de( "Command for SelectionCut" );
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
-        ( "source,s", opt::value<string>()->required(), "Is data or MC" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
         ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
-        ( "deltaR,r", opt::value<double>(), "deltaR matching upper cut" )
-        ( "vertex,v", opt::value<double>(), "vertex per events" )
+        ( "dist,d", "pairing dist")
     ;
     CompMgr( "CompareDataMC" ).AddOptions( de );
     const int run = CompMgr().ParseOptions( argc, argv );
@@ -24,6 +22,7 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    CompMgr().SetFileName( { "lepton", "source" } );
+    CompMgr().SetFileName( { "lepton" } );
+    CompMgr().AddCutName ( { "chi2", "test" } );
     MakeFullCut();
 }

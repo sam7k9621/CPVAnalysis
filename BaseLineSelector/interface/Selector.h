@@ -10,10 +10,11 @@
 
 #include "TH1D.h"
 
+typedef vector<shared_ptr<BaseLineMgr> > Samplelst;
+
 class Selector : public mgr::Pathmgr,
                  public mgr::Readmgr,
                  public mgr::Parsermgr {
-    typedef vector<shared_ptr<BaseLineMgr> > Samplelst;
 
     public:
 
@@ -34,9 +35,9 @@ class Selector : public mgr::Pathmgr,
         std::string  GetResultsName( const std::string&, const std::string& );
         void         AddSample( const string&, TChain* );
         Samplelst    GetSamplelst(){ return _samplelst; }
+        std::vector<TH1*>         GetHistlst(const std::string&);
         BaseLineMgr* GetSample()   { return _samplelst.back().get(); }
-        std::string  Discript(TH1*);
-
+        std::string  Discript( TH1* );
     private:
 
         Samplelst _samplelst;
