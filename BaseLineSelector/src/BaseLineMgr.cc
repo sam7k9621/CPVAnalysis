@@ -1,6 +1,7 @@
 #include "CPVAnalysis/BaseLineSelector/interface/BaseLineMgr.h"
 #include <climits>
 #include <iostream>
+#include <string>
 using namespace std;
 
 /*******************************************************************************
@@ -8,7 +9,8 @@ using namespace std;
 *******************************************************************************/
 BaseLineMgr::BaseLineMgr( const string& sample, TChain* ch ) :
     HistMgr( sample ),
-    _sample( new mgr::SampleMgr( ch ) )
+    _sample( new mgr::SampleMgr( ch ) ),
+    _scale(1)
 {
 }
 
@@ -130,6 +132,22 @@ BaseLineMgr::isGoodPVtx()
 /*******************************************************************************
 *   Jet selection
 *******************************************************************************/
+void 
+BaseLineMgr::jetSmeared( TTree* newtree )
+{
+    int js = _sample->Jsize();
+    
+    for(int i=0; i<js; i++){
+        _sample->SetIndex(i);
+        
+        double scale = _sample->MakeSmeared();
+        TLorentzVector jetp4 = _sample->JetP4(); 
+        jetp4 *= scale;
+        _sample->Jet().Pt[i]  = jetp4.Pt();
+        _sample->Jet().Eta[i] = jetp4.Eta();
+    }
+}
+    
 bool
 BaseLineMgr::passJet()
 {

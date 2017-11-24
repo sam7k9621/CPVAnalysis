@@ -2,122 +2,102 @@
     "DYJet_HT-100to200": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet_HT-100to200.root"
-        ],
-        "cross_section" : 147.4
+        ]
     }, 
     "DYJet_HT-1200to2500": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet_HT-1200to2500.root"
-        ],
-        "cross_section" : 0.116
+        ]
     }, 
     "DYJet_HT-200to400": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet_HT-200to400.root"
-        ],
-        "cross_section" : 40.99
+        ]
     }, 
     "DYJet_HT-2500toInf": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet_HT-2500toInf.root"
-        ],
-        "cross_section" : 0.002592
+        ]
     }, 
     "DYJet_HT-400to600": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet_HT-400to600.root"
-        ],
-        "cross_section" : 5.678
+        ]
     }, 
     "DYJet_HT-600to800": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet_HT-600to800.root"
-        ],
-        "cross_section" : 1.367
+        ]
     }, 
     "DYJet_HT-800to1200": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_DYJet_HT-800to1200.root"
-        ],
-        "cross_section" : 0.6759
+        ]
     }, 
     "SingleTop_s-ch": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_s-ch.root"
-        ],
-        "cross_section" : 3.36
+        ]
     }, 
     "SingleTop_t-ch": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_t-ch.root"
-        ],
-        "cross_section" : 136.02
+        ]
     }, 
     "SingleTop_t-ch_anti": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_t-ch_anti.root"
-        ],
-        "cross_section" : 80.95
+       ] 
     }, 
     "SingleTop_tW": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_tW.root"
-        ],
-        "cross_section" : 35.6
+        ]
     }, 
     "SingleTop_tW_anti": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_tW_anti.root"
-        ],
-        "cross_section" : 35.6
+        ]
     }, 
     "TTbar": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_TTbar.root"
-        ],
-        "cross_section" : 831.76
+        ]
     }, 
     "VV_WW": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_VV_WW.root"
-        ],
-        "cross_section" : 118.7
+        ]
     }, 
     "VV_WZ": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_VV_WZ.root"
-        ],
-        "cross_section" : 47.13
+        ]
     }, 
     "VV_ZZ": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_VV_ZZ.root"
-        ],
-        "cross_section" : 16.52
+        ]
     }, 
     "WJet_Pt-100to250": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_WJet_Pt-100to250.root"
-        ],
-        "cross_section" : 676.3
+        ]
     }, 
     "WJet_Pt-250to400": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_WJet_Pt-250to400.root"
-        ],
-        "cross_section" : 23.94
+        ]
     }, 
     "WJet_Pt-400to600": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_WJet_Pt-400to600.root"
-        ],
-        "cross_section" : 3.031
+        ]
     }, 
     "WJet_Pt-600toInf": {
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_WJet_Pt-600toInf.root"
-        ],
-        "cross_section" : 0.4524
+        ]
     }, 
     "runB": {
         "path": [
@@ -153,34 +133,39 @@
         "path": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runH.root"
         ]
-    }, 
+    },
+
     "samplelst": [
-        "DYJet_HT-100to200", 
-        "DYJet_HT-1200to2500", 
-        "DYJet_HT-200to400", 
-        "DYJet_HT-2500toInf", 
-        "DYJet_HT-400to600", 
-        "DYJet_HT-600to800", 
-        "DYJet_HT-800to1200", 
-        "SingleTop_s-ch", 
-        "SingleTop_t-ch", 
-        "SingleTop_t-ch_anti", 
-        "SingleTop_tW", 
-        "SingleTop_tW_anti", 
-        "TTbar", 
-        "VV_WW", 
-        "VV_WZ", 
-        "VV_ZZ", 
-        "WJet_Pt-100to250", 
-        "WJet_Pt-250to400", 
-        "WJet_Pt-400to600", 
-        "WJet_Pt-600toInf", 
-        "runB", 
-        "runC", 
-        "runD", 
-        "runE", 
-        "runF", 
-        "runG", 
-        "runH"
-    ]
+        "TTbar"
+        ]
+    /*"samplelst": [*/
+        //"DYJet_HT-100to200", 
+        //"DYJet_HT-1200to2500", 
+        //"DYJet_HT-200to400", 
+        //"DYJet_HT-2500toInf", 
+        //"DYJet_HT-400to600", 
+        //"DYJet_HT-600to800", 
+        //"DYJet_HT-800to1200", 
+        //"SingleTop_s-ch", 
+        //"SingleTop_t-ch", 
+        //"SingleTop_t-ch_anti", 
+        //"SingleTop_tW", 
+        //"SingleTop_tW_anti", 
+        //"TTbar", 
+        //"VV_WW", 
+        //"VV_WZ", 
+        //"VV_ZZ", 
+        //"WJet_Pt-100to250", 
+        //"WJet_Pt-250to400", 
+        //"WJet_Pt-400to600", 
+        //"WJet_Pt-600toInf", 
+        //"runB", 
+        //"runC", 
+        //"runD", 
+        //"runE", 
+        //"runF", 
+        //"runG", 
+        //"runH"
+    /*]*/
+
 }

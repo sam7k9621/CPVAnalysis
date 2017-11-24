@@ -13,11 +13,14 @@ CompMgr( const string& subdir )
 extern void
 MakeFullCut()
 {
-    FullCut();
-    cout << ">>Preparing Drawing" << endl;
-    StoreCompare();
-    if(CompMgr().CheckOption("dist"))
-        DrawbbSeparate();
+    /*FullCut();*/
+    //cout << ">>Preparing Drawing" << endl;
+    //StoreCompare();
+    //if( CompMgr().CheckOption( "dist" ) ){
+        //DrawbbSeparate();
+    /*}*/
+   
+    PlotSample();
 }
 
 extern void
@@ -46,9 +49,9 @@ FullCut()
             ch->GetEntry( i );
             CompMgr().process( events, i );
 
-            vector<int> muidx;      // store one isolated tight muon
-            vector<int> jetidx;     // store every jets
-            vector<int> bjetidx;    // store two bjets
+            vector<int> muidx;// store one isolated tight muon
+            vector<int> jetidx;// store every jets
+            vector<int> bjetidx;// store two bjets
 
             /*******************************************************************************
             *  Baseline selection
@@ -81,7 +84,7 @@ FullCut()
             CompMgr().GetSample()->Hist( "tmass" )->Fill( seltmass );
             CompMgr().GetSample()->Hist( "chi2" )->Fill( chi2mass );
 
-            if(CompMgr().CheckOption("dist")){
+            if( CompMgr().CheckOption( "dist" ) ){
                 if( !CompMgr().GetSample()->FillbHandle() ){
                     continue;
                 }
@@ -177,7 +180,6 @@ DrawbbSeparate()
     mgr::SetAxis( total );
     total->SetMaximum( mgr::GetYmax( total ) * 1.6 );
 
-
     mgr::DrawCMSLabel( PRELIMINARY );
     mgr::SaveToPDF( c, CompMgr().GetResultsName( "pdf", "bbSeparation" ) );
     cout << endl << endl;
@@ -199,13 +201,149 @@ DrawbbSeparate()
 extern void
 StoreCompare()
 {
-
     Samplelst smplst = CompMgr().GetSamplelst();
 
     for(auto s : smplst){
-        TCanvas* c  = mgr::NewCanvas();
-        s->Hist("tmass")->Draw();
-        mgr::SaveToROOT( c, CompMgr().GetResultsName( "root", s->GetTag() ), "tmass" );
-        delete c;
+        mgr::SaveToROOT( s->Hist("tmass"), CompMgr().GetResultsName( "root", s->GetTag() ), "tmass" );
     }
 }
+
+extern void
+MergeSample( vector<TH1D*>& histlst, TH1D* hist, const string& source )
+{
+    for( auto h : histlst ){
+        if( IsXsample( source, h->GetName() ) ){
+            h->Add( hist );
+        }
+    }
+}
+
+extern void
+WeightMC( const string& source, TH1D* h )
+{
+    double lumi    = CompMgr().GetSingleData<double>( "lumi" );
+    double xs      = mgr::GetSingle<double>( "cross_section", CompMgr().GetSubTree( source ) );
+    double gen_num = mgr::GetSingle<double>( "gen_num", CompMgr().GetSubTree( source ) );
+
+    h->Sumw2();    //apply before weighting, if you need any calcuation of the weighted histo
+    h->Scale( (lumi * xs) / gen_num );
+}
+
+extern bool
+IsXsample( const string& source, const string& tag )
+{
+    size_t found = source.find( tag );
+
+    if( found != std::string::npos ){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+extern void
+PlotSample()
+{
+    CompMgr().ChangeFile("DataMCSample.json");
+    
+    vector<string> samplelst = CompMgr().GetListData<string>( "samplelst" );
+    vector<TH1D*>  histlst;
+    
+    histlst.push_back( new TH1D( "DYJet", "", 50, 0, 500 ) );
+    histlst.push_back( new TH1D( "SingleTop", "", 50, 0, 500 ) );
+    histlst.push_back( new TH1D( "VV", "", 50, 0, 500 ) );
+    histlst.push_back( new TH1D( "WJet", "", 50, 0, 500 ) );
+    histlst.push_back( new TH1D( "TTbar", "", 50, 0, 500 ) );
+    histlst.push_back( new TH1D( "run", "", 50, 0, 500 ) );
+
+    TH1D* bg = new TH1D( "bg", "", 50, 0, 500 );
+
+    for(const auto s : samplelst){
+        
+        cout<<">>Processing Sample : "<<s<<endl;
+
+        string file = CompMgr().ResultsDir() / s + "_muon.root";
+        
+        TFile* f = TFile::Open( file.c_str() );
+        TH1D*  h = (TH1D*)( f->Get("tmass")->Clone() );
+        h->SetDirectory(0); 
+        //weight mc
+        if( !IsXsample( s, "run" ) ){
+            cout<<">>Weighting sample : "<<s<<endl;
+            WeightMC( s, h );
+        }
+
+        MergeSample( histlst, h, s );
+        
+        cout<<">>Merging Sample : "<<s<<endl;
+        f->Close();
+    }
+
+    TCanvas* c   = mgr::NewCanvas();
+    Color_t x[]  = { kGray + 1, kMagenta + 2, kRed - 7, kOrange + 1, kAzure - 3, kGreen - 6 };
+    THStack* hs  = new THStack();
+    TLegend* leg = mgr::NewLegend( 0.65, 0.45, 0.75, 0.75 );
+    leg->SetLineColor( kWhite );
+    
+    for( int i = 0; i < 5; i++ ){
+        histlst[ i ]->SetLineColor( x[ i ] );
+        histlst[ i ]->SetFillColor( x[ i ] );
+        bg->Add( histlst[ i ] );
+        hs->Add( histlst[ i ] );
+        leg->AddEntry( histlst[ i ], histlst[ i ]->GetName(), "F" );
+    }
+    
+    TPad* top = mgr::NewTopPad();
+    top->Draw();
+    top->cd();
+
+    histlst.back()->Draw("EP");
+    hs->Draw("same histo");
+    histlst.back()->Draw("EP same");
+    leg->Draw();
+    
+    mgr::SetTopPlotAxis( histlst.back() );
+    histlst.back()->SetMaximum( mgr::GetYmax( histlst.back() ) * 1.2 );
+    histlst.back()->SetStats( false );
+    histlst.back()->SetLineColor(1);
+    histlst.back()->SetLineWidth(1);
+    histlst.back()->SetMarkerSize(0.5);
+    histlst.back()->SetMarkerStyle(20);
+    histlst.back()->GetYaxis()->SetTitle("Events");
+    leg->AddEntry(histlst.back(), "Data", "le");
+
+    c->cd();
+
+    TPad* bot = mgr::NewBottomPad();
+    bot->Draw();
+    bot->cd();
+
+    TLine* line     = new TLine( 0, 1, 500, 1 );
+    TH1D* rel = mgr::DivideHist( histlst.back(), bg, 1 );
+
+    rel->Draw("EP");
+    line->Draw("same");
+
+    line->SetLineColor(kRed);
+    rel->SetMaximum( 1.6 );
+    rel->SetMinimum( 0.4 );
+    rel->GetYaxis()->SetTitle("Data/MC");
+    rel->GetXaxis()->SetTitle("M_{jjb} [GeV]");
+    mgr::SetBottomPlotAxis( rel );
+
+    c->cd();
+
+    mgr::DrawCMSLabel( PRELIMINARY );
+    mgr::DrawLuminosity(36773);
+    mgr::SaveToPDF( c, CompMgr().GetResultsName( "pdf", "Stack_mass" ) );
+   
+    //delete hs;
+    delete leg;
+    for(auto h : histlst){
+        delete h;
+    }
+    
+    delete c;
+}
+

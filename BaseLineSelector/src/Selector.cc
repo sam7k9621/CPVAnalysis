@@ -41,6 +41,12 @@ Selector::GetResultsName( const string& type, const string& prefix )
 }
 
 void
+Selector::ChangeFile(const string& file)
+{
+    ChangeJSON( SettingsDir() / file );
+}
+
+void
 Selector::AddSample( const string& sample, TChain* ch )
 {
     _samplelst.emplace_back( new BaseLineMgr( sample, ch ) );

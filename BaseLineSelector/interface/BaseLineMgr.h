@@ -7,6 +7,8 @@
 #include "CPVAnalysis/BaseLineSelector/interface/checkEvtTool.h"
 
 #include "TChain.h"
+#include "TTree.h"
+
 #include <string>
 #include <tuple>
 #include <vector>
@@ -63,6 +65,7 @@ class BaseLineMgr : public mgr::HistMgr {
         /*******************************************************************************
         *   Jet selection
         *******************************************************************************/
+        void jetSmeared( TTree* );
         bool passJet();
         bool passBJet();
         bool passFullJet( std::vector<int>&, std::vector<int>&, int& );
@@ -88,6 +91,7 @@ class BaseLineMgr : public mgr::HistMgr {
     private:
 
         std::unique_ptr<mgr::SampleMgr> _sample;
+        double _scale;
 };
 
 

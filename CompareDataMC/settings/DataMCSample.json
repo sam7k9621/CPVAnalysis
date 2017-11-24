@@ -1,0 +1,117 @@
+{
+    "DYJet_HT-100to200": {
+        "cross_section" : 147.4,
+        "gen_num"       : 2751187
+    }, 
+    "DYJet_HT-1200to2500": {
+        "cross_section" : 0.116,
+        "gen_num"       : 596079
+    }, 
+    "DYJet_HT-200to400": {
+        "cross_section" : 40.99,
+        "gen_num"       : 962195
+    }, 
+    "DYJet_HT-2500toInf": {
+        "cross_section" : 0.002592,
+        "gen_num"       : 399492
+    }, 
+    "DYJet_HT-400to600": {
+        "cross_section" : 5.678,
+        "gen_num"       : 1070454
+    }, 
+    "DYJet_HT-600to800": {
+        "cross_section" : 1.367,
+        "gen_num"       : 8292957
+    }, 
+    "DYJet_HT-800to1200": {
+        "cross_section" : 0.6759,
+        "gen_num"       : 2668730
+    }, 
+    "SingleTop_s-ch": {
+        "cross_section" : 3.36,
+        "gen_num"       : 1000000
+    }, 
+    "SingleTop_t-ch": {
+        "cross_section" : 136.02,
+        "gen_num"       : 67240808
+    }, 
+    "SingleTop_t-ch_anti": {
+        "cross_section" : 80.95,
+        "gen_num"       : 38811017
+    }, 
+    "SingleTop_tW": {
+        "cross_section" : 35.6,
+        "gen_num"       : 6952830
+    }, 
+    "SingleTop_tW_anti": {
+        "cross_section" : 35.6,
+        "gen_num"       : 6933094
+    }, 
+    "TTbar": {
+        "cross_section" : 831.76,
+        "gen_num"       : 77081156
+    }, 
+    "VV_WW": {
+        "cross_section" : 118.7,
+        "gen_num"       : 994012
+    }, 
+    "VV_WZ": {
+        "cross_section" : 47.13,
+        "gen_num"       : 1000000
+    }, 
+    "VV_ZZ": {
+        "cross_section" : 16.52,
+        "gen_num"       : 990064
+    }, 
+    "WJet_Pt-100to250": {
+        "cross_section" : 676.3,
+        "gen_num"       : 10089661
+    }, 
+    "WJet_Pt-250to400": {
+        "cross_section" : 23.94,
+        "gen_num"       : 1001250
+    }, 
+    "WJet_Pt-400to600": {
+        "cross_section" : 3.031,
+        "gen_num"       : 2751187
+    }, 
+    "WJet_Pt-600toInf": {
+        "cross_section" : 0.4524,
+        "gen_num"       : 989482
+    }, 
+
+        
+           
+    "samplelst": [
+        "DYJet_HT-100to200", 
+        "DYJet_HT-1200to2500", 
+        "DYJet_HT-200to400", 
+        "DYJet_HT-2500toInf", 
+        "DYJet_HT-400to600", 
+        "DYJet_HT-600to800", 
+        "DYJet_HT-800to1200", 
+        "SingleTop_s-ch", 
+        "SingleTop_t-ch", 
+        "SingleTop_t-ch_anti", 
+        "SingleTop_tW", 
+        "SingleTop_tW_anti", 
+        "TTbar", 
+        "VV_WW", 
+        "VV_WZ", 
+        "VV_ZZ", 
+        "WJet_Pt-100to250", 
+        "WJet_Pt-250to400", 
+        "WJet_Pt-400to600", 
+        "WJet_Pt-600toInf", 
+        "runB", 
+        "runC", 
+        "runD", 
+        "runE", 
+        "runF", 
+        "runG", 
+        "runH"
+    ],
+
+    "lumi": 36773 //pb^{-1} 
+}
+

@@ -31,7 +31,11 @@
     },
 
     "TTbar":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root"]
+        "path" : [
+            "/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root",
+            "/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_002/*.root",
+            "/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_003/*.root"
+            ]
     },
     
     "SingleTop_s-ch":{
@@ -59,7 +63,7 @@
     },
 
     "DYJet_HT-200to400":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia/*root"]
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "DYJet_HT-400to600":{

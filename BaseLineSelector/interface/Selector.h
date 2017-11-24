@@ -33,6 +33,7 @@ class Selector : public mgr::Pathmgr,
         *******************************************************************************/
         void         process( const int&, const int& );
         std::string  GetResultsName( const std::string&, const std::string& );
+        void         ChangeFile(const std::string&);
         void         AddSample( const string&, TChain* );
         Samplelst    GetSamplelst(){ return _samplelst; }
         std::vector<TH1*>         GetHistlst(const std::string&);
