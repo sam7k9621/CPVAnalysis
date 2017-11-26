@@ -59,6 +59,8 @@ class BaseLineMgr : public mgr::HistMgr {
         /*******************************************************************************
         *   Vertex selection
         *******************************************************************************/
+        int pvNumber(){ return _sample->Vsize(); }
+
         bool passVertex();
         bool isGoodPVtx();
 

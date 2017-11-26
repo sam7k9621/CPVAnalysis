@@ -3,6 +3,8 @@
 #include "TFile.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -39,7 +41,7 @@ MakePreCut()
 
     // Make new root file out of old one
     mgr::CheckPath( PreMgr().GetResultsName( "root", "precut" ) );
-    TFile* newfile = new TFile( ( PreMgr().GetResultsName( "root", "_precut" ) ).c_str(), "recreate" );
+    TFile* newfile = new TFile( ( PreMgr().GetResultsName( "root", "precut" ) ).c_str(), "recreate" );
     ch->GetEntry( 0 );
     TTree* newtree = (TTree*)ch->GetTree()->CloneTree( 0 );
 
@@ -48,6 +50,20 @@ MakePreCut()
     checkEvt.addJson( PreMgr().GetSingleData<string>( "lumimask" ) );
     checkEvt.makeJsonMap();
 
+    //Reading PUWeight file
+    string line;
+    vector<double> puweight;
+    std::ifstream fin("/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv");
+    while( std::getline(fin, line) ){
+        puweight.push_back( stod(line) );
+    }
+
+    //Adding PUWeight scale branch
+    float weight;
+    if( !is_data ){
+        newtree->Branch("PUWeight",&weight);
+    }
+    
     // Looping for events
     int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
 
@@ -60,11 +76,6 @@ MakePreCut()
             if( !PreMgr().GetSample()->isGoodEvt( checkEvt ) ){
                 continue;
             }
-        }
-
-        //jet smeared
-        if( !is_data ){
-            PreMgr().GetSample()->jetSmeared( newtree );
         }
 
         // Pass vertex and hlt
@@ -81,7 +92,18 @@ MakePreCut()
         if( !PreMgr().GetSample()->preMuon() ){
             continue;
         }
+        
+        //jet smeared
+        if( !is_data ){
+            PreMgr().GetSample()->jetSmeared( newtree );
+        }
 
+        //pile-up reweighted
+        if( !is_data ){
+            int pv = PreMgr().GetSample()->pvNumber() - 1;
+            weight = puweight[pv];
+        }
+    
         newtree->Fill();
     }
 

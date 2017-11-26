@@ -11,6 +11,7 @@ main( int argc, char* argv[] )
         ( "source,s", opt::value<string>()->required(), "which era of data or mc" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
+        ( "pile,p", "using pile-up weight" )
     ;
     PreMgr( "BaseLineSelector" ).AddOptions( de );
     const int run = PreMgr().ParseOptions( argc, argv );
@@ -24,6 +25,6 @@ main( int argc, char* argv[] )
     }
 
     PreMgr().SetFileName( { "lepton", "source" } );
-    PreMgr().AddCutName( { "test" } );
+    PreMgr().AddCutName( { "test", "pile" } );
     MakePreCut();
 }
