@@ -16,6 +16,12 @@ Selector::~Selector()
 {
 }
 
+void 
+Selector::RegisterWeight(TTree* root, float* weight)
+{
+    root->SetBranchAddress( "PUWeight", weight );
+}
+
 /*******************************************************************************
 *   Common
 *******************************************************************************/

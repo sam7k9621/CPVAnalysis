@@ -60,9 +60,7 @@ MakePreCut()
 
     //Adding PUWeight scale branch
     float weight;
-    if( !is_data ){
-        newtree->Branch("PUWeight",&weight);
-    }
+    newtree->Branch("PUWeight",&weight);
     
     // Looping for events
     int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
@@ -103,7 +101,9 @@ MakePreCut()
             int pv = PreMgr().GetSample()->pvNumber() - 1;
             weight = puweight[pv];
         }
-    
+        else{
+            weight = 1;
+        }
         newtree->Fill();
     }
 

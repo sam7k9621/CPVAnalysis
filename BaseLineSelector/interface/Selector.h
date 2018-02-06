@@ -28,6 +28,7 @@ class Selector : public mgr::Pathmgr,
         Selector( const Selector& )            = delete;
         Selector& operator=( const Selector& ) = delete;
 
+        void RegisterWeight(TTree*, float*);
         /*******************************************************************************
         *   Common
         *******************************************************************************/
