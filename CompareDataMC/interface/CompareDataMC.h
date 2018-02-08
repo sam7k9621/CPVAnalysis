@@ -1,27 +1,23 @@
 #include "CPVAnalysis/BaseLineSelector/interface/Selector.h"
 
 /*******************************************************************************
-*  Global function
+*  FullCut
 *******************************************************************************/
-
-extern Selector& CompMgr( const std::string& = "" );
-extern double GetErrSum(TH1D*);
-/*******************************************************************************
-*  MassReco
-*******************************************************************************/
+extern Selector& CompMgr( const std::string& = "", const std::string& = "" );
 extern void MakeFullCut();
 extern void FullCut();
-extern void AddHist();
 extern void StoreCompare();
-/*******************************************************************************
-*  Charege Pairing
-*******************************************************************************/
-extern void DrawbbSeparate();
+extern void AddHist();
+extern void WeightMC(const string&);
 
 /*******************************************************************************
-*  DataMCCompare
+*  PlotCompare
 *******************************************************************************/
-extern void PlotSample();
-extern bool IsXsample( const string&, const std::string&);
-extern void MergeSample(std::vector<TH1D*>&, TH1D*, const string&);
-extern void WeightMC(const string&, TH1D*);
+extern Selector& PlotMgr( const std::string& = "", const std::string& = "" );
+extern void PlotCompare();
+extern void MergeMC();
+extern vector<TH1D*> ExtractMC(const string&);
+extern TH1D* ExtractData(const string&); 
+extern double GetErrSum(TH1D*);
+
+extern void PlotMass(vector<TH1D*>, TH1D*);

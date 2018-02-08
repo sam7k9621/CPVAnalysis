@@ -14,7 +14,7 @@ using namespace std;
 extern Selector&
 PreMgr( const string& subdir )
 {
-    static Selector mgr( subdir );
+    static Selector mgr( subdir, "Selection.json" );
     return mgr;
 }
 

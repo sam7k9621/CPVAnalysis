@@ -6,13 +6,9 @@ main( int argc, char* argv[] )
     opt::options_description de( "Command for SelectionCut" );
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
-        ( "count,c", "count events" )
-        ( "test,t", "run testing events number" )
-        ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
-        ( "dist,d", "pairing dist")
     ;
-    CompMgr( "CompareDataMC" ).AddOptions( de );
-    const int run = CompMgr().ParseOptions( argc, argv );
+    PlotMgr( "CompareDataMC", "PlotInfo.json" ).AddOptions( de );
+    const int run = PlotMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){
         return 0;
@@ -22,7 +18,6 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    CompMgr().SetFileName( { "lepton" } );
-    CompMgr().AddCutName ( { "chi2", "test" } );
-    MakeFullCut();
+    PlotMgr().SetFileName( { "lepton" } );
+    PlotCompare();
 }

@@ -90,10 +90,15 @@ class BaseLineMgr : public mgr::HistMgr {
         bool preJet();
         bool preMuon();
 
+        /*******************************************************************************
+        *   Event looping
+        *******************************************************************************/
+        void GetEntry(const int&);
+        int  GetEntries(){ return _ch->GetEntries(); }
     private:
 
         std::unique_ptr<mgr::SampleMgr> _sample;
-        double _scale;
+        TChain* _ch;
 };
 
 

@@ -10,8 +10,6 @@
 
 #include "TH1D.h"
 
-typedef vector<shared_ptr<BaseLineMgr> > Samplelst;
-
 class Selector : public mgr::Pathmgr,
                  public mgr::Readmgr,
                  public mgr::Parsermgr {
@@ -22,27 +20,32 @@ class Selector : public mgr::Pathmgr,
         *   Initialization
         *******************************************************************************/
 
-        Selector( const std::string& );
+        Selector( const std::string&, const std::string& );
         ~Selector();
 
         Selector( const Selector& )            = delete;
         Selector& operator=( const Selector& ) = delete;
 
         void RegisterWeight(TTree*, float*);
+        void         AddSample( const string&, TChain* );
+        BaseLineMgr* GetSample()   { return _sample; }
+        
         /*******************************************************************************
         *   Common
         *******************************************************************************/
-        void         process( const int&, const int& );
         std::string  GetResultsName( const std::string&, const std::string& );
-        void         ChangeFile(const std::string&);
-        void         AddSample( const string&, TChain* );
-        Samplelst    GetSamplelst(){ return _samplelst; }
-        std::vector<TH1*>         GetHistlst(const std::string&);
-        BaseLineMgr* GetSample()   { return _samplelst.back().get(); }
         std::string  Discript( TH1* );
+        
+        /*******************************************************************************
+        *   Looping event
+        *******************************************************************************/
+        void         process( const int&, const int& );
+        void         ChangeFile(const std::string&);
+        void         GetEntry(const int&);
+        int          GetEntries(){ return GetSample()->GetEntries(); }
     private:
 
-        Samplelst _samplelst;
+        BaseLineMgr* _sample;
 };
 
 #endif

@@ -1,0 +1,10 @@
+{
+
+    "MClst" : [
+        "DYJet",
+        "SingleTop",
+        "TTbar",
+        "VV",
+        "WJet"
+        ]
+}

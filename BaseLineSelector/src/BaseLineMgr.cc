@@ -10,12 +10,13 @@ using namespace std;
 BaseLineMgr::BaseLineMgr( const string& sample, TChain* ch ) :
     HistMgr( sample ),
     _sample( new mgr::SampleMgr( ch ) ),
-    _scale(1)
+    _ch(ch)
 {
 }
 
 BaseLineMgr::~BaseLineMgr()
 {
+    delete _ch;
 }
 
 /*******************************************************************************
@@ -304,4 +305,13 @@ BaseLineMgr::preMuon()
     }
 
     return false;
+}
+
+/*******************************************************************************
+*   Pre-selection
+*******************************************************************************/
+void 
+BaseLineMgr::GetEntry(const int& i)
+{
+    _ch->GetEntry(i);
 }
