@@ -144,6 +144,6 @@
 
     "mc_HLT"   : [4809,4815], //HLT_Iso(Tk)Mu24_v4
     "data_HLT" : [2748,2749,4174,4809,2760,2761,3541,4179,4815],  //HLT_Iso(Tk)Mu24_v*
-    "lumimask" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+    "lumimask" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
 }
 

@@ -41,7 +41,7 @@ MakePreCut()
 
     // Make new root file out of old one
     mgr::CheckPath( PreMgr().GetResultsName( "root", "precut" ) );
-    TFile* newfile = new TFile( ( PreMgr().GetResultsName( "root", "precut" ) ).c_str(), "recreate" );
+    TFile* newfile = new TFile( ( PreMgr().GetResultsName( "root", "prompt_precut" ) ).c_str(), "recreate" );
     ch->GetEntry( 0 );
     TTree* newtree = (TTree*)ch->GetTree()->CloneTree( 0 );
 

@@ -3,6 +3,17 @@
 #include "THStack.h"
 using namespace std;
 
+extern string
+GetName(TH1D* h)
+{
+    string name  = h->GetName();
+    size_t found = name.find("_");
+    if (found!=std::string::npos)
+        return name.substr(0, found);
+    else
+        return name;
+}
+
 extern void
 PlotMass(vector<TH1D*> mclst, TH1D* data)
 {
@@ -16,12 +27,12 @@ PlotMass(vector<TH1D*> mclst, TH1D* data)
         mclst[ i ]->SetLineColor( x[ i ] );
         mclst[ i ]->SetFillColor( x[ i ] );
         bg->Add( mclst[ i ] );
-        leg->AddEntry( mclst[ i ], mclst[ i ]->GetName(), "F" );
+        leg->AddEntry( mclst[ i ], GetName( mclst[ i ] ).c_str(), "F" );
     }
 
-    TH1D* bg_sum = new TH1D();
-    for(const auto& h : mclst){
-        bg_sum->Add(h);
+    TH1D* bg_sum = (TH1D*)mclst[0]->Clone("bg_sum");
+    for(int i=1; i<(int)mclst.size(); i++){
+        bg_sum->Add(mclst[i]);
     }
 
     TPad* top = mgr::NewTopPad();

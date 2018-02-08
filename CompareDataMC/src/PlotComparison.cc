@@ -13,12 +13,13 @@ PlotMgr( const string& subdir, const string& json )
 extern void 
 PlotCompare()
 {
-    cout<<PlotMgr().SettingsDir()<<endl;
     MergeMC();
-    //vector<TH1D*> mclst = ExtractMC();
-    //TH1D*        data  = ExtractData();
+    vector<TH1D*> mclst = ExtractMC("tmass");
+    TH1D*         data  = ExtractData("tmass");
 
-    /*PlotMass(mclst, data);*/
+    cout<<"Finishing extracting sample hist"<<endl;
+    PlotMass(mclst, data);
+    CleanMC();
 }
 
 extern void
@@ -26,14 +27,22 @@ MergeMC()
 {
     string cmd = "hadd ";
     vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
-    
+   
+
     for(const auto& s : MCsamplelst){
 
-        string output =  PlotMgr().DatasDir() / s + ".root";
-        string input  =  PlotMgr().ResultsDir() / "Fullcut_" + CompMgr().GetOption<string>("lepton") + "_" + s + "*.root";
-        //system( (cmd + output + input).c_str() );
-        cout<<cmd + output + input<<endl;
+        string output =  PlotMgr().DatasDir() / s + "_temp.root ";
+        string input  =  PlotMgr().ResultsDir() / "FullCut_" + PlotMgr().GetOption<string>("lepton") + "_" + s + "*.root";
+        system( (cmd + output + input).c_str() );
     }
+}
+
+extern void
+CleanMC()
+{
+    string cmd  = "rm ";
+    string file = PlotMgr().DatasDir() /  "*temp.root ";
+    system( (cmd + file).c_str() );
 }
 
 extern vector<TH1D*>
@@ -45,7 +54,7 @@ ExtractMC(const string& title)
     
     for(const auto s : MCsamplelst){
         
-        string file = PlotMgr().DatasDir() / s + ".root";
+        string file = PlotMgr().DatasDir() / s + "_temp.root";
         
         TFile* f = TFile::Open( file.c_str() );
         TH1D*  h = (TH1D*)( f->Get( title.c_str() )->Clone() );
@@ -61,8 +70,7 @@ extern TH1D*
 ExtractData(const string& title)
 {
     //Extracting Data hist
-
-    string file = PlotMgr().ResultsDir() / "FullCut_" + CompMgr().GetOption<string>("lepton") + ".root";
+    string file = PlotMgr().ResultsDir() / "FullCut_" + PlotMgr().GetOption<string>("lepton") + "_" + "Data" ".root";
     
     TFile* f = TFile::Open( file.c_str() );
     TH1D*  h = (TH1D*)( f->Get( title.c_str() )->Clone() );

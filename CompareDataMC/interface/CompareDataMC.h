@@ -16,8 +16,10 @@ extern void WeightMC(const string&);
 extern Selector& PlotMgr( const std::string& = "", const std::string& = "" );
 extern void PlotCompare();
 extern void MergeMC();
+extern void CleanMC();
 extern vector<TH1D*> ExtractMC(const string&);
 extern TH1D* ExtractData(const string&); 
 extern double GetErrSum(TH1D*);
 
+extern string GetName(TH1D*);
 extern void PlotMass(vector<TH1D*>, TH1D*);

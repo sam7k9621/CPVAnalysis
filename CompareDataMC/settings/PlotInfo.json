@@ -3,8 +3,8 @@
     "MClst" : [
         "DYJet",
         "SingleTop",
-        "TTbar",
         "VV",
-        "WJet"
+        "WJet",
+        "TTbar"
         ]
 }
