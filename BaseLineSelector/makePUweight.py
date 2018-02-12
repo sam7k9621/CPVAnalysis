@@ -30,7 +30,7 @@ def main():
                         )
     parser.add_argument('-l', '--lumimask', dest='lumimask', type=str,
                         help='Lumimask json file to use',
-                        default='data/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt',
+                        default='data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt',
                         )
     parser.add_argument('-p', '--pufile', dest='pufile', type=str,
                         help='Pileup json file to use',

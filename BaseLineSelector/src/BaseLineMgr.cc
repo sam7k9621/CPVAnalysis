@@ -17,6 +17,7 @@ BaseLineMgr::BaseLineMgr( const string& sample, TChain* ch ) :
 BaseLineMgr::~BaseLineMgr()
 {
     delete _ch;
+    delete _calib;
 }
 
 /*******************************************************************************
@@ -94,6 +95,7 @@ BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& muidx 
     }
 }
 
+
 /*******************************************************************************
 *   HLT selection
 *******************************************************************************/
@@ -134,7 +136,7 @@ BaseLineMgr::isGoodPVtx()
 *   Jet selection
 *******************************************************************************/
 void 
-BaseLineMgr::jetSmeared( TTree* newtree )
+BaseLineMgr::jetSmeared()
 {
     int js = _sample->Jsize();
     

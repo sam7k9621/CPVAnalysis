@@ -11,14 +11,15 @@ PlotMgr( const string& subdir, const string& json )
 }
 
 extern void 
-PlotCompare()
+MakePlotCompare()
 {
     MergeMC();
-    vector<TH1D*> mclst = ExtractMC("tmass");
-    TH1D*         data  = ExtractData("tmass");
 
-    cout<<"Finishing extracting sample hist"<<endl;
-    PlotMass(mclst, data);
+    vector<string> histlst = { "tmass", "nVtx", "chi2" };
+    for(const auto& title : histlst){
+        cout<<"Finishing extracting and Plotting " + title<<endl;
+        PlotCompare( ExtractMC(title), ExtractData(title), title );
+    }
     CleanMC();
 }
 
@@ -32,7 +33,8 @@ MergeMC()
     for(const auto& s : MCsamplelst){
 
         string output =  PlotMgr().DatasDir() / s + "_temp.root ";
-        string input  =  PlotMgr().ResultsDir() / "FullCut_" + PlotMgr().GetOption<string>("lepton") + "_" + s + "*.root";
+        
+        string input  =  PlotMgr().GetResultsName("", "FullCut") + "_" + s + "*.root";
         system( (cmd + output + input).c_str() );
     }
 }
@@ -70,7 +72,7 @@ extern TH1D*
 ExtractData(const string& title)
 {
     //Extracting Data hist
-    string file = PlotMgr().ResultsDir() / "FullCut_" + PlotMgr().GetOption<string>("lepton") + "_" + "Data" ".root";
+    string file = PlotMgr().GetResultsName("", "FullCut") + "_" + "Data" ".root";
     
     TFile* f = TFile::Open( file.c_str() );
     TH1D*  h = (TH1D*)( f->Get( title.c_str() )->Clone() );
@@ -89,3 +91,4 @@ GetErrSum(TH1D* hist)
 
     return sqrt(binerror);
 }
+

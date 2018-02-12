@@ -1,6 +1,8 @@
 #ifndef BASELINEMGR_H
 #define BASELINEMGR_H
 
+#include "CondFormats/BTauObjects/interface/BTagCalibration.h"
+#include "CondTools/BTau/interface/BTagCalibrationReader.h"
 #include "ManagerUtils/HistMgr/interface/HistMgr.h"
 #include "ManagerUtils/SampleMgr/interface/SampleMgr.h"
 
@@ -8,6 +10,7 @@
 
 #include "TChain.h"
 #include "TTree.h"
+#include "TH2.h"
 
 #include <string>
 #include <tuple>
@@ -33,7 +36,6 @@ class BaseLineMgr : public mgr::HistMgr {
 
         bool FillbHandle(){ return _sample->MCTruthBJet(); }
         int  bbSeparation( const int&, const int&, const int& );
-
         enum MatchType
         {
             Correct = 1 << 0,
@@ -51,6 +53,9 @@ class BaseLineMgr : public mgr::HistMgr {
             // 32 None   : not matched
         };
 
+        int nPU(){ return _sample->Evt().nPU[0];}
+        int nVtx(){ return _sample->Vsize(); }
+        float GenWeight() { return _sample->Gen().Weight; }
         /*******************************************************************************
         *   HLT selection
         *******************************************************************************/
@@ -59,7 +64,6 @@ class BaseLineMgr : public mgr::HistMgr {
         /*******************************************************************************
         *   Vertex selection
         *******************************************************************************/
-        int pvNumber(){ return _sample->Vsize(); }
 
         bool passVertex();
         bool isGoodPVtx();
@@ -67,7 +71,7 @@ class BaseLineMgr : public mgr::HistMgr {
         /*******************************************************************************
         *   Jet selection
         *******************************************************************************/
-        void jetSmeared( TTree* );
+        void jetSmeared();
         bool passJet();
         bool passBJet();
         bool passFullJet( std::vector<int>&, std::vector<int>&, int& );
@@ -95,10 +99,25 @@ class BaseLineMgr : public mgr::HistMgr {
         *******************************************************************************/
         void GetEntry(const int&);
         int  GetEntries(){ return _ch->GetEntries(); }
+        
+        /*******************************************************************************
+        *   Event Weighting
+        *******************************************************************************/
+        void RegisterWeight();
+        float GetPUWeight(){ return _puweight; }
+
+        void InitBtagWeight( const std::string&, const std::string& );
+        double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
+
+        double GetSFTH2(TH2*, const int&);
+
     private:
 
         std::unique_ptr<mgr::SampleMgr> _sample;
         TChain* _ch;
+        float  _puweight;
+        BTagCalibration* _calib;
+        std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
 };
 
 

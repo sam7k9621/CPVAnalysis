@@ -16,12 +16,6 @@ Selector::~Selector()
 {
 }
 
-void 
-Selector::RegisterWeight(TTree* root, float* weight)
-{
-    root->SetBranchAddress( "PUWeight", weight );
-}
-
 void
 Selector::AddSample( const string& sample, TChain* ch )
 {
@@ -40,7 +34,11 @@ Selector::GetResultsName( const string& type, const string& prefix )
         ans.erase( ans.begin() );
     }
 
-    return ResultsDir() / ( prefix + ans + "." + type );
+    if( type == ""){
+        return ResultsDir() / ( prefix + ans);
+    }
+    else
+        return ResultsDir() / ( prefix + ans + "." + type );
 }
 
 string

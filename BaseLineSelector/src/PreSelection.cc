@@ -41,7 +41,7 @@ MakePreCut()
 
     // Make new root file out of old one
     mgr::CheckPath( PreMgr().GetResultsName( "root", "precut" ) );
-    TFile* newfile = new TFile( ( PreMgr().GetResultsName( "root", "prompt_precut" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( PreMgr().GetResultsName( "root", "precut" ) ).c_str(), "recreate" );
     ch->GetEntry( 0 );
     TTree* newtree = (TTree*)ch->GetTree()->CloneTree( 0 );
 
@@ -49,6 +49,10 @@ MakePreCut()
     checkEvtTool checkEvt;
     checkEvt.addJson( PreMgr().GetSingleData<string>( "lumimask" ) );
     checkEvt.makeJsonMap();
+
+    //Decalre nVtx hist
+    TH1D* nVtx        = new TH1D("nVtx",        "", 80, 0, 80);
+    TH1D* nVtx_weight = new TH1D("nVtx_weight", "", 80, 0, 80);
 
     //Reading PUWeight file
     string line;
@@ -76,6 +80,10 @@ MakePreCut()
             }
         }
 
+        //jet smeared
+        if( !is_data ){
+            PreMgr().GetSample()->jetSmeared();
+        }
         // Pass vertex and hlt
         if( !PreMgr().GetSample()->passVertex() || !PreMgr().GetSample()->passHLT( hlt ) ){
             continue;
@@ -91,25 +99,29 @@ MakePreCut()
             continue;
         }
         
-        //jet smeared
-        if( !is_data ){
-            PreMgr().GetSample()->jetSmeared( newtree );
-        }
-
         //pile-up reweighted
         if( !is_data ){
-            int pv = PreMgr().GetSample()->pvNumber() - 1;
+            int pv = PreMgr().GetSample()->nPU();
             weight = puweight[pv];
         }
         else{
             weight = 1;
         }
+
+        //Plot nVtx hist
+        double gen_weight = is_data ? 1 : PreMgr().GetSample()->GenWeight();
+        nVtx       ->Fill( PreMgr().GetSample()->nVtx(), gen_weight );
+        nVtx_weight->Fill( PreMgr().GetSample()->nVtx(), gen_weight*weight );
+
         newtree->Fill();
     }
 
+    nVtx->Write();
+    nVtx_weight->Write();
     cout << endl;
     newtree->AutoSave();
     newfile->Close();
+    
     delete newfile;
     delete ch;
 }

@@ -6,6 +6,8 @@ main( int argc, char* argv[] )
     opt::options_description de( "Command for SelectionCut" );
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
+        ( "chi2,u",   opt::value<double>(), "chi2 upper cut" )
+        ( "pileup,p", "pile-up reweight" )
     ;
     PlotMgr( "CompareDataMC", "PlotInfo.json" ).AddOptions( de );
     const int run = PlotMgr().ParseOptions( argc, argv );
@@ -19,5 +21,6 @@ main( int argc, char* argv[] )
     }
 
     PlotMgr().SetFileName( { "lepton" } );
-    PlotCompare();
+    PlotMgr().AddCutName ( { "chi2", "pileup" } );
+    MakePlotCompare();
 }

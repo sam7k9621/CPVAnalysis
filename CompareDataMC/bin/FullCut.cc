@@ -9,6 +9,7 @@ main( int argc, char* argv[] )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "chi2,u",   opt::value<double>(), "chi2 upper cut" )
         ( "count,c", "count events" )
+        ( "pileup,p", "pile-up reweight" )
         ( "test,t", "run testing events number" )
     ;
     CompMgr( "CompareDataMC", "SampleInfo.json" ).AddOptions( de );
@@ -22,7 +23,9 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    CompMgr().SetFileName( { "lepton", "sample" } );
-    CompMgr().AddCutName ( { "chi2", "test" } );
+    //sample should always be the last term for data sorting
+    CompMgr().SetFileName( { "lepton", "sample" } ); 
+    CompMgr().AddCutName ( { "test", "chi2", "pileup" } );
     MakeFullCut();
+    //PlotPUCompare("nVtx");
 }

@@ -15,7 +15,7 @@ GetName(TH1D* h)
 }
 
 extern void
-PlotMass(vector<TH1D*> mclst, TH1D* data)
+PlotCompare(vector<TH1D*> mclst, TH1D* data, const string& title, bool logy)
 {
     TCanvas* c   = mgr::NewCanvas();
     Color_t x[]  = { kGray + 1, kMagenta + 2, kRed - 7, kOrange + 1, kAzure - 3, kGreen - 6 };
@@ -38,20 +38,19 @@ PlotMass(vector<TH1D*> mclst, TH1D* data)
     TPad* top = mgr::NewTopPad();
     top->Draw();
     top->cd();
+    if(logy)
+        top->SetLogy();
 
-    data->Draw("EP");
-    bg->Draw("same histo");
+    bg->Draw("HIST");
     data->Draw("EP same");
     leg->Draw();
     
-    mgr::SetTopPlotAxis( data );
+    mgr::SetTopPlotAxis( bg );
     data->SetMaximum( mgr::GetYmax( data ) * 1.2 );
-    data->SetStats( false );
     data->SetLineColor(1);
     data->SetLineWidth(1);
     data->SetMarkerSize(0.5);
     data->SetMarkerStyle(20);
-    data->GetYaxis()->SetTitle("Events");
     leg->AddEntry(data, "Data", "le");
 
     c->cd();
@@ -60,29 +59,41 @@ PlotMass(vector<TH1D*> mclst, TH1D* data)
     bot->Draw();
     bot->cd();
 
-    TLine* line     = new TLine( 0, 1, 500, 1 );
+    double xmin = data->GetXaxis()->GetXmin();
+    double xmax = data->GetXaxis()->GetXmax();
+
+    TLine* line       = new TLine( xmin, 1.0, xmax, 1.0 );
+    TLine* upper_line = new TLine( xmin, 1.5, xmax, 1.5 );
+    TLine* lower_line = new TLine( xmin, 0.5, xmax, 0.5 );
     TH1D* rel = mgr::DivideHist( data, bg_sum, 1 );
 
     rel->Draw("EP");
+    upper_line->Draw("same");
+    lower_line->Draw("same");
     line->Draw("same");
 
     line->SetLineColor(kRed);
+    upper_line->SetLineStyle(3);
+    lower_line->SetLineStyle(3);
+
     rel->SetMaximum( 1.6 );
     rel->SetMinimum( 0.4 );
     rel->GetYaxis()->SetTitle("Data/MC");
-    rel->GetXaxis()->SetTitle("M_{jjb} [GeV]");
+    rel->GetXaxis()->SetTitle( data->GetXaxis()->GetTitle() );
     mgr::SetBottomPlotAxis( rel );
 
     c->cd();
 
     mgr::DrawCMSLabel( PRELIMINARY );
-    mgr::DrawLuminosity(36773);
-    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_mass" ) );
+    mgr::DrawLuminosity(36814);
+    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_" + title ) );
    
     delete leg;
     delete top;
     delete bot;
     delete line;
+    delete upper_line;
+    delete lower_line;
     delete bg_sum;
     for(auto h : mclst){
         delete h;

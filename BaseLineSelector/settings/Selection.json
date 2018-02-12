@@ -1,53 +1,161 @@
 {
-    "runB":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*.root"]
+    "runB_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*[0-1].root"]
     },
 
-    "runC":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016C-03Feb2017-v1/*root"]
+    "runB_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*[2-3].root"]
     },
 
-    "runD":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016D-03Feb2017-v1/*root"]
+    "runB_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*[4-5].root"]
     },
 
-    "runE":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016E-03Feb2017-v1/*root"]
+    "runB_4":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*[6-7].root"]
     },
 
-    "runF":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016F-03Feb2017-v1/*root"]
+    "runB_5":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016B-03Feb2017_ver2-v2/*[8-9].root"]
     },
 
-    "runG":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*root"]
+    "runC_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016C-03Feb2017-v1/*[0-4].root"]
     },
 
-    "runH":{
+    "runC_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016C-03Feb2017-v1/*[5-9].root"]
+    },
+
+    "runD_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016D-03Feb2017-v1/*[0-3].root"]
+    },
+
+    "runD_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016D-03Feb2017-v1/*[4-6.].root"]
+    },
+
+    "runD_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016D-03Feb2017-v1/*[7-9].root"]
+    },
+
+    "runE_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016E-03Feb2017-v1/*[0-3].root"]
+    },
+
+    "runE_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016E-03Feb2017-v1/*[4-6].root"]
+    },
+
+    "runE_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016E-03Feb2017-v1/*[7-9].root"]
+    },
+
+    "runF_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016F-03Feb2017-v1/*[0-4].root"]
+    },
+
+    "runF_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016F-03Feb2017-v1/*[5-9].root"]
+    },
+
+    "runG_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*[0-1].root"]
+    },
+
+    "runG_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*[2-3].root"]
+    },
+
+    "runG_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*[4-5].root"]
+    },
+
+    "runG_4":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*[6-7].root"]
+    },
+
+    "runG_5":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016G-03Feb2017-v1/*[8-9].root"]
+    },
+
+    "runH_1":{
         "path" : [
-            "/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*root",
-            "/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver3-v1/*root"
+            "/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*[0-1].root",
+            "/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver3-v1/*.root"
             ]
     },
 
-    "TTbar":{
-        "path" : [
-            "/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*.root",
-            "/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_002/*.root",
-            "/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_003/*.root"
-            ]
+    "runH_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*[2-3].root"]
     },
-    
+
+    "runH_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*[4-5].root"]
+    },
+
+    "runH_4":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*[6-7].root"]
+    },
+
+    "runH_5":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/BPK_80X_SingleMuon_Run2016H-03Feb2017_ver2-v1/*[8-9].root"]
+    },
+
+    "TTbar_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*[0-4].root"]
+    },
+
+    "TTbar_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*[5-9].root"]
+    },
+
+    "TTbar_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_002/*[0-4].root"]
+    },
+
+    "TTbar_4":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_002/*[5-9].root"]
+    },
+
+    "TTbar_5":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_003/*[0-4].root"]
+    },
+
+    "TTbar_6":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_003/*[5-9].root"]
+    },
+
     "SingleTop_s-ch":{
         "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/*root"]
     },
 
-    "SingleTop_t-ch":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*root"]
+    "SingleTop_t-ch_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*[0-1].root"]
     },
 
-    "SingleTop_t-ch_anti":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*root"]
+    "SingleTop_t-ch_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*[2-3].root"]
+    },
+
+    "SingleTop_t-ch_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*[4-5].root"]
+    },
+
+    "SingleTop_t-ch_4":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*[6-7].root"]
+    },
+
+    "SingleTop_t-ch_5":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*[8-9].root"]
+    },
+
+    "SingleTop_t-ch_anti_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*[0-4].root"]
+    },
+
+    "SingleTop_t-ch_anti_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/*[5-9].root"]
     },
 
     "SingleTop_tW":{
@@ -144,6 +252,6 @@
 
     "mc_HLT"   : [4809,4815], //HLT_Iso(Tk)Mu24_v4
     "data_HLT" : [2748,2749,4174,4809,2760,2761,3541,4179,4815],  //HLT_Iso(Tk)Mu24_v*
-    "lumimask" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt"
+    "lumimask" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
 }
 

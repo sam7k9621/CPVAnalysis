@@ -52,19 +52,21 @@
         "cross_section": 3.36, 
         "gen_num": 1000000, 
         "path": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_s-ch.root"]
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_s-ch.root"
+            ]
     }, 
     "SingleTop_t-ch": {
         "cross_section": 136.02, 
         "gen_num": 67240808, 
         "path": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_t-ch.root"]
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_t-ch_[1-5].root"
+            ]
     }, 
     "SingleTop_t-ch_anti": {
         "cross_section": 80.95, 
         "gen_num": 38811017, 
         "path": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_t-ch_anti.root"
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_SingleTop_t-ch_anti_[1-2].root"
             ]
     }, 
     "SingleTop_tW": {
@@ -85,7 +87,7 @@
         "cross_section": 831.76, 
         "gen_num": 77081156, 
         "path": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_TTbar.root"
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_TTbar_[1-6].root"
             ]
     }, 
     "VV_WW": {
@@ -139,14 +141,30 @@
     }, 
     "Data": {
         "path" : [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runB.root",
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runC.root",
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runD.root",
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runE.root",
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runF.root",
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runG.root",
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runH.root"
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runB*.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runC*.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runD*.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runE*.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runF*.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runG*.root",
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/precut_muon_runH*.root"
                 ]
     }, 
-    "lumi": 36814 //pb^{-1} 
+    "lumi": 36811, //pb^{-1} 
+    "BtagWeight": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/CSVv2_Moriond17_B_H.csv",
+    "idsf": {
+        "file"  : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/IDSF.root",
+        "dir"   : "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta",
+        "title" : "abseta_pt_ratio"
+    },
+    "isosf": {
+        "file"  : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/ISOSF.root",
+        "dir"   : "TightISO_TightID_pt_eta",
+        "title" : "abseta_pt_ratio"
+    },
+    "trgsf": {
+        "file"  : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/TrgSF.root",
+        "dir"   : "IsoMu24_OR_IsoTkMu24_PtEtaBins",
+        "title" : "abseta_pt_ratio"
+    }
 }
