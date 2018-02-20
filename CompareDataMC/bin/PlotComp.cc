@@ -21,6 +21,6 @@ main( int argc, char* argv[] )
     }
 
     PlotMgr().SetFileName( { "lepton" } );
-    PlotMgr().AddCutName ( { "chi2", "pileup" } );
+    PlotMgr().AddCutName ( {  "pileup", "chi2" } );
     MakePlotCompare();
 }

@@ -50,10 +50,6 @@ MakePreCut()
     checkEvt.addJson( PreMgr().GetSingleData<string>( "lumimask" ) );
     checkEvt.makeJsonMap();
 
-    //Decalre nVtx hist
-    TH1D* nVtx        = new TH1D("nVtx",        "", 80, 0, 80);
-    TH1D* nVtx_weight = new TH1D("nVtx_weight", "", 80, 0, 80);
-
     //Reading PUWeight file
     string line;
     vector<double> puweight;
@@ -64,7 +60,7 @@ MakePreCut()
 
     //Adding PUWeight scale branch
     float weight;
-    newtree->Branch("PUWeight",&weight);
+    newtree->Branch("PUWeight",&weight, "PUWeight/F");
     
     // Looping for events
     int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
@@ -108,16 +104,9 @@ MakePreCut()
             weight = 1;
         }
 
-        //Plot nVtx hist
-        double gen_weight = is_data ? 1 : PreMgr().GetSample()->GenWeight();
-        nVtx       ->Fill( PreMgr().GetSample()->nVtx(), gen_weight );
-        nVtx_weight->Fill( PreMgr().GetSample()->nVtx(), gen_weight*weight );
-
         newtree->Fill();
     }
 
-    nVtx->Write();
-    nVtx_weight->Write();
     cout << endl;
     newtree->AutoSave();
     newfile->Close();

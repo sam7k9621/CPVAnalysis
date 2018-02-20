@@ -15,18 +15,33 @@ MakePlotCompare()
 {
     MergeMC();
 
-    vector<string> histlst = { "tmass", "nVtx", "chi2" };
+    vector<string> histlst = { "lep_tmass", "had_tmass", "nVtx", "chi2" };
     for(const auto& title : histlst){
         cout<<"Finishing extracting and Plotting " + title<<endl;
         PlotCompare( ExtractMC(title), ExtractData(title), title );
     }
+
+    vector<string> mclst = { "Obs3", "Obs4" };
+    for(const auto& title : mclst){
+        PlotMC( ExtractMC(title), title );
+    }
+
+    PlotPDF(
+            ExtractMC("chi2_Correct"),
+            ExtractMC("chi2_Misid"),
+            ExtractMC("chi2_Mistag"),
+            ExtractMC("chi2_Nomatched")
+            );
+
+    Plot2D( ExtractMC2D("chi2_tmass") );
+
     CleanMC();
 }
 
 extern void
 MergeMC()
 {
-    string cmd = "hadd ";
+    string cmd = "hadd -f ";
     vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
    
 
@@ -34,7 +49,7 @@ MergeMC()
 
         string output =  PlotMgr().DatasDir() / s + "_temp.root ";
         
-        string input  =  PlotMgr().GetResultsName("", "FullCut") + "_" + s + "*.root";
+        string input  =  PlotMgr().GetResultsName("", "Hist") + "_" + s + "*.root";
         system( (cmd + output + input).c_str() );
     }
 }
@@ -68,11 +83,33 @@ ExtractMC(const string& title)
     return mclst;
 }
 
+
+extern vector<TH2D*>
+ExtractMC2D(const string& title)
+{
+    //Extracting MC hist
+    vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
+    vector<TH2D*>  mclst;
+    
+    for(const auto s : MCsamplelst){
+        
+        string file = PlotMgr().DatasDir() / s + "_temp.root";
+        
+        TFile* f = TFile::Open( file.c_str() );
+        TH2D*  h = (TH2D*)( f->Get( title.c_str() )->Clone() );
+        h->SetDirectory(0); 
+        
+        mclst.push_back(h); 
+        f->Close();
+    }
+    return mclst;
+}
+
 extern TH1D*
 ExtractData(const string& title)
 {
     //Extracting Data hist
-    string file = PlotMgr().GetResultsName("", "FullCut") + "_" + "Data" ".root";
+    string file = PlotMgr().GetResultsName("", "Hist") + "_" + "Data" ".root";
     
     TFile* f = TFile::Open( file.c_str() );
     TH1D*  h = (TH1D*)( f->Get( title.c_str() )->Clone() );

@@ -9,6 +9,7 @@ using namespace std;
 *******************************************************************************/
 BaseLineMgr::BaseLineMgr( const string& sample, TChain* ch ) :
     HistMgr( sample ),
+    Hist2DMgr( sample ),
     _sample( new mgr::SampleMgr( ch ) ),
     _ch(ch)
 {
@@ -23,19 +24,31 @@ BaseLineMgr::~BaseLineMgr()
 /*******************************************************************************
 *   Common
 *******************************************************************************/
+TLorentzVector
+BaseLineMgr::GetLepP4(const int& idx)
+{
+    return _sample->GetLorentzVector( "lep", idx);
+}
+
+TLorentzVector
+BaseLineMgr::GetJetP4(const int& idx)
+{
+    return _sample->GetLorentzVector( "jet", idx);
+}
+    
 tuple<double, double, int>
 BaseLineMgr::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
 {
     vector<TLorentzVector> jethandle;
 
     for( const auto& j : jetidx ){
-        jethandle.push_back( _sample->GetLorentzVector( "jet", j ) );
+        jethandle.push_back( GetJetP4(j) );
     }
 
     vector<TLorentzVector> bjethandle;
 
     for( const auto& b : bjetidx ){
-        bjethandle.push_back( _sample->GetLorentzVector( "jet", b ) );
+        bjethandle.push_back( GetJetP4(b) );
     }
 
     // Mass constrain method - find hadronic b
@@ -63,41 +76,43 @@ BaseLineMgr::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx 
     return make_tuple( chi2mass, seltmass, had_b );
 }
 
-int
-BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& muidx )
-{
-    int charge = _sample->GetLepCharge( muidx );
-    // hadronic b charge equals to muon
-    int flag1 = _sample->bMatchType( had_b, charge );
-    // leptonic b charge is opposite to muon
-    int flag2 = _sample->bMatchType( lep_b, charge * ( -1 ) );
+double
+BaseLineMgr::GetLeptonicM(const int& lidx, const int& bidx){
+    TLorentzVector lep  = GetLepP4(lidx);
+    TLorentzVector bjet = GetJetP4(bidx);
 
-    if( ( flag1 | flag2 ) & None ){
-        return None;
-    }
-    else if( ( flag1 | flag2 ) == ( Fakeb | Mistag ) ){
-        return Other;
-    }
-    else if( ( flag1 | flag2 ) & Fakeb ){
-        return Fakeb;
-    }
-    else if( ( flag1 | flag2 ) & Mistag ){
+    return (lep + bjet ).M();
+}
+
+float 
+BaseLineMgr::GetIsoLepCharge(const int& idx)
+{
+    return _sample->GetLepCharge(idx);
+}
+
+BaseLineMgr::MatchType
+BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& lepidx )
+{
+    //hadronic b charge equals to muon, and vice versa
+    float charge = _sample->GetLepCharge( lepidx );
+    float had_id = _sample->GetPartonID( had_b );
+    float lep_id = _sample->GetPartonID( lep_b );
+
+    if( had_id == 0 || lep_id == 0)
+        return Nomatched;
+
+    if( fabs(had_id) != 5 || fabs(lep_id) != 5  )
         return Mistag;
-    }
-    else if( ( flag1 | flag2 ) == Correct ){
+
+    if( (had_id * charge) > 0 || (lep_id * charge) < 0)
+        return Misid;
+    else
         return Correct;
-    }
-    else if( ( flag1 | flag2 ) == Swap ){
-        return Swap;
-    }
-    else{
-        return Other;
-    }
 }
 
 
 /*******************************************************************************
-*   HLT selection
+*   Vertex & HLT selection
 *******************************************************************************/
 bool
 BaseLineMgr::passHLT( const vector<int>& hlt )
@@ -105,9 +120,6 @@ BaseLineMgr::passHLT( const vector<int>& hlt )
     return _sample->passHLT( hlt );
 }
 
-/*******************************************************************************
-*   Vertex selection
-*******************************************************************************/
 bool
 BaseLineMgr::passVertex()
 {
@@ -310,10 +322,17 @@ BaseLineMgr::preMuon()
 }
 
 /*******************************************************************************
-*   Pre-selection
+*   Event looping
 *******************************************************************************/
 void 
 BaseLineMgr::GetEntry(const int& i)
 {
     _ch->GetEntry(i);
+}
+
+TTree* 
+BaseLineMgr::CloneTree()
+{
+    _ch->GetEntry(0);
+    return (TTree*)_ch->GetTree()->CloneTree( 0 ); 
 }

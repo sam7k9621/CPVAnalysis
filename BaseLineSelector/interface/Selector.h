@@ -42,6 +42,7 @@ class Selector : public mgr::Pathmgr,
         void         ChangeFile(const std::string&);
         void         GetEntry(const int&);
         int          GetEntries(){ return GetSample()->GetEntries(); }
+        TTree*       CloneTree(){ return GetSample()->CloneTree();}
     private:
 
         BaseLineMgr* _sample;
