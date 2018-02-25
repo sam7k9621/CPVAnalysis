@@ -1,10 +1,10 @@
-#include "CPVAnalysis/CompareDataMC/interface/CompareDataMC.h"
+#include "CPVAnalysis/BaseLineSelector/interface/Selection.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
 #include "THStack.h"
 using namespace std;
 
 extern Selector&
-CompMgr( const string& subdir, const string& json )
+FullMgr( const string& subdir, const string& json )
 {
     static Selector mgr( subdir, json );
     return mgr;
@@ -14,23 +14,24 @@ extern void
 MakeFullCut()
 {
     //Process sample
-    string sample = CompMgr().GetOption<string>( "sample" ); 
-    vector<string> sourcelst = mgr::GetList<string>( "path", CompMgr().GetSubTree( sample ) );
+    string sample = FullMgr().GetOption<string>( "sample" ); 
+    vector<string> sourcelst = mgr::GetList<string>( "path", FullMgr().GetSubTree( sample ) );
     TChain* ch = new TChain( "root" );
     for( const auto& i : sourcelst ){
         ch->Add( i.c_str() );
     }
-    CompMgr().AddSample( sample, ch );
-    
+    FullMgr().AddSample( ch );
     FullCut();
+
+    delete ch;
 }
 
 extern void
 FullCut()
 {
     //Build new file
-    TFile* newfile = TFile::Open( (CompMgr().GetResultsName( "root", "FullCut") ).c_str(), "recreate" );
-    TTree* newtree = CompMgr().CloneTree(); 
+    TFile* newfile = TFile::Open( (FullMgr().GetResultsName( "root", "FullCut") ).c_str(), "recreate" );
+    TTree* newtree = FullMgr().CloneTree(); 
     
     //Register new branch
     Int_t jet_size;
@@ -52,31 +53,31 @@ FullCut()
     newtree->Branch("lep_tmass",  &lep_tmass, "lep_tmass/F");
     
     // Looping events
-    int events = CompMgr().CheckOption( "test" ) ? 10000 : CompMgr().GetEntries();
+    int events = FullMgr().CheckOption( "test" ) ? 10000 : FullMgr().GetEntries();
 
     for( int i = 0; i < events; i++ ){
-        CompMgr().GetEntry( i );
-        CompMgr().process( events, i );
+        FullMgr().GetEntry( i );
+        FullMgr().process( events, i );
 
-        vector<int> muidx;// store one isolated tight muon
+        vector<int> lepidx;// store one tight lepton
         vector<int> jetidx;// store every jets
         vector<int> bjetidx;// store two bjets
 
         /*******************************************************************************
         *  Baseline selection
         *******************************************************************************/
-        if( !CompMgr().GetSample()->passFullMuon( muidx ) ){
+        if( !FullMgr().PassFullLep( lepidx ) ){
             continue;
         }
 
-        if( !CompMgr().GetSample()->passFullJet( jetidx, bjetidx, muidx[ 0 ] ) ){
+        if( !FullMgr().PassFullJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
             continue;
         }
 
         /*******************************************************************************
         *  Chi2 sorting
         *******************************************************************************/
-        auto tup = CompMgr().GetSample()->GetChi2Info( jetidx, bjetidx );
+        auto tup = FullMgr().GetChi2Info( jetidx, bjetidx );
 
         /*******************************************************************************
         *  Storing sample
@@ -88,10 +89,10 @@ FullCut()
         had_b     = bjetidx[ had_b ];
         lep_b     = bjetidx[ lep_b ];
         
-        lephandle = muidx[0];
+        lephandle = lepidx[0];
         
         had_tmass = (Float_t)get<1>( tup );
-        lep_tmass = CompMgr().GetSample()->GetLeptonicM(lephandle, lep_b); 
+        lep_tmass = FullMgr().GetLeptonicM(lephandle, lep_b); 
 
         jet_size  = (int) jetidx.size();
        

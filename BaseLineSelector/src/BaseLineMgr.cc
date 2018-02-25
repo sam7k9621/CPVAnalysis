@@ -3,100 +3,34 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
+using namespace mgr;
 /*******************************************************************************
 *   Class initialization
 *******************************************************************************/
-BaseLineMgr::BaseLineMgr( const string& sample, TChain* ch ) :
+BaseLineMgr::BaseLineMgr( TChain* ch, const string& sample ) :
+    SampleMgr( ch ),
     HistMgr( sample ),
     Hist2DMgr( sample ),
-    _sample( new mgr::SampleMgr( ch ) ),
     _ch(ch)
 {
+    _calib = NULL;
 }
 
 BaseLineMgr::~BaseLineMgr()
 {
-    delete _ch;
     delete _calib;
 }
 
 /*******************************************************************************
-*   Common
+*   bbSeparation
 *******************************************************************************/
-TLorentzVector
-BaseLineMgr::GetLepP4(const int& idx)
-{
-    return _sample->GetLorentzVector( "lep", idx);
-}
-
-TLorentzVector
-BaseLineMgr::GetJetP4(const int& idx)
-{
-    return _sample->GetLorentzVector( "jet", idx);
-}
-    
-tuple<double, double, int>
-BaseLineMgr::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
-{
-    vector<TLorentzVector> jethandle;
-
-    for( const auto& j : jetidx ){
-        jethandle.push_back( GetJetP4(j) );
-    }
-
-    vector<TLorentzVector> bjethandle;
-
-    for( const auto& b : bjetidx ){
-        bjethandle.push_back( GetJetP4(b) );
-    }
-
-    // Mass constrain method - find hadronic b
-    double chi2mass = INT_MAX;
-    double seltmass = 0;
-    int had_b       = -1;
-
-    for( unsigned int i = 0; i < jethandle.size(); i++ ){
-        for( unsigned int j = ( i + 1 ); j < jethandle.size(); j++ ){
-            for( unsigned int k = 0; k < bjethandle.size(); k++ ){
-                double t_mass = ( jethandle[ i ] + jethandle[ j ] + bjethandle[ k ] ).M();
-                double w_mass = ( jethandle[ i ] + jethandle[ j ] ).M();
-                double chi_t  = ( t_mass - 172.5 ) / 16.3;
-                double chi_w  = ( w_mass - 82.9 ) / 9.5;
-
-                if( ( chi_t * chi_t + chi_w * chi_w ) < chi2mass ){
-                    chi2mass = ( chi_t * chi_t + chi_w * chi_w );
-                    seltmass = t_mass;
-                    had_b    = k;
-                }
-            }
-        }
-    }
-
-    return make_tuple( chi2mass, seltmass, had_b );
-}
-
-double
-BaseLineMgr::GetLeptonicM(const int& lidx, const int& bidx){
-    TLorentzVector lep  = GetLepP4(lidx);
-    TLorentzVector bjet = GetJetP4(bidx);
-
-    return (lep + bjet ).M();
-}
-
-float 
-BaseLineMgr::GetIsoLepCharge(const int& idx)
-{
-    return _sample->GetLepCharge(idx);
-}
-
 BaseLineMgr::MatchType
 BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& lepidx )
 {
     //hadronic b charge equals to muon, and vice versa
-    float charge = _sample->GetLepCharge( lepidx );
-    float had_id = _sample->GetPartonID( had_b );
-    float lep_id = _sample->GetPartonID( lep_b );
+    float charge = GetLepCharge( lepidx );
+    float had_id = GetPartonID( had_b );
+    float lep_id = GetPartonID( lep_b );
 
     if( had_id == 0 || lep_id == 0)
         return Nomatched;
@@ -110,215 +44,307 @@ BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& lepidx
         return Correct;
 }
 
+/*******************************************************************************
+*   Basic RECO
+*******************************************************************************/
+bool 
+BaseLineMgr::IsGoodEvt( checkEvtTool& evt)
+{
+    return evt.isGoodEvt( RunNo(), LumiNo() ); 
+}
 
 /*******************************************************************************
 *   Vertex & HLT selection
 *******************************************************************************/
 bool
-BaseLineMgr::passHLT( const vector<int>& hlt )
+BaseLineMgr::IsGoodPVtx()
 {
-    return _sample->passHLT( hlt );
-}
-
-bool
-BaseLineMgr::passVertex()
-{
-    for( int i = 0; i < _sample->Vsize(); i++ ){
-        _sample->SetIndex( i );
-
-        if( isGoodPVtx() ){
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool
-BaseLineMgr::isGoodPVtx()
-{
-    return !( _sample->IsFake() ) &&
-           _sample->passNdof() &&
-           _sample->passAbsZ() &&
-           _sample->passRho()
+    return !( IsFake() ) &&
+              Ndof() > 4 &&
+              AbsZ() < 24 &&
+              Rho() < 2
     ;
 }
 
 /*******************************************************************************
 *   Jet selection
 *******************************************************************************/
-void 
-BaseLineMgr::jetSmeared()
+unsigned
+BaseLineMgr::bitconv( const float& x )
 {
-    int js = _sample->Jsize();
+    const void* temp = &x;
+    return *( (const unsigned*)( temp ) );
+}
+    
+bool
+BaseLineMgr::IsWellMatched()
+{
+    //To avoid pile-up jet 
+    //(compare genjet and jet)
+    const double res = JERPt();
+    double deta = JetEta() - GenJetEta();
+    double dphi = Phi_mpi_pi( (double)( JetPhi() - GenJetPhi() ) );
+    double delR = TMath::Sqrt( deta * deta + dphi * dphi );
+    
+    if( delR >= 0.4/2. ){
+        return false;
+    }
+    if( fabs( JetPt() - GenJetPt() ) >= 3*res ){
+        return false;
+    }
+
+    return true;
+}
+
+double
+BaseLineMgr::MakeScaled()
+{
+    const double resscale = JERScale();
+    const double newpt = std::max( 0.0, GenJetPt() + resscale*( JetPt() - GenJetPt() ) );
+    const double scale = newpt / JetPt();
+
+   return scale;
+}
+
+double
+BaseLineMgr::MakeSmeared()
+{
+    // Getting normal
+    const double res   = JERPt();
+    const double ressf = JERScale();
+    const double width = ressf > 1 ? sqrt( ressf*ressf-1 ) * res : 0;
+    
+    // Generating random number
+    // https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h
+    std::default_random_engine gen( bitconv( JetPhi() ) );
+    std::normal_distribution<double> myrand( JetPt(), width );
+    const double newpt = myrand( gen );
+    
+    // Anonymouns namespace require (bug in gcc530)
+    const double scale = newpt/JetPt();
+    
+    if( scale <= 0 || ::isnan( scale ) ){
+      return 1;
+    } 
+    else {
+      return scale;
+    }
+}
+    
+void 
+BaseLineMgr::JERCorr()
+{
+    int js = Jsize();
     
     for(int i=0; i<js; i++){
-        _sample->SetIndex(i);
+        SetIndex(i);
         
-        double scale = _sample->MakeSmeared();
-        TLorentzVector jetp4 = _sample->JetP4(); 
+        double scale = 1;
+        if( IsWellMatched() ){
+            scale =  MakeScaled();
+        }
+        else{
+            scale = MakeSmeared();
+        }
+        TLorentzVector jetp4 = GetJetP4(i); 
         jetp4 *= scale;
-        _sample->Jet().Pt[i]  = jetp4.Pt();
-        _sample->Jet().Eta[i] = jetp4.Eta();
+        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
 }
     
 bool
-BaseLineMgr::passJet()
+BaseLineMgr::PassJetLooseID()
 {
     return
-        // Kinematic cut
-        _sample->passJetPt( 30 ) &&
-        _sample->passJetEta( 2.4 ) &&
         // Loose ID
-        _sample->JetNConstituents() &&
-        _sample->JetNEF() &&
-        _sample->JetNHF() &&
-        _sample->JetCHF() &&
-        _sample->JetNCH() &&
-        _sample->JetCEF()
+        JetNHF() <= 0.99 &&
+        JetNEF() <= 0.99 &&
+        JetNConstituents() > 1 &&
+        
+        JetAbsEta() < 2.4 &&
+        JetCHF() > 0 &&
+        JetNCH() > 0 &&
+        JetCEF() <= 0.99
     ;
 }
 
-bool
-BaseLineMgr::passBJet()
+bool 
+BaseLineMgr::PassJetKinematic()
 {
-    return _sample->JetCSVM( 0.8484 )
-    ;
+        
+    return 
+        JetPt() > 30 &&
+        JetAbsEta() < 2.4
+        ;
 }
 
 bool
-BaseLineMgr::passFullJet( vector<int>& jetidx, vector<int>& bjetidx, int& muidx )
+BaseLineMgr::IsSelJet()
 {
-    for( int j = 0; j < _sample->Jsize(); j++ ){
-        _sample->SetIndex( j );
+    return
+        PassJetLooseID() &&
+        PassJetKinematic()
+        ;
+}
 
-        // Cleaning against leptons (isolated lepton)
-        if( !_sample->isIsoLepton( muidx, j ) ){
-            continue;
-        }
-
-        int mask = 0x01;
-
-        if( passJet() ){
-            mask <<= 1;
-        }
-
-        if( passBJet() ){
-            mask <<= 2;
-        }
-
-        if( mask & 0x02 ){
-            jetidx.push_back( j );
-        }
-        else if( mask & 0x08 ){
-            bjetidx.push_back( j );
-        }
-    }
-
-    return jetidx.size() >= 2 && bjetidx.size() == 2;
+bool
+BaseLineMgr::PassBJet()
+{
+    return JetCSVM() > 0.8484;
 }
 
 /*******************************************************************************
 *   Muon selection
 *******************************************************************************/
+
 bool
-BaseLineMgr::passMuLoose()
+BaseLineMgr::PassMuLooseID()
 {
-    return
-        // Kinematic cut
-        _sample->passMuPt( 15 ) &&
-        _sample->passMuEta( 2.4 ) &&
-        // Isolation cut
-        _sample->passMuRelIsoR04( 0.25 ) &&
-        // Loose ID
-        ( _sample->isGlobalMuon() || _sample->isTrackerMuon() )
-    ;
+    return 
+        IsPFMuon() &&
+        ( IsGlobalMuon() || IsTrackerMuon() )
+        ;
+}
+    
+bool
+BaseLineMgr::PassMuLooseKinematic()
+{
+    return 
+        LepPt() > 15 &&
+        LepAbsEta() < 2.4
+        ;
 }
 
 bool
-BaseLineMgr::passMuTight()
+BaseLineMgr::PassMuLooseISO()
 {
-    return
-        // Kinematic cut
-        _sample->passMuPt( 30 ) &&
-        _sample->passMuEta( 2.1 ) &&
-        // Isolation cut
-        _sample->passMuRelIsoR04( 0.15 ) &&
-        // Tight ID
-        _sample->MuInnerTrackDxy_PV() &&
-        _sample->MuInnerTrackDz() &&
-        _sample->MuNMuonhits() &&
-        _sample->MuNMatchedStations() &&
-        _sample->MuGlobalNormalizedChi2() &&
-        _sample->MuNTrackLayersWMeasurement() &&
-        _sample->MuNPixelLayers() &&
-        _sample->isGlobalMuon()
-    ;
+    return RelIsoR04() < 0.25 ;
 }
 
 bool
-BaseLineMgr::passFullMuon( vector<int>& muidx )
+BaseLineMgr::IsLooseMu()
 {
-    for( int i = 0; i < _sample->Lsize(); i++ ){
-        _sample->SetIndex( i );
+    return 
+        PassMuLooseID() &&
+        PassMuLooseKinematic() &&
+        PassMuLooseISO()
+        ;
+}
 
-        if( _sample->Lep_Type() == 13 ){
-            if( passMuTight() ){
-                muidx.push_back( i );
-                continue;
-            }
+bool
+BaseLineMgr::PassMuTightID()
+{
+    return 
+        IsGlobalMuon() &&
+        IsPFMuon() &&
+        MuGlobalNormalizedChi2() < 10 &&
+        MuNMuonhits() > 0 &&
+        MuNMatchedStations() > 1 &&
+        AbsMuInnerTrackDxy_PV() < 0.2 &&
+        AbsMuInnerTrackDz() < 0.5 &&
+        MuNPixelLayers() > 0 &&
+        MuNTrackLayersWMeasurement() > 5
+        ;
+}
 
-            if( passMuLoose() ){
-                return false;
-            }
-        }
-        else if( _sample->Lep_Type() == 11 ){
-            if( passElLoose() ){
-                return false;
-            }
-        }
-    }
+bool
+BaseLineMgr::PassMuTightKinematic()
+{
+    return 
+        LepPt() > 30 &&
+        LepAbsEta() < 2.1
+        ;
+}
 
-    return muidx.size() > 0;
+bool
+BaseLineMgr::PassMuTightISO()
+{
+    return RelIsoR04() < 0.15 ;
+}
+
+bool
+BaseLineMgr::IsTightMu()
+{
+    return
+        PassMuTightID() &&
+        PassMuTightKinematic() &&
+        PassMuTightISO()
+        ;
 }
 
 /*******************************************************************************
 *   Electron selection
 *******************************************************************************/
 bool
-BaseLineMgr::passElLoose()
+BaseLineMgr::PassImpactParameter()
 {
-    return
-        // Kinematic
-        _sample->passElPt( 15 ) &&
-        _sample->passElEta( 2.4 ) &&
-        // Loose ID
-        _sample->passElIDLoose()
-    ;
-}
-
-/*******************************************************************************
-*   Pre-selection
-*******************************************************************************/
-bool
-BaseLineMgr::preJet()
-{
-    return _sample->Jsize() >= 4;
-}
-
-bool
-BaseLineMgr::preMuon()
-{
-    for( int i = 0; i < _sample->Lsize(); i++ ){
-        _sample->SetIndex( i );
-
-        if( passMuTight() ){
-            return true;
-        }
+    if( LepAbsEta() < 1.45 ){
+        if( ElAbsTrackDxy_PV() > 0.05 )
+            return false;
+        if( ElAbsTrackDz() > 0.10) 
+            return false;
+    }
+    else{
+        if( ElAbsTrackDxy_PV() > 0.10 )
+            return false;
+        if( ElAbsTrackDz() > 0.20) 
+            return false;
     }
 
-    return false;
+    return true;
+}
+
+bool
+BaseLineMgr::PassElLooseID()
+{
+    return ElIDLoose();
+}
+    
+bool
+BaseLineMgr::PassElLooseKinematic()
+{
+    return
+        LepPt() > 15 &&
+        LepAbsEta() < 2.4 &&
+        !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
+        ;
+}
+
+bool
+BaseLineMgr::IsLooseEl()
+{
+    return 
+        PassImpactParameter() &&
+        PassElLooseID() &&
+        PassElLooseKinematic()
+        ;
+}
+
+bool 
+BaseLineMgr::PassElTightID()
+{
+    return ElIDTight();
+}
+
+bool 
+BaseLineMgr::PassElTightKinematic()
+{
+    return 
+        LepPt() > 30 &&
+        LepAbsEta() < 2.1 &&
+        !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
+        ;
+
+}
+
+bool
+BaseLineMgr::IsTightEl()
+{
+    return 
+        PassImpactParameter() &&
+        PassElTightID() &&
+        PassElTightKinematic()
+        ;
 }
 
 /*******************************************************************************

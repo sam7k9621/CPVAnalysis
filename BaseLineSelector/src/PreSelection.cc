@@ -1,4 +1,4 @@
-#include "CPVAnalysis/BaseLineSelector/interface/PreSelection.h"
+#include "CPVAnalysis/BaseLineSelector/interface/Selection.h"
 #include "ManagerUtils/SysUtils/interface/PathUtils/CommonPath.hpp"
 #include "TFile.h"
 
@@ -12,9 +12,9 @@ using namespace std;
 *   Global function
 *******************************************************************************/
 extern Selector&
-PreMgr( const string& subdir )
+PreMgr( const string& subdir, const string& json )
 {
-    static Selector mgr( subdir, "Selection.json" );
+    static Selector mgr( subdir, json );
     return mgr;
 }
 
@@ -25,32 +25,35 @@ extern void
 MakePreCut()
 {
     // initialize input file
-    string src               = PreMgr().GetOption<string>( "source" );
-    vector<string> sourcelst = mgr::GetList<string>( "path", PreMgr().GetSubTree( src ) );
+    string sample            = PreMgr().GetOption<string>( "sample" );
+    vector<string> sourcelst = mgr::GetList<string>( "path", PreMgr().GetSubTree( sample ) );
+    bool is_data             = sample.find("run") != std::string::npos? 1 : 0;
     TChain* ch               = new TChain( "bprimeKit/root" );
 
     for( const auto& i : sourcelst ){
         ch->Add( i.c_str() );
     }
+   
+    PreMgr().AddSample( ch );
+    PreCut(is_data);
+    
+    delete ch;
+}
 
-    PreMgr().AddSample( src, ch );
+extern void
+PreCut(bool is_data)
+{
+    //Build new file
+    TFile* newfile = TFile::Open( ( PreMgr().GetResultsName( "root", "precut" ) ).c_str(), "recreate" );
+    TTree* newtree = PreMgr().CloneTree();
 
     // Initialize data
-    bool is_data    = strncmp( src.c_str(), "run", 3 ) ? 0 : 1;
     vector<int> hlt = is_data ? PreMgr().GetListData<int>("data_HLT") : PreMgr().GetListData<int>("mc_HLT");
-
-    // Make new root file out of old one
-    mgr::CheckPath( PreMgr().GetResultsName( "root", "precut" ) );
-    TFile* newfile = TFile::Open( ( PreMgr().GetResultsName( "root", "precut" ) ).c_str(), "recreate" );
-    ch->GetEntry( 0 );
-    TTree* newtree = (TTree*)ch->GetTree()->CloneTree( 0 );
-
-    // Running over golden_json
+        // Running over golden_json
     checkEvtTool checkEvt;
     checkEvt.addJson( PreMgr().GetSingleData<string>( "lumimask" ) );
     checkEvt.makeJsonMap();
-
-    //Reading PUWeight file
+        //Reading PUWeight file
     string line;
     vector<double> puweight;
     std::ifstream fin("/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv");
@@ -58,46 +61,44 @@ MakePreCut()
         puweight.push_back( stod(line) );
     }
 
-    //Adding PUWeight scale branch
+    //Register new branch
     float weight;
     newtree->Branch("PUWeight",&weight, "PUWeight/F");
     
-    // Looping for events
-    int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    // Looping events
+    int events = PreMgr().CheckOption( "test" ) ? 10000 : PreMgr().GetEntries();
 
     for( int i = 0; i < events; i++ ){
-        ch->GetEntry( i );
+        PreMgr().GetEntry( i );
         PreMgr().process( events, i );
 
-        // Lumimask
+        //Lumimask
         if( is_data ){
-            if( !PreMgr().GetSample()->isGoodEvt( checkEvt ) ){
+            if( !PreMgr().IsGoodEvt( checkEvt ) ){
                 continue;
             }
         }
 
-        //jet smeared
+        //JERCorr 
         if( !is_data ){
-            PreMgr().GetSample()->jetSmeared();
+            PreMgr().JERCorr();
         }
-        // Pass vertex and hlt
-        if( !PreMgr().GetSample()->passVertex() || !PreMgr().GetSample()->passHLT( hlt ) ){
+        
+        //Pass vertex and hlt
+        if( !PreMgr().PassVertex() || !PreMgr().PassHLT( hlt ) ){
             continue;
         }
 
-        // Jet preselection at least four jet
-        if( !PreMgr().GetSample()->preJet() ){
-            continue;
-        }
-
-        // Lepton preselection at least one tight muon
-        if( !PreMgr().GetSample()->preMuon() ){
+        //Preselection :
+        //Jet: at least four jets
+        //Lepton: at least one tight muon
+        if( !PreMgr().PreSelection() ){
             continue;
         }
         
         //pile-up reweighted
         if( !is_data ){
-            int pv = PreMgr().GetSample()->nPU();
+            int pv = PreMgr().nPU();
             weight = puweight[pv];
         }
         else{
@@ -107,10 +108,8 @@ MakePreCut()
         newtree->Fill();
     }
 
-    cout << endl;
+    cout<<endl;
     newtree->AutoSave();
-    newfile->Close();
-    
+    newfile->Close(); 
     delete newfile;
-    delete ch;
 }

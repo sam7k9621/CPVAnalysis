@@ -15,11 +15,11 @@ BaseLineMgr::RegisterWeight()
 double
 BaseLineMgr::GetSFTH2( TH2* hist, const int& idx )
 {
-    double eta = _sample->Lep().Eta[idx];
-    double pt  = _sample->Lep().Pt[idx];
+    SetIndex(idx);
+    double eta = LepAbsEta();
+    double pt  = LepPt();
     
     // Re-evaluating to avoid overflow
-    eta = fabs( eta );
     eta = min( eta, hist->GetXaxis()->GetXmax() - 0.01 );
     eta = max( eta, hist->GetXaxis()->GetXmin() + 0.01 );
     pt  = min( pt,  hist->GetYaxis()->GetXmax() - 0.01 );
@@ -49,10 +49,11 @@ BaseLineMgr::InitBtagWeight( const string& tagger, const string& filename)
 double
 BaseLineMgr::BtagScaleFactor( BTagEntry::OperatingPoint op, const int& idx )
 {
+    SetIndex(idx);
     return _reader_map.at( op ).eval_auto_bounds(
             "central",
             BTagEntry::FLAV_B,
-            _sample->Jet().Eta[idx],
-            _sample->Jet().Pt[idx]
+            JetEta(),
+            JetPt()
             );
 }

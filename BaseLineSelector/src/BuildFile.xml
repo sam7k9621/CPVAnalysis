@@ -5,10 +5,12 @@
 <use name="DataFormats/FWLite"/>
 <use name="CondFormats/BTauObjects" />
 <use name="CondTools/BTau" />
+
 <use name="ManagerUtils/ArgHelper"/>
 <use name="ManagerUtils/HistMgr"/>
-<use name="ManagerUtils/SampleMgr"/>
 <use name="ManagerUtils/SysUtils"/>
 <use name="ManagerUtils/PlotUtils"/>
+
+<use name="CPVAnalysis/SampleMgr"/>
 
 <export><lib name="1"/></export>

@@ -3,10 +3,10 @@
 #include "THStack.h"
 using namespace std;
 
-extern Selector&
+extern Histor&
 PlotMgr( const string& subdir, const string& json )
 {
-    static Selector mgr(subdir, json);
+    static Histor mgr(subdir, json);
     return mgr;
 }
 

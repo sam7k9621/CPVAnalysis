@@ -1,15 +1,12 @@
-#include "CPVAnalysis/BaseLineSelector/interface/Selector.h"
+#ifndef COMPAREDATAMC_H
+#define COMPAREDATAMC_H
 
-/*******************************************************************************
-*  FullCut
-*******************************************************************************/
-extern Selector& CompMgr( const std::string& = "", const std::string& = "" );
-extern void MakeFullCut();
-extern void FullCut();
+#include "CPVAnalysis/CompareDataMC/interface/Histor.h"
 
 /*******************************************************************************
 *  MakeHist
 *******************************************************************************/
+extern Histor& CompMgr( const std::string& = "", const std::string& = "" );
 extern void MakeHist();
 extern void StoreCompare();
 extern void AddHist();
@@ -26,7 +23,7 @@ extern double Obs4( TVector3, TVector3, TVector3, TVector3, float );
 /*******************************************************************************
 *  PlotCompare
 *******************************************************************************/
-extern Selector& PlotMgr( const std::string& = "", const std::string& = "" );
+extern Histor& PlotMgr( const std::string& = "", const std::string& = "" );
 extern void MakePlotCompare();
 extern void MergeMC();
 extern void CleanMC();
@@ -53,3 +50,5 @@ extern void PlotIntegral(
         TH1D*
         );
 extern void Plot2D(std::vector<TH2D*>);
+
+#endif

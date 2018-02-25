@@ -45,7 +45,7 @@ qsub ="""
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
 
 cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
-precut -l muon -s {0}
+PreCut -l muon -s {0}
 """
 
 def main(args):

@@ -5,5 +5,4 @@
 <use name="boost_program_options"/>
 <use name="DataFormats/FWLite"/>
 
-<bin name="FullCut"  file="FullCut.cc"/>
 <bin name="PlotComp"  file="PlotComp.cc"/>

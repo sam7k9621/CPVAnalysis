@@ -1,4 +1,6 @@
-#include "CPVAnalysis/CompareDataMC/interface/CompareDataMC.h"
+#include "CPVAnalysis/BaseLineSelector/interface/Selection.h"
+
+using namespace std;
 
 int
 main( int argc, char* argv[] )
@@ -11,10 +13,9 @@ main( int argc, char* argv[] )
         ( "count,c", "count events" )
         ( "pileup,p", "pile-up reweight" )
         ( "test,t", "run testing events number" )
-        ( "makehist,m", "make hist" )
     ;
-    CompMgr( "CompareDataMC", "SampleInfo.json" ).AddOptions( de );
-    const int run = CompMgr().ParseOptions( argc, argv );
+    FullMgr( "BaseLineSelector", "SampleInfo.json" ).AddOptions( de );
+    const int run = FullMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){
         return 0;
@@ -25,11 +26,8 @@ main( int argc, char* argv[] )
     }
 
     //sample should always be the last term for data sorting
-    CompMgr().SetFileName( { "lepton", "sample" } ); 
-    CompMgr().AddCutName ( { "test", "pileup" } );
+    FullMgr().SetFileName( { "lepton", "sample" } ); 
+    FullMgr().AddCutName ( { "test", "pileup" } );
     
-    if(!CompMgr().CheckOption("makehist"))
-        MakeFullCut();
-    else
-        MakeHist();
+    MakeFullCut();
 }

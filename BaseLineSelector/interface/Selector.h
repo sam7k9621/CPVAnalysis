@@ -19,21 +19,39 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Initialization
         *******************************************************************************/
-
         Selector( const std::string&, const std::string& );
         ~Selector();
 
         Selector( const Selector& )            = delete;
         Selector& operator=( const Selector& ) = delete;
 
-        void         AddSample( const string&, TChain* );
-        BaseLineMgr* GetSample()   { return _sample; }
-        
+        void AddSample( TChain* );
         /*******************************************************************************
         *   Common
         *******************************************************************************/
         std::string  GetResultsName( const std::string&, const std::string& );
         std::string  Discript( TH1* );
+       
+        /*******************************************************************************
+        *   Pre-selection
+        *******************************************************************************/
+        bool IsGoodEvt(checkEvtTool&);
+        void JERCorr();
+        bool PassVertex();
+        bool PassHLT(const std::vector<int>&);
+        bool PreJet();
+        bool PreLep();
+        bool PreSelection();
+        int  nPU(){ return _sample->nPU(); }
+        
+        /*******************************************************************************
+        *   Full-selection
+        *******************************************************************************/
+        bool PassFullLep( std::vector<int>& );
+        bool PassFullJet( std::vector<int>&, std::vector<int>&, const int&);
+        std::tuple<double, double, int>
+        GetChi2Info(const std::vector<int>&, const std::vector<int>&);
+        double GetLeptonicM(const int&, const int&);
         
         /*******************************************************************************
         *   Looping event
@@ -41,8 +59,9 @@ class Selector : public mgr::Pathmgr,
         void         process( const int&, const int& );
         void         ChangeFile(const std::string&);
         void         GetEntry(const int&);
-        int          GetEntries(){ return GetSample()->GetEntries(); }
-        TTree*       CloneTree(){ return GetSample()->CloneTree();}
+        int          GetEntries(){ return _sample->GetEntries(); }
+        TTree*       CloneTree(){ return  _sample->CloneTree();}
+    
     private:
 
         BaseLineMgr* _sample;

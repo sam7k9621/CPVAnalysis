@@ -3,10 +3,11 @@
 
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
+
 #include "ManagerUtils/HistMgr/interface/HistMgr.h"
 #include "ManagerUtils/HistMgr/interface/Hist2DMgr.h"
-#include "ManagerUtils/SampleMgr/interface/SampleMgr.h"
 
+#include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
 #include "CPVAnalysis/BaseLineSelector/interface/checkEvtTool.h"
 
 #include "TChain.h"
@@ -17,21 +18,22 @@
 #include <tuple>
 #include <vector>
 
-class BaseLineMgr : public mgr::HistMgr,
+class BaseLineMgr : public mgr::SampleMgr,  
+                    public mgr::HistMgr,
                     public mgr::Hist2DMgr {
     public:
 
         /*******************************************************************************
         *   Class initialization
         *******************************************************************************/
-        BaseLineMgr( const std::string&, TChain* );
-        virtual ~BaseLineMgr();
+        BaseLineMgr( TChain*, const std::string& = "");
+        ~BaseLineMgr();
 
         BaseLineMgr( const BaseLineMgr& )            = delete;
         BaseLineMgr& operator=( const BaseLineMgr& ) = delete;
 
         /*******************************************************************************
-        *   Common
+        *   bbSeparation
         *******************************************************************************/
         enum MatchType
         {
@@ -44,48 +46,58 @@ class BaseLineMgr : public mgr::HistMgr,
             //Mistag : not b
         };
        
-        TLorentzVector GetLepP4(const int&);
-        TLorentzVector GetJetP4(const int&);
-        float GetIsoLepCharge(const int& idx);
-
-        std::tuple<double, double, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
-        bool                            isGoodEvt( checkEvtTool& evt ){ return evt.isGoodEvt( _sample->RunNo(), _sample->LumiNo() ); }
-
         BaseLineMgr::MatchType  bbSeparation( const int&, const int&, const int& );
-        double GetLeptonicM(const int&, const int&);
+        
+        /*******************************************************************************
+        *   Basic RECO
+        *******************************************************************************/
+        bool IsGoodEvt( checkEvtTool& );
 
         /*******************************************************************************
         *   Vertex & HLT selection
         *******************************************************************************/
-        bool passHLT( const std::vector<int>& );
-        bool passVertex();
-        bool isGoodPVtx();
+        bool IsGoodPVtx();
 
         /*******************************************************************************
         *   Jet selection
         *******************************************************************************/
-        void jetSmeared();
-        bool passJet();
-        bool passBJet();
-        bool passFullJet( std::vector<int>&, std::vector<int>&, int& );
+        //Jet energy resolution correction
+        unsigned bitconv(const float& x);
+        bool IsWellMatched();
+        double MakeScaled();
+        double MakeSmeared();
+        void JERCorr();
+        
+        bool PassJetLooseID();
+        bool PassJetKinematic();
+        bool IsSelJet();
+        bool PassBJet();
 
         /*******************************************************************************
         *   Muon selection
         *******************************************************************************/
-        bool passMuLoose();
-        bool passMuTight();
-        bool passFullMuon( std::vector<int>& );
+        bool PassMuLooseID();
+        bool PassMuLooseKinematic();
+        bool PassMuLooseISO();
+        bool IsLooseMu();
 
+        bool PassMuTightID();
+        bool PassMuTightKinematic();
+        bool PassMuTightISO();
+        bool IsTightMu();
+        
         /*******************************************************************************
         *   Electron selection
         *******************************************************************************/
-        bool passElLoose();
+        bool PassImpactParameter();
+        
+        bool PassElLooseID();
+        bool PassElLooseKinematic();
+        bool IsLooseEl();
 
-        /*******************************************************************************
-        *   Pre-selection
-        *******************************************************************************/
-        bool preJet();
-        bool preMuon();
+        bool PassElTightID();
+        bool PassElTightKinematic();
+        bool IsTightEl();
 
         /*******************************************************************************
         *   Event looping
@@ -100,9 +112,7 @@ class BaseLineMgr : public mgr::HistMgr,
         //PU weight
         void RegisterWeight();
         float GetPUWeight(){ return _puweight; }
-        int nPU(){ return _sample->Evt().nPU[0];}
-        int nVtx(){ return _sample->Vsize(); }
-        float GenWeight() { return _sample->Gen().Weight; }
+        int nVtx(){ return Vsize(); }
 
         //B-tagging weight
         void InitBtagWeight( const std::string&, const std::string& );
@@ -113,7 +123,6 @@ class BaseLineMgr : public mgr::HistMgr,
 
     private:
 
-        std::unique_ptr<mgr::SampleMgr> _sample;
         TChain* _ch;
 
         float  _puweight;
