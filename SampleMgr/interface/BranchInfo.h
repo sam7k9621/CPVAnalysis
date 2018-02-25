@@ -984,7 +984,7 @@ class JetInfo {
             root->SetBranchAddress( ( name + ".JERPt" ).c_str(),                                        &JERPt[ 0 ] );
             root->SetBranchAddress( ( name + ".JERPhi" ).c_str(),                                       &JERPhi[ 0 ] );
             root->SetBranchAddress( ( name + ".JERScale" ).c_str(),                                     &JERScale[ 0 ] );
-            
+
             root->SetBranchAddress( ( name + ".Mass" ).c_str(),                                         &Mass[ 0 ] );
             root->SetBranchAddress( ( name + ".Area" ).c_str(),                                         &Area[ 0 ] );
             root->SetBranchAddress( ( name + ".NSubjets" ).c_str(),                                     &NSubjets[ 0 ] );

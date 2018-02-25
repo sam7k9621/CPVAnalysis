@@ -12,7 +12,6 @@ Selector::Selector( const string& subdir, const string& json ) :
 {
 }
 
-
 Selector::~Selector()
 {
     delete _sample;
@@ -36,11 +35,12 @@ Selector::GetResultsName( const string& type, const string& prefix )
         ans.erase( ans.begin() );
     }
 
-    if( type == ""){
-        return ResultsDir() / ( prefix + ans);
+    if( type == "" ){
+        return ResultsDir() / ( prefix + ans );
     }
-    else
+    else{
         return ResultsDir() / ( prefix + ans + "." + type );
+    }
 }
 
 string
@@ -51,14 +51,13 @@ Selector::Discript( TH1* h )
     return regex_replace( h->GetName(), pattern, "" );
 }
 
-
 /*******************************************************************************
 *   Pre-selection
 *******************************************************************************/
-bool 
-Selector::IsGoodEvt(checkEvtTool& evt)
+bool
+Selector::IsGoodEvt( checkEvtTool& evt )
 {
-    return _sample->IsGoodEvt(evt);
+    return _sample->IsGoodEvt( evt );
 }
 
 void
@@ -80,11 +79,11 @@ Selector::PassVertex()
 
     return false;
 }
-    
+
 bool
-Selector::PassHLT(const vector<int>& hlt)
+Selector::PassHLT( const vector<int>& hlt )
 {
-    return _sample->PassHLT(hlt);
+    return _sample->PassHLT( hlt );
 }
 
 bool
@@ -107,17 +106,17 @@ Selector::PreLep()
     return false;
 }
 
-bool 
+bool
 Selector::PreSelection()
 {
-    return PreJet() && PreLep() ;
+    return PreJet() && PreLep();
 }
 
 /*******************************************************************************
 *   Pre-selection
 *******************************************************************************/
 bool
-Selector::PassFullLep( vector<int>& lepidx)
+Selector::PassFullLep( vector<int>& lepidx )
 {
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
@@ -127,7 +126,7 @@ Selector::PassFullLep( vector<int>& lepidx)
             continue;
         }
 
-        if( _sample->IsLooseMu ()|| _sample->IsLooseEl() ){
+        if( _sample->IsLooseMu() || _sample->IsLooseEl() ){
             return false;
         }
     }
@@ -136,7 +135,7 @@ Selector::PassFullLep( vector<int>& lepidx)
 }
 
 bool
-Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx)
+Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
     for( int j = 0; j < _sample->Jsize(); j++ ){
         _sample->SetIndex( j );
@@ -145,7 +144,7 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
         if( !_sample->IsIsoLepton( lepidx, j ) ){
             continue;
         }
-        
+
         int mask = 0x01;
 
         if( _sample->IsSelJet() ){
@@ -168,18 +167,18 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
 }
 
 std::tuple<double, double, int>
-Selector::GetChi2Info(const vector<int>& jetidx, const vector<int>& bjetidx)
+Selector::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
 {
     vector<TLorentzVector> jethandle;
 
     for( const auto& j : jetidx ){
-        jethandle.push_back( _sample->GetJetP4(j) );
+        jethandle.push_back( _sample->GetJetP4( j ) );
     }
 
     vector<TLorentzVector> bjethandle;
 
     for( const auto& b : bjetidx ){
-        bjethandle.push_back( _sample->GetJetP4(b) );
+        bjethandle.push_back( _sample->GetJetP4( b ) );
     }
 
     // Mass constrain method - find hadronic b
@@ -208,12 +207,12 @@ Selector::GetChi2Info(const vector<int>& jetidx, const vector<int>& bjetidx)
 }
 
 double
-Selector::GetLeptonicM(const int& lidx, const int& bidx)
+Selector::GetLeptonicM( const int& lidx, const int& bidx )
 {
-    TLorentzVector lep  = _sample->GetLepP4(lidx);
-    TLorentzVector bjet = _sample->GetJetP4(bidx);
+    TLorentzVector lep  = _sample->GetLepP4( lidx );
+    TLorentzVector bjet = _sample->GetJetP4( bidx );
 
-    return (lep + bjet ).M();
+    return ( lep + bjet ).M();
 }
 
 /*******************************************************************************
@@ -229,13 +228,13 @@ Selector::process( const int& total, const int& progress )
 }
 
 void
-Selector::ChangeFile(const string& file)
+Selector::ChangeFile( const string& file )
 {
     ChangeJSON( SettingsDir() / file );
 }
 
-void 
-Selector::GetEntry(const int& i)
+void
+Selector::GetEntry( const int& i )
 {
-    _sample->GetEntry(i);
+    _sample->GetEntry( i );
 }

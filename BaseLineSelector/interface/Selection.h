@@ -7,13 +7,13 @@
 *   Global function
 *******************************************************************************/
 extern Selector& PreMgr( const std::string& = "", const string& = "" );
-extern Selector& FullMgr( const std::string& = "", const string& = "");
+extern Selector& FullMgr( const std::string& = "", const string& = "" );
 
 /*******************************************************************************
 *   PreCut
 *******************************************************************************/
 extern void MakePreCut();
-extern void PreCut(bool);
+extern void PreCut( bool );
 
 /*******************************************************************************
 *   PreCut

@@ -1,5 +1,5 @@
 #include "CPVAnalysis/CompareDataMC/interface/Histor.h"
-
+#include "TFile.h"
 using namespace std;
 
 /*******************************************************************************
@@ -13,7 +13,6 @@ Histor::Histor( const string& subdir, const string& json ) :
     _sample = NULL;
 }
 
-
 Histor::~Histor()
 {
     delete _sample;
@@ -22,7 +21,7 @@ Histor::~Histor()
 void
 Histor::AddSample( const string& sample, TChain* ch )
 {
-    _sample = new BaseLineMgr( ch, sample ) ;
+    _sample = new BaseLineMgr( ch, sample );
 }
 
 /*******************************************************************************
@@ -37,11 +36,12 @@ Histor::GetResultsName( const string& type, const string& prefix )
         ans.erase( ans.begin() );
     }
 
-    if( type == ""){
-        return ResultsDir() / ( prefix + ans);
+    if( type == "" ){
+        return ResultsDir() / ( prefix + ans );
     }
-    else
+    else{
         return ResultsDir() / ( prefix + ans + "." + type );
+    }
 }
 
 string
@@ -62,7 +62,7 @@ Histor::AddHist(
     const double  x_upper
     )
 {
-    _sample->AddHist(label, xtitle, ytitle, bin_size, x_lower, x_upper);
+    _sample->AddHist( label, xtitle, ytitle, bin_size, x_lower, x_upper );
 }
 
 void
@@ -78,8 +78,9 @@ Histor::AddHist2D(
     const double       ymax
     )
 {
-    _sample->AddHist2D(label, xtitle, ytitle, xbin, xmin, xmax, ybin, ymin, ymax);
+    _sample->AddHist2D( label, xtitle, ytitle, xbin, xmin, xmax, ybin, ymin, ymax );
 }
+
 /*******************************************************************************
 *   Looping event
 *******************************************************************************/
@@ -93,43 +94,67 @@ Histor::process( const int& total, const int& progress )
 }
 
 void
-Histor::ChangeFile(const string& file)
+Histor::ChangeFile( const string& file )
 {
     ChangeJSON( SettingsDir() / file );
 }
 
-void 
-Histor::GetEntry(const int& i)
+void
+Histor::GetEntry( const int& i )
 {
-    _sample->GetEntry(i);
+    _sample->GetEntry( i );
 }
 
 /*******************************************************************************
 *   Weight
 *******************************************************************************/
-void 
-Histor::InitBtagWeight(const string& wp, const string& type)
+void
+Histor::InitBtagWeight( const string& wp, const string& type )
 {
-    _sample->InitBtagWeight( wp, type);
-}
-
-double 
-Histor::BtagScaleFactor( BTagEntry::OperatingPoint op, const int& idx)
-{
-    return _sample->BtagScaleFactor(op, idx);
+    _sample->InitBtagWeight( wp, type );
 }
 
 double
-Histor::GetSFTH2( TH2* hist, const int& idx )
+Histor::BtagScaleFactor( BTagEntry::OperatingPoint op, const int& idx )
 {
-    return _sample->GetSFTH2(hist, idx);
+    return _sample->BtagScaleFactor( op, idx );
+}
+
+double
+Histor::GetSF( TH2* hist, const int& idx )
+{
+    return _sample->GetSFTH2( hist, idx );
+}
+
+TH2*
+Histor::GetSFHist( const string& tag )
+{
+    string filename = mgr::GetSingle<string>( "file", GetSubTree( tag ) );
+    string title    = mgr::GetSingle<string>( "title", GetSubTree( tag ) );
+
+    TFile* f = TFile::Open( filename.c_str() );
+    TH2* h   = (TH2*)( f->Get( title.c_str() )->Clone() );
+    h->SetDirectory( 0 );
+    f->Close();
+
+    return h;
+}
+
+void
+Histor::WeightMC( const string& sample )
+{
+    double lumi    = GetSingleData<double>( "lumi" );
+    double xs      = mgr::GetSingle<double>( "cross_section", GetSubTree( sample ) );
+    double gen_num = mgr::GetSingle<double>( "gen_num", GetSubTree( sample ) );
+
+    Scale( ( lumi * xs ) / gen_num );
 }
 
 /*******************************************************************************
 *   Weight
 *******************************************************************************/
-BaseLineMgr::MatchType  
-Histor::bbSeparation( const int& hb, const int& lb, const int& lep)
+BaseLineMgr::MatchType
+Histor::bbSeparation( const int& hb, const int& lb, const int& lep )
 {
-    return _sample->bbSeparation(hb, lb, lep);
+    return _sample->bbSeparation( hb, lb, lep );
 }

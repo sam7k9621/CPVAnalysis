@@ -5,33 +5,27 @@ import sys
 import argparse
 
 dataset = [
-    "runB_1", "runB_2", "runB_3", "runB_4", "runB_5",
-    "runC_1", "runC_2",
-    "runD_1", "runD_2", "runD_3",
-    "runE_1", "runE_2", "runE_3",
-    "runF_1", "runF_2",
-    "runG_1", "runG_2", "runG_3", "runG_4", "runG_5",
-    "runH_1", "runH_2", "runH_3", "runH_4", "runH_5",
-    "TTbar_1", "TTbar_2", "TTbar_3", "TTbar_4", "TTbar_5", "TTbar_6",
-    "SingleTop_s-ch_1",
-    "SingleTop_t-ch_1", "SingleTop_t-ch_2", "SingleTop_t-ch_3", "SingleTop_t-ch_4", "SingleTop_t-ch_5",
-    "SingleTop_t-ch_anti_1", "SingleTop_t-ch_anti_2",
-    "SingleTop_tW_1",
-    "SingleTop_tW_anti_1",
-    "DYJet_HT-100to200_1",
-    "DYJet_HT-200to400_1",
-    "DYJet_HT-400to600_1",
-    "DYJet_HT-600to800_1",
-    "DYJet_HT-800to1200_1",
-    "DYJet_HT-1200to2500_1",
-    "DYJet_HT-2500toInf_1",
-    "VV_WW_1",
-    "VV_WZ_1",
-    "VV_ZZ_1",
-    "WJet_Pt-100to250_1",
-    "WJet_Pt-250to400_1",
-    "WJet_Pt-400to600_1",
-    "WJet_Pt-600toInf_1"
+        "DYJet_HT-100to200",
+        "DYJet_HT-1200to2500",
+        "DYJet_HT-200to400",
+        "DYJet_HT-2500toInf",
+        "DYJet_HT-400to600",
+        "DYJet_HT-600to800",
+        "DYJet_HT-800to1200",
+        "SingleTop_s-ch",
+        "SingleTop_t-ch",
+        "SingleTop_t-ch_anti",
+        "SingleTop_tW",
+        "SingleTop_tW_anti",
+        "TTbar",
+        "VV_WW",
+        "VV_WZ",
+        "VV_ZZ",
+        "WJet_Pt-100to250",
+        "WJet_Pt-250to400",
+        "WJet_Pt-400to600",
+        "WJet_Pt-600toInf",
+        "Data"
     ]
 
 qsub ="""
@@ -45,13 +39,13 @@ qsub ="""
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
 
 cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
-PreCut -l muon -s {0}
+MakeHist -l muon -s {0}
 """
 
 def main(args):
 
     parser = argparse.ArgumentParser(
-            "Options for updating a HLTList file"
+            "Submit job for FullCut"
             )
 
     parser.add_argument(
@@ -69,7 +63,7 @@ def main(args):
     for data in dataset :
 
         if opt.test :
-           cmd = "precut -c -t -l muon -s {0}".format(data)
+           cmd = "FullCut -c -t -l muon -s {0}".format(data)
            print '>> Processing {}'.format(data)
            os.system(cmd)
 

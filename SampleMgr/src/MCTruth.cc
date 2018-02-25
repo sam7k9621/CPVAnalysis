@@ -4,18 +4,17 @@
 using namespace std;
 
 namespace mgr{
-
     int
     SampleMgr::GetPartonID( const int& idx )
     {
-        return _gen.PdgID[ MCTruthJet(idx) ];
+        return _gen.PdgID[ MCTruthJet( idx ) ];
     }
 
     int
     SampleMgr::MCTruthJet( const int& idx )
     {
-        //Using GenParton because GenParton represents the quark level
-        //(to identify b quark)
+        // Using GenParton because GenParton represents the quark level
+        // (to identify b quark)
         return MatchGenlevel( _jet.GenEta[ idx ], _jet.GenPhi[ idx ] );
     }
 
@@ -23,7 +22,7 @@ namespace mgr{
     SampleMgr::MatchGenlevel( const float& eta, const float& phi )
     {
         double deltaR = INT_MAX;
-        int    idx    = -1;
+        int idx       = -1;
 
         for( int i = 0; i < Gsize(); i++ ){
             double deta = eta - _gen.Eta[ i ];
@@ -35,6 +34,7 @@ namespace mgr{
                 idx    = i;
             }
         }
+
         return idx;
     }
 }

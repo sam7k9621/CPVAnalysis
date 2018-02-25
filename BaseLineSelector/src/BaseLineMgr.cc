@@ -4,6 +4,7 @@
 #include <string>
 using namespace std;
 using namespace mgr;
+
 /*******************************************************************************
 *   Class initialization
 *******************************************************************************/
@@ -11,7 +12,7 @@ BaseLineMgr::BaseLineMgr( TChain* ch, const string& sample ) :
     SampleMgr( ch ),
     HistMgr( sample ),
     Hist2DMgr( sample ),
-    _ch(ch)
+    _ch( ch )
 {
     _calib = NULL;
 }
@@ -27,30 +28,34 @@ BaseLineMgr::~BaseLineMgr()
 BaseLineMgr::MatchType
 BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& lepidx )
 {
-    //hadronic b charge equals to muon, and vice versa
+    // hadronic b charge equals to muon, and vice versa
     float charge = GetLepCharge( lepidx );
     float had_id = GetPartonID( had_b );
     float lep_id = GetPartonID( lep_b );
 
-    if( had_id == 0 || lep_id == 0)
+    if( had_id == 0 || lep_id == 0 ){
         return Nomatched;
+    }
 
-    if( fabs(had_id) != 5 || fabs(lep_id) != 5  )
+    if( fabs( had_id ) != 5 || fabs( lep_id ) != 5 ){
         return Mistag;
+    }
 
-    if( (had_id * charge) > 0 || (lep_id * charge) < 0)
+    if( ( had_id * charge ) > 0 || ( lep_id * charge ) < 0 ){
         return Misid;
-    else
+    }
+    else{
         return Correct;
+    }
 }
 
 /*******************************************************************************
 *   Basic RECO
 *******************************************************************************/
-bool 
-BaseLineMgr::IsGoodEvt( checkEvtTool& evt)
+bool
+BaseLineMgr::IsGoodEvt( checkEvtTool& evt )
 {
-    return evt.isGoodEvt( RunNo(), LumiNo() ); 
+    return evt.isGoodEvt( RunNo(), LumiNo() );
 }
 
 /*******************************************************************************
@@ -60,9 +65,9 @@ bool
 BaseLineMgr::IsGoodPVtx()
 {
     return !( IsFake() ) &&
-              Ndof() > 4 &&
-              AbsZ() < 24 &&
-              Rho() < 2
+           Ndof() > 4 &&
+           AbsZ() < 24 &&
+           Rho() < 2
     ;
 }
 
@@ -75,21 +80,21 @@ BaseLineMgr::bitconv( const float& x )
     const void* temp = &x;
     return *( (const unsigned*)( temp ) );
 }
-    
+
 bool
 BaseLineMgr::IsWellMatched()
 {
-    //To avoid pile-up jet 
-    //(compare genjet and jet)
+    // To avoid pile-up jet
+    // (compare genjet and jet)
     const double res = JERPt();
-    double deta = JetEta() - GenJetEta();
-    double dphi = Phi_mpi_pi( (double)( JetPhi() - GenJetPhi() ) );
-    double delR = TMath::Sqrt( deta * deta + dphi * dphi );
-    
-    if( delR >= 0.4/2. ){
+    double deta      = JetEta() - GenJetEta();
+    double dphi      = Phi_mpi_pi( (double)( JetPhi() - GenJetPhi() ) );
+    double delR      = TMath::Sqrt( deta * deta + dphi * dphi );
+
+    if( delR >= 0.4 / 2. ){
         return false;
     }
-    if( fabs( JetPt() - GenJetPt() ) >= 3*res ){
+    if( fabs( JetPt() - GenJetPt() ) >= 3 * res ){
         return false;
     }
 
@@ -100,10 +105,10 @@ double
 BaseLineMgr::MakeScaled()
 {
     const double resscale = JERScale();
-    const double newpt = std::max( 0.0, GenJetPt() + resscale*( JetPt() - GenJetPt() ) );
-    const double scale = newpt / JetPt();
+    const double newpt    = std::max( 0.0, GenJetPt() + resscale * ( JetPt() - GenJetPt() ) );
+    const double scale    = newpt / JetPt();
 
-   return scale;
+    return scale;
 }
 
 double
@@ -112,46 +117,46 @@ BaseLineMgr::MakeSmeared()
     // Getting normal
     const double res   = JERPt();
     const double ressf = JERScale();
-    const double width = ressf > 1 ? sqrt( ressf*ressf-1 ) * res : 0;
-    
+    const double width = ressf > 1 ? sqrt( ressf * ressf - 1 ) * res : 0;
+
     // Generating random number
     // https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h
     std::default_random_engine gen( bitconv( JetPhi() ) );
     std::normal_distribution<double> myrand( JetPt(), width );
     const double newpt = myrand( gen );
-    
+
     // Anonymouns namespace require (bug in gcc530)
-    const double scale = newpt/JetPt();
-    
+    const double scale = newpt / JetPt();
+
     if( scale <= 0 || ::isnan( scale ) ){
-      return 1;
-    } 
-    else {
-      return scale;
+        return 1;
+    }
+    else{
+        return scale;
     }
 }
-    
-void 
+
+void
 BaseLineMgr::JERCorr()
 {
     int js = Jsize();
-    
-    for(int i=0; i<js; i++){
-        SetIndex(i);
-        
+
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+
         double scale = 1;
         if( IsWellMatched() ){
-            scale =  MakeScaled();
+            scale = MakeScaled();
         }
         else{
             scale = MakeSmeared();
         }
-        TLorentzVector jetp4 = GetJetP4(i); 
+        TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
         SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
 }
-    
+
 bool
 BaseLineMgr::PassJetLooseID()
 {
@@ -160,7 +165,7 @@ BaseLineMgr::PassJetLooseID()
         JetNHF() <= 0.99 &&
         JetNEF() <= 0.99 &&
         JetNConstituents() > 1 &&
-        
+
         JetAbsEta() < 2.4 &&
         JetCHF() > 0 &&
         JetNCH() > 0 &&
@@ -168,23 +173,20 @@ BaseLineMgr::PassJetLooseID()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::PassJetKinematic()
 {
-        
-    return 
-        JetPt() > 30 &&
-        JetAbsEta() < 2.4
-        ;
+    return JetPt() > 30 &&
+           JetAbsEta() < 2.4
+    ;
 }
 
 bool
 BaseLineMgr::IsSelJet()
 {
-    return
-        PassJetLooseID() &&
-        PassJetKinematic()
-        ;
+    return PassJetLooseID() &&
+           PassJetKinematic()
+    ;
 }
 
 bool
@@ -200,76 +202,70 @@ BaseLineMgr::PassBJet()
 bool
 BaseLineMgr::PassMuLooseID()
 {
-    return 
-        IsPFMuon() &&
-        ( IsGlobalMuon() || IsTrackerMuon() )
-        ;
+    return IsPFMuon() &&
+           ( IsGlobalMuon() || IsTrackerMuon() )
+    ;
 }
-    
+
 bool
 BaseLineMgr::PassMuLooseKinematic()
 {
-    return 
-        LepPt() > 15 &&
-        LepAbsEta() < 2.4
-        ;
+    return LepPt() > 15 &&
+           LepAbsEta() < 2.4
+    ;
 }
 
 bool
 BaseLineMgr::PassMuLooseISO()
 {
-    return RelIsoR04() < 0.25 ;
+    return RelIsoR04() < 0.25;
 }
 
 bool
 BaseLineMgr::IsLooseMu()
 {
-    return 
-        PassMuLooseID() &&
-        PassMuLooseKinematic() &&
-        PassMuLooseISO()
-        ;
+    return PassMuLooseID() &&
+           PassMuLooseKinematic() &&
+           PassMuLooseISO()
+    ;
 }
 
 bool
 BaseLineMgr::PassMuTightID()
 {
-    return 
-        IsGlobalMuon() &&
-        IsPFMuon() &&
-        MuGlobalNormalizedChi2() < 10 &&
-        MuNMuonhits() > 0 &&
-        MuNMatchedStations() > 1 &&
-        AbsMuInnerTrackDxy_PV() < 0.2 &&
-        AbsMuInnerTrackDz() < 0.5 &&
-        MuNPixelLayers() > 0 &&
-        MuNTrackLayersWMeasurement() > 5
-        ;
+    return IsGlobalMuon() &&
+           IsPFMuon() &&
+           MuGlobalNormalizedChi2() < 10 &&
+           MuNMuonhits() > 0 &&
+           MuNMatchedStations() > 1 &&
+           AbsMuInnerTrackDxy_PV() < 0.2 &&
+           AbsMuInnerTrackDz() < 0.5 &&
+           MuNPixelLayers() > 0 &&
+           MuNTrackLayersWMeasurement() > 5
+    ;
 }
 
 bool
 BaseLineMgr::PassMuTightKinematic()
 {
-    return 
-        LepPt() > 30 &&
-        LepAbsEta() < 2.1
-        ;
+    return LepPt() > 30 &&
+           LepAbsEta() < 2.1
+    ;
 }
 
 bool
 BaseLineMgr::PassMuTightISO()
 {
-    return RelIsoR04() < 0.15 ;
+    return RelIsoR04() < 0.15;
 }
 
 bool
 BaseLineMgr::IsTightMu()
 {
-    return
-        PassMuTightID() &&
-        PassMuTightKinematic() &&
-        PassMuTightISO()
-        ;
+    return PassMuTightID() &&
+           PassMuTightKinematic() &&
+           PassMuTightISO()
+    ;
 }
 
 /*******************************************************************************
@@ -279,16 +275,20 @@ bool
 BaseLineMgr::PassImpactParameter()
 {
     if( LepAbsEta() < 1.45 ){
-        if( ElAbsTrackDxy_PV() > 0.05 )
+        if( ElAbsTrackDxy_PV() > 0.05 ){
             return false;
-        if( ElAbsTrackDz() > 0.10) 
+        }
+        if( ElAbsTrackDz() > 0.10 ){
             return false;
+        }
     }
     else{
-        if( ElAbsTrackDxy_PV() > 0.10 )
+        if( ElAbsTrackDxy_PV() > 0.10 ){
             return false;
-        if( ElAbsTrackDz() > 0.20) 
+        }
+        if( ElAbsTrackDz() > 0.20 ){
             return false;
+        }
     }
 
     return true;
@@ -299,66 +299,61 @@ BaseLineMgr::PassElLooseID()
 {
     return ElIDLoose();
 }
-    
+
 bool
 BaseLineMgr::PassElLooseKinematic()
 {
-    return
-        LepPt() > 15 &&
-        LepAbsEta() < 2.4 &&
-        !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
-        ;
+    return LepPt() > 15 &&
+           LepAbsEta() < 2.4 &&
+           !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
+    ;
 }
 
 bool
 BaseLineMgr::IsLooseEl()
 {
-    return 
-        PassImpactParameter() &&
-        PassElLooseID() &&
-        PassElLooseKinematic()
-        ;
+    return PassImpactParameter() &&
+           PassElLooseID() &&
+           PassElLooseKinematic()
+    ;
 }
 
-bool 
+bool
 BaseLineMgr::PassElTightID()
 {
     return ElIDTight();
 }
 
-bool 
+bool
 BaseLineMgr::PassElTightKinematic()
 {
-    return 
-        LepPt() > 30 &&
-        LepAbsEta() < 2.1 &&
-        !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
-        ;
-
+    return LepPt() > 30 &&
+           LepAbsEta() < 2.1 &&
+           !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
+    ;
 }
 
 bool
 BaseLineMgr::IsTightEl()
 {
-    return 
-        PassImpactParameter() &&
-        PassElTightID() &&
-        PassElTightKinematic()
-        ;
+    return PassImpactParameter() &&
+           PassElTightID() &&
+           PassElTightKinematic()
+    ;
 }
 
 /*******************************************************************************
 *   Event looping
 *******************************************************************************/
-void 
-BaseLineMgr::GetEntry(const int& i)
+void
+BaseLineMgr::GetEntry( const int& i )
 {
-    _ch->GetEntry(i);
+    _ch->GetEntry( i );
 }
 
-TTree* 
+TTree*
 BaseLineMgr::CloneTree()
 {
-    _ch->GetEntry(0);
-    return (TTree*)_ch->GetTree()->CloneTree( 0 ); 
+    _ch->GetEntry( 0 );
+    return (TTree*)_ch->GetTree()->CloneTree( 0 );
 }

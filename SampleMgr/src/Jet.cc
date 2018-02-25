@@ -1,62 +1,61 @@
 #include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
-#include <random>
 #include <iostream>
+#include <random>
 using namespace std;
 
 namespace mgr{
-
     /*******************************************************************************
     * Jet info
     *******************************************************************************/
-    float 
+    float
     SampleMgr::JERPt()
     {
         return _jet.JERPt[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::JERScale()
     {
         return _jet.JERScale[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::JetPt()
     {
         return _jet.Pt[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::JetAbsEta()
     {
-        return fabs( _jet.Eta[ _idx ] ); 
+        return fabs( _jet.Eta[ _idx ] );
     }
 
-    float 
+    float
     SampleMgr::JetEta()
     {
         return _jet.Eta[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::JetPhi()
     {
         return _jet.Phi[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::GenJetPt()
     {
         return _jet.GenJetPt[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::GenJetEta()
     {
         return _jet.GenJetEta[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::GenJetPhi()
     {
         return _jet.GenJetPhi[ _idx ];
@@ -97,18 +96,18 @@ namespace mgr{
     {
         return _jet.CEF[ _idx ];
     }
-    
+
     TLorentzVector
-    SampleMgr::GetJetP4(const int& i)
+    SampleMgr::GetJetP4( const int& i )
     {
         return TLorentzVector( _jet.Px[ i ], _jet.Py[ i ], _jet.Pz[ i ], _jet.Energy[ i ] );
     }
 
     // Jet smeared
     void
-    SampleMgr::SetJetPtEta(const float& pt, const float& eta)
+    SampleMgr::SetJetPtEta( const float& pt, const float& eta )
     {
-        _jet.Pt[ _idx ] = pt;
+        _jet.Pt[ _idx ]  = pt;
         _jet.Eta[ _idx ] = eta;
     }
 

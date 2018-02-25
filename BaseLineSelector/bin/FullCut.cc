@@ -9,12 +9,10 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
-        ( "chi2,u",   opt::value<double>(), "chi2 upper cut" )
         ( "count,c", "count events" )
-        ( "pileup,p", "pile-up reweight" )
         ( "test,t", "run testing events number" )
     ;
-    FullMgr( "BaseLineSelector", "SampleInfo.json" ).AddOptions( de );
+    FullMgr( "BaseLineSelector" ).AddOptions( de );
     const int run = FullMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){
@@ -25,9 +23,8 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    //sample should always be the last term for data sorting
-    FullMgr().SetFileName( { "lepton", "sample" } ); 
-    FullMgr().AddCutName ( { "test", "pileup" } );
-    
+    FullMgr().SetFileName( { "lepton", "sample" } );
+    FullMgr().AddCutName( { "test" } );
+
     MakeFullCut();
 }

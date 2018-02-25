@@ -2,7 +2,6 @@
 using namespace std;
 
 namespace mgr{
-
     /*******************************************************************************
     *  Lep common info
     *******************************************************************************/
@@ -15,9 +14,9 @@ namespace mgr{
     float
     SampleMgr::LepEta()
     {
-        return _lep.Eta[ _idx ] ;
+        return _lep.Eta[ _idx ];
     }
-    
+
     float
     SampleMgr::LepAbsEta()
     {
@@ -31,10 +30,11 @@ namespace mgr{
     }
 
     TLorentzVector
-    SampleMgr::GetLepP4(const int& i)
+    SampleMgr::GetLepP4( const int& i )
     {
         return TLorentzVector( _lep.Px[ i ], _lep.Py[ i ], _lep.Pz[ i ], _lep.Energy[ i ] );
     }
+
     /*******************************************************************************
     *  Muon selection info
     *  https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonIdRun2#Tight_Muon
@@ -104,6 +104,7 @@ namespace mgr{
     {
         return ( _lep.MuType[ _idx ] ) & 0x04;
     }
+
     /*******************************************************************************
     *   Electron selection
     *   https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Cut_Based_Electron_ID_for_Run_2
@@ -121,13 +122,13 @@ namespace mgr{
         return _lep.EgammaCutBasedEleIdTIGHT[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::ElAbsTrackDz()
     {
         return fabs( _lep.ElTrackDz[ _idx ] );
     }
 
-    float 
+    float
     SampleMgr::ElAbsTrackDxy_PV()
     {
         return fabs( _lep.ElTrackDxy_PV[ _idx ] );

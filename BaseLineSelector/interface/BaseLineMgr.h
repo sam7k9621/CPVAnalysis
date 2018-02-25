@@ -4,21 +4,21 @@
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
-#include "ManagerUtils/HistMgr/interface/HistMgr.h"
 #include "ManagerUtils/HistMgr/interface/Hist2DMgr.h"
+#include "ManagerUtils/HistMgr/interface/HistMgr.h"
 
-#include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
 #include "CPVAnalysis/BaseLineSelector/interface/checkEvtTool.h"
+#include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
 
 #include "TChain.h"
-#include "TTree.h"
 #include "TH2.h"
+#include "TTree.h"
 
 #include <string>
 #include <tuple>
 #include <vector>
 
-class BaseLineMgr : public mgr::SampleMgr,  
+class BaseLineMgr : public mgr::SampleMgr,
                     public mgr::HistMgr,
                     public mgr::Hist2DMgr {
     public:
@@ -26,7 +26,7 @@ class BaseLineMgr : public mgr::SampleMgr,
         /*******************************************************************************
         *   Class initialization
         *******************************************************************************/
-        BaseLineMgr( TChain*, const std::string& = "");
+        BaseLineMgr( TChain*, const std::string& = "" );
         ~BaseLineMgr();
 
         BaseLineMgr( const BaseLineMgr& )            = delete;
@@ -41,13 +41,13 @@ class BaseLineMgr : public mgr::SampleMgr,
             Misid     = 2,
             Mistag    = 3,
             Nomatched = 4
-            //Correct: correct
-            //Misid  : both are b, but wrong charge
-            //Mistag : not b
+                        // Correct: correct
+                        // Misid  : both are b, but wrong charge
+                        // Mistag : not b
         };
-       
-        BaseLineMgr::MatchType  bbSeparation( const int&, const int&, const int& );
-        
+
+        BaseLineMgr::MatchType bbSeparation( const int&, const int&, const int& );
+
         /*******************************************************************************
         *   Basic RECO
         *******************************************************************************/
@@ -61,13 +61,13 @@ class BaseLineMgr : public mgr::SampleMgr,
         /*******************************************************************************
         *   Jet selection
         *******************************************************************************/
-        //Jet energy resolution correction
-        unsigned bitconv(const float& x);
-        bool IsWellMatched();
-        double MakeScaled();
-        double MakeSmeared();
-        void JERCorr();
-        
+        // Jet energy resolution correction
+        unsigned bitconv( const float& x );
+        bool     IsWellMatched();
+        double   MakeScaled();
+        double   MakeSmeared();
+        void     JERCorr();
+
         bool PassJetLooseID();
         bool PassJetKinematic();
         bool IsSelJet();
@@ -85,12 +85,12 @@ class BaseLineMgr : public mgr::SampleMgr,
         bool PassMuTightKinematic();
         bool PassMuTightISO();
         bool IsTightMu();
-        
+
         /*******************************************************************************
         *   Electron selection
         *******************************************************************************/
         bool PassImpactParameter();
-        
+
         bool PassElLooseID();
         bool PassElLooseKinematic();
         bool IsLooseEl();
@@ -102,30 +102,30 @@ class BaseLineMgr : public mgr::SampleMgr,
         /*******************************************************************************
         *   Event looping
         *******************************************************************************/
-        void GetEntry(const int&);
-        int  GetEntries(){ return _ch->GetEntries(); }
+        void   GetEntry( const int& );
+        int    GetEntries(){ return _ch->GetEntries(); }
         TTree* CloneTree();
-        
+
         /*******************************************************************************
         *   Event Weighting
         *******************************************************************************/
-        //PU weight
-        void RegisterWeight();
+        // PU weight
+        void  RegisterWeight();
         float GetPUWeight(){ return _puweight; }
-        int nVtx(){ return Vsize(); }
+        int   nVtx()       { return Vsize(); }
 
-        //B-tagging weight
-        void InitBtagWeight( const std::string&, const std::string& );
+        // B-tagging weight
+        void   InitBtagWeight( const std::string&, const std::string& );
         double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
 
-        //ID ISO Trg weight
-        double GetSFTH2(TH2*, const int&);
+        // ID ISO Trg weight
+        double GetSFTH2( TH2*, const int& );
 
     private:
 
         TChain* _ch;
 
-        float  _puweight;
+        float _puweight;
         BTagCalibration* _calib;
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
 };
