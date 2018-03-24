@@ -7,7 +7,6 @@ main( int argc, char* argv[] )
 {
     opt::options_description de( "Command for Pre-selection" );
     de.add_options()
-        ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
@@ -23,7 +22,7 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    PreMgr().SetFileName( { "lepton", "sample" } );
+    PreMgr().SetFileName( { "sample" } );
     PreMgr().AddCutName( { "test" } );
     MakePreCut();
 }

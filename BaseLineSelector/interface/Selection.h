@@ -18,7 +18,8 @@ extern void PreCut( bool );
 /*******************************************************************************
 *   PreCut
 *******************************************************************************/
+extern std::string MakeFileName(bool);
 extern void MakeFullCut();
-extern void FullCut();
+extern void FullCut(bool);
 
 #endif

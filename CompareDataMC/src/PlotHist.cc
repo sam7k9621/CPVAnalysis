@@ -3,60 +3,18 @@
 #include "THStack.h"
 using namespace std;
 
-extern string
-GetName( TH1D* h )
-{
-    string name  = h->GetName();
-    size_t found = name.find( "_" );
-    if( found != std::string::npos ){
-        return name.substr( 0, found );
-    }
-    else{
-        return name;
-    }
-}
-
-extern TH1D*
-SumHist( vector<TH1D*> histlst )
-{
-    TH1D* hist = (TH1D*)histlst[ 0 ]->Clone();
-
-    for( int i = 1; i < (int)histlst.size(); i++ ){
-        hist->Add( histlst[ i ] );
-    }
-
-    return hist;
-}
-
-extern TH2D*
-SumHist2D( vector<TH2D*> histlst )
-{
-    TH2D* hist = (TH2D*)histlst[ 0 ]->Clone();
-
-    for( int i = 1; i < (int)histlst.size(); i++ ){
-        hist->Add( histlst[ i ] );
-    }
-
-    return hist;
-}
-
 extern void
-PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title )
+PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string& entry )
 {
-    cout << "Plotting " << title << endl;
-
     TCanvas* c   = mgr::NewCanvas();
     Color_t x[]  = { kGray + 1, kMagenta + 2, kRed - 7, kOrange + 1, kAzure - 3, kGreen - 6 };
     THStack* bg  = new THStack();
     TLegend* leg = mgr::NewLegend( 0.7, 0.51, 0.83, 0.81 );
     leg->SetLineColor( kWhite );
 
-    cout << "Data " << data->Integral() << endl;
-
     for( int i = 0; i < (int)mclst.size(); i++ ){
         mclst[ i ]->SetLineColor( x[ i ] );
         mclst[ i ]->SetFillColor( x[ i ] );
-        cout << mclst[ i ]->GetName() << " " << mclst[ i ]->Integral() << endl;
         bg->Add( mclst[ i ] );
         leg->AddEntry( mclst[ i ], GetName( mclst[ i ] ).c_str(), "F" );
     }
@@ -72,14 +30,16 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title )
     leg->Draw();
 
     mgr::SetTopPlotAxis( bg );
-    data->SetMaximum( mgr::GetYmax( data ) * 1.2 );
     data->SetLineColor( 1 );
     data->SetLineWidth( 1 );
     data->SetMarkerSize( 0.5 );
     data->SetMarkerStyle( 20 );
-    bg->GetYaxis()->SetTitle( data->GetYaxis()->GetTitle() );
     leg->AddEntry( data, "Data", "le" );
-
+    
+    bg->SetMaximum( mgr::GetYmax( data ) * 1.2 );
+    bg->GetHistogram()->GetXaxis()->SetTitle( data->GetXaxis()->GetTitle() );
+    bg->GetHistogram()->GetYaxis()->SetTitle( data->GetYaxis()->GetTitle() );
+    
     c->cd();
 
     TPad* bot = mgr::NewBottomPad();
@@ -113,11 +73,17 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title )
 
     mgr::DrawCMSLabel( PRELIMINARY );
     mgr::DrawLuminosity( 36814 );
-    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_" + title ) );
+    mgr::LatexMgr latex;
+    latex.SetOrigin( PLOT_X_MIN, PLOT_Y_MAX + TEXT_MARGIN / 2, BOTTOM_LEFT)
+    .WriteLine( entry );
 
     top->SetLogy( kTRUE );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_" + title + "_logy" ) );
 
+    top->SetLogy( kFALSE );
+    SetYTitle( bg->GetHistogram() );
+    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_" + title ) );
+    
     delete leg;
     delete top;
     delete bot;
@@ -137,10 +103,8 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title )
 }
 
 extern void
-PlotMC( vector<TH1D*> mclst, const string& title )
+PlotMC( vector<TH1D*> mclst, const string& title, const string& entry )
 {
-    cout << "Plotting " << title << endl;
-
     TCanvas* c   = mgr::NewCanvas();
     Color_t x[]  = { kGray + 1, kMagenta + 2, kRed - 7, kOrange + 1, kAzure - 3, kGreen - 6 };
     THStack* bg  = new THStack();
@@ -159,18 +123,23 @@ PlotMC( vector<TH1D*> mclst, const string& title )
     bg->Draw( "HIST" );
     leg->Draw();
 
-    mgr::SetAxis( bg );
-    bg->SetMaximum( mgr::GetYmax( bg_sum ) * 1.2 );
-    bg->GetYaxis()->SetTitle( bg_sum->GetYaxis()->GetTitle() );
-    bg->GetXaxis()->SetTitle( bg_sum->GetXaxis()->GetTitle() );
-
-
     mgr::SetSinglePad( c );
+    mgr::SetAxis( bg );
+    bg->SetMaximum( mgr::GetYmax(bg_sum) * 1.2 );
+    bg->GetHistogram()->GetXaxis()->SetTitle( bg_sum->GetXaxis()->GetTitle() );
+    bg->GetHistogram()->GetYaxis()->SetTitle( bg_sum->GetYaxis()->GetTitle() );
+    
     mgr::DrawCMSLabel( SIMULATION );
-    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_" + title ) );
-
+    mgr::LatexMgr latex;
+    latex.SetOrigin( PLOT_X_MIN, PLOT_Y_MAX + TEXT_MARGIN / 2, BOTTOM_LEFT)
+    .WriteLine( entry );
+    
     c->SetLogy( kTRUE );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_" + title + "_logy" ) );
+    
+    c->SetLogy( kFALSE );
+    SetYTitle( bg->GetHistogram() );
+    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_" + title ) );
 
     delete leg;
     delete bg_sum;
@@ -268,12 +237,6 @@ PlotIntegral( TH1D* correct, TH1D* misid, TH1D* mistag, TH1D* nomatched )
     TH1D* eve_eff = new TH1D( "eve_eff", "", 200, 0, 200 );
 
     double total    = correct->Integral() + misid->Integral() + mistag->Integral() + nomatched->Integral();
-    double total_20 = correct->Integral( 1, 20 ) + misid->Integral( 1, 20 ) + mistag->Integral( 1, 20 ) + nomatched->Integral( 1, 20 );
-
-    cout << "cor " << ( (double)cor_eff->Integral( 1, 20 ) ) / total_20 << endl;
-    cout << "tag " << ( (double)tag_eff->Integral( 1, 20 ) ) / total_20 << endl;
-    cout << "ide " << ( (double)ide_eff->Integral( 1, 20 ) ) / total_20 << endl;
-    cout << "nom " << ( (double)nom_eff->Integral( 1, 20 ) ) / total_20 << endl;
 
     for( int i = 1; i <= 200; i++ ){
         double cor = correct->Integral( 1, i );
@@ -364,4 +327,13 @@ Plot2D( vector<TH2D*> mclst )
     }
 
     delete c;
+}
+
+void 
+GetYield( vector<TH1D*> mclst, TH1D* data )
+{
+    for( const auto& h : mclst ){
+        cout<<h->GetName()<<" "<<h->Integral()<<endl;
+    }
+    cout<<"data "<<data->Integral()<<endl;
 }

@@ -47,7 +47,8 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Full-selection
         *******************************************************************************/
-        bool                            PassFullLep( std::vector<int>& );
+        bool                            PassFullEl( std::vector<int>& );
+        bool                            PassFullMu( std::vector<int>& );
         bool                            PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
         std::tuple<double, double, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
         double                          GetLeptonicM( const int&, const int& );

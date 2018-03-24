@@ -116,12 +116,31 @@ Selector::PreSelection()
 *   Pre-selection
 *******************************************************************************/
 bool
-Selector::PassFullLep( vector<int>& lepidx )
+Selector::PassFullEl( vector<int>& lepidx )
 {
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
-        if( _sample->IsTightMu() || _sample->IsTightEl() ){
+        if( _sample->IsTightEl() ){
+            lepidx.push_back( i );
+            continue;
+        }
+
+        if( _sample->IsLooseMu() || _sample->IsLooseEl() ){
+            return false;
+        }
+    }
+
+    return lepidx.size() > 0;
+}
+
+bool
+Selector::PassFullMu( vector<int>& lepidx )
+{
+    for( int i = 0; i < _sample->Lsize(); i++ ){
+        _sample->SetIndex( i );
+
+        if(  _sample->IsTightMu() ){
             lepidx.push_back( i );
             continue;
         }

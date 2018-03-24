@@ -10,12 +10,36 @@ CompMgr( const string& subdir, const string& json )
     return mgr;
 }
 
+extern vector<TH2D*>
+GetLepSFHist( const string& lepton )
+{
+    vector<string> weightlst = CompMgr().GetListData<string>( lepton + "weight" );
+    vector<TH2D*>  lst;
+    for( const auto& w : weightlst ){
+        lst.push_back( CompMgr().GetSFHist( w ) );
+    }
+
+    return lst;
+}
+
+extern double
+GetLepSF(const vector<TH2D*>& weightlst, const int& lephandle)
+{
+    double weight = 1;
+    for(const auto& w : weightlst){
+        weight *= CompMgr().GetSF( w, lephandle );
+    }
+
+    return weight;
+}
+
 extern void
 MakeHist()
 {
     // Initialize file
+    string lepton            = CompMgr().GetOption<string>("lepton");
     string sample            = CompMgr().GetOption<string>( "sample" );
-    vector<string> samplelst = mgr::GetList<string>( "path", CompMgr().GetSubTree( sample ) );
+    vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
     TChain* ch               = new TChain( "root" );
 
     for( const auto& s : samplelst ){
@@ -24,11 +48,8 @@ MakeHist()
 
     CompMgr().AddSample( sample, ch );
     AddHist();
-
-    // Initialize weighting factor
-    TH2* isosfhist = CompMgr().GetSFHist( "isosf" );
-    TH2* idsfhist  = CompMgr().GetSFHist( "idsf" );
-    TH2* trgsfhist = CompMgr().GetSFHist( "trgsf" );
+    
+    vector<TH2D*> lepweightlst = GetLepSFHist( lepton );
     CompMgr().RegisterWeight();
     CompMgr().InitBtagWeight( "bcheck", CompMgr().GetSingleData<string>( "BtagWeight" ) );
 
@@ -55,8 +76,8 @@ MakeHist()
     bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
-                          CompMgr().GetEntry( i );
-                          CompMgr().process( events, i );
+        CompMgr().GetEntry( i );
+        CompMgr().process( events, i );
 
         lep_tmass = ( CompMgr().GetJetP4( lep_b ) + CompMgr().GetLepP4( lephandle ) ).M();
 
@@ -74,9 +95,7 @@ MakeHist()
         *******************************************************************************/
         float puweight  = CompMgr().CheckOption( "pileup" ) ? CompMgr().GetPUWeight() : 1;
         float genweight = is_data ? 1 : CompMgr().GenWeight();
-        double idsf     = is_data ? 1 : CompMgr().GetSF( idsfhist, lephandle );
-        double isosf    = is_data ? 1 : CompMgr().GetSF( isosfhist, lephandle );
-        double trgsf    = is_data ? 1 : CompMgr().GetSF( trgsfhist, lephandle );
+        double lepsf    = is_data ? 1 : GetLepSF( lepweightlst, lephandle );
         double btagSF   = is_data ?
                           1 : CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, had_b ) *
                           CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, lep_b );
@@ -88,7 +107,7 @@ MakeHist()
             genweight = 1;
         }
 
-        double weight = puweight * genweight * btagSF * idsf * isosf * trgsf;
+        double weight = puweight * genweight * btagSF * lepsf;
 
         float nVtx = CompMgr().nVtx();
                           CompMgr().Hist( "had_tmass" )->Fill( had_tmass, weight );
@@ -160,6 +179,7 @@ MakeHist()
         CompMgr().WeightMC( sample );
         cout << ">>Weighting " << sample << endl;
     }
-    CompMgr().AddCutName( { "chi2" } );
     StoreCompare();
+
+    delete ch;
 }

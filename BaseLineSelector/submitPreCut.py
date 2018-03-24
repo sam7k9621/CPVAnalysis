@@ -4,14 +4,27 @@ import os
 import sys
 import argparse
 
-dataset = [
-    "runB_1", "runB_2", "runB_3", "runB_4", "runB_5",
-    "runC_1", "runC_2",
-    "runD_1", "runD_2", "runD_3",
-    "runE_1", "runE_2", "runE_3",
-    "runF_1", "runF_2",
-    "runG_1", "runG_2", "runG_3", "runG_4", "runG_5",
-    "runH_1", "runH_2", "runH_3", "runH_4", "runH_5",
+eldataset = [
+    "el_runB_1", "el_runB_2", "el_runB_3", "el_runB_4", "el_runB_5",
+    "el_runC_1", "el_runC_2",
+    "el_runD_1", "el_runD_2", "el_runD_3",
+    "el_runE_1", "el_runE_2", "el_runE_3",
+    "el_runF_1", "el_runF_2",
+    "el_runG_1", "el_runG_2", "el_runG_3", "el_runG_4", "el_runG_5",
+    "el_runH_1", "el_runH_2", "el_runH_3", "el_runH_4", "el_runH_5"
+    ]
+
+mudataset = [
+    "mu_runB_1", "mu_runB_2", "mu_runB_3", "mu_runB_4", "mu_runB_5",
+    "mu_runC_1", "mu_runC_2",
+    "mu_runD_1", "mu_runD_2", "mu_runD_3",
+    "mu_runE_1", "mu_runE_2", "mu_runE_3",
+    "mu_runF_1", "mu_runF_2",
+    "mu_runG_1", "mu_runG_2", "mu_runG_3", "mu_runG_4", "mu_runG_5",
+    "mu_runH_1", "mu_runH_2", "mu_runH_3", "mu_runH_4", "mu_runH_5"
+    ]
+
+mcdataset = [
     "TTbar_1", "TTbar_2", "TTbar_3", "TTbar_4", "TTbar_5", "TTbar_6",
     "SingleTop_s-ch_1",
     "SingleTop_t-ch_1", "SingleTop_t-ch_2", "SingleTop_t-ch_3", "SingleTop_t-ch_4", "SingleTop_t-ch_5",
@@ -45,19 +58,45 @@ qsub ="""
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
 
 cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
-PreCut -l muon -s {0}
+{0}
 """
+
+def MakeFilename(data):
+    filename = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/PreCut_"
+    return filename + data + ".root"
+
+def MakeCommand(opt, data):
+    prefix = "PreCut "
+
+    if opt.test:
+        prefix += "-c -t "
+
+    return"{0} -s {1}".format(prefix, data)
+
+def GetDatalst(opt):
+    if opt.lepton == "el" :
+        return eldataset
+    elif opt.lepton == "mu" :
+        return mudataset
+    else :
+        return mcdataset
 
 def main(args):
 
     parser = argparse.ArgumentParser(
-            "Options for updating a HLTList file"
+            "Submit jobs for PreCut"
             )
 
     parser.add_argument(
             '-t', '--test',
             help='test for sending jobs',
             action='store_true'
+            )
+
+    parser.add_argument(
+            '-l', '--lepton',
+            help='lepton type',
+            type=str
             )
     try:
         opt = parser.parse_args(args[1:])
@@ -66,22 +105,26 @@ def main(args):
         parser.print_help()
         raise
 
-    for data in dataset :
-
+    for data in GetDatalst(opt) :
         if opt.test :
-           cmd = "precut -c -t -l muon -s {0}".format(data)
+           cmd = MakeCommand(opt, data)
            print '>> Processing {}'.format(data)
            os.system(cmd)
 
-        else:
-            output = open( ".sentJob.sh", 'w' )
-            output.write( qsub.format(data) )
-            output.close()
+        else :
+            if os.path.isfile( MakeFilename(data) ) :
+                print "[Warning] " + data + " is already exist!!!"
+            else :
+                command = MakeCommand(opt, data)
 
-            cmd = "qsub .sentJob.sh -N " + data
-            print ">>Sending {}".format(data)
-            os.system(cmd)
-            os.system("rm .sentJob.sh")
+                output = open( ".sentJob.sh", 'w' )
+                output.write( qsub.format(command) )
+                output.close()
+
+                cmd = "qsub .sentJob.sh -N " + data
+                print ">>Sending {}".format(data)
+                os.system(cmd)
+                os.system("rm .sentJob.sh")
 
 if __name__ == '__main__':
     main(sys.argv)

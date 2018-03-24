@@ -39,7 +39,7 @@ qsub ="""
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
 
 cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
-MakeHist -l muon -s {0}
+MakeHist -l {0} -s {1} -u 20
 """
 
 def main(args):
@@ -53,6 +53,11 @@ def main(args):
             help='test for sending jobs',
             action='store_true'
             )
+    parser.add_argument(
+            '-l', '--lepton',
+            help='lepton type',
+            type=str
+            )
     try:
         opt = parser.parse_args(args[1:])
     except:
@@ -63,13 +68,13 @@ def main(args):
     for data in dataset :
 
         if opt.test :
-           cmd = "FullCut -c -t -l muon -s {0}".format(data)
+           cmd = "MakeHist -c -t -l {0} -s {1}".format(opt.lepton, data)
            print '>> Processing {}'.format(data)
            os.system(cmd)
 
         else:
             output = open( ".sentJob.sh", 'w' )
-            output.write( qsub.format(data) )
+            output.write( qsub.format(opt.lepton, data) )
             output.close()
 
             cmd = "qsub .sentJob.sh -N " + data

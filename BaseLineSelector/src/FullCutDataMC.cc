@@ -9,29 +9,47 @@ FullMgr( const string& subdir, const string& json )
     static Selector mgr( subdir, json );
     return mgr;
 }
+extern string
+MakeFileName(bool is_data)
+{
+    string pos = FullMgr().ResultsDir();
+    string filename = "";
 
+    if( is_data ){
+        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("lepton") + "_run*.root" );
+        // /wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/PreCut_muon_run*.root
+    }
+    else{
+        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("sample") + "_[0-9].root" );
+        // /wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/PreCut_TTbar_[0-9].root
+    }
+
+    return filename;
+}
 extern void
 MakeFullCut()
 {
-    // Setting filename ..._[0-9].root
-    string str      = "_[0-9]";
-    string filename = FullMgr().GetResultsName( "root", "Precut" );
-    filename.insert( filename.length() - 5, str );
+    bool is_data = FullMgr().GetOption<string>("sample") == "Data" ? true : false;
+    string filename = MakeFileName( is_data );
 
     TChain* ch = new TChain( "root" );
     ch->Add( ( filename ).c_str() );
     FullMgr().AddSample( ch );
-    FullCut();
+    FullCut( is_data );
 
     delete ch;
 }
 
 extern void
-FullCut()
+FullCut( bool is_data )
 {
     // Build new file
     TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
     TTree* newtree = FullMgr().CloneTree();
+    
+    // Initialize data
+    string lepton = FullMgr().GetOption<string>("lepton");
+    vector<int> hlt = is_data ? FullMgr().GetListData<int>( lepton + "_data_HLT" ) : FullMgr().GetListData<int>( lepton + "_mc_HLT" );
 
     // Register new branch
     Int_t jet_size;
@@ -66,8 +84,22 @@ FullCut()
         /*******************************************************************************
         *  Baseline selection
         *******************************************************************************/
-        if( !FullMgr().PassFullLep( lepidx ) ){
+        if( !FullMgr().PassHLT( hlt ) ){
             continue;
+        }
+        
+        if( FullMgr().GetOption<string>( "lepton" ) == "el" ){
+            if( !FullMgr().PassFullEl( lepidx ) ){
+                continue;
+            }
+        }
+        else if( FullMgr().GetOption<string>( "lepton" ) == "mu" ) {
+            if( !FullMgr().PassFullMu( lepidx ) ){
+                continue;
+            }
+        }
+        else{
+            cout<<"[Warning] Should have assigned lepton type"<<endl;
         }
 
         if( !FullMgr().PassFullJet( jetidx, bjetidx, lepidx[ 0 ] ) ){

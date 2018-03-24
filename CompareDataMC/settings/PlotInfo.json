@@ -6,5 +6,10 @@
         "VV",
         "WJet",
         "TTbar"
-        ]
+        ],
+
+    "muentry" : "1 #mu, #geq 4 jets ( 2 b jets )",
+    
+    "elentry" : "1 e, #geq 4 jets ( 2 b jets )"
+
 }

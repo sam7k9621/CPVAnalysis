@@ -119,7 +119,7 @@ class BaseLineMgr : public mgr::SampleMgr,
         double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
 
         // ID ISO Trg weight
-        double GetSFTH2( TH2*, const int& );
+        double GetSFTH2( TH2D*, const int& );
 
     private:
 

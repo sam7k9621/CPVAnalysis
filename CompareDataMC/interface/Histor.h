@@ -73,8 +73,8 @@ class Histor : public mgr::Pathmgr,
         float  GetPUWeight(){ return _sample->GetPUWeight(); }
         float  GenWeight()  { return _sample->GenWeight(); }
         double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
-        double GetSF( TH2*, const int& );
-        TH2*   GetSFHist( const std::string& );
+        double GetSF( TH2D*, const int& );
+        TH2D*   GetSFHist( const std::string& );
         void   WeightMC( const std::string& );
 
         /*******************************************************************************

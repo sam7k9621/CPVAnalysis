@@ -14,18 +14,22 @@ extern void
 MakePlotCompare()
 {
     MergeMC();
+    string lepton = PlotMgr().GetOption<string>("lepton");
+    string entry  = PlotMgr().GetSingleData<string>( lepton + "entry");
 
     vector<string> histlst = { "lep_tmass", "had_tmass", "nVtx", "chi2" };
 
     for( const auto& title : histlst ){
         cout << "Finishing extracting and Plotting " + title << endl;
-        PlotCompare( ExtractMC( title ), ExtractData( title ), title );
+        PlotCompare( ExtractMC( title ), ExtractData( title ), title, entry );
     }
+
+    GetYield( ExtractMC( "lep_tmass" ), ExtractData( "lep_tmass" ) );
 
     vector<string> mclst = { "Obs3", "Obs4" };
 
     for( const auto& title : mclst ){
-        PlotMC( ExtractMC( title ), title );
+        PlotMC( ExtractMC( title ), title, entry );
     }
 
     PlotPDF(

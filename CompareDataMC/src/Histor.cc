@@ -121,19 +121,19 @@ Histor::BtagScaleFactor( BTagEntry::OperatingPoint op, const int& idx )
 }
 
 double
-Histor::GetSF( TH2* hist, const int& idx )
+Histor::GetSF( TH2D* hist, const int& idx )
 {
     return _sample->GetSFTH2( hist, idx );
 }
 
-TH2*
+TH2D*
 Histor::GetSFHist( const string& tag )
 {
     string filename = mgr::GetSingle<string>( "file", GetSubTree( tag ) );
     string title    = mgr::GetSingle<string>( "title", GetSubTree( tag ) );
 
     TFile* f = TFile::Open( filename.c_str() );
-    TH2* h   = (TH2*)( f->Get( title.c_str() )->Clone() );
+    TH2D* h   = (TH2D*)( f->Get( title.c_str() )->Clone() );
     h->SetDirectory( 0 );
     f->Close();
 

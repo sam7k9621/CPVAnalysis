@@ -12,7 +12,7 @@ main( int argc, char* argv[] )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
     ;
-    FullMgr( "BaseLineSelector" ).AddOptions( de );
+    FullMgr( "BaseLineSelector", "SampleInfo.json" ).AddOptions( de );
     const int run = FullMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){

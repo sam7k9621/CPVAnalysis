@@ -26,7 +26,7 @@ MakePreCut()
 {
     // initialize input file
     string sample            = PreMgr().GetOption<string>( "sample" );
-    vector<string> sourcelst = mgr::GetList<string>( "path", PreMgr().GetSubTree( sample ) );
+    vector<string> sourcelst = PreMgr().GetSubListData<string>( sample, "path" );
     bool is_data             = sample.find( "run" ) != std::string::npos ? 1 : 0;
     TChain* ch               = new TChain( "bprimeKit/root" );
 
@@ -47,8 +47,6 @@ PreCut( bool is_data )
     TFile* newfile = TFile::Open( ( PreMgr().GetResultsName( "root", "PreCut" ) ).c_str(), "recreate" );
     TTree* newtree = PreMgr().CloneTree();
 
-    // Initialize data
-    vector<int> hlt = is_data ? PreMgr().GetListData<int>( "data_HLT" ) : PreMgr().GetListData<int>( "mc_HLT" );
     // Running over golden_json
     checkEvtTool checkEvt;
     checkEvt.addJson( PreMgr().GetSingleData<string>( "lumimask" ) );
@@ -67,7 +65,7 @@ PreCut( bool is_data )
     newtree->Branch( "PUWeight", &weight, "PUWeight/F" );
 
     // Looping events
-    int events = PreMgr().CheckOption( "test" ) ? 1000000 : PreMgr().GetEntries();
+    int events = PreMgr().CheckOption( "test" ) ? 10000 : PreMgr().GetEntries();
 
     for( int i = 0; i < events; i++ ){
         PreMgr().GetEntry( i );
@@ -85,8 +83,8 @@ PreCut( bool is_data )
             PreMgr().JERCorr();
         }
 
-        // Pass vertex and hlt
-        if( !PreMgr().PassVertex() || !PreMgr().PassHLT( hlt ) ){
+        // Pass vertex 
+        if( !PreMgr().PassVertex() ){
             continue;
         }
 

@@ -12,7 +12,7 @@ BaseLineMgr::RegisterWeight()
 }
 
 double
-BaseLineMgr::GetSFTH2( TH2* hist, const int& idx )
+BaseLineMgr::GetSFTH2( TH2D* hist, const int& idx )
 {
     SetIndex( idx );
     double eta = LepAbsEta();

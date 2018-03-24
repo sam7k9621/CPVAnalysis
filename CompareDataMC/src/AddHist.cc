@@ -9,7 +9,16 @@ AddHist()
     /*******************************************************************************
     *  Reco TH1
     *******************************************************************************/
-    CompMgr().AddHist( "lep_tmass", "#mub [GeV]", "Events", 50, 0, 500 );
+    string lepton = CompMgr().GetOption<string>("lepton");
+    if( lepton == "mu" ){
+        CompMgr().AddHist( "lep_tmass", "M_{#mub} [GeV]", "Events", 50, 0, 500 ); 
+    }
+    else if( lepton == "el" ){
+        CompMgr().AddHist( "lep_tmass", "M_{eb} [GeV]", "Events", 50, 0, 500 ); 
+    }
+    else{
+        cout<<"[Warning] Can't find corredsponding lepton type"<<endl;
+    }
     CompMgr().AddHist( "had_tmass", "M_{jjb} [GeV]", "Events", 50, 0, 500 );
     CompMgr().AddHist( "chi2", "#chi^{2}_{min}", "Events", 40, 0, 200 );
     CompMgr().AddHist( "nVtx", "Number of primary vertex", "Yield", 50, 0, 50 );

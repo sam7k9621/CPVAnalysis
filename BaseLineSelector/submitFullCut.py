@@ -39,19 +39,27 @@ qsub ="""
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
 
 cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
-FullCut -l muon -s {0}
+FullCut -l {0} -s {1}
 """
+
+filename = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_{0}_{1}.root"
 
 def main(args):
 
     parser = argparse.ArgumentParser(
-            "Submit job for FullCut"
+            "Submit jobs for FullCut"
             )
 
     parser.add_argument(
             '-t', '--test',
             help='test for sending jobs',
             action='store_true'
+            )
+
+    parser.add_argument(
+            '-l', '--lepton',
+            help='lepton type',
+            type=str
             )
     try:
         opt = parser.parse_args(args[1:])
@@ -61,21 +69,23 @@ def main(args):
         raise
 
     for data in dataset :
-
         if opt.test :
-           cmd = "FullCut -c -t -l muon -s {0}".format(data)
+           cmd = "FullCut -c -t -l {0} -s {1}".format(opt.lepton, data)
            print '>> Processing {}'.format(data)
            os.system(cmd)
 
         else:
-            output = open( ".sentJob.sh", 'w' )
-            output.write( qsub.format(data) )
-            output.close()
+            if os.path.isfile( filename.format(opt.lepton, data) ) :
+                print "[Warning]" + data + " is already exist!!!"
+            else :
+                output = open( ".sentJob.sh", 'w' )
+                output.write( qsub.format(opt.lepton, data) )
+                output.close()
 
-            cmd = "qsub .sentJob.sh -N " + data
-            print ">>Sending {}".format(data)
-            os.system(cmd)
-            os.system("rm .sentJob.sh")
+                cmd = "qsub .sentJob.sh -N " + data
+                print ">>Sending {}".format(data)
+                os.system(cmd)
+                os.system("rm .sentJob.sh")
 
 if __name__ == '__main__':
     main(sys.argv)
