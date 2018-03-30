@@ -325,32 +325,52 @@
         "path" : ["/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-600ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root"]
     },
 
-    "QCD_HT200to300":{
-        "path" : []
+    "QCD_HT200to300_1":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-4].root"]
     },
 
-    "QCD_HT300to500":{
-        "path" : []
+    "QCD_HT200to300_2":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[5-9].root"]
     },
 
-    "QCD_HT500to700":{
-        "path" : []
+    "QCD_HT300to500_1":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-3].root"]
     },
 
-    "QCD_HT700to1000":{
-        "path" : []
+    "QCD_HT300to500_2":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[4-6].root"]
     },
 
-    "QCD_HT1000to1500":{
-        "path" : []
+    "QCD_HT300to500_3":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[7-9].root"]
+    },
+    
+    "QCD_HT500to700_1":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-3].root"]
+    },
+    
+    "QCD_HT500to700_2":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[4-6].root"]
+    },
+    
+    "QCD_HT500to700_3":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[7-9].root"]
     },
 
-    "QCD_HT1500to2000":{
-        "path" : []
+    "QCD_HT700to1000_1":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
-    "QCD_HT2000toInf":{
-        "path" : []
+    "QCD_HT1000to1500_1":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "QCD_HT1500to2000_1":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "QCD_HT2000toInf_1":{
+        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "mu_mc_HLT"   : [4809,4815], //HLT_Iso(Tk)Mu24_v4

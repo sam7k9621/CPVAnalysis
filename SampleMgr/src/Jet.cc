@@ -113,7 +113,7 @@ namespace mgr{
 
     // b-tagging
     float
-    SampleMgr::JetCSVM()
+    SampleMgr::JetCSV()
     {
         return _jet.pfCombinedInclusiveSecondaryVertexV2BJetTags[ _idx ];
     }

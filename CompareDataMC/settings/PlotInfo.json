@@ -1,6 +1,7 @@
 {
 
     "MClst" : [
+        "QCD",
         "DYJet",
         "SingleTop",
         "VV",

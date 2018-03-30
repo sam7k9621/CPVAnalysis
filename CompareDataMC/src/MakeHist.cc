@@ -96,7 +96,7 @@ MakeHist()
         float puweight  = CompMgr().CheckOption( "pileup" ) ? CompMgr().GetPUWeight() : 1;
         float genweight = is_data ? 1 : CompMgr().GenWeight();
         double lepsf    = is_data ? 1 : GetLepSF( lepweightlst, lephandle );
-        double btagSF   = is_data ?
+        double btagSF   = is_data && !CompMgr().CheckOption( "region" ) ?
                           1 : CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, had_b ) *
                           CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, lep_b );
 

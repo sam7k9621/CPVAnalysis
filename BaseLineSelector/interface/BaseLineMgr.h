@@ -72,6 +72,7 @@ class BaseLineMgr : public mgr::SampleMgr,
         bool PassJetKinematic();
         bool IsSelJet();
         bool PassBJet();
+        bool RejectBJet();
 
         /*******************************************************************************
         *   Muon selection
@@ -80,6 +81,7 @@ class BaseLineMgr : public mgr::SampleMgr,
         bool PassMuLooseKinematic();
         bool PassMuLooseISO();
         bool IsLooseMu();
+        bool IsCRLooseMu();
 
         bool PassMuTightID();
         bool PassMuTightKinematic();
@@ -92,8 +94,10 @@ class BaseLineMgr : public mgr::SampleMgr,
         bool PassImpactParameter();
 
         bool PassElLooseID();
+        bool PassElCRLooseID();
         bool PassElLooseKinematic();
         bool IsLooseEl();
+        bool IsCRLooseEl();
 
         bool PassElTightID();
         bool PassElTightKinematic();

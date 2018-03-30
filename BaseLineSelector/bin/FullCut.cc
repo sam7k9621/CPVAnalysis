@@ -9,6 +9,7 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
+        ( "region,r", opt::value<string>(), "which region" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
     ;
@@ -24,7 +25,7 @@ main( int argc, char* argv[] )
     }
 
     FullMgr().SetFileName( { "lepton", "sample" } );
-    FullMgr().AddCutName( { "test" } );
+    FullMgr().AddCutName( { "test", "region" } );
 
     MakeFullCut();
 }

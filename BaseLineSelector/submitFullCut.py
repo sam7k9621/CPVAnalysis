@@ -5,6 +5,13 @@ import sys
 import argparse
 
 dataset = [
+        "QCD_HT200to300",
+        "QCD_HT300to500",
+        "QCD_HT500to700",
+        "QCD_HT700to1000",
+        "QCD_HT1000to1500",
+        "QCD_HT1500to2000",
+        "QCD_HT2000toInf",
         "DYJet_HT-100to200",
         "DYJet_HT-1200to2500",
         "DYJet_HT-200to400",
@@ -39,10 +46,10 @@ qsub ="""
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
 
 cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
-FullCut -l {0} -s {1}
+FullCut -l {0} -s {1} -r 0bjet_deficiency
 """
 
-filename = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_{0}_{1}.root"
+filename = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_region_0bjet_deficiency_{0}_{1}.root"
 
 def main(args):
 

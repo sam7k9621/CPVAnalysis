@@ -131,7 +131,26 @@ Selector::PassFullEl( vector<int>& lepidx )
         }
     }
 
-    return lepidx.size() > 0;
+    return lepidx.size() == 1;
+}
+
+bool
+Selector::PassFullCREl( vector<int>& lepidx )
+{
+    for( int i = 0; i < _sample->Lsize(); i++ ){
+        _sample->SetIndex( i );
+
+        if( _sample->IsTightEl() ){
+            lepidx.push_back( i );
+            continue;
+        }
+
+        if( _sample->IsCRLooseMu() || _sample->IsCRLooseEl() ){
+            return false;
+        }
+    }
+
+    return lepidx.size() == 1;
 }
 
 bool
@@ -150,7 +169,26 @@ Selector::PassFullMu( vector<int>& lepidx )
         }
     }
 
-    return lepidx.size() > 0;
+    return lepidx.size() == 1;
+}
+
+bool
+Selector::PassFullCRMu( vector<int>& lepidx )
+{
+    for( int i = 0; i < _sample->Lsize(); i++ ){
+        _sample->SetIndex( i );
+
+        if(  _sample->IsTightMu() ){
+            lepidx.push_back( i );
+            continue;
+        }
+
+        if( _sample->IsCRLooseMu() || _sample->IsCRLooseEl() ){
+            return false;
+        }
+    }
+
+    return lepidx.size() == 1;
 }
 
 bool
@@ -180,6 +218,50 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
         else if( mask & 0x08 ){
             bjetidx.push_back( j );
         }
+    }
+
+    return jetidx.size() >= 2 && bjetidx.size() == 2;
+}
+
+bool
+Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
+{
+    vector< tuple<int, float> > jetlst;
+
+    for( int j = 0; j < _sample->Jsize(); j++ ){
+        _sample->SetIndex( j );
+
+        // Cleaning against leptons (isolated lepton)
+        if( !_sample->IsIsoLepton( lepidx, j ) ){
+            continue;
+        }
+
+        if( _sample->IsSelJet() && _sample->RejectBJet() ){
+            jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );    
+        }
+    }
+    
+    if( jetlst.size() < 4 ){
+        return false;
+    }
+
+    //https://stackoverflow.com/questions/23030267/custom-sorting-a-vector-of-tuples
+    std::sort( 
+        begin(jetlst),
+        end(jetlst),
+        [](  const auto& t1, const auto& t2 ){
+            return get<1>(t1) < get<1>(t2);
+        }
+    );
+
+    //define the 2 max CSV value index as bjet
+    bjetidx.push_back( get<0>( jetlst.back() ) );
+    jetlst.pop_back();
+    bjetidx.push_back( get<0>( jetlst.back() ) );
+    jetlst.pop_back();
+
+    for(const auto& j : jetlst ){
+        jetidx.push_back( get<0>( j ) );
     }
 
     return jetidx.size() >= 2 && bjetidx.size() == 2;

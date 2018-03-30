@@ -7,8 +7,9 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
-        ( "count,c", "count events" )
         ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
+        ( "region,r", opt::value<string>(), "which region")
+        ( "count,c", "count events" )
         ( "pileup,p", "pile-up reweight" )
         ( "test,t", "run testing events number" )
     ;
@@ -24,6 +25,6 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "pileup", "chi2" } );
+    CompMgr().AddCutName( { "test", "pileup", "chi2", "region" } );
     MakeHist();
 }

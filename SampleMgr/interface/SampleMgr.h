@@ -81,7 +81,13 @@ namespace mgr{
             bool  ElIDTight();
             float ElAbsTrackDz();
             float ElAbsTrackDxy_PV();
-
+            float ElsigmaIetaIeta();
+            float EldEtaInSeed();
+            float EldPhiIn();
+            float ElGsfEleHadronicOverEMCut();
+            float GsfEleEInverseMinusPInverseCut();
+            float ElNumberOfExpectedInnerHits();
+            bool ElhasConv();
             /*******************************************************************************
             * Jet info
             *******************************************************************************/
@@ -107,7 +113,7 @@ namespace mgr{
             void SetJetPtEta( const float&, const float& );
 
             // b-tagging
-            float JetCSVM();
+            float JetCSV();
 
             /*******************************************************************************
             *   MC Truth

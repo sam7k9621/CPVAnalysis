@@ -7,6 +7,7 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
+        ( "region,r", opt::value<string>(), "which region" )
         ( "pileup,p", "pile-up reweight" )
     ;
     PlotMgr( "CompareDataMC", "PlotInfo.json" ).AddOptions( de );
@@ -21,6 +22,6 @@ main( int argc, char* argv[] )
     }
 
     PlotMgr().SetFileName( { "lepton" } );
-    PlotMgr().AddCutName( { "pileup", "chi2" } );
+    PlotMgr().AddCutName( { "pileup", "chi2", "region" } );
     MakePlotCompare();
 }

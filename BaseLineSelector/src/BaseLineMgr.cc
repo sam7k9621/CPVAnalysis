@@ -192,7 +192,13 @@ BaseLineMgr::IsSelJet()
 bool
 BaseLineMgr::PassBJet()
 {
-    return JetCSVM() > 0.8484;
+    return JetCSV() > 0.8484;
+}
+
+bool 
+BaseLineMgr::RejectBJet()
+{
+    return JetCSV() < 0.5426;
 }
 
 /*******************************************************************************
@@ -227,6 +233,15 @@ BaseLineMgr::IsLooseMu()
     return PassMuLooseID() &&
            PassMuLooseKinematic() &&
            PassMuLooseISO()
+    ;
+}
+
+bool
+BaseLineMgr::IsCRLooseMu()
+{
+    //removing PF isolation cut
+    return PassMuLooseID() &&
+           PassMuLooseKinematic() 
     ;
 }
 
@@ -301,6 +316,34 @@ BaseLineMgr::PassElLooseID()
 }
 
 bool
+BaseLineMgr::PassElCRLooseID()
+{
+    //removing PF isolation cut
+    if( LepAbsEta() <= 1.479 ){
+        return (
+        ElsigmaIetaIeta() < 0.011 &&
+        abs( EldEtaInSeed() ) < 0.00477 &&
+        abs( EldPhiIn() ) < 0.222 &&
+        ElGsfEleHadronicOverEMCut() < 0.298 &&
+        GsfEleEInverseMinusPInverseCut() < 0.241 &&
+        ElNumberOfExpectedInnerHits() <= 1 &&
+        ElhasConv() 
+        );
+    }
+    else{  //absEta > 1.479
+        return (
+        ElsigmaIetaIeta() < 0.0314 &&
+        abs( EldEtaInSeed() ) < 0.00868 &&
+        abs( EldPhiIn() ) < 0.213 &&
+        ElGsfEleHadronicOverEMCut() < 0.101 &&
+        GsfEleEInverseMinusPInverseCut() < 0.14 &&
+        ElNumberOfExpectedInnerHits() <= 1 &&
+        ElhasConv() 
+        );
+    }
+}
+
+bool
 BaseLineMgr::PassElLooseKinematic()
 {
     return LepPt() > 15 &&
@@ -314,6 +357,15 @@ BaseLineMgr::IsLooseEl()
 {
     return PassImpactParameter() &&
            PassElLooseID() &&
+           PassElLooseKinematic()
+    ;
+}
+
+bool
+BaseLineMgr::IsCRLooseEl()
+{
+    return PassImpactParameter() &&
+           PassElCRLooseID() &&
            PassElLooseKinematic()
     ;
 }

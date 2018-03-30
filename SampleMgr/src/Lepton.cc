@@ -133,4 +133,48 @@ namespace mgr{
     {
         return fabs( _lep.ElTrackDxy_PV[ _idx ] );
     }
+
+    float 
+    SampleMgr::ElsigmaIetaIeta()
+    {
+        return _lep.ElsigmaIetaIeta[ _idx ];
+    }
+
+    float
+    SampleMgr::EldEtaInSeed()
+    {
+        return _lep.EldeltaEta[ _idx ] - LepEta() + _lep.caloEta[ _idx ];
+    }
+
+    float 
+    SampleMgr::EldPhiIn()
+    {
+        return _lep.EldeltaPhi[ _idx ];
+    }
+
+    float 
+    SampleMgr::ElGsfEleHadronicOverEMCut()
+    {
+        return _lep.ElHadoverEm[ _idx ];
+    }
+
+    float
+    SampleMgr::GsfEleEInverseMinusPInverseCut()
+    {
+        const float ecal_energy_inverse = 1.0 / _lep.ElEcalE[ _idx ];
+        const float eSCoverP = _lep.ElEoverP[ _idx ];
+        return std::abs(1.0 - eSCoverP)*ecal_energy_inverse;
+    }
+
+    float
+    SampleMgr::ElNumberOfExpectedInnerHits()
+    {
+        return _lep.NumberOfExpectedInnerHits[ _idx ];
+    }
+
+    bool
+    SampleMgr::ElhasConv()
+    {
+        return _lep.ElhasConv[ _idx ];
+    }
 }

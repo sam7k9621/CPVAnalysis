@@ -87,23 +87,51 @@ FullCut( bool is_data )
         if( !FullMgr().PassHLT( hlt ) ){
             continue;
         }
-        
+      
         if( FullMgr().GetOption<string>( "lepton" ) == "el" ){
-            if( !FullMgr().PassFullEl( lepidx ) ){
-                continue;
+            
+            if( FullMgr().GetOption<string>( "region" ) == "0bjet" ){
+                if( !FullMgr().PassFullCREl( lepidx ) ){
+                    continue;
+                }
+            }
+
+            else{  //region with full definition of lepton loose id
+                if( !FullMgr().PassFullEl( lepidx ) ){
+                    continue;
+                }
             }
         }
+
         else if( FullMgr().GetOption<string>( "lepton" ) == "mu" ) {
-            if( !FullMgr().PassFullMu( lepidx ) ){
-                continue;
+            
+            if( FullMgr().GetOption<string>( "region" ) == "0bjet" ){
+                if( !FullMgr().PassFullCRMu( lepidx ) ){
+                    continue;
+                }
+            }
+
+            else{  //region with full definition of lepton loose id
+                if( !FullMgr().PassFullMu( lepidx ) ){
+                    continue;
+                }
             }
         }
+
         else{
             cout<<"[Warning] Should have assigned lepton type"<<endl;
         }
 
-        if( !FullMgr().PassFullJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
-            continue;
+        if( FullMgr().CheckOption( "region" ) ){ //region reject all bjet
+            if( !FullMgr().PassFullCRJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
+                continue;
+            }
+        }
+
+        else{ //region accept only two bjet
+            if( !FullMgr().PassFullJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
+                continue;
+            }
         }
 
         /*******************************************************************************

@@ -44,7 +44,14 @@ mcdataset = [
     "WJet_Pt-100to250_1",
     "WJet_Pt-250to400_1",
     "WJet_Pt-400to600_1",
-    "WJet_Pt-600toInf_1"
+    "WJet_Pt-600toInf_1",
+    "QCD_HT200to300_1", "QCD_HT200to300_2",
+    "QCD_HT300to500_1", "QCD_HT300to500_2", "QCD_HT300to500_3",
+    "QCD_HT500to700_1", "QCD_HT500to700_2", "QCD_HT500to700_3",
+    "QCD_HT700to1000_1",
+    "QCD_HT1000to1500_1",
+    "QCD_HT1500to2000_1",
+    "QCD_HT2000toInf_1"
     ]
 
 qsub ="""
