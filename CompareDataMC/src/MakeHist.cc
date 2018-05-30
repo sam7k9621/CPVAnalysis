@@ -79,6 +79,10 @@ MakeHist()
         CompMgr().GetEntry( i );
         CompMgr().process( events, i );
 
+        //if ( CompMgr().GetLepPt( lephandle ) < 100 ){
+            //continue;
+        //}
+
         lep_tmass = ( CompMgr().GetJetP4( lep_b ) + CompMgr().GetLepP4( lephandle ) ).M();
 
         /*******************************************************************************
@@ -96,7 +100,7 @@ MakeHist()
         float puweight  = CompMgr().CheckOption( "pileup" ) ? CompMgr().GetPUWeight() : 1;
         float genweight = is_data ? 1 : CompMgr().GenWeight();
         double lepsf    = is_data ? 1 : GetLepSF( lepweightlst, lephandle );
-        double btagSF   = is_data && !CompMgr().CheckOption( "region" ) ?
+        double btagSF   = is_data || CompMgr().CheckOption( "region" ) ?
                           1 : CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, had_b ) *
                           CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, lep_b );
 
@@ -108,12 +112,12 @@ MakeHist()
         }
 
         double weight = puweight * genweight * btagSF * lepsf;
-
         float nVtx = CompMgr().nVtx();
-                          CompMgr().Hist( "had_tmass" )->Fill( had_tmass, weight );
-                          CompMgr().Hist( "lep_tmass" )->Fill( lep_tmass, weight );
-                          CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
-                          CompMgr().Hist( "nVtx" )->Fill( nVtx, weight );
+        
+        CompMgr().Hist( "had_tmass" )->Fill( had_tmass, weight );
+        CompMgr().Hist( "lep_tmass" )->Fill( lep_tmass, weight );
+        CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
+        CompMgr().Hist( "nVtx" )->Fill( nVtx, weight );
 
         if( !is_data ){
             CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass );
@@ -181,5 +185,68 @@ MakeHist()
     }
     StoreCompare();
 
+    delete ch;
+}
+
+extern void
+CheckHist() 
+{
+    // Initialize file
+    string lepton            = CompMgr().GetOption<string>("lepton");
+    string sample            = CompMgr().GetOption<string>( "sample" );
+    vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
+    TChain* ch               = new TChain( "root" );
+    
+    Float_t LJetPt1;
+    Float_t LJetPt2;
+    Float_t LJetPt3;
+    Float_t LJetPt4;
+    Float_t LLepPt1;
+    Float_t LLepPt2;
+    Float_t LLepPt3;
+    Float_t LLepPt4;
+
+    ch->SetBranchAddress( "LJetPt1", &LJetPt1 );
+    ch->SetBranchAddress( "LJetPt2", &LJetPt2 );
+    ch->SetBranchAddress( "LJetPt3", &LJetPt3 );
+    ch->SetBranchAddress( "LJetPt4", &LJetPt4 );
+    ch->SetBranchAddress( "LLepPt1", &LLepPt1 );
+    ch->SetBranchAddress( "LLepPt2", &LLepPt2 );
+    ch->SetBranchAddress( "LLepPt3", &LLepPt3 );
+    ch->SetBranchAddress( "LLepPt4", &LLepPt4 );
+    
+    for( const auto& s : samplelst ){
+        ch->Add( s.c_str() );
+    }
+    CompMgr().AddSample( sample, ch );
+    AddHist();
+    
+    // Looping events
+    int events   = CompMgr().CheckOption( "test" ) ? 1000 : CompMgr().GetEntries();
+    bool is_data = ( sample == "Data" ) ? 1 : 0;
+    
+    for( int i = 0; i < events; i++ ){
+        CompMgr().GetEntry( i );
+        CompMgr().process( events, i );
+    
+        float weight = is_data ? 1 : CompMgr().GenWeight();
+        weight = weight < 0 ? -1 : 1 ;
+    
+        CompMgr().Hist( "LJetPt1" )->Fill( LJetPt1, weight );
+        CompMgr().Hist( "LJetPt2" )->Fill( LJetPt2, weight );
+        CompMgr().Hist( "LJetPt3" )->Fill( LJetPt3, weight );
+        CompMgr().Hist( "LJetPt4" )->Fill( LJetPt4, weight );
+        CompMgr().Hist( "LLepPt1" )->Fill( LLepPt1, weight );
+        CompMgr().Hist( "LLepPt2" )->Fill( LLepPt2, weight );
+        CompMgr().Hist( "LLepPt3" )->Fill( LLepPt3, weight );
+        CompMgr().Hist( "LLepPt4" )->Fill( LLepPt4, weight );
+    }
+   
+    if( !is_data ){
+    CompMgr().WeightMC( sample );
+    cout << ">>Weighting " << sample << endl;
+    }
+    
+    StoreCompare();
     delete ch;
 }

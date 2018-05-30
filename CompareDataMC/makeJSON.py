@@ -6,33 +6,39 @@ import json
 import argparse
         # sample, cross_section, gen_num
 mclst =[
-        [ "QCD_HT200to300",      1712000,   18722416],
-        [ "QCD_HT300to500",      347700,    17035891],
-        [ "QCD_HT500to700",      32100,     18929951],
+        [ "QCD_HT200to300",      1712000,   38857977],
+        [ "QCD_HT300to500",      347700,    37502012],
+        [ "QCD_HT500to700",      32100,     42190760],
         [ "QCD_HT700to1000",     6831,      15629253],
         [ "QCD_HT1000to1500",    1207,      4767100],
-        [ "QCD_HT1500to2000",    119.9,     3970819],
-        [ "QCD_HT2000toInf",     25.24,     1991645],
-        [ "DYJet_HT-100to200",   147.4,     2751187],
-        [ "DYJet_HT-1200to2500", 0.116,     596079],
-        [ "DYJet_HT-200to400",   40.99,     962195],
-        [ "DYJet_HT-2500toInf",  0.002592,  399492],
-        [ "DYJet_HT-400to600",   5.678,     1070454],
-        [ "DYJet_HT-600to800",   1.367,     8292957],
-        [ "DYJet_HT-800to1200",  0.6759,    2668730],
-        [ "SingleTop_s-ch",      3.36,      1000000],
-        [ "SingleTop_t-ch",      136.02,    67240808],
-        [ "SingleTop_t-ch_anti", 80.95,     38811017],
-        [ "SingleTop_tW",        35.6,      6952830],
-        [ "SingleTop_tW_anti",   35.6,      69933094],
-        [ "TTbar",               831.76,    77081156],
+        [ "QCD_HT1500to2000",    119.9,     7855883],
+        [ "QCD_HT2000toInf",     25.24,     3839969],
+        [ "DYJet_HT-100to200",   1.23 * 147.4,     7145468],
+        [ "DYJet_HT-1200to2500", 1.23 * 0.116,     596079],
+        [ "DYJet_HT-200to400",   1.23 * 40.99,     5093947],
+        [ "DYJet_HT-2500toInf",  1.23 * 0.002592,  399492],
+        [ "DYJet_HT-400to600",   1.23 * 5.678,     1265157],
+        [ "DYJet_HT-600to800",   1.23 * 1.367,     8292957],
+        [ "DYJet_HT-800to1200",  1.23 * 0.6759,    2668730],
+        [ "SingleTop_s-ch",      3.36,      622990],
+        [ "SingleTop_t-ch",      136.02,    66437948],
+        [ "SingleTop_t-ch_anti", 80.95,     38780433],
+        [ "SingleTop_tW",        35.6,      6924540],
+        [ "SingleTop_tW_anti",   35.6,      6710218],
+        [ "TTbar",               831.76,    76357853],
         [ "VV_WW",               118.7,     994012],
         [ "VV_WZ",               47.13,     1000000],
-        [ "VV_ZZ",               16.52,     990064],
-        [ "WJet_Pt-100to250",    676.3,     10089661],
-        [ "WJet_Pt-250to400",    23.94,     1001250],
-        [ "WJet_Pt-400to600",    3.031,     2751187],
-        [ "WJet_Pt-600toInf",    0.4524,    989482]
+        [ "VV_ZZ",               16.52,     843120],
+        [ "WJetsToLNu_HT-200To400",   359.7,   13758694 * 2.838],
+        [ "WJetsToLNu_HT-400To600",   48.91,   1963464 * 0.992],
+        [ "WJetsToLNu_HT-600To800",   12.05,   12420040 * 0.937],
+        [ "WJetsToLNu_HT-800To1200",  5.501,   6200954 * 3.037],
+        [ "WJetsToLNu_HT-1200To2500", 1.329,   244532  * 3.054],
+        [ "WJetsToLNu_HT-2500ToInf",  0.03216, 253561  * 3.012],
+        [ "WJet_Pt-100to250",    676.3,     3644567],
+        [ "WJet_Pt-250to400",    23.94,     369290],
+        [ "WJet_Pt-400to600",    3.031,     376470],
+        [ "WJet_Pt-600toInf",    0.4524,    396491]
     ]
 
 def main(args):
@@ -42,9 +48,16 @@ def main(args):
             )
 
     parser.add_argument(
-            '-f', '--filename',
-            help='input filename',
+            '-p', '--prefix',
+            help='prefix of input filename',
             type=str
+            )
+
+    parser.add_argument(
+            '-c', '--cut',
+            help='input cut region',
+            type=str,
+            default=""
             )
     try:
         opt = parser.parse_args(args[1:])
@@ -61,15 +74,15 @@ def main(args):
 
         # mc = [ "sample", cross_section, gen_num ]
         content[ mc[0] ] = {
-                "mupath" : [ sample_path + opt.filename + "_mu_" + mc[0] + ".root"] ,
-                "elpath" : [ sample_path + opt.filename + "_el_" + mc[0] + ".root"] ,
+                "mupath" : [ sample_path + opt.prefix + "_mu_" + mc[0] + opt.cut + ".root"] ,
+                "elpath" : [ sample_path + opt.prefix + "_el_" + mc[0] + opt.cut + ".root"] ,
                 "cross_section" : mc[1],
                 "gen_num" : mc[2]
                 }
 
     content["Data"] = {
-            "mupath" : [ sample_path + opt.filename + "_mu_Data.root"] ,
-            "elpath" : [ sample_path + opt.filename + "_el_Data.root"] ,
+            "mupath" : [ sample_path + opt.prefix + "_mu_Data" + opt.cut + ".root"] ,
+            "elpath" : [ sample_path + opt.prefix + "_el_Data" + opt.cut + ".root"] ,
             }
 
     #Event weight info

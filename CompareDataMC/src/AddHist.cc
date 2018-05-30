@@ -23,6 +23,15 @@ AddHist()
     CompMgr().AddHist( "chi2", "#chi^{2}_{min}", "Events", 40, 0, 200 );
     CompMgr().AddHist( "nVtx", "Number of primary vertex", "Yield", 50, 0, 50 );
 
+    CompMgr().AddHist( "LJetPt1", "Leading Jet Pt1", "Events", 1000, 0, 1000 );
+    CompMgr().AddHist( "LJetPt2", "Leading Jet Pt2", "Events", 1000, 0, 1000 );
+    CompMgr().AddHist( "LJetPt3", "Leading Jet Pt3", "Events", 1000, 0, 1000 );
+    CompMgr().AddHist( "LJetPt4", "Leading Jet Pt4", "Events", 1000, 0, 1000 );
+    CompMgr().AddHist( "LLepPt1", "Leading Lep Pt1", "Events", 1000, 0, 1000 );
+    CompMgr().AddHist( "LLepPt2", "Leading Lep Pt2", "Events", 1000, 0, 1000 );
+    CompMgr().AddHist( "LLepPt3", "Leading Lep Pt3", "Events", 1000, 0, 1000 );
+    CompMgr().AddHist( "LLepPt4", "Leading Lep Pt4", "Events", 1000, 0, 1000 );
+    
     /*******************************************************************************
     *  Reco TH2
     *******************************************************************************/
@@ -60,6 +69,14 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "chi2" ),            filename, "chi2" );
     mgr::SaveToROOT( CompMgr().Hist( "nVtx" ),            filename, "nVtx" );
 
+    mgr::SaveToROOT( CompMgr().Hist( "LJetPt1" ), filename, "LJetPt1" );
+    mgr::SaveToROOT( CompMgr().Hist( "LJetPt2" ), filename, "LJetPt2" );
+    mgr::SaveToROOT( CompMgr().Hist( "LJetPt3" ), filename, "LJetPt3" );
+    mgr::SaveToROOT( CompMgr().Hist( "LJetPt4" ), filename, "LJetPt4" );
+    mgr::SaveToROOT( CompMgr().Hist( "LLepPt1" ), filename, "LLepPt1" );
+    mgr::SaveToROOT( CompMgr().Hist( "LLepPt2" ), filename, "LLepPt2" );
+    mgr::SaveToROOT( CompMgr().Hist( "LLepPt3" ), filename, "LLepPt3" );
+    mgr::SaveToROOT( CompMgr().Hist( "LLepPt4" ), filename, "LLepPt4" );
     /*******************************************************************************
     *  Reco TH2
     *******************************************************************************/

@@ -113,13 +113,89 @@ namespace mgr{
     bool
     SampleMgr::ElIDLoose()
     {
-        return _lep.EgammaCutBasedEleIdLOOSE[ _idx ];
+        //removing PF isolation cut
+        if( LepAbsEta() <= 1.479 ){
+            return (
+            ElsigmaIetaIeta() < 0.011 &&
+            fabs( EldEtaInSeed() ) < 0.00477 &&
+            fabs( EldPhiIn() ) < 0.222 &&
+            ElGsfEleHadronicOverEMCut() < 0.298 &&
+            ElPFISO() < 0.0994 &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.241 &&
+            ElNumberOfExpectedInnerHits() <= 1 &&
+            !ElhasConv() 
+            );
+        }
+        else{  //absEta > 1.479
+            return (
+            ElsigmaIetaIeta() < 0.0314 &&
+            fabs( EldEtaInSeed() ) < 0.00868 &&
+            fabs( EldPhiIn() ) < 0.213 &&
+            ElGsfEleHadronicOverEMCut() < 0.101 &&
+            ElPFISO() < 0.107 &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.14 &&
+            ElNumberOfExpectedInnerHits() <= 1 &&
+            !ElhasConv() 
+            );
+        }
     }
 
     bool
     SampleMgr::ElIDTight()
     {
-        return _lep.EgammaCutBasedEleIdTIGHT[ _idx ];
+        //removing PF isolation cut
+        if( LepAbsEta() <= 1.479 ){
+            return (
+            ElsigmaIetaIeta() < 0.00998 &&
+            fabs( EldEtaInSeed() ) < 0.00308 &&
+            fabs( EldPhiIn() ) < 0.0816 &&
+            ElGsfEleHadronicOverEMCut() < 0.0414 &&
+            ElPFISO() < 0.0588 &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0129 &&
+            ElNumberOfExpectedInnerHits() <= 1 &&
+            !ElhasConv() 
+            );
+        }
+        else{  //absEta > 1.479
+            return (
+            ElsigmaIetaIeta() < 0.0292 &&
+            fabs( EldEtaInSeed() ) < 0.00605 &&
+            fabs( EldPhiIn() ) < 0.0394 &&
+            ElGsfEleHadronicOverEMCut() < 0.0641 &&
+            ElPFISO() < 0.0571 &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0129 &&
+            ElNumberOfExpectedInnerHits() <= 1 &&
+            !ElhasConv() 
+            );
+        }
+    }
+
+    bool 
+    SampleMgr::ElIDCRLoose()
+    {
+        //removing PF isolation cut
+        if( LepAbsEta() <= 1.479 ){
+            return (
+            ElsigmaIetaIeta() < 0.011 &&
+            fabs( EldEtaInSeed() ) < 0.00477 &&
+            fabs( EldPhiIn() ) < 0.222 &&
+            ElGsfEleHadronicOverEMCut() < 0.298 &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.241 &&
+            ElNumberOfExpectedInnerHits() <= 1 &&
+            !ElhasConv() 
+            );
+        }
+        else{  //absEta > 1.479
+            return (
+            ElsigmaIetaIeta() < 0.0314 &&
+            fabs( EldEtaInSeed() ) < 0.00868 &&
+            fabs( EldPhiIn() ) < 0.213 &&
+            ElGsfEleHadronicOverEMCut() < 0.101 &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.14 &&
+            ElNumberOfExpectedInnerHits() <= 1 &&
+            !ElhasConv() 
+            );
+        }
     }
 
     float
@@ -163,7 +239,7 @@ namespace mgr{
     {
         const float ecal_energy_inverse = 1.0 / _lep.ElEcalE[ _idx ];
         const float eSCoverP = _lep.ElEoverP[ _idx ];
-        return std::abs(1.0 - eSCoverP)*ecal_energy_inverse;
+        return std::fabs(1.0 - eSCoverP)*ecal_energy_inverse;
     }
 
     float
@@ -176,5 +252,11 @@ namespace mgr{
     SampleMgr::ElhasConv()
     {
         return _lep.ElhasConv[ _idx ];
+    }
+
+    float
+    SampleMgr::ElPFISO()
+    {
+        return _lep.IsoRhoCorrR03[ _idx ] / _lep.Pt[ _idx ];
     }
 }

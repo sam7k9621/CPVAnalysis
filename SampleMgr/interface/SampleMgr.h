@@ -30,7 +30,15 @@ namespace mgr{
             int LumiNo(){ return _evt.LumiNo; }
 
             // weight
-            int   nPU()      { return _evt.nPU[ 0 ]; }
+            int   nPU()      { 
+                for( int i = 0; i < _evt.nBX ; i++ ){
+                    if ( _evt.BXPU[i] == 0 ){
+                        return _evt.nPU[i];
+                    }
+                }
+
+                return _evt.nPU[0];
+            }
             float GenWeight(){ return _gen.Weight; }
 
             /*******************************************************************************
@@ -79,15 +87,19 @@ namespace mgr{
             *******************************************************************************/
             bool  ElIDLoose();
             bool  ElIDTight();
+            bool  ElIDCRLoose();
             float ElAbsTrackDz();
             float ElAbsTrackDxy_PV();
+            
             float ElsigmaIetaIeta();
             float EldEtaInSeed();
             float EldPhiIn();
             float ElGsfEleHadronicOverEMCut();
             float GsfEleEInverseMinusPInverseCut();
             float ElNumberOfExpectedInnerHits();
-            bool ElhasConv();
+            float ElPFISO();
+            bool  ElhasConv();
+            
             /*******************************************************************************
             * Jet info
             *******************************************************************************/

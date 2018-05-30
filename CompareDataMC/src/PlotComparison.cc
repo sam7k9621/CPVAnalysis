@@ -18,6 +18,16 @@ MakePlotCompare()
     string entry  = PlotMgr().GetSingleData<string>( lepton + "entry");
 
     vector<string> histlst = { "lep_tmass", "had_tmass", "nVtx", "chi2" };
+    //vector<string> histlst = { 
+        //"LJetPt1",
+        //"LJetPt2",
+        //"LJetPt3",
+        //"LJetPt4",
+        //"LLepPt1",
+        //"LLepPt2",
+        //"LLepPt3",
+        //"LLepPt4",
+    //};
 
     for( const auto& title : histlst ){
         cout << "Finishing extracting and Plotting " + title << endl;
@@ -53,7 +63,8 @@ MergeMC()
     for( const auto& s : MCsamplelst ){
         string output = PlotMgr().DatasDir() / s + "_temp.root ";
 
-        string input = PlotMgr().GetResultsName( "", "Hist" ) + "_" + s + "*.root";
+        string input = ( PlotMgr().GetResultsName( "", "Hist" ) + ".root" );
+        input.insert( input.find( "Hist" ) + 8, s + "*_" ) ;
         system( ( cmd + output + input ).c_str() );
     }
 }
@@ -69,7 +80,7 @@ CleanMC()
 extern vector<TH1D*>
 ExtractMC( const string& title )
 {
-    // Extracting MC hist
+     //Extracting MC hist
     vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
     vector<TH1D*> mclst;
 
@@ -90,7 +101,7 @@ ExtractMC( const string& title )
 extern vector<TH2D*>
 ExtractMC2D( const string& title )
 {
-    // Extracting MC hist
+     //Extracting MC hist
     vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
     vector<TH2D*> mclst;
 
@@ -111,8 +122,9 @@ ExtractMC2D( const string& title )
 extern TH1D*
 ExtractData( const string& title )
 {
-    // Extracting Data hist
-    string file = PlotMgr().GetResultsName( "", "Hist" ) + "_" + "Data" ".root";
+     //Extracting Data hist
+    string file = PlotMgr().GetResultsName( "", "Hist" ) + ".root";
+    file.insert( file.find( "Hist" ) + 8, "Data_" );
 
     TFile* f = TFile::Open( file.c_str() );
     TH1D* h  = (TH1D*)( f->Get( title.c_str() )->Clone() );

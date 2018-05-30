@@ -42,6 +42,7 @@ class Histor : public mgr::Pathmgr,
             const double,
             const double
             );
+        
         TH2D*       Hist2D( const std::string& h )       { return _sample->Hist2D( h ); }
         const TH2D* Hist2D( const std::string& h ) const { return _sample->Hist2D( h ); }
         void        AddHist2D(
@@ -56,6 +57,12 @@ class Histor : public mgr::Pathmgr,
             const double
             );
 
+
+        float GetLepPt( int i )
+        { 
+            _sample->SetIndex( i );
+            return _sample->LepPt();
+        }
         /*******************************************************************************
         *   Looping event
         *******************************************************************************/

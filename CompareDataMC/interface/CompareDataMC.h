@@ -11,6 +11,7 @@ extern std::vector<TH2D*>  GetLepSFHist(const std::string& );
 extern double  GetLepSF(const std::vector<TH2D*>&, const int&);
 extern void    MakeHist();
 
+extern void    CheckHist();
 /*******************************************************************************
 *  AddHist
 *******************************************************************************/

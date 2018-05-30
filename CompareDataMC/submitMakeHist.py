@@ -28,6 +28,12 @@ dataset = [
         "VV_WW",
         "VV_WZ",
         "VV_ZZ",
+        "WJetsToLNu_HT-200To400",
+        "WJetsToLNu_HT-400To600",
+        "WJetsToLNu_HT-600To800",
+        "WJetsToLNu_HT-800To1200",
+        "WJetsToLNu_HT-1200To2500",
+        "WJetsToLNu_HT-2500ToInf",
         "WJet_Pt-100to250",
         "WJet_Pt-250to400",
         "WJet_Pt-400to600",
@@ -46,8 +52,19 @@ qsub ="""
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
 
 cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
-MakeHist -l {0} -s {1} -u 20 -r 0bjet
 """
+command = "MakeHist -l {0} -s {1}"
+
+def ResultName(opt, sample):
+    filename = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/Hist_" + opt.lepton + "_" + sample
+    for arg in vars(opt) :
+        if( getattr(opt, arg) and arg != "lepton" ) :
+            try :
+                filename += ( "_" + arg + "_" + getattr(opt, arg) )
+            except:
+                filename += ( "_" + arg )
+
+    return filename + ".root"
 
 def main(args):
 
@@ -56,13 +73,32 @@ def main(args):
             )
 
     parser.add_argument(
+            '-l', '--lepton',
+            help='lepton type',
+            type=str,
+            required=True
+            )
+
+    parser.add_argument(
             '-t', '--test',
             help='test for sending jobs',
             action='store_true'
             )
+
     parser.add_argument(
-            '-l', '--lepton',
-            help='lepton type',
+            '-p', '--pileup',
+            help='pile-up reweight',
+            action='store_true'
+            )
+
+    parser.add_argument(
+            '-c', '--chi2',
+            help='chi2 minimum upper cut',
+            type=str
+            )
+    parser.add_argument(
+            '-r', '--region',
+            help='which region',
             type=str
             )
     try:
@@ -73,21 +109,34 @@ def main(args):
         raise
 
     for data in dataset :
+        cmd = command.format(opt.lepton, data)
 
         if opt.test :
-           cmd = "MakeHist -c -t -l {0} -s {1}".format(opt.lepton, data)
-           print '>> Processing {}'.format(data)
-           os.system(cmd)
-
-        else:
-            output = open( ".sentJob.sh", 'w' )
-            output.write( qsub.format(opt.lepton, data) )
-            output.close()
-
-            cmd = "qsub .sentJob.sh -N " + data
-            print ">>Sending {}".format(data)
+            cmd = "MakeHist -c -t -l {0} -s {1}".format(opt.lepton, data)
+            print '>> Processing {}'.format(data)
             os.system(cmd)
-            os.system("rm .sentJob.sh")
+            continue
+
+        if os.path.isfile( ResultName(opt, data) ) :
+            print "[Warning]" + data + " is already exist!!!"
+            continue
+
+        if opt.pileup :
+            cmd += " -p "
+        if opt.chi2 :
+            cmd += " -u " + opt.chi2
+        if opt.region :
+            cmd += " -r " + opt.region
+
+        output = open( ".sentJob.sh", 'w' )
+        output.write( qsub )
+        output.write( cmd )
+        output.close()
+
+        cmd = "qsub .sentJob.sh -N " + data
+        print ">>Sending {}".format(data)
+        os.system(cmd)
+        os.system("rm .sentJob.sh")
 
 if __name__ == '__main__':
     main(sys.argv)

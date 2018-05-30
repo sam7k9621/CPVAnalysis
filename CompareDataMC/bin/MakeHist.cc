@@ -27,4 +27,5 @@ main( int argc, char* argv[] )
     CompMgr().SetFileName( { "lepton", "sample" } );
     CompMgr().AddCutName( { "test", "pileup", "chi2", "region" } );
     MakeHist();
+    //CheckHist();
 }
