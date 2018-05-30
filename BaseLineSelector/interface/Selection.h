@@ -22,4 +22,7 @@ extern std::string MakeFileName(bool);
 extern void MakeFullCut();
 extern void FullCut(bool);
 
+extern void MakeCheckSelection();
+extern void CheckSelection(bool);
+
 #endif

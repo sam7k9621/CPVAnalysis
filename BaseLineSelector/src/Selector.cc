@@ -226,19 +226,27 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
 bool
 Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
+    // list of index, csv value
     vector< tuple<int, float> > jetlst;
 
     for( int j = 0; j < _sample->Jsize(); j++ ){
         _sample->SetIndex( j );
+
+        // Rejecting events containing any b-tagged jet
+        if( !_sample->RejectBJet() ){
+            return false;
+        }
 
         // Cleaning against leptons (isolated lepton)
         if( !_sample->IsIsoLepton( lepidx, j ) ){
             continue;
         }
 
-        if( _sample->IsSelJet() && _sample->RejectBJet() ){
-            jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );    
+        if( !_sample->IsSelJet() ){
+            continue;
         }
+
+        jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );    
     }
     
     if( jetlst.size() < 4 ){
@@ -264,7 +272,7 @@ Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& l
         jetidx.push_back( get<0>( j ) );
     }
 
-    return jetidx.size() >= 2 && bjetidx.size() == 2;
+    return true;
 }
 
 std::tuple<double, double, int>

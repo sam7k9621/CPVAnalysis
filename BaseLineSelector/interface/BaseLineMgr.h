@@ -93,9 +93,9 @@ class BaseLineMgr : public mgr::SampleMgr,
         *******************************************************************************/
         bool PassImpactParameter();
 
+        bool PassElLooseKinematic();
         bool PassElLooseID();
         bool PassElCRLooseID();
-        bool PassElLooseKinematic();
         bool IsLooseEl();
         bool IsCRLooseEl();
 

@@ -89,8 +89,8 @@ PreCut( bool is_data )
         }
 
         // Preselection :
-        // Jet: at least four jets
-        // Lepton: at least one tight muon
+        // Jet : at least four jets
+        // Lep : at least one lepton
         if( !PreMgr().PreSelection() ){
             continue;
         }

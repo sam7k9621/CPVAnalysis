@@ -325,6 +325,30 @@
         "path" : ["/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-600ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root"]
     },
 
+    "WJetsToLNu_HT-200To400_1":{
+        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "WJetsToLNu_HT-400To600_1":{
+        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "WJetsToLNu_HT-600To800_1":{
+        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "WJetsToLNu_HT-800To1200_1":{
+        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "WJetsToLNu_HT-1200To2500_1":{
+        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "WJetsToLNu_HT-2500ToInf_1":{
+        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
     "QCD_HT200to300_1":{
         "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-4].root"]
     },

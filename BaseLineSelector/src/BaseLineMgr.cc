@@ -310,6 +310,15 @@ BaseLineMgr::PassImpactParameter()
 }
 
 bool
+BaseLineMgr::PassElLooseKinematic()
+{
+    return LepPt() > 15 &&
+           LepAbsEta() < 2.4 &&
+           !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
+    ;
+}
+
+bool
 BaseLineMgr::PassElLooseID()
 {
     return ElIDLoose();
@@ -318,38 +327,7 @@ BaseLineMgr::PassElLooseID()
 bool
 BaseLineMgr::PassElCRLooseID()
 {
-    //removing PF isolation cut
-    if( LepAbsEta() <= 1.479 ){
-        return (
-        ElsigmaIetaIeta() < 0.011 &&
-        abs( EldEtaInSeed() ) < 0.00477 &&
-        abs( EldPhiIn() ) < 0.222 &&
-        ElGsfEleHadronicOverEMCut() < 0.298 &&
-        GsfEleEInverseMinusPInverseCut() < 0.241 &&
-        ElNumberOfExpectedInnerHits() <= 1 &&
-        ElhasConv() 
-        );
-    }
-    else{  //absEta > 1.479
-        return (
-        ElsigmaIetaIeta() < 0.0314 &&
-        abs( EldEtaInSeed() ) < 0.00868 &&
-        abs( EldPhiIn() ) < 0.213 &&
-        ElGsfEleHadronicOverEMCut() < 0.101 &&
-        GsfEleEInverseMinusPInverseCut() < 0.14 &&
-        ElNumberOfExpectedInnerHits() <= 1 &&
-        ElhasConv() 
-        );
-    }
-}
-
-bool
-BaseLineMgr::PassElLooseKinematic()
-{
-    return LepPt() > 15 &&
-           LepAbsEta() < 2.4 &&
-           !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
-    ;
+    return ElIDCRLoose();
 }
 
 bool

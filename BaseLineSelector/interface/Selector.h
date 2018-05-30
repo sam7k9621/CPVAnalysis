@@ -32,6 +32,19 @@ class Selector : public mgr::Pathmgr,
         std::string GetResultsName( const std::string&, const std::string& );
         std::string Discript( TH1* );
 
+        float LJetPt()
+        {
+            _sample->SetIndex(0);
+            return _sample->JetPt();
+        }
+        float LLepPt()
+        {
+            _sample->SetIndex(0);
+            return _sample->LepPt();
+        }
+
+        float  GetPUWeight(){ return _sample->GetPUWeight(); }
+        void   RegisterWeight(){ _sample->RegisterWeight(); }
         /*******************************************************************************
         *   Pre-selection
         *******************************************************************************/
