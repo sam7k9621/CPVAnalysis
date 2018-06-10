@@ -1,4 +1,4 @@
-#include "CPVAnalysis/BaseLineSelector/interface/checkEvtTool.h"
+#include "CPVAnalysis/SampleMgr/interface/checkEvtTool.h"
 
 // --------------------------------------------------------------------------------------------------
 //   Constructors

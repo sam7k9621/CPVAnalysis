@@ -1,7 +1,7 @@
 #ifndef SELECTION_H
 #define SELECTION_H
 
-#include "CPVAnalysis/BaseLineSelector/interface/Selector.h"
+#include "CPVAnalysis/SampleMgr/interface/Selector.h"
 
 /*******************************************************************************
 *   Global function
@@ -14,7 +14,7 @@ extern Selector& FullMgr( const std::string& = "", const string& = "" );
 *******************************************************************************/
 extern void MakePreCut();
 extern void PreCut( bool );
-
+extern bool SetPUWeight( float&, const std::vector<double>& );
 /*******************************************************************************
 *   PreCut
 *******************************************************************************/

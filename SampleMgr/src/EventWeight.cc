@@ -1,4 +1,4 @@
-#include "CPVAnalysis/BaseLineSelector/interface/BaseLineMgr.h"
+#include "CPVAnalysis/SampleMgr/interface/BaseLineMgr.h"
 #include <climits>
 #include <iostream>
 #include <map>

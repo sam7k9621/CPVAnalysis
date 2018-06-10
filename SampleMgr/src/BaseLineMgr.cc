@@ -1,4 +1,4 @@
-#include "CPVAnalysis/BaseLineSelector/interface/BaseLineMgr.h"
+#include "CPVAnalysis/SampleMgr/interface/BaseLineMgr.h"
 #include <climits>
 #include <iostream>
 #include <string>
@@ -264,7 +264,7 @@ bool
 BaseLineMgr::PassMuTightKinematic()
 {
     return LepPt() > 30 &&
-           LepAbsEta() < 2.1
+           LepAbsEta() < 2.4
     ;
 }
 
@@ -357,7 +357,7 @@ BaseLineMgr::PassElTightID()
 bool
 BaseLineMgr::PassElTightKinematic()
 {
-    return LepPt() > 30 &&
+    return LepPt() > 35 &&
            LepAbsEta() < 2.1 &&
            !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
     ;

@@ -5,6 +5,7 @@ import sys
 import argparse
 
 dataset = [
+        "QCD_HT100to200",
         "QCD_HT200to300",
         "QCD_HT300to500",
         "QCD_HT500to700",
@@ -12,13 +13,14 @@ dataset = [
         "QCD_HT1000to1500",
         "QCD_HT1500to2000",
         "QCD_HT2000toInf",
+        "DYJet_HT-70to100",
         "DYJet_HT-100to200",
-        "DYJet_HT-1200to2500",
         "DYJet_HT-200to400",
-        "DYJet_HT-2500toInf",
         "DYJet_HT-400to600",
         "DYJet_HT-600to800",
         "DYJet_HT-800to1200",
+        "DYJet_HT-1200to2500",
+        "DYJet_HT-2500toInf",
         "SingleTop_s-ch",
         "SingleTop_t-ch",
         "SingleTop_t-ch_anti",
@@ -28,16 +30,13 @@ dataset = [
         "VV_WW",
         "VV_WZ",
         "VV_ZZ",
+        "WJetsToLNu_HT-100To200",
         "WJetsToLNu_HT-200To400",
         "WJetsToLNu_HT-400To600",
         "WJetsToLNu_HT-600To800",
         "WJetsToLNu_HT-800To1200",
         "WJetsToLNu_HT-1200To2500",
         "WJetsToLNu_HT-2500ToInf",
-        "WJet_Pt-100to250",
-        "WJet_Pt-250to400",
-        "WJet_Pt-400to600",
-        "WJet_Pt-600toInf",
         "Data"
     ]
 

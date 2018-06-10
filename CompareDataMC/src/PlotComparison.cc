@@ -17,7 +17,21 @@ MakePlotCompare()
     string lepton = PlotMgr().GetOption<string>("lepton");
     string entry  = PlotMgr().GetSingleData<string>( lepton + "entry");
 
-    vector<string> histlst = { "lep_tmass", "had_tmass", "nVtx", "chi2" };
+    vector<string> histlst = { 
+        "lep_tmass", 
+        "had_tmass", 
+        "nVtx", 
+        "chi2",
+        "LJetPt",
+        "LJetEta",
+        "NumOfJets",
+        "LBJetPt",
+        "LBJetEta",
+        "HBJetPt",
+        "HBJetEta",
+        "LepPt",
+        "LepEta"
+    };
     //vector<string> histlst = { 
         //"LJetPt1",
         //"LJetPt2",

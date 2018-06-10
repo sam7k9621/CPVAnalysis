@@ -5,6 +5,7 @@
 <use name="DataFormats/FWLite"/>
 <use name="ManagerUtils/SysUtils"/>
 <use name="ManagerUtils/PlotUtils"/>
-<use name="CPVAnalysis/BaseLineSelector"/>
+
+<use name="CPVAnalysis/SampleMgr"/>
 
 <export><lib name="1"/></export>

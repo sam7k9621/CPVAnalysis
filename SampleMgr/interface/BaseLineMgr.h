@@ -7,7 +7,7 @@
 #include "ManagerUtils/HistMgr/interface/Hist2DMgr.h"
 #include "ManagerUtils/HistMgr/interface/HistMgr.h"
 
-#include "CPVAnalysis/BaseLineSelector/interface/checkEvtTool.h"
+#include "CPVAnalysis/SampleMgr/interface/checkEvtTool.h"
 #include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
 
 #include "TChain.h"

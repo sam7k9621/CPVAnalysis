@@ -23,6 +23,16 @@ AddHist()
     CompMgr().AddHist( "chi2", "#chi^{2}_{min}", "Events", 40, 0, 200 );
     CompMgr().AddHist( "nVtx", "Number of primary vertex", "Yield", 50, 0, 50 );
 
+    CompMgr().AddHist( "LJetPt"   , "Leading Jet P_{T}", "Events", 40, 0, 800 );
+    CompMgr().AddHist( "LJetEta"  , "Leading Jet Eta",   "Events", 40, -3, 5 );
+    CompMgr().AddHist( "NumOfJets", "Number of Jets",    "Events", 18, 2, 20 );
+    CompMgr().AddHist( "HBJetPt"   , "Hadronic b-jet P_{T}", "Events", 25, 0, 500 );
+    CompMgr().AddHist( "LBJetPt"   , "Leptonic b-jet P_{T}", "Events", 25, 0, 500 );
+    CompMgr().AddHist( "HBJetEta"  , "Hadronic b-jet Eta",   "Events", 40, -3, 5 );
+    CompMgr().AddHist( "LBJetEta"  , "Leptonic b-jet Eta",   "Events", 40, -3, 5 );
+    CompMgr().AddHist( "LepPt"    , "Lepton P_{T}",      "Events", 25, 0, 500 );
+    CompMgr().AddHist( "LepEta"    , "Lepton Eta",      "Events", 40, -3, 5 );
+    
     CompMgr().AddHist( "LJetPt1", "Leading Jet Pt1", "Events", 1000, 0, 1000 );
     CompMgr().AddHist( "LJetPt2", "Leading Jet Pt2", "Events", 1000, 0, 1000 );
     CompMgr().AddHist( "LJetPt3", "Leading Jet Pt3", "Events", 1000, 0, 1000 );
@@ -68,6 +78,16 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "had_tmass" ),       filename, "had_tmass" );
     mgr::SaveToROOT( CompMgr().Hist( "chi2" ),            filename, "chi2" );
     mgr::SaveToROOT( CompMgr().Hist( "nVtx" ),            filename, "nVtx" );
+    
+    mgr::SaveToROOT( CompMgr().Hist( "LJetPt"    ),       filename, "LJetPt"    );
+    mgr::SaveToROOT( CompMgr().Hist( "LJetEta"   ),       filename, "LJetEta"   );
+    mgr::SaveToROOT( CompMgr().Hist( "NumOfJets" ),       filename, "NumOfJets" );
+    mgr::SaveToROOT( CompMgr().Hist( "LBJetPt"   ),       filename, "LBJetPt"   );
+    mgr::SaveToROOT( CompMgr().Hist( "LBJetEta"  ),       filename, "LBJetEta"  );
+    mgr::SaveToROOT( CompMgr().Hist( "HBJetPt"   ),       filename, "HBJetPt"   );
+    mgr::SaveToROOT( CompMgr().Hist( "HBJetEta"  ),       filename, "HBJetEta"  );
+    mgr::SaveToROOT( CompMgr().Hist( "LepPt"     ),       filename, "LepPt"     );
+    mgr::SaveToROOT( CompMgr().Hist( "LepEta"    ),       filename, "LepEta"    );
 
     mgr::SaveToROOT( CompMgr().Hist( "LJetPt1" ), filename, "LJetPt1" );
     mgr::SaveToROOT( CompMgr().Hist( "LJetPt2" ), filename, "LJetPt2" );

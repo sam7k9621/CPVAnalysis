@@ -1,4 +1,4 @@
-#include "CPVAnalysis/BaseLineSelector/interface/Selector.h"
+#include "CPVAnalysis/SampleMgr/interface/Selector.h"
 
 using namespace std;
 
@@ -51,6 +51,16 @@ Selector::Discript( TH1* h )
     return regex_replace( h->GetName(), pattern, "" );
 }
 
+bool
+Selector::OptionContent( const string& opt, const string& content )
+{
+    if( CheckOption( opt ) ){
+        if( GetOption<string>( opt ) == content )
+            return true;
+    }
+
+    return false;
+}
 /*******************************************************************************
 *   Pre-selection
 *******************************************************************************/

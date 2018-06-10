@@ -36,8 +36,19 @@ MakePreCut()
 
     PreMgr().AddSample( ch );
     PreCut( is_data );
-
     delete ch;
+}
+
+extern bool
+SetPUWeight( float& weight, const vector<double>& puweight )
+{
+    int pv = PreMgr().nPU();
+    if( pv > 74 )
+        return false;
+    else
+        weight = puweight[ pv ];
+   
+    return true;
 }
 
 extern void
@@ -49,13 +60,19 @@ PreCut( bool is_data )
 
     // Running over golden_json
     checkEvtTool checkEvt;
-    checkEvt.addJson( PreMgr().GetSingleData<string>( "lumimask" ) );
-    checkEvt.makeJsonMap();
+    if( is_data ){
+        string sample = PreMgr().GetOption<string>( "sample" ); 
+        size_t found = sample.find( "el" );
+        string lepton = found != std::string::npos ? "el" : "mu";
+        checkEvt.addJson( PreMgr().GetSingleData<string>( lepton + "_lumimask" ) );
+        cout<< PreMgr().GetSingleData<string>( lepton + "_lumimask" ) <<endl;
+        checkEvt.makeJsonMap();
+    }
+    
     // Reading PUWeight file
     string line;
     vector<double> puweight;
     std::ifstream fin( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv" );
-
     while( std::getline( fin, line ) ){
         puweight.push_back( stod( line ) );
     }
@@ -64,12 +81,39 @@ PreCut( bool is_data )
     float weight;
     newtree->Branch( "PUWeight", &weight, "PUWeight/F" );
 
+    // Prepare Datacard
+    int entries   = 0;
+    int positive  = 0;
+    int negative  = 0;
+    double effective = 0.0;
+
     // Looping events
     int events = PreMgr().CheckOption( "test" ) ? 10000 : PreMgr().GetEntries();
 
     for( int i = 0; i < events; i++ ){
         PreMgr().GetEntry( i );
         PreMgr().process( events, i );
+        
+        // pile-up reweighted
+        if( !is_data ){
+            if( !SetPUWeight( weight, puweight ) ){
+                continue;
+            }
+        }
+        else{
+            weight = 1;
+        }
+
+        // datacard
+        double gen = PreMgr().GenWeight() > 0 ? 1.0 : -1.0 ;
+        if( gen > 0 )
+            positive++;
+        else
+            negative++;
+        
+        entries++;
+        effective += ( gen * weight );
+
 
         // Lumimask
         if( is_data ){
@@ -95,16 +139,18 @@ PreCut( bool is_data )
             continue;
         }
 
-        // pile-up reweighted
-        if( !is_data ){
-            int pv = PreMgr().nPU();
-            weight = puweight[ pv ];
-        }
-        else{
-            weight = 1;
-        }
-
         newtree->Fill();
+    }
+
+    if( !is_data ){
+        ofstream output;
+        output.open( PreMgr().GetResultsName( "txt", "Datacard" ) );
+        output<<PreMgr().GetOption<string>( "sample" )<<endl;
+        output<<"Number of events = "<<entries<<endl;
+        output<<"Sum of Positive weights = "<<positive<<endl;
+        output<<"Sum of Negative weights = "<<negative<<endl;
+        output<<"Effective number of events after PU reweighting = "<< std::fixed << std::setprecision(2) <<effective<<endl;
+        output.close();
     }
 
     cout << endl;

@@ -1,7 +1,7 @@
 #ifndef COMPAREDATAMC_H
 #define COMPAREDATAMC_H
 
-#include "CPVAnalysis/CompareDataMC/interface/Histor.h"
+#include "CPVAnalysis/SampleMgr/interface/Histor.h"
 
 /*******************************************************************************
 *  MakeHist

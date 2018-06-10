@@ -6,7 +6,7 @@
 #include "ManagerUtils/ArgHelper/interface/Pathmgr.hpp"
 #include "ManagerUtils/ArgHelper/interface/Readmgr.hpp"
 
-#include "CPVAnalysis/BaseLineSelector/interface/BaseLineMgr.h"
+#include "CPVAnalysis/SampleMgr/interface/BaseLineMgr.h"
 
 #include "TH1D.h"
 
@@ -31,6 +31,7 @@ class Selector : public mgr::Pathmgr,
         *******************************************************************************/
         std::string GetResultsName( const std::string&, const std::string& );
         std::string Discript( TH1* );
+        bool        OptionContent( const std::string&, const std::string& );
 
         float LJetPt()
         {
@@ -43,6 +44,7 @@ class Selector : public mgr::Pathmgr,
             return _sample->LepPt();
         }
 
+        float  GenWeight(){ return _sample->GenWeight(); }
         float  GetPUWeight(){ return _sample->GetPUWeight(); }
         void   RegisterWeight(){ _sample->RegisterWeight(); }
         /*******************************************************************************

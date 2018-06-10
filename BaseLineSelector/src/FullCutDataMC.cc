@@ -220,30 +220,51 @@ FullCut( bool is_data )
         /*******************************************************************************
         *  Lepton selection
         *******************************************************************************/
-        if( FullMgr().GetOption<string>( "lepton" ) == "el" ){
-            if( !FullMgr().PassFullEl( lepidx ) ){
-                continue;
+        if( FullMgr().OptionContent( "lepton", "el" ) ){
+            if( FullMgr().OptionContent( "region", "0bjet" ) ){
+                if( !FullMgr().PassFullCREl( lepidx ) ){
+                    continue;
+                }
+            }
+            else{
+                if( !FullMgr().PassFullEl( lepidx ) ){
+                    continue;
+                }
             }
         }
 
-        else if( FullMgr().GetOption<string>( "lepton" ) == "mu" ) {
-            if( !FullMgr().PassFullMu( lepidx ) ){
-                continue;
+        else if( FullMgr().OptionContent( "lepton", "mu" ) ){
+            if( FullMgr().OptionContent( "region", "0bjet" ) ){
+                if( !FullMgr().PassFullCRMu( lepidx ) ){
+                    continue;
+                }
+            }
+            else{
+                if( !FullMgr().PassFullMu( lepidx ) ){
+                    continue;
+                }
             }
         }
 
         else{
-            cout<<"[Warning] Should have assigned lepton type"<<endl;
+            cout<<endl<<"[Warning] Should have assigned lepton type"<<endl;
             return;
         }
 
         /*******************************************************************************
         *  Jet selection
         *******************************************************************************/
-        if( !FullMgr().PassFullCRJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
-            continue;
+        if( FullMgr().CheckOption( "region" ) ){
+            if( !FullMgr().PassFullCRJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
+                continue;
+            }
         }
-
+        else{
+            if( !FullMgr().PassFullJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
+                continue;
+        
+            }
+        }
         /*******************************************************************************
         *  Chi2 sorting
         *******************************************************************************/

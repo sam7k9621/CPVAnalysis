@@ -269,6 +269,10 @@
         "path" : ["/wk_cms2/yichen/bpk_ntuple/SingleTop/BPK_80X_ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/*root"]
     },
 
+    "DYJet_HT-70to100_1":{
+        "path" : ["/wk_cms2/sam7k9621/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-70to100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
     "DYJet_HT-100to200_1":{
         "path" : ["/wk_cms2/yichen/bpk_ntuple/DYJetsToLL_M-50_HT/BPK_80X_DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
@@ -309,98 +313,95 @@
         "path" : ["/wk_cms2/yichen/bpk_ntuple/VV/BPK_80X_ZZ_TuneCUETP8M1_13TeV-pythia8/*root"]
     },
 
-    "WJet_Pt-100to250_1":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-100To250_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root"]
-    },
-
-    "WJet_Pt-250to400_1":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-250To400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root"]
-    },
-
-    "WJet_Pt-400to600_1":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-400To600_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root"]
-    },
-
-    "WJet_Pt-600toInf_1":{
-        "path" : ["/wk_cms2/yichen/bpk_ntuple/WJetsToLNu_Pt/BPK_80X_WJetsToLNu_Pt-600ToInf_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/*root"]
+    "WJetsToLNu_HT-100To200_1":{
+        "path" : ["/wk_cms2/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "WJetsToLNu_HT-200To400_1":{
-        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "WJetsToLNu_HT-400To600_1":{
-        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "WJetsToLNu_HT-600To800_1":{
-        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "WJetsToLNu_HT-800To1200_1":{
-        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "WJetsToLNu_HT-1200To2500_1":{
-        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "WJetsToLNu_HT-2500ToInf_1":{
-        "path" : ["/wk_cms/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/WJetsToLNu_HT/BPK_80X_WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+    },
+
+    "QCD_HT100to200_1":{
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-4].root"]
+    },
+
+    "QCD_HT100to200_2":{
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[5-9].root"]
     },
 
     "QCD_HT200to300_1":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-4].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-4].root"]
     },
 
     "QCD_HT200to300_2":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[5-9].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[5-9].root"]
     },
 
     "QCD_HT300to500_1":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-3].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-3].root"]
     },
 
     "QCD_HT300to500_2":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[4-6].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[4-6].root"]
     },
 
     "QCD_HT300to500_3":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[7-9].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT300to500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[7-9].root"]
     },
     
     "QCD_HT500to700_1":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-3].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[0-3].root"]
     },
     
     "QCD_HT500to700_2":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[4-6].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[4-6].root"]
     },
     
     "QCD_HT500to700_3":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[7-9].root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT500to700_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*[7-9].root"]
     },
 
     "QCD_HT700to1000_1":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT700to1000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "QCD_HT1000to1500_1":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT1000to1500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "QCD_HT1500to2000_1":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT1500to2000_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "QCD_HT2000toInf_1":{
-        "path" : ["/wk_cms/sam7k9621/QCD/BPK_80X_QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
+        "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
     "mu_mc_HLT"   : [4809,4815], //HLT_Iso(Tk)Mu24_v4
     "mu_data_HLT" : [2748,2749,4174,4809,2760,2761,3541,4179,4815],  //HLT_Iso(Tk)Mu24_v*
     "el_mc_HLT"   : [4742], //HLT_Ele32_eta2p1_WPTight_Gsf_v8
     "el_data_HLT" : [456, 457, 1884, 1885, 2626, 2627, 3359, 3737, 3851, 4434, 4742 ], // HLT_Ele32_eta2p1_WPTight_Gsf_v*
-    "lumimask" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt"
+    "el_lumimask" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/electron_JSON.txt",
+    "mu_lumimask" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/muon_JSON.txt"
 }
 

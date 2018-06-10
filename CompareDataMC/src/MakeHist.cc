@@ -119,6 +119,17 @@ MakeHist()
         CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
         CompMgr().Hist( "nVtx" )->Fill( nVtx, weight );
 
+        int lj  = jethandle[ 0 ];
+        CompMgr().Hist( "LJetPt"    )->Fill( CompMgr().LeadingJetPt ( lj ),  weight );
+        CompMgr().Hist( "LJetEta"   )->Fill( CompMgr().LeadingJetEta( lj ), weight );
+        CompMgr().Hist( "NumOfJets" )->Fill( jet_size, weight );
+        CompMgr().Hist( "HBJetPt"   )->Fill( CompMgr().LeadingJetPt ( had_b ), weight );
+        CompMgr().Hist( "HBJetEta"  )->Fill( CompMgr().LeadingJetEta( had_b ), weight );
+        CompMgr().Hist( "LBJetPt"   )->Fill( CompMgr().LeadingJetPt ( lep_b ), weight );
+        CompMgr().Hist( "LBJetEta"  )->Fill( CompMgr().LeadingJetEta( lep_b ), weight );
+        CompMgr().Hist( "LepPt"     )->Fill( CompMgr().GetLepPt( lephandle ),  weight  );
+        CompMgr().Hist( "LepEta"    )->Fill( CompMgr().GetLepEta( lephandle ), weight  );
+
         if( !is_data ){
             CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass );
         }

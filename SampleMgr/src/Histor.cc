@@ -1,4 +1,4 @@
-#include "CPVAnalysis/CompareDataMC/interface/Histor.h"
+#include "CPVAnalysis/SampleMgr/interface/Histor.h"
 #include "TFile.h"
 using namespace std;
 

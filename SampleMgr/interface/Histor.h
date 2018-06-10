@@ -6,7 +6,7 @@
 #include "ManagerUtils/ArgHelper/interface/Pathmgr.hpp"
 #include "ManagerUtils/ArgHelper/interface/Readmgr.hpp"
 
-#include "CPVAnalysis/BaseLineSelector/interface/BaseLineMgr.h"
+#include "CPVAnalysis/SampleMgr/interface/BaseLineMgr.h"
 
 #include "TH1D.h"
 
@@ -63,6 +63,25 @@ class Histor : public mgr::Pathmgr,
             _sample->SetIndex( i );
             return _sample->LepPt();
         }
+
+        float GetLepEta( int i )
+        { 
+            _sample->SetIndex( i );
+            return _sample->LepEta();
+        }
+
+        float LeadingJetEta( int i )
+        {
+            _sample->SetIndex( i );
+            return _sample->JetEta();
+        }
+
+        float LeadingJetPt( int i )
+        {
+            _sample->SetIndex( i );
+            return _sample->JetPt();
+        }
+
         /*******************************************************************************
         *   Looping event
         *******************************************************************************/

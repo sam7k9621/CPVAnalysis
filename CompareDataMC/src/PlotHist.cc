@@ -36,7 +36,7 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
     data->SetMarkerStyle( 20 );
     leg->AddEntry( data, "Data", "le" );
     
-    bg->SetMaximum( mgr::GetYmax( data ) * 1.2 );
+    bg->SetMaximum( mgr::GetYmax( data ) * 1.5 );
     bg->GetHistogram()->GetXaxis()->SetTitle( data->GetXaxis()->GetTitle() );
     bg->GetHistogram()->GetYaxis()->SetTitle( data->GetYaxis()->GetTitle() );
     
@@ -71,8 +71,10 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
 
     c->cd();
 
+    string lepton = PlotMgr().GetOption<string>("lepton");
+    int lumi = lepton == "el" ? 35700 : 35900;
     mgr::DrawCMSLabel( PRELIMINARY );
-    mgr::DrawLuminosity( 36814 );
+    mgr::DrawLuminosity( lumi );
     mgr::LatexMgr latex;
     latex.SetOrigin( PLOT_X_MIN, PLOT_Y_MAX + TEXT_MARGIN / 2, BOTTOM_LEFT)
     .WriteLine( entry );
@@ -125,7 +127,7 @@ PlotMC( vector<TH1D*> mclst, const string& title, const string& entry )
 
     mgr::SetSinglePad( c );
     mgr::SetAxis( bg );
-    bg->SetMaximum( mgr::GetYmax(bg_sum) * 1.2 );
+    bg->SetMaximum( mgr::GetYmax(bg_sum) * 1.5 );
     bg->GetHistogram()->GetXaxis()->SetTitle( bg_sum->GetXaxis()->GetTitle() );
     bg->GetHistogram()->GetYaxis()->SetTitle( bg_sum->GetYaxis()->GetTitle() );
     

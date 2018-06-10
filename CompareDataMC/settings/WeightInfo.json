@@ -5,17 +5,17 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-100to200_region_0bjet.root"
         ], 
-        "gen_num": 7145468, 
+        "gen_num": 6916793.06, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-100to200_region_0bjet.root"
         ]
     }, 
     "DYJet_HT-1200to2500": {
-        "cross_section": 0.14268, 
+        "cross_section": 0.186222, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-1200to2500_region_0bjet.root"
         ], 
-        "gen_num": 596079, 
+        "gen_num": 576786.67, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-1200to2500_region_0bjet.root"
         ]
@@ -25,17 +25,17 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-200to400_region_0bjet.root"
         ], 
-        "gen_num": 5093947, 
+        "gen_num": 4929696.96, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-200to400_region_0bjet.root"
         ]
     }, 
     "DYJet_HT-2500toInf": {
-        "cross_section": 0.00318816, 
+        "cross_section": 0.00438495, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-2500toInf_region_0bjet.root"
         ], 
-        "gen_num": 399492, 
+        "gen_num": 386734.55, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-2500toInf_region_0bjet.root"
         ]
@@ -45,7 +45,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-400to600_region_0bjet.root"
         ], 
-        "gen_num": 1265157, 
+        "gen_num": 1224284.65, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-400to600_region_0bjet.root"
         ]
@@ -55,17 +55,27 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-600to800_region_0bjet.root"
         ], 
-        "gen_num": 8292957, 
+        "gen_num": 8026407.62, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-600to800_region_0bjet.root"
         ]
     }, 
+    "DYJet_HT-70to100": {
+        "cross_section": 208.977, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-70to100_region_0bjet.root"
+        ], 
+        "gen_num": 9305773.2, 
+        "mupath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-70to100_region_0bjet.root"
+        ]
+    }, 
     "DYJet_HT-800to1200": {
-        "cross_section": 0.8313569999999999, 
+        "cross_section": 0.775392, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-800to1200_region_0bjet.root"
         ], 
-        "gen_num": 2668730, 
+        "gen_num": 2582923.5, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-800to1200_region_0bjet.root"
         ]
@@ -83,9 +93,19 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500_region_0bjet.root"
         ], 
-        "gen_num": 4767100, 
+        "gen_num": 4612038.58, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500_region_0bjet.root"
+        ]
+    }, 
+    "QCD_HT100to200": {
+        "cross_section": 27990000, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200_region_0bjet.root"
+        ], 
+        "gen_num": 77777089.35, 
+        "mupath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200_region_0bjet.root"
         ]
     }, 
     "QCD_HT1500to2000": {
@@ -93,7 +113,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000_region_0bjet.root"
         ], 
-        "gen_num": 7855883, 
+        "gen_num": 7602054.23, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000_region_0bjet.root"
         ]
@@ -103,7 +123,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf_region_0bjet.root"
         ], 
-        "gen_num": 3839969, 
+        "gen_num": 3716195.29, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf_region_0bjet.root"
         ]
@@ -113,7 +133,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300_region_0bjet.root"
         ], 
-        "gen_num": 38857977, 
+        "gen_num": 37608094.69, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300_region_0bjet.root"
         ]
@@ -123,7 +143,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500_region_0bjet.root"
         ], 
-        "gen_num": 37502012, 
+        "gen_num": 36293911.87, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500_region_0bjet.root"
         ]
@@ -133,7 +153,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700_region_0bjet.root"
         ], 
-        "gen_num": 42190760, 
+        "gen_num": 40834538.24, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700_region_0bjet.root"
         ]
@@ -143,7 +163,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000_region_0bjet.root"
         ], 
-        "gen_num": 15629253, 
+        "gen_num": 15126222.53, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000_region_0bjet.root"
         ]
@@ -153,7 +173,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_s-ch_region_0bjet.root"
         ], 
-        "gen_num": 622990, 
+        "gen_num": 602629.59, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_s-ch_region_0bjet.root"
         ]
@@ -163,7 +183,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_region_0bjet.root"
         ], 
-        "gen_num": 66437948, 
+        "gen_num": 64296935.48, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_region_0bjet.root"
         ]
@@ -173,7 +193,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_anti_region_0bjet.root"
         ], 
-        "gen_num": 38780433, 
+        "gen_num": 37536283.66, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_anti_region_0bjet.root"
         ]
@@ -183,7 +203,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_region_0bjet.root"
         ], 
-        "gen_num": 6924540, 
+        "gen_num": 6701500.06, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_region_0bjet.root"
         ]
@@ -193,7 +213,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_anti_region_0bjet.root"
         ], 
-        "gen_num": 6710218, 
+        "gen_num": 6493496.53, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_anti_region_0bjet.root"
         ]
@@ -203,7 +223,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTbar_region_0bjet.root"
         ], 
-        "gen_num": 76357853, 
+        "gen_num": 73900373.35, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTbar_region_0bjet.root"
         ]
@@ -213,7 +233,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WW_region_0bjet.root"
         ], 
-        "gen_num": 994012, 
+        "gen_num": 961891.78, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WW_region_0bjet.root"
         ]
@@ -223,7 +243,7 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WZ_region_0bjet.root"
         ], 
-        "gen_num": 1000000, 
+        "gen_num": 968023.57, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WZ_region_0bjet.root"
         ]
@@ -233,107 +253,77 @@
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_ZZ_region_0bjet.root"
         ], 
-        "gen_num": 843120, 
+        "gen_num": 815915.99, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_ZZ_region_0bjet.root"
         ]
     }, 
-    "WJet_Pt-100to250": {
-        "cross_section": 676.3, 
+    "WJetsToLNu_HT-100To200": {
+        "cross_section": 1628.297, 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJet_Pt-100to250_region_0bjet.root"
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-100To200_region_0bjet.root"
         ], 
-        "gen_num": 3644567, 
+        "gen_num": 9882645.35, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJet_Pt-100to250_region_0bjet.root"
-        ]
-    }, 
-    "WJet_Pt-250to400": {
-        "cross_section": 23.94, 
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJet_Pt-250to400_region_0bjet.root"
-        ], 
-        "gen_num": 369290, 
-        "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJet_Pt-250to400_region_0bjet.root"
-        ]
-    }, 
-    "WJet_Pt-400to600": {
-        "cross_section": 3.031, 
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJet_Pt-400to600_region_0bjet.root"
-        ], 
-        "gen_num": 376470, 
-        "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJet_Pt-400to600_region_0bjet.root"
-        ]
-    }, 
-    "WJet_Pt-600toInf": {
-        "cross_section": 0.4524, 
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJet_Pt-600toInf_region_0bjet.root"
-        ], 
-        "gen_num": 396491, 
-        "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJet_Pt-600toInf_region_0bjet.root"
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-100To200_region_0bjet.root"
         ]
     }, 
     "WJetsToLNu_HT-1200To2500": {
-        "cross_section": 1.329, 
+        "cross_section": 1.6080899999999998, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-1200To2500_region_0bjet.root"
         ], 
-        "gen_num": 746800.728, 
+        "gen_num": 236702.46, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-1200To2500_region_0bjet.root"
         ]
     }, 
     "WJetsToLNu_HT-200To400": {
-        "cross_section": 359.7, 
+        "cross_section": 435.23699999999997, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-200To400_region_0bjet.root"
         ], 
-        "gen_num": 39047173.572000004, 
+        "gen_num": 13358363.35, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-200To400_region_0bjet.root"
         ]
     }, 
     "WJetsToLNu_HT-2500ToInf": {
-        "cross_section": 0.03216, 
+        "cross_section": 0.0389136, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
         ], 
-        "gen_num": 763725.732, 
+        "gen_num": 245295.36, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
         ]
     }, 
     "WJetsToLNu_HT-400To600": {
-        "cross_section": 48.91, 
+        "cross_section": 59.181099999999994, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-400To600_region_0bjet.root"
         ], 
-        "gen_num": 1947756.288, 
+        "gen_num": 1900583.12, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-400To600_region_0bjet.root"
         ]
     }, 
     "WJetsToLNu_HT-600To800": {
-        "cross_section": 12.05, 
+        "cross_section": 14.5805, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-600To800_region_0bjet.root"
         ], 
-        "gen_num": 11637577.48, 
+        "gen_num": 12020199.53, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-600To800_region_0bjet.root"
         ]
     }, 
     "WJetsToLNu_HT-800To1200": {
-        "cross_section": 5.501, 
+        "cross_section": 6.656210000000001, 
         "elpath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-800To1200_region_0bjet.root"
         ], 
-        "gen_num": 18832297.298, 
+        "gen_num": 6001577.17, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-800To1200_region_0bjet.root"
         ]
