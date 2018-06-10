@@ -6,12 +6,14 @@ main( int argc, char* argv[] )
     opt::options_description de( "Command for SelectionCut" );
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
-        ( "count,c", "count events" )
-        ( "test,t", "run testing events number" )
+        ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
-        ( "dist,d", "pairing dist")
+        ( "region,r", opt::value<string>(), "which region")
+        ( "count,c", "count events" )
+        ( "pileup,p", "pile-up reweight" )
+        ( "test,t", "run testing events number" )
     ;
-    CompMgr( "CompareDataMC" ).AddOptions( de );
+    CompMgr( "CompareDataMC", "WeightInfo.json" ).AddOptions( de );
     const int run = CompMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){
@@ -22,7 +24,8 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    CompMgr().SetFileName( { "lepton" } );
-    CompMgr().AddCutName ( { "chi2", "test" } );
-    MakeFullCut();
+    CompMgr().SetFileName( { "lepton", "sample" } );
+    CompMgr().AddCutName( { "test", "pileup", "chi2", "region" } );
+    MakeHist();
+    //CheckHist();
 }

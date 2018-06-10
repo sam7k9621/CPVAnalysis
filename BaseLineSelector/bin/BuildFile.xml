@@ -5,4 +5,5 @@
 <use name="DataFormats/FWLite"/>
 <use name="CPVAnalysis/BaseLineSelector"/>
 
-<bin name="precut"  file="PreCut.cc"/>
+<bin name="PreCut"   file="PreCut.cc"/>
+<bin name="FullCut"  file="FullCut.cc"/>

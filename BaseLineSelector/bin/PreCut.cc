@@ -1,4 +1,4 @@
-#include "CPVAnalysis/BaseLineSelector/interface/PreSelection.h"
+#include "CPVAnalysis/BaseLineSelector/interface/Selection.h"
 
 using namespace std;
 
@@ -7,13 +7,11 @@ main( int argc, char* argv[] )
 {
     opt::options_description de( "Command for Pre-selection" );
     de.add_options()
-        ( "lepton,l", opt::value<string>()->required(), "which lepton" )
-        ( "source,s", opt::value<string>()->required(), "which era of data or mc" )
+        ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
-        ( "pile,p", "using pile-up weight" )
     ;
-    PreMgr( "BaseLineSelector" ).AddOptions( de );
+    PreMgr( "BaseLineSelector", "SampleInfo.json" ).AddOptions( de );
     const int run = PreMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){
@@ -24,7 +22,7 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    PreMgr().SetFileName( { "lepton", "source" } );
-    PreMgr().AddCutName( { "test", "pile" } );
+    PreMgr().SetFileName( { "sample" } );
+    PreMgr().AddCutName( { "test" } );
     MakePreCut();
 }
