@@ -1,7 +1,6 @@
 {
 
     "MClst" : [
-        "QCD",
         "DYJet",
         "SingleTop",
         "VV",
@@ -9,8 +8,9 @@
         "TTbar"
         ],
 
-    "muentry" : "1 #mu, #geq 4 jets ( 0 b jets )",
+    "muentry" : "1 #mu, #geq 4 jets ( 2 b jets )",
     
-    "elentry" : "1 e, #geq 4 jets ( 0 b jets )"
+    "elentry" : "1 e, #geq 4 jets ( 2 b jets )",
 
+    "coentry" : "1 l, #geq 4 jets ( 2 b jets )"
 }

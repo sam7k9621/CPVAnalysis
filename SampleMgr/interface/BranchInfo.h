@@ -128,6 +128,7 @@ class EvtInfo {
         float McDauPt[ 14 ];// Generic MC daughter information
         float McDauEta[ 14 ];// MC daughters: 0-1: hard jet from b'bar/t'bar, 2-9: W daughters, 10-13: Z daughters
         float McDauPhi[ 14 ];
+        float Rho;
         float RhoPU[ 2 ];// [electron,muon]
         float SigmaPU[ 2 ];// [electron,muon]
         int McDauPdgID[ 14 ];
@@ -205,6 +206,7 @@ class EvtInfo {
             root->Branch( "EvtInfo.PDFid1",                                    &PDFid1,                                    "EvtInfo.PDFid1/I" );
             root->Branch( "EvtInfo.PDFid2",                                    &PDFid2,                                    "EvtInfo.PDFid2/I" );
             root->Branch( "EvtInfo.PDFx1",                                     &PDFx1,                                     "EvtInfo.PDFx1/F" );
+            root->Branch( "EvtInfo.Rho",                                       &Rho,                                       "EvtInfo.Rho/F" );
             root->Branch( "EvtInfo.RhoPU",                                     &RhoPU[ 0 ],                                "EvtInfo.RhoPU[2]/F" );
             root->Branch( "EvtInfo.SigmaPU",                                   &SigmaPU[ 0 ],                              "EvtInfo.SigmaPU[2]/F" );
             root->Branch( "EvtInfo.PDFx2",                                     &PDFx2,                                     "EvtInfo.PDFx2/F" );
@@ -272,6 +274,7 @@ class EvtInfo {
             root->SetBranchAddress( "EvtInfo.PDFid1",                                    &PDFid1 );
             root->SetBranchAddress( "EvtInfo.PDFid2",                                    &PDFid2 );
             root->SetBranchAddress( "EvtInfo.PDFx1",                                     &PDFx1 );
+            root->SetBranchAddress( "EvtInfo.Rho",                                       &Rho );
             root->SetBranchAddress( "EvtInfo.RhoPU",                                     &RhoPU[ 0 ] );
             root->SetBranchAddress( "EvtInfo.SigmaPU",                                   &SigmaPU[ 0 ] );
             root->SetBranchAddress( "EvtInfo.PDFx2",                                     &PDFx2 );

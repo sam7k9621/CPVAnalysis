@@ -1,0 +1,25 @@
+{
+    "TTbar_1":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*[0-4].root"]
+    },
+    
+    "TTbar_2":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_001/*[5-9].root"]
+    },
+    
+    "TTbar_3":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_002/*[0-4].root"]
+    },
+    
+    "TTbar_4":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_002/*[5-9].root"]
+    },
+    
+    "TTbar_5":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_003/*[0-4].root"]
+    },
+    
+    "TTbar_6":{
+        "path" : ["/wk_cms2/yichen/bpk_ntuple/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/dir_003/*[5-9].root"]
+    }
+}

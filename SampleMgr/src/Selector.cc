@@ -10,6 +10,7 @@ Selector::Selector( const string& subdir, const string& json ) :
     Readmgr( SettingsDir() / json ),
     Parsermgr()
 {
+    _sample = NULL;
 }
 
 Selector::~Selector()
@@ -70,10 +71,34 @@ Selector::IsGoodEvt( checkEvtTool& evt )
     return _sample->IsGoodEvt( evt );
 }
 
+void 
+Selector::JECCorrUp()
+{
+    _sample->JECUp();
+}
+
+void
+Selector::JECCorrDn()
+{
+    _sample->JECDn();
+}
+
 void
 Selector::JERCorr()
 {
     _sample->JERCorr();
+}
+
+void
+Selector::JERCorrUp()
+{
+    _sample->JERCorrUp();
+}
+
+void
+Selector::JERCorrDn()
+{
+    _sample->JERCorrDn();
 }
 
 bool
@@ -285,25 +310,57 @@ Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& l
     return true;
 }
 
-std::tuple<double, double, int>
+bool
+Selector::PassFullCR2Jet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
+{
+    for( int j = 0; j < _sample->Jsize(); j++ ){
+        _sample->SetIndex( j );
+
+        // Cleaning against leptons (isolated lepton)
+        if( !_sample->IsIsoLepton( lepidx, j ) ){
+            continue;
+        }
+
+        int mask = 0x01;
+
+        if( _sample->IsSelJet() ){
+            mask <<= 1;
+        }
+
+        if( _sample->PassCS2BJet() ){
+            mask <<= 2;
+        }
+
+        if( mask & 0x02 ){
+            jetidx.push_back( j );
+        }
+        else if( mask & 0x08 ){
+            bjetidx.push_back( j );
+        }
+    }
+
+    return jetidx.size() >= 2 && bjetidx.size() == 2;
+}
+
+std::tuple<double, double, int, int, int>
 Selector::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
 {
     vector<TLorentzVector> jethandle;
-
     for( const auto& j : jetidx ){
         jethandle.push_back( _sample->GetJetP4( j ) );
     }
 
     vector<TLorentzVector> bjethandle;
-
     for( const auto& b : bjetidx ){
         bjethandle.push_back( _sample->GetJetP4( b ) );
     }
 
     // Mass constrain method - find hadronic b
-    double chi2mass = INT_MAX;
-    double seltmass = 0;
-    int had_b       = -1;
+    double chi2mass  = INT_MAX;
+    double had_tmass = 0;
+    int    had_b     = -1;
+    int    jet1      = -1;
+    int    jet2      = -1;
 
     for( unsigned int i = 0; i < jethandle.size(); i++ ){
         for( unsigned int j = ( i + 1 ); j < jethandle.size(); j++ ){
@@ -314,15 +371,17 @@ Selector::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
                 double chi_w  = ( w_mass - 82.9 ) / 9.5;
 
                 if( ( chi_t * chi_t + chi_w * chi_w ) < chi2mass ){
-                    chi2mass = ( chi_t * chi_t + chi_w * chi_w );
-                    seltmass = t_mass;
-                    had_b    = k;
+                    chi2mass  = ( chi_t * chi_t + chi_w * chi_w );
+                    had_tmass = t_mass;
+                    had_b     = k;
+                    jet1      = i;
+                    jet2      = j;
                 }
             }
         }
     }
 
-    return make_tuple( chi2mass, seltmass, had_b );
+    return make_tuple( chi2mass, had_tmass, had_b, jet1, jet2 );
 }
 
 double

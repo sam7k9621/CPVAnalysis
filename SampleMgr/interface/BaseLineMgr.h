@@ -4,6 +4,11 @@
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
+#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "JetMETCorrections/Modules/interface/JetResolution.h"
+#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
+
 #include "ManagerUtils/HistMgr/interface/Hist2DMgr.h"
 #include "ManagerUtils/HistMgr/interface/HistMgr.h"
 
@@ -18,9 +23,9 @@
 #include <tuple>
 #include <vector>
 
-class BaseLineMgr : public mgr::SampleMgr,
+class BaseLineMgr : public mgr::Hist2DMgr,
                     public mgr::HistMgr,
-                    public mgr::Hist2DMgr {
+                    public mgr::SampleMgr{
     public:
 
         /*******************************************************************************
@@ -63,15 +68,20 @@ class BaseLineMgr : public mgr::SampleMgr,
         *******************************************************************************/
         // Jet energy resolution correction
         unsigned bitconv( const float& x );
-        bool     IsWellMatched();
-        double   MakeScaled();
-        double   MakeSmeared();
+        bool     IsWellMatched( const double& );
+        double   MakeScaled( const  double& );
+        double   MakeSmeared( const double&, const double& );
+        void     JECUp();
+        void     JECDn();
         void     JERCorr();
+        void     JERCorrUp();
+        void     JERCorrDn();
 
         bool PassJetLooseID();
         bool PassJetKinematic();
         bool IsSelJet();
         bool PassBJet();
+        bool PassCS2BJet();
         bool RejectBJet();
 
         /*******************************************************************************
@@ -116,21 +126,38 @@ class BaseLineMgr : public mgr::SampleMgr,
         // PU weight
         void  RegisterWeight();
         float GetPUWeight(){ return _puweight; }
+        float GetPUWeightUp(){ return _puweight_up; }
+        float GetPUWeightDn(){ return _puweight_dn; }
         int   nVtx()       { return Vsize(); }
 
         // B-tagging weight
         void   InitBtagWeight( const std::string&, const std::string& );
         double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
+        double BtagScaleFactorUp( BTagEntry::OperatingPoint, const int& );
+        double BtagScaleFactorDn( BTagEntry::OperatingPoint, const int& );
 
         // ID ISO Trg weight
         double GetSFTH2( TH2D*, const int& );
+        double GetSFTH2Up( TH2D*, const int& );
+        double GetSFTH2Dn( TH2D*, const int& );
+
+        // JES
+        void InitJES();
+
+        //Top Pt Weighting
+        double TopPtWeight();
 
     private:
 
         TChain* _ch;
 
         float _puweight;
+        float _puweight_up;
+        float _puweight_dn;
         BTagCalibration* _calib;
+        JME::JetResolution* _resolution;
+        JME::JetResolutionScaleFactor* _resol_sf;
+        JetCorrectionUncertainty *_jecUnc;
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
 };
 

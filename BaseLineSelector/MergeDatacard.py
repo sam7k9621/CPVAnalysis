@@ -44,9 +44,8 @@ path = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results
 def main(args):
 
     with open( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Datacard.txt", "w") as outputfile:
-
         for d in dataset :
-            version = len([name for name in os.listdir( path ) if re.search( d + "_[0-9].txt", name ) ])
+            version = len([name for name in os.listdir( path ) if re.search( d + "_[0-9]+.txt", name ) ])
             number = 0.0
             for i in range(1, version+1) :
                 filename = path +  "Datacard_" + d + "_" + str(i) + ".txt"

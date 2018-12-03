@@ -57,6 +57,7 @@ PreCut( bool is_data )
     // Build new file
     TFile* newfile = TFile::Open( ( PreMgr().GetResultsName( "root", "PreCut" ) ).c_str(), "recreate" );
     TTree* newtree = PreMgr().CloneTree();
+    newtree->SetDirectory( newfile );
 
     // Running over golden_json
     checkEvtTool checkEvt;
@@ -72,36 +73,59 @@ PreCut( bool is_data )
     // Reading PUWeight file
     string line;
     vector<double> puweight;
+    vector<double> puweight_up;
+    vector<double> puweight_dn;
     std::ifstream fin( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv" );
     while( std::getline( fin, line ) ){
         puweight.push_back( stod( line ) );
     }
+    std::ifstream fin_up( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/pileupweights_72660.csv" );
+    while( std::getline( fin_up, line ) ){
+        puweight_up.push_back( stod( line ) );
+    }
+    std::ifstream fin_dn( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/pileupweights_65740.csv" );
+    while( std::getline( fin_dn, line ) ){
+        puweight_dn.push_back( stod( line ) );
+    }
 
     // Register new branch
     float weight;
-    newtree->Branch( "PUWeight", &weight, "PUWeight/F" );
+    float weight_up;
+    float weight_dn;
+    newtree->Branch( "PUWeight",    &weight,    "PUWeight/F" );
+    newtree->Branch( "PUWeight_up", &weight_up, "PUWeight_up/F" );
+    newtree->Branch( "PUWeight_dn", &weight_dn, "PUWeight_dn/F" );
 
     // Prepare Datacard
     int entries   = 0;
     int positive  = 0;
     int negative  = 0;
-    double effective = 0.0;
+    double effective    = 0.0;
+    double effective_up = 0.0;
+    double effective_dn = 0.0;
 
     // Looping events
-    int events = PreMgr().CheckOption( "test" ) ? 10000 : PreMgr().GetEntries();
+    int events = PreMgr().CheckOption( "test" ) ? 1 : PreMgr().GetEntries();
 
     for( int i = 0; i < events; i++ ){
         PreMgr().GetEntry( i );
         PreMgr().process( events, i );
         
         // pile-up reweighted
+        // abandom events with >74 vertex
         if( !is_data ){
-            if( !SetPUWeight( weight, puweight ) ){
+            if( 
+                !SetPUWeight( weight, puweight ) ||
+                !SetPUWeight( weight_up, puweight_up ) ||
+                !SetPUWeight( weight_dn, puweight_dn ) 
+                ){
                 continue;
             }
         }
         else{
-            weight = 1;
+            weight    = 1;
+            weight_up = 1;
+            weight_dn = 1;
         }
 
         // datacard
@@ -112,8 +136,9 @@ PreCut( bool is_data )
             negative++;
         
         entries++;
-        effective += ( gen * weight );
-
+        effective    += ( gen * weight );
+        effective_up += ( gen * weight_up );
+        effective_dn += ( gen * weight_dn );
 
         // Lumimask
         if( is_data ){
@@ -122,10 +147,6 @@ PreCut( bool is_data )
             }
         }
 
-        // JERCorr
-        if( !is_data ){
-            PreMgr().JERCorr();
-        }
 
         // Pass vertex 
         if( !PreMgr().PassVertex() ){
@@ -149,12 +170,13 @@ PreCut( bool is_data )
         output<<"Number of events = "<<entries<<endl;
         output<<"Sum of Positive weights = "<<positive<<endl;
         output<<"Sum of Negative weights = "<<negative<<endl;
-        output<<"Effective number of events after PU reweighting = "<< std::fixed << std::setprecision(2) <<effective<<endl;
+        output<<"Effective number of events after PU    reweighting = "<< std::fixed << std::setprecision(2) <<effective<<endl;
+        output<<"Effective number of events after PU_up reweighting = "<< std::fixed << std::setprecision(2) <<effective_up<<endl;
+        output<<"Effective number of events after PU_dn reweighting = "<< std::fixed << std::setprecision(2) <<effective_dn<<endl;
         output.close();
     }
 
     cout << endl;
     newtree->AutoSave();
-    newfile->Close();
     delete newfile;
 }

@@ -1,6 +1,95 @@
 #include "CPVAnalysis/CompareDataMC/interface/CompareDataMC.h"
+#include "TFile.h"
 using namespace std;
 
+extern vector<TH1D*>
+ExtractMC( const string& title )
+{
+     //Extracting MC hist
+    string region = PlotMgr().GetOption<string>("mc");
+    vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
+    vector<TH1D*> mclst;
+
+    for( const auto s : MCsamplelst ){
+        string file = GetFilename() + "_" + region + ".root";
+        file.insert( file.find( "HistMerge" ) + 12, "_" + s );
+
+        cout<<"[ "<<file<<" ]"<<endl;
+        TFile* f = TFile::Open( file.c_str() );
+        TH1D* h  = (TH1D*)( f->Get( title.c_str() )->Clone() );
+        h->SetDirectory( 0 );
+
+        mclst.push_back( h );
+        f->Close();
+    }
+
+    return mclst;
+}
+
+extern vector<TH2D*>
+ExtractMC2D( const string& title )
+{
+     //Extracting MC hist
+    string region = PlotMgr().GetOption<string>("mc");
+    vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
+    vector<TH2D*> mclst;
+
+    for( const auto s : MCsamplelst ){
+        string file = GetFilename() + "_" + region + ".root";
+        file.insert( file.find( "HistMerge" ) + 12, "_" + s );
+
+        TFile* f = TFile::Open( file.c_str() );
+        TH2D* h  = (TH2D*)( f->Get( title.c_str() )->Clone() );
+        h->SetDirectory( 0 );
+
+        mclst.push_back( h );
+        f->Close();
+    }
+
+    return mclst;
+}
+
+extern TH1D*
+ExtractData( const string& title, string region )
+{
+     //Extracting Data hist
+    if( region == "" ){
+        region = PlotMgr().GetOption<string>("data");
+    }
+    string file = GetFilename() + "_" + region + ".root";
+    file.insert( file.find( "HistMerge" ) + 12, "_Data" );
+    
+    cout<<"[ "<<file<<" ]"<<endl;
+    TFile* f = TFile::Open( file.c_str() );
+    TH1D* h  = (TH1D*)( f->Get( title.c_str() )->Clone() );
+    h->SetDirectory( 0 );
+    f->Close();
+    return h;
+}
+
+extern string
+GetFilename()
+{
+    string filename = PlotMgr().GetResultsName( "", "HistMerge" );
+    auto pos = filename.find( "_region" );
+    if( pos != std::string::npos ){
+        filename.erase( filename.begin() + pos, filename.end() );
+    }
+
+    return filename;
+}
+
+extern double
+GetErrSum( TH1D* hist )
+{
+    double binerror = 0;
+
+    for( int i = 0; i < hist->GetSize(); ++i ){
+        binerror += ( hist->GetBinError( i ) * hist->GetBinError( i ) );
+    }
+
+    return sqrt( binerror );
+}
 extern void
 SetYTitle( TH1* plot )
 {

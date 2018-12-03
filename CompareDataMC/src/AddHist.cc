@@ -17,7 +17,7 @@ AddHist()
         CompMgr().AddHist( "lep_tmass", "M_{eb} [GeV]", "Events", 50, 0, 500 ); 
     }
     else{
-        cout<<"[Warning] Can't find corredsponding lepton type"<<endl;
+        CompMgr().AddHist( "lep_tmass", "M_{lb} [GeV]", "Events", 50, 0, 500 ); 
     }
     CompMgr().AddHist( "had_tmass", "M_{jjb} [GeV]", "Events", 50, 0, 500 );
     CompMgr().AddHist( "chi2", "#chi^{2}_{min}", "Events", 40, 0, 200 );
@@ -25,7 +25,6 @@ AddHist()
 
     CompMgr().AddHist( "LJetPt"   , "Leading Jet P_{T}", "Events", 40, 0, 800 );
     CompMgr().AddHist( "LJetEta"  , "Leading Jet Eta",   "Events", 40, -3, 5 );
-    CompMgr().AddHist( "NumOfJets", "Number of Jets",    "Events", 18, 2, 20 );
     CompMgr().AddHist( "HBJetPt"   , "Hadronic b-jet P_{T}", "Events", 25, 0, 500 );
     CompMgr().AddHist( "LBJetPt"   , "Leptonic b-jet P_{T}", "Events", 25, 0, 500 );
     CompMgr().AddHist( "HBJetEta"  , "Hadronic b-jet Eta",   "Events", 40, -3, 5 );
@@ -50,8 +49,18 @@ AddHist()
     /*******************************************************************************
     *  Observable
     *******************************************************************************/
+    CompMgr().AddHist( "Obs2", "O_{2}", "Events", 200, -10, 10 );
     CompMgr().AddHist( "Obs3", "O_{3}", "Events", 200, -10, 10 );
     CompMgr().AddHist( "Obs4", "O_{4}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "Obs7", "O_{7}", "Events", 200, -10, 10 );
+
+    /*******************************************************************************
+    *  Intrinsci Acp
+    *******************************************************************************/
+    CompMgr().AddHist( "GenObs2", "O_{2}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "GenObs3", "O_{3}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "GenObs4", "O_{4}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "GenObs7", "O_{7}", "Events", 200, -10, 10 );
 
     /*******************************************************************************
     * bbSeparation
@@ -64,6 +73,25 @@ AddHist()
     CompMgr().AddHist( "chi2_Misid", "#chi^{2}_{min}", "PDF", 200, 0, 200 );
     CompMgr().AddHist( "chi2_Mistag", "#chi^{2}_{min}", "PDF", 200, 0, 200 );
     CompMgr().AddHist( "chi2_Nomatched", "#chi^{2}_{min}", "PDF", 200, 0, 200 );
+
+    /*******************************************************************************
+    * Optimisation
+    *******************************************************************************/
+    if( lepton == "mu" ){
+        CompMgr().AddHist( "Cor_leptmass", "M_{#mub} [GeV]", "Events", 50, 0, 500 ); 
+        CompMgr().AddHist( "Misid_leptmass", "M_{#mub} [GeV]", "Events", 50, 0, 500 ); 
+        CompMgr().AddHist( "Mistag_leptmass", "M_{#mub} [GeV]", "Events", 50, 0, 500 ); 
+    }
+    else if( lepton == "el" ){
+        CompMgr().AddHist( "Cor_leptmass", "M_{eb} [GeV]", "Events", 50, 0, 500 ); 
+        CompMgr().AddHist( "Misid_leptmass", "M_{eb} [GeV]", "Events", 50, 0, 500 ); 
+        CompMgr().AddHist( "Mistag_leptmass", "M_{eb} [GeV]", "Events", 50, 0, 500 ); 
+    }
+    else{
+        CompMgr().AddHist( "Cor_leptmass", "M_{lb} [GeV]", "Events", 50, 0, 500 ); 
+        CompMgr().AddHist( "Misid_leptmass", "M_{lb} [GeV]", "Events", 50, 0, 500 ); 
+        CompMgr().AddHist( "Mistag_leptmass", "M_{lb} [GeV]", "Events", 50, 0, 500 ); 
+    }
 }
 
 extern void
@@ -81,7 +109,6 @@ StoreCompare()
     
     mgr::SaveToROOT( CompMgr().Hist( "LJetPt"    ),       filename, "LJetPt"    );
     mgr::SaveToROOT( CompMgr().Hist( "LJetEta"   ),       filename, "LJetEta"   );
-    mgr::SaveToROOT( CompMgr().Hist( "NumOfJets" ),       filename, "NumOfJets" );
     mgr::SaveToROOT( CompMgr().Hist( "LBJetPt"   ),       filename, "LBJetPt"   );
     mgr::SaveToROOT( CompMgr().Hist( "LBJetEta"  ),       filename, "LBJetEta"  );
     mgr::SaveToROOT( CompMgr().Hist( "HBJetPt"   ),       filename, "HBJetPt"   );
@@ -105,8 +132,18 @@ StoreCompare()
     /*******************************************************************************
     *  Observable
     *******************************************************************************/
+    mgr::SaveToROOT( CompMgr().Hist( "Obs2" ),            filename, "Obs2" );
     mgr::SaveToROOT( CompMgr().Hist( "Obs3" ),            filename, "Obs3" );
     mgr::SaveToROOT( CompMgr().Hist( "Obs4" ),            filename, "Obs4" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs7" ),            filename, "Obs7" );
+
+    /*******************************************************************************
+    *  Intrinsci Acp
+    *******************************************************************************/
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs2" ),          filename, "GenObs2" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs3" ),          filename, "GenObs3" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs4" ),          filename, "GenObs4" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs7" ),          filename, "GenObs7" );
 
     /*******************************************************************************
     * bbSeparation
@@ -119,4 +156,11 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "chi2_Misid" ),      filename, "chi2_Misid" );
     mgr::SaveToROOT( CompMgr().Hist( "chi2_Mistag" ),     filename, "chi2_Mistag" );
     mgr::SaveToROOT( CompMgr().Hist( "chi2_Nomatched" ),  filename, "chi2_Nomatched" );
+    
+    /*******************************************************************************
+    * Optimisation
+    *******************************************************************************/
+    mgr::SaveToROOT( CompMgr().Hist( "Cor_leptmass" ), filename, "Cor_leptmass" );
+    mgr::SaveToROOT( CompMgr().Hist( "Misid_leptmass" ), filename, "Misid_leptmass" );
+    mgr::SaveToROOT( CompMgr().Hist( "Mistag_leptmass" ), filename, "Mistag_leptmass" );
 }

@@ -9,16 +9,21 @@ using namespace mgr;
 *   Class initialization
 *******************************************************************************/
 BaseLineMgr::BaseLineMgr( TChain* ch, const string& sample ) :
-    SampleMgr( ch ),
-    HistMgr( sample ),
     Hist2DMgr( sample ),
-    _ch( ch )
+    HistMgr( sample ),
+    SampleMgr( ch )
 {
+    _ch = ch;
     _calib = NULL;
+    _resolution = NULL;
+    _resol_sf = NULL;
 }
 
 BaseLineMgr::~BaseLineMgr()
 {
+    delete _jecUnc;
+    delete _resol_sf;
+    delete _resolution;
     delete _calib;
 }
 
@@ -26,26 +31,37 @@ BaseLineMgr::~BaseLineMgr()
 *   bbSeparation
 *******************************************************************************/
 BaseLineMgr::MatchType
-BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& lepidx )
+BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& lep )
 {
     // hadronic b charge equals to muon, and vice versa
-    float charge = GetLepCharge( lepidx );
-    float had_id = GetPartonID( had_b );
-    float lep_id = GetPartonID( lep_b );
-
-    if( had_id == 0 || lep_id == 0 ){
+    int genbidx    = FindJet(5);
+    int genbbaridx = FindJet(-5);
+   
+    if( genbidx == -1 || genbbaridx == -1 )
         return Nomatched;
-    }
 
-    if( fabs( had_id ) != 5 || fabs( lep_id ) != 5 ){
-        return Mistag;
-    }
+    float charge = GetLepCharge( lep );
 
-    if( ( had_id * charge ) > 0 || ( lep_id * charge ) < 0 ){
+    int recobidx    = charge > 0 ? MCTruthJet( lep_b ) : MCTruthJet( had_b );
+    int recobbaridx = charge > 0 ? MCTruthJet( had_b ) : MCTruthJet( lep_b );
+
+    if( recobidx == -1 || recobbaridx == -1 )
+        return Nomatched;
+
+    if( 
+        genbidx == recobidx && 
+        genbbaridx == recobbaridx 
+        ){
+        return Correct;
+    }
+    else if(
+        genbidx == recobbaridx && 
+        genbbaridx == recobidx  
+        ){
         return Misid;
     }
     else{
-        return Correct;
+        return Mistag;
     }
 }
 
@@ -82,11 +98,10 @@ BaseLineMgr::bitconv( const float& x )
 }
 
 bool
-BaseLineMgr::IsWellMatched()
+BaseLineMgr::IsWellMatched( const double& res )
 {
     // To avoid pile-up jet
     // (compare genjet and jet)
-    const double res = JERPt();
     double deta      = JetEta() - GenJetEta();
     double dphi      = Phi_mpi_pi( (double)( JetPhi() - GenJetPhi() ) );
     double delR      = TMath::Sqrt( deta * deta + dphi * dphi );
@@ -102,38 +117,63 @@ BaseLineMgr::IsWellMatched()
 }
 
 double
-BaseLineMgr::MakeScaled()
+BaseLineMgr::MakeScaled( const double& ressf )
 {
-    const double resscale = JERScale();
-    const double newpt    = std::max( 0.0, GenJetPt() + resscale * ( JetPt() - GenJetPt() ) );
+    const double newpt    = std::max( 0.0, GenJetPt() + ressf*( JetPt() - GenJetPt() ) );;
     const double scale    = newpt / JetPt();
 
     return scale;
 }
 
 double
-BaseLineMgr::MakeSmeared()
+BaseLineMgr::MakeSmeared( const double& ressf, const double& res )
 {
     // Getting normal
-    const double res   = JERPt();
-    const double ressf = JERScale();
     const double width = ressf > 1 ? sqrt( ressf * ressf - 1 ) * res : 0;
 
     // Generating random number
     // https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h
     std::default_random_engine gen( bitconv( JetPhi() ) );
-    std::normal_distribution<double> myrand( JetPt(), width );
-    const double newpt = myrand( gen );
+    std::normal_distribution<double> myrand( 0, width );
 
-    // Anonymouns namespace require (bug in gcc530)
-    const double scale = newpt / JetPt();
-
+    double scale =  1. + myrand( gen );
     if( scale <= 0 || ::isnan( scale ) ){
         return 1;
-    }
-    else{
+    } 
+    else {
         return scale;
     }
+}
+
+void
+BaseLineMgr::JECDn()
+{
+    int js = Jsize();
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+        TLorentzVector jetp4 = GetJetP4( i );
+        _jecUnc->setJetPt ( jetp4.Pt()  );
+        _jecUnc->setJetEta( jetp4.Eta() );
+        double unc = _jecUnc->getUncertainty(true);
+        jetp4 *= ( 1 - unc );
+        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+    }
+}
+
+void
+BaseLineMgr::JECUp()
+{
+    int js = Jsize();
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+        TLorentzVector jetp4 = GetJetP4( i );
+        _jecUnc->setJetPt ( jetp4.Pt()  );
+        _jecUnc->setJetEta( jetp4.Eta() );
+        double unc = _jecUnc->getUncertainty(true);
+        jetp4 *= ( 1 + unc );
+        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+    }
+
 }
 
 void
@@ -141,15 +181,71 @@ BaseLineMgr::JERCorr()
 {
     int js = Jsize();
 
+    JME::JetParameters jetparm;
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
 
-        double scale = 1;
-        if( IsWellMatched() ){
-            scale = MakeScaled();
+        jetparm.setJetPt( JetPt() ).setJetEta( JetEta() ).setRho( EvtRho() );
+        double ressf = (double)_resol_sf->getScaleFactor( jetparm );
+        double res   = JERPt();
+        double scale = 1.;
+     
+        if( IsWellMatched( res ) ){
+            scale = MakeScaled( ressf );
         }
         else{
-            scale = MakeSmeared();
+            scale = MakeSmeared( ressf, res );
+        }
+        TLorentzVector jetp4 = GetJetP4( i );
+        jetp4 *= scale;
+
+        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+    }
+}
+void
+BaseLineMgr::JERCorrDn()
+{
+    int js = Jsize();
+
+    JME::JetParameters jetparm;
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+
+        jetparm.setJetPt( JetPt() ).setJetEta( JetEta() ).setRho( EvtRho() );
+        double ressf = (double)_resol_sf->getScaleFactor( jetparm, Variation::DOWN );
+        double res   = JERPt();
+        double scale = 1;
+        if( IsWellMatched( res ) ){
+            scale = MakeScaled( ressf );
+        }
+        else{
+            scale = MakeSmeared( ressf, res );
+        }
+
+        TLorentzVector jetp4 = GetJetP4( i );
+        jetp4 *= scale;
+        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+    }
+}
+
+void
+BaseLineMgr::JERCorrUp()
+{
+    int js = Jsize();
+
+    JME::JetParameters jetparm;
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+
+        jetparm.setJetPt( JetPt() ).setJetEta( JetEta() ).setRho( EvtRho() );
+        double ressf = (double)_resol_sf->getScaleFactor( jetparm, Variation::UP );
+        double res   = JERPt();
+        double scale = 1;
+        if( IsWellMatched( res ) ){
+            scale = MakeScaled( ressf );
+        }
+        else{
+            scale = MakeSmeared( ressf, res );
         }
         TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
@@ -193,6 +289,12 @@ bool
 BaseLineMgr::PassBJet()
 {
     return JetCSV() > 0.8484;
+}
+
+bool
+BaseLineMgr::PassCS2BJet()
+{
+    return JetCSV() < 0.8484 && JetCSV() > 0.5426;
 }
 
 bool 
@@ -333,8 +435,7 @@ BaseLineMgr::PassElCRLooseID()
 bool
 BaseLineMgr::IsLooseEl()
 {
-    return PassImpactParameter() &&
-           PassElLooseID() &&
+    return PassElLooseID() &&
            PassElLooseKinematic()
     ;
 }
@@ -342,8 +443,7 @@ BaseLineMgr::IsLooseEl()
 bool
 BaseLineMgr::IsCRLooseEl()
 {
-    return PassImpactParameter() &&
-           PassElCRLooseID() &&
+    return PassElCRLooseID() &&
            PassElLooseKinematic()
     ;
 }

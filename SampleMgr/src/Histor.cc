@@ -121,9 +121,32 @@ Histor::BtagScaleFactor( BTagEntry::OperatingPoint op, const int& idx )
 }
 
 double
+Histor::BtagScaleFactorUp( BTagEntry::OperatingPoint op, const int& idx )
+{
+    return _sample->BtagScaleFactorUp( op, idx );
+}
+
+double
+Histor::BtagScaleFactorDn( BTagEntry::OperatingPoint op, const int& idx )
+{
+    return _sample->BtagScaleFactorDn( op, idx );
+}
+double
 Histor::GetSF( TH2D* hist, const int& idx )
 {
     return _sample->GetSFTH2( hist, idx );
+}
+
+double 
+Histor::GetSFUp( TH2D* hist, const int& idx )
+{
+    return _sample->GetSFTH2Up( hist, idx );
+}
+
+double
+Histor::GetSFDn( TH2D* hist, const int& idx )
+{
+    return _sample->GetSFTH2Dn( hist, idx );
 }
 
 TH2D*
@@ -140,21 +163,18 @@ Histor::GetSFHist( const string& tag )
     return h;
 }
 
+double 
+Histor::TopPtWeight()
+{
+    return _sample->TopPtWeight();
+}
+
 void
 Histor::WeightMC( const string& sample )
 {
-    double lumi    = GetSingleData<double>( "lumi" );
+    double lumi    = GetSingleData<double>( GetOption<string>( "lepton" ) + "lumi" );
     double xs      = mgr::GetSingle<double>( "cross_section", GetSubTree( sample ) );
     double gen_num = mgr::GetSingle<double>( "gen_num", GetSubTree( sample ) );
 
     Scale( ( lumi * xs ) / gen_num );
-}
-
-/*******************************************************************************
-*   Weight
-*******************************************************************************/
-BaseLineMgr::MatchType
-Histor::bbSeparation( const int& hb, const int& lb, const int& lep )
-{
-    return _sample->bbSeparation( hb, lb, lep );
 }

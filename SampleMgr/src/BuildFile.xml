@@ -5,6 +5,9 @@
 <use name="DataFormats/FWLite"/>
 <use name="CondFormats/BTauObjects" />
 <use name="CondTools/BTau" />
+<use name="JetMETCorrections/Algorithms"/>
+<use name="JetMETCorrections/Objects"/>
+<use name="JetMETCorrections/Modules"/>
 
 <use name="ManagerUtils/ArgHelper"/>
 <use name="ManagerUtils/HistMgr"/>

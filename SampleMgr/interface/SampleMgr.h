@@ -28,7 +28,7 @@ namespace mgr{
             int Gsize() { return _gen.Size; }
             int RunNo() { return _evt.RunNo; }
             int LumiNo(){ return _evt.LumiNo; }
-
+            
             // weight
             int   nPU()      { 
                 for( int i = 0; i < _evt.nBX ; i++ ){
@@ -40,7 +40,7 @@ namespace mgr{
                 return _evt.nPU[0];
             }
             float GenWeight(){ return _gen.Weight; }
-
+            float EvtRho(){ return _evt.Rho; }
             /*******************************************************************************
             *   Basic RECO
             *******************************************************************************/
@@ -103,6 +103,7 @@ namespace mgr{
             /*******************************************************************************
             * Jet info
             *******************************************************************************/
+            float          JesUnc();
             float          JERPt();
             float          JERScale();
             float          JetPt();
@@ -130,12 +131,23 @@ namespace mgr{
             /*******************************************************************************
             *   MC Truth
             *******************************************************************************/
-            int            GetPartonID( const int& );
+            int            GetPdgID( const int& );
+            int            GetGenJetID( const int& );
             int            MCTruthJet( const int& );
+            int            MCTruthLep( const int& );
             int            MatchGenlevel( const float&, const float& );
-            TLorentzVector GetGenJetP4( const int& );
+            TLorentzVector GetMCP4( const int& );
+          
+            int FindJet( const int& );
+            int FindLepton( );
+            int FindHardJet();
+            void DumpEvtInfo();
 
-        private:
+            int AvoidDuplicate( const int& );
+            int GetDirectMo1( const int& );
+            int GetDirectMo2( const int& );
+        
+        protected:
 
             int _idx;
             VertexInfo _vtx;

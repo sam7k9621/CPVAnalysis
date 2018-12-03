@@ -9,9 +9,16 @@ main( int argc, char* argv[] )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
         ( "region,r", opt::value<string>(), "which region")
+        ( "uncertainty,e", opt::value<string>(), "uncertainty shift")
         ( "count,c", "count events" )
-        ( "pileup,p", "pile-up reweight" )
         ( "test,t", "run testing events number" )
+        ( "input,i", opt::value< vector<string> >()->multitoken(), "CEDM sample")
+        ( "Opt,o",  opt::value<double>(), "lep_tmass optimization cut" )
+        ( "mixed,x", "randomly choose event" )
+        ( "Acp,A",  opt::value<double>(), "intrinsci acp(%)" )
+        ( "SIM,S", "check gen-level simulation Acp" )
+        ( "CEDM,C", "make CEDM model plot" )
+        ( "bbSep,B", "bbSeparation method" )
     ;
     CompMgr( "CompareDataMC", "WeightInfo.json" ).AddOptions( de );
     const int run = CompMgr().ParseOptions( argc, argv );
@@ -25,7 +32,23 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "pileup", "chi2", "region" } );
-    MakeHist();
-    //CheckHist();
+    CompMgr().AddCutName( { "test", "chi2", "bbSep", "SIM", "CEDM", "Acp", "Opt", "mixed", "region", "uncertainty" } );
+    
+    if( CompMgr().CheckOption( "SIM" ) ){
+        CompMgr().ChangeFile( "CheckAcp.json" );
+        CheckAcp();
+    }
+    else if ( CompMgr().CheckOption( "CEDM" ) ){
+        CompMgr().ChangeFile( "CEDM.json" );
+        CEDMPlot();
+    }
+    else if( CompMgr().CheckOption( "Acp" ) ){
+        AddAcp();
+    }
+    else if( CompMgr().CheckOption( "bbSep" ) ){
+        bbSeparation();
+    }
+    else{
+        MakeHist();
+    }
 }

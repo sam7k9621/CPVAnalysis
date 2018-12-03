@@ -46,12 +46,19 @@ class Selector : public mgr::Pathmgr,
 
         float  GenWeight(){ return _sample->GenWeight(); }
         float  GetPUWeight(){ return _sample->GetPUWeight(); }
+        float  GetPUWeightUp(){ return _sample->GetPUWeightUp(); }
+        float  GetPUWeightDn(){ return _sample->GetPUWeightDn(); }
         void   RegisterWeight(){ _sample->RegisterWeight(); }
+        void   InitJES(){ _sample->InitJES(); }
         /*******************************************************************************
         *   Pre-selection
         *******************************************************************************/
         bool IsGoodEvt( checkEvtTool& );
+        void JECCorrUp();
+        void JECCorrDn();
         void JERCorr();
+        void JERCorrUp();
+        void JERCorrDn();
         bool PassVertex();
         bool PassHLT( const std::vector<int>& );
         bool PreJet();
@@ -69,7 +76,8 @@ class Selector : public mgr::Pathmgr,
         
         bool                            PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
         bool                            PassFullCRJet( std::vector<int>&, std::vector<int>&, const int& );
-        std::tuple<double, double, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
+        bool                            PassFullCR2Jet( std::vector<int>&, std::vector<int>&, const int& );
+        std::tuple<double, double, int, int, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
         double                          GetLeptonicM( const int&, const int& );
 
         /*******************************************************************************

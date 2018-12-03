@@ -1,6 +1,8 @@
 #include "CPVAnalysis/CompareDataMC/interface/CompareDataMC.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
 #include "THStack.h"
+
+
 using namespace std;
 
 extern Histor&
@@ -10,27 +12,10 @@ CompMgr( const string& subdir, const string& json )
     return mgr;
 }
 
-extern vector<TH2D*>
-GetLepSFHist( const string& lepton )
+extern TH2D*
+GetLepSF( const string& tag )
 {
-    vector<string> weightlst = CompMgr().GetListData<string>( lepton + "weight" );
-    vector<TH2D*>  lst;
-    for( const auto& w : weightlst ){
-        lst.push_back( CompMgr().GetSFHist( w ) );
-    }
-
-    return lst;
-}
-
-extern double
-GetLepSF(const vector<TH2D*>& weightlst, const int& lephandle)
-{
-    double weight = 1;
-    for(const auto& w : weightlst){
-        weight *= CompMgr().GetSF( w, lephandle );
-    }
-
-    return weight;
+    return CompMgr().GetSFHist( CompMgr().GetOption<string>( "lepton" ) + tag );
 }
 
 extern void
@@ -41,7 +26,7 @@ MakeHist()
     string sample            = CompMgr().GetOption<string>( "sample" );
     vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
     TChain* ch               = new TChain( "root" );
-
+    
     for( const auto& s : samplelst ){
         ch->Add( s.c_str() );
     }
@@ -49,147 +34,176 @@ MakeHist()
     CompMgr().AddSample( sample, ch );
     AddHist();
     
-    vector<TH2D*> lepweightlst = GetLepSFHist( lepton );
     CompMgr().RegisterWeight();
     CompMgr().InitBtagWeight( "bcheck", CompMgr().GetSingleData<string>( "BtagWeight" ) );
 
     // Register reco sample
-    Int_t jethandle[ 256 ];
-    Int_t jet_size;
+    Int_t jet1;
+    Int_t jet2;
     Int_t had_b;
     Int_t lep_b;
-    Int_t lephandle;
+    Int_t lep;
     Float_t chi2mass;
     Float_t had_tmass;
     Float_t lep_tmass;
 
-    ch->SetBranchAddress( "jethandle", jethandle );
-    ch->SetBranchAddress( "jet_size",  &jet_size );
-    ch->SetBranchAddress( "had_b",     &had_b );
-    ch->SetBranchAddress( "lep_b",     &lep_b );
-    ch->SetBranchAddress( "lephandle", &lephandle );
+    ch->SetBranchAddress( "jet1", &jet1 );
+    ch->SetBranchAddress( "jet2", &jet2 );
+    ch->SetBranchAddress( "lep", &lep );
+    ch->SetBranchAddress( "had_b", &had_b );
+    ch->SetBranchAddress( "lep_b", &lep_b );
     ch->SetBranchAddress( "chi2mass",  &chi2mass );
-    ch->SetBranchAddress( "seltmass",  &had_tmass );
+    ch->SetBranchAddress( "had_tmass",  &had_tmass );
+    ch->SetBranchAddress( "lep_tmass",  &lep_tmass );
+    
+    map<int, TLorentzVector> reco_b;
+    map<int, TLorentzVector> reco_bbar;
+    map<int, TLorentzVector> reco_lep;
+    map<int, TLorentzVector> reco_jet;
+    map<int, int>            reco_charge;
+
+    TH2D* LepID   = GetLepSF( "ID" ); 
+    TH2D* LepRECO = GetLepSF( "RECO" ); 
+    TH2D* LepHLT  = GetLepSF( "Trg" ); 
 
     // Looping events
-    int events   = CompMgr().CheckOption( "test" ) ? 1000 : CompMgr().GetEntries();
+    int events   = CompMgr().CheckOption( "test" ) ? 10000 : CompMgr().GetEntries();
     bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
         CompMgr().GetEntry( i );
         CompMgr().process( events, i );
 
-        //if ( CompMgr().GetLepPt( lephandle ) < 100 ){
-            //continue;
-        //}
-
-        lep_tmass = ( CompMgr().GetJetP4( lep_b ) + CompMgr().GetLepP4( lephandle ) ).M();
-
         /*******************************************************************************
         * Chi2 minimum upper limit
         *******************************************************************************/
         if( CompMgr().CheckOption( "chi2" ) ){
-            if( chi2mass > CompMgr().GetOption<double>( "chi2" ) ){
+            if( chi2mass < CompMgr().GetOption<double>( "chi2" ) ){
                 continue;
             }
         }
 
         /*******************************************************************************
-        *  Event weighting & filling
+        * Leptonic tmass optimization cut
         *******************************************************************************/
-        float puweight  = CompMgr().CheckOption( "pileup" ) ? CompMgr().GetPUWeight() : 1;
-        float genweight = is_data ? 1 : CompMgr().GenWeight();
-        double lepsf    = is_data ? 1 : GetLepSF( lepweightlst, lephandle );
-        double btagSF   = is_data || CompMgr().CheckOption( "region" ) ?
-                          1 : CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, had_b ) *
-                          CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, lep_b );
-
-        if( genweight < 0 ){
-            genweight = -1;
-        }
-        else{
-            genweight = 1;
+        if( CompMgr().CheckOption( "Opt" ) ){
+            if( lep_tmass > CompMgr().GetOption<double>( "Opt" ) ){
+                continue;
+            }
         }
 
-        double weight = puweight * genweight * btagSF * lepsf;
-        float nVtx = CompMgr().nVtx();
+        /*******************************************************************************
+        *  Event weighting 
+        *******************************************************************************/
+        double weight = 1.0;
+        if( !is_data ){
+            string tag = CompMgr().CheckOption( "uncertainty" ) ? CompMgr().GetOption<string>( "uncertainty" ) : "";
+           
+            // pile-up reweighting
+            if( tag.find( "pileup" ) != string::npos ){
+                if( tag.find( "pileup_up" ) != string::npos ){
+                    weight *= CompMgr().GetPUWeightUp();
+                }
+                else if( tag.find( "pileup_dn" ) != string::npos ){
+                    weight *= CompMgr().GetPUWeightDn();
+                }
+            }
+            else{    
+                weight *= CompMgr().GetPUWeight();
+            }
+            
+            // lepton ID, RECO and ISO re-weighting
+            if( tag.find( "lepton" ) != string::npos ){
+                if( tag.find( "up" ) != string::npos ){
+                    weight *= CompMgr().GetSFUp( LepID, lep );
+                    weight *= CompMgr().GetSFUp( LepRECO, lep );
+                    weight *= CompMgr().GetSFUp( LepHLT, lep );
+                }
+                else if( tag.find( "dn" ) != string::npos ){
+                    weight *= CompMgr().GetSFDn( LepID, lep );
+                    weight *= CompMgr().GetSFDn( LepRECO, lep );
+                    weight *= CompMgr().GetSFDn( LepHLT, lep );
+                }
+            }
+            else{
+                weight *= CompMgr().GetSF( LepID, lep );
+                weight *= CompMgr().GetSF( LepRECO, lep );    
+                weight *= CompMgr().GetSF( LepHLT, lep );    
+            }
+            
+            // b-tagging re-weighting
+            if( tag.find( "b-tag" ) != string::npos ){
+                if( tag.find( "up" ) != string::npos ){
+                    weight *= CompMgr().BtagScaleFactorUp( BTagEntry::OP_MEDIUM, had_b ) * CompMgr().BtagScaleFactorUp( BTagEntry::OP_MEDIUM, lep_b );
+                }
+                else if( tag.find( "dn" ) != string::npos ){
+                    weight *= CompMgr().BtagScaleFactorDn( BTagEntry::OP_MEDIUM, had_b ) * CompMgr().BtagScaleFactorDn( BTagEntry::OP_MEDIUM, lep_b );
+                }
+            } 
+            else{
+                // avoid CR sample
+                if( !CompMgr().CheckOption( "region" ) ){
+                    weight *= CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, had_b ) * CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, lep_b );
+                }
+                else if ( CompMgr().GetOption<string>( "region") == "CSVL" ){
+                    weight *= CompMgr().BtagScaleFactor( BTagEntry::OP_LOOSE, had_b ) * CompMgr().BtagScaleFactor( BTagEntry::OP_LOOSE, lep_b );
+                }
+            }
+            
+            if( sample == "TTbar" && tag.find( "TopPt_dn" ) == string::npos ){
+                weight *= CompMgr().TopPtWeight();
+            }
+
+        }
         
+        // gen-level re-weighting
+        weight *=  CompMgr().GenWeight() < 0 ? -1 : 1;
+        
+        /*******************************************************************************
+        *  Event filling
+        *******************************************************************************/
+        float nVtx = CompMgr().nVtx();
+
         CompMgr().Hist( "had_tmass" )->Fill( had_tmass, weight );
         CompMgr().Hist( "lep_tmass" )->Fill( lep_tmass, weight );
         CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
         CompMgr().Hist( "nVtx" )->Fill( nVtx, weight );
 
-        int lj  = jethandle[ 0 ];
-        CompMgr().Hist( "LJetPt"    )->Fill( CompMgr().LeadingJetPt ( lj ),  weight );
-        CompMgr().Hist( "LJetEta"   )->Fill( CompMgr().LeadingJetEta( lj ), weight );
-        CompMgr().Hist( "NumOfJets" )->Fill( jet_size, weight );
+        CompMgr().Hist( "LJetPt"    )->Fill( CompMgr().LeadingJetPt ( jet1 ),  weight );
+        CompMgr().Hist( "LJetEta"   )->Fill( CompMgr().LeadingJetEta( jet2 ), weight );
         CompMgr().Hist( "HBJetPt"   )->Fill( CompMgr().LeadingJetPt ( had_b ), weight );
         CompMgr().Hist( "HBJetEta"  )->Fill( CompMgr().LeadingJetEta( had_b ), weight );
         CompMgr().Hist( "LBJetPt"   )->Fill( CompMgr().LeadingJetPt ( lep_b ), weight );
         CompMgr().Hist( "LBJetEta"  )->Fill( CompMgr().LeadingJetEta( lep_b ), weight );
-        CompMgr().Hist( "LepPt"     )->Fill( CompMgr().GetLepPt( lephandle ),  weight  );
-        CompMgr().Hist( "LepEta"    )->Fill( CompMgr().GetLepEta( lephandle ), weight  );
+        CompMgr().Hist( "LepPt"     )->Fill( CompMgr().GetLepPt( lep ),  weight  );
+        CompMgr().Hist( "LepEta"    )->Fill( CompMgr().GetLepEta( lep ), weight  );
 
         if( !is_data ){
             CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass );
         }
-
+        
         /*******************************************************************************
-        *  Observable
+        *  Reco Acp
         *******************************************************************************/
-        float charge           = CompMgr().GetIsoLepCharge( lephandle );
-        TLorentzVector isolep  = CompMgr().GetLepP4( lephandle );
-        TLorentzVector hardjet = CompMgr().GetJetP4( jethandle[ 0 ] );
-        TLorentzVector b;
-        TLorentzVector bbar;
+        float charge           = CompMgr().GetIsoLepCharge( lep );
+        TLorentzVector isolep  = CompMgr().GetLepP4( lep );
+        TLorentzVector hardjet = CompMgr().GetJetP4( jet1 );
+        TLorentzVector b       = charge < 0 ? CompMgr().GetJetP4( had_b ) : CompMgr().GetJetP4( lep_b );
+        TLorentzVector bbar    = charge < 0 ? CompMgr().GetJetP4( lep_b ) : CompMgr().GetJetP4( had_b );
 
-        if( charge < 0 ){
-            b    = CompMgr().GetJetP4( had_b );
-            bbar = CompMgr().GetJetP4( lep_b );
-        }
-        else{
-            b    = CompMgr().GetJetP4( lep_b );
-            bbar = CompMgr().GetJetP4( had_b );
-        }
-
-        // In Lab frame
-        double o4 = Obs4( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
-
-        // In bbar CM frame (b and b~ will back-to-back, i.e vector(b)=-vector(b~))
-        TVector3 bbCM = -( b + bbar ).BoostVector();
-        b.Boost( bbCM );
-        isolep.Boost( bbCM );
-        hardjet.Boost( bbCM );
-        double o3 = Obs3( isolep.Vect(), hardjet.Vect(), b.Vect(), charge );
-
-        CompMgr().Hist( "Obs3" )->Fill( o3 / 1000000., weight );
-        CompMgr().Hist( "Obs4" )->Fill( o4 / 1000000., weight );
-
-        /*******************************************************************************
-        *  bbSeparation
-        *******************************************************************************/
-        if( !is_data ){
-            BaseLineMgr::MatchType flag = CompMgr().bbSeparation( had_b, lep_b, lephandle );
-
-            if( flag == BaseLineMgr::Correct ){
-                CompMgr().Hist( "tmass_Correct" )->Fill( had_tmass, weight );
-                CompMgr().Hist( "chi2_Correct" )->Fill( chi2mass, weight );
-            }
-            if( flag == BaseLineMgr::Misid ){
-                CompMgr().Hist( "tmass_Misid" )->Fill( had_tmass, weight );
-                CompMgr().Hist( "chi2_Misid" )->Fill( chi2mass, weight );
-            }
-            if( flag == BaseLineMgr::Mistag ){
-                CompMgr().Hist( "tmass_Mistag" )->Fill( had_tmass, weight );
-                CompMgr().Hist( "chi2_Mistag" )->Fill( chi2mass, weight );
-            }
-            if( flag == BaseLineMgr::Nomatched ){
-                CompMgr().Hist( "tmass_Nomatched" )->Fill( had_tmass, weight );
-                CompMgr().Hist( "chi2_Nomatched" )->Fill( chi2mass, weight );
-            }
-        }
+        // Fill in list
+        reco_b   [ i ]    = b;
+        reco_bbar[ i ]    = bbar;
+        reco_lep [ i ]    = isolep ;
+        reco_jet [ i ]    = hardjet ;
+        reco_charge [ i ] = charge;
     }
 
+    FillObserable( "Obs2", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    FillObserable( "Obs3", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    FillObserable( "Obs4", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    FillObserable( "Obs7", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    
     if( !is_data ){
         CompMgr().WeightMC( sample );
         cout << ">>Weighting " << sample << endl;

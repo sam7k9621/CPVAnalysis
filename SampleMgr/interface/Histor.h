@@ -97,10 +97,17 @@ class Histor : public mgr::Pathmgr,
         void   RegisterWeight(){ _sample->RegisterWeight(); }
         void   InitBtagWeight( const std::string&, const std::string& );
         float  GetPUWeight(){ return _sample->GetPUWeight(); }
+        float  GetPUWeightUp(){ return _sample->GetPUWeightUp(); }
+        float  GetPUWeightDn(){ return _sample->GetPUWeightDn(); }
         float  GenWeight()  { return _sample->GenWeight(); }
         double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
+        double BtagScaleFactorDn( BTagEntry::OperatingPoint, const int& );
+        double BtagScaleFactorUp( BTagEntry::OperatingPoint, const int& );
         double GetSF( TH2D*, const int& );
+        double GetSFUp( TH2D*, const int& );
+        double GetSFDn( TH2D*, const int& );
         TH2D*   GetSFHist( const std::string& );
+        double TopPtWeight();
         void   WeightMC( const std::string& );
 
         /*******************************************************************************
@@ -108,9 +115,17 @@ class Histor : public mgr::Pathmgr,
         *******************************************************************************/
         TLorentzVector         GetLepP4( const int& i )       { return _sample->GetLepP4( i ); }
         TLorentzVector         GetJetP4( const int& i )       { return _sample->GetJetP4( i ); }
+        TLorentzVector         GetGenP4( const int& i )       { return _sample->GetMCP4( i ); }
+        int                    GetPdgID( const int& i ) { return _sample->GetPdgID( i ); }
+        int                    GetGenJetIdx( const int& i )      { return _sample->MCTruthJet( i ); }
+        int                    GetGenLepIdx( const int& i )      { return _sample->MCTruthLep( i ); }
         float                  nVtx()                         { return _sample->nVtx(); }
         float                  GetIsoLepCharge( const int& i ){ return _sample->GetLepCharge( i ); }
-        BaseLineMgr::MatchType bbSeparation( const int&, const int&, const int& );
+        BaseLineMgr::MatchType bbSeparation( const int& hb, const int& lb, const int& lep ){ return _sample->bbSeparation( hb, lb, lep ); }
+        void                   DumpEvtInfo(){ return _sample->DumpEvtInfo(); }
+        int                    GetGenJet( const int& i ){ return _sample->FindJet( i ); }
+        int                    GetGenLepton(){ return _sample->FindLepton(); }
+        int                    GetGenHardJet(){ return _sample->FindHardJet(); }
 
     private:
 
