@@ -44,6 +44,7 @@ main( int argc, char* argv[] )
     }
     else if( CompMgr().CheckOption( "Acp" ) ){
         AddAcp();
+        //ReweighAcp();
     }
     else if( CompMgr().CheckOption( "bbSep" ) ){
         bbSeparation();

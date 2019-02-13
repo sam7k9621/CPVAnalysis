@@ -4,12 +4,12 @@
 using namespace std;
 
 extern double
-Obs2( TVector3 isoLep, TVector3 hardJet, TVector3 b, TVector3 bbar, float charge )
+Obs2( TVector3 isoLep, TVector3 hardJet, TVector3 b, TVector3 bbar )
 {
     TVector3 v1 =  b + bbar;
     TVector3 v2 = isoLep.Cross( hardJet );
     
-    double o2 = double(charge) * ( v1.Dot( v2 ) );
+    double o2 = v1.Dot( v2 );
     return o2;
 }
 
@@ -26,7 +26,7 @@ Obs4( TVector3 isoLep, TVector3 hardJet, TVector3 b, TVector3 bbar, float charge
     TVector3 O4_1v = b - bbar;
     TVector3 O4_2v = isoLep.Cross( hardJet );
 
-    double o4 =  -1 * double(charge) * ( O4_1v.Dot( O4_2v ) );
+    double o4 = double(charge) * ( O4_1v.Dot( O4_2v ) );
     return o4;
 }
 

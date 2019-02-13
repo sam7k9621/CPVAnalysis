@@ -1,11 +1,7 @@
 {
 
     "MClst" : [
-        "DYJet",
-        "SingleTop",
-        "VV",
-        "WJetsToLNu_HT",
-        "TTbar"
+        "Data"
         ],
 
     "muentry" : "1 #mu, #geq 4 jets ( 2 b jets )",

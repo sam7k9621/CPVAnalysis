@@ -1,322 +1,514 @@
 {
     "QCD_HT100to200": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200_region_0bjet.root"
+        ], 
+        "gen_num": 77777081.16, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200.root"
         ], 
-        "gen_num": 77777081.16, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200.root"
+        ], 
         "cross_section": 27990000
     }, 
     "QCD_HT200to300": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300_region_0bjet.root"
+        ], 
+        "gen_num": 37608090.72, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300.root"
         ], 
-        "gen_num": 37608090.72, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300.root"
+        ], 
         "cross_section": 1712000
     }, 
     "QCD_HT300to500": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500_region_0bjet.root"
+        ], 
+        "gen_num": 36293908.04, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500.root"
         ], 
-        "gen_num": 36293908.04, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500.root"
+        ], 
         "cross_section": 347700
     }, 
     "QCD_HT500to700": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700_region_0bjet.root"
+        ], 
+        "gen_num": 40834533.94, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700.root"
         ], 
-        "gen_num": 40834533.94, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700.root"
+        ], 
         "cross_section": 32100
     }, 
     "QCD_HT700to1000": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000_region_0bjet.root"
+        ], 
+        "gen_num": 15126220.94, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000.root"
         ], 
-        "gen_num": 15126220.94, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000.root"
+        ], 
         "cross_section": 6831
     }, 
     "QCD_HT1000to1500": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500_region_0bjet.root"
+        ], 
+        "gen_num": 4612038.1, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500.root"
         ], 
-        "gen_num": 4612038.1, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500.root"
+        ], 
         "cross_section": 1207
     }, 
     "QCD_HT1500to2000": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000_region_0bjet.root"
+        ], 
+        "gen_num": 7602053.43, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000.root"
         ], 
-        "gen_num": 7602053.43, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000.root"
+        ], 
         "cross_section": 119.9
     }, 
     "QCD_HT2000toInf": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf_region_0bjet.root"
+        ], 
+        "gen_num": 3716194.9, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf.root"
         ], 
-        "gen_num": 3716194.9, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf.root"
+        ], 
         "cross_section": 25.24
     }, 
     "DYJet_HT-70to100": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-70to100.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-70to100_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-70to100_region_0bjet.root"
+        ], 
+        "gen_num": 9305772.21, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-70to100.root"
         ], 
-        "gen_num": 9305772.21, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-70to100.root"
+        ], 
         "cross_section": 208.977
     }, 
     "DYJet_HT-100to200": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-100to200.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-100to200_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-100to200_region_0bjet.root"
+        ], 
+        "gen_num": 6916792.33, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-100to200.root"
         ], 
-        "gen_num": 6916792.33, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-100to200.root"
+        ], 
         "cross_section": 181.302
     }, 
     "DYJet_HT-200to400": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-200to400.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-200to400_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-200to400_region_0bjet.root"
+        ], 
+        "gen_num": 4929696.44, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-200to400.root"
         ], 
-        "gen_num": 4929696.44, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-200to400.root"
+        ], 
         "cross_section": 50.4177
     }, 
     "DYJet_HT-400to600": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-400to600.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-400to600_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-400to600_region_0bjet.root"
+        ], 
+        "gen_num": 1224284.52, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-400to600.root"
         ], 
-        "gen_num": 1224284.52, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-400to600.root"
+        ], 
         "cross_section": 6.98394
     }, 
     "DYJet_HT-600to800": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-600to800.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-600to800_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-600to800_region_0bjet.root"
+        ], 
+        "gen_num": 8026406.77, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-600to800.root"
         ], 
-        "gen_num": 8026406.77, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-600to800.root"
+        ], 
         "cross_section": 1.68141
     }, 
     "DYJet_HT-800to1200": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-800to1200.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-800to1200_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-800to1200_region_0bjet.root"
+        ], 
+        "gen_num": 2582923.23, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-800to1200.root"
         ], 
-        "gen_num": 2582923.23, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-800to1200.root"
+        ], 
         "cross_section": 0.775392
     }, 
     "DYJet_HT-1200to2500": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-1200to2500.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-1200to2500_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-1200to2500_region_0bjet.root"
+        ], 
+        "gen_num": 576786.61, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-1200to2500.root"
         ], 
-        "gen_num": 576786.61, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-1200to2500.root"
+        ], 
         "cross_section": 0.186222
     }, 
     "DYJet_HT-2500toInf": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-2500toInf.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-2500toInf_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-2500toInf_region_0bjet.root"
+        ], 
+        "gen_num": 386734.51, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-2500toInf.root"
         ], 
-        "gen_num": 386734.51, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-2500toInf.root"
+        ], 
         "cross_section": 0.00438495
     }, 
     "SingleTop_s-ch": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_s-ch.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_s-ch_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_s-ch_region_0bjet.root"
+        ], 
+        "gen_num": 602629.53, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_s-ch.root"
         ], 
-        "gen_num": 602629.53, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_s-ch.root"
+        ], 
         "cross_section": 3.36
     }, 
     "SingleTop_t-ch": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_region_0bjet.root"
+        ], 
+        "gen_num": 64296928.72, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch.root"
         ], 
-        "gen_num": 64296928.72, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch.root"
+        ], 
         "cross_section": 136.02
     }, 
     "SingleTop_t-ch_anti": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_anti.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_anti_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_anti_region_0bjet.root"
+        ], 
+        "gen_num": 37536279.71, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_anti.root"
         ], 
-        "gen_num": 37536279.71, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_anti.root"
+        ], 
         "cross_section": 80.95
     }, 
     "SingleTop_tW": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_region_0bjet.root"
+        ], 
+        "gen_num": 6701499.35, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW.root"
         ], 
-        "gen_num": 6701499.35, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW.root"
+        ], 
         "cross_section": 35.6
     }, 
     "SingleTop_tW_anti": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_anti.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_anti_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_anti_region_0bjet.root"
+        ], 
+        "gen_num": 6493495.85, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_anti.root"
         ], 
-        "gen_num": 6493495.85, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_anti.root"
+        ], 
         "cross_section": 35.6
     }, 
     "TTbar": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTbar.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTbar_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTbar_region_0bjet.root"
+        ], 
+        "gen_num": 73900365.57, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTbar.root"
         ], 
-        "gen_num": 73900365.57, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTbar.root"
+        ], 
         "cross_section": 831.76
     }, 
     "VV_WW": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WW.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WW_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WW_region_0bjet.root"
+        ], 
+        "gen_num": 961891.67, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WW.root"
         ], 
-        "gen_num": 961891.67, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WW.root"
+        ], 
         "cross_section": 118.7
     }, 
     "VV_WZ": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WZ.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WZ_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WZ_region_0bjet.root"
+        ], 
+        "gen_num": 968023.47, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WZ.root"
         ], 
-        "gen_num": 968023.47, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WZ.root"
+        ], 
         "cross_section": 47.13
     }, 
     "VV_ZZ": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_ZZ.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_ZZ_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_ZZ_region_0bjet.root"
+        ], 
+        "gen_num": 815915.9, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_ZZ.root"
         ], 
-        "gen_num": 815915.9, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_ZZ.root"
+        ], 
         "cross_section": 16.52
     }, 
     "WJetsToLNu_HT-100To200": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-100To200.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-100To200_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-100To200_region_0bjet.root"
+        ], 
+        "gen_num": 9882644.31, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-100To200.root"
         ], 
-        "gen_num": 9882644.31, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-100To200.root"
+        ], 
         "cross_section": 1628.297
     }, 
     "WJetsToLNu_HT-200To400": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-200To400.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-200To400_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-200To400_region_0bjet.root"
+        ], 
+        "gen_num": 13358361.95, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-200To400.root"
         ], 
-        "gen_num": 13358361.95, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-200To400.root"
+        ], 
         "cross_section": 435.23699999999997
     }, 
     "WJetsToLNu_HT-400To600": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-400To600.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-400To600_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-400To600_region_0bjet.root"
+        ], 
+        "gen_num": 1900582.91, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-400To600.root"
         ], 
-        "gen_num": 1900582.91, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-400To600.root"
+        ], 
         "cross_section": 59.181099999999994
     }, 
     "WJetsToLNu_HT-600To800": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-600To800.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-600To800_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-600To800_region_0bjet.root"
+        ], 
+        "gen_num": 12020198.27, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-600To800.root"
         ], 
-        "gen_num": 12020198.27, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-600To800.root"
+        ], 
         "cross_section": 14.5805
     }, 
     "WJetsToLNu_HT-800To1200": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-800To1200.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-800To1200_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-800To1200_region_0bjet.root"
+        ], 
+        "gen_num": 6001576.54, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-800To1200.root"
         ], 
-        "gen_num": 6001576.54, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-800To1200.root"
+        ], 
         "cross_section": 6.656210000000001
     }, 
     "WJetsToLNu_HT-1200To2500": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-1200To2500.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-1200To2500_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-1200To2500_region_0bjet.root"
+        ], 
+        "gen_num": 236702.43, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-1200To2500.root"
         ], 
-        "gen_num": 236702.43, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-1200To2500.root"
+        ], 
         "cross_section": 1.6080899999999998
     }, 
     "WJetsToLNu_HT-2500ToInf": {
-        "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf.root"
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
         ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
+        ], 
+        "gen_num": 245295.33, 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-2500ToInf.root"
         ], 
-        "gen_num": 245295.33, 
+        "elpath": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf.root"
+        ], 
         "cross_section": 0.0389136
     }, 
     "Data": {
@@ -325,6 +517,12 @@
         ], 
         "mupath": [
             "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_Data.root"
+        ], 
+        "mupath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
+        ], 
+        "elpath_CR": [
+            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
         ]
     }, 
     "ellumi": 35700, 

@@ -12,6 +12,9 @@ extern void bbSeparation();
 /*******************************************************************************
 *  Add Acp
 *******************************************************************************/
+extern void ReweighAcp();
+extern void FillWeighObservable( const string&, const double&, const bool& );
+
 extern void AddAcp();
 extern void FillObserable( 
         const std::string&,
@@ -70,7 +73,7 @@ extern void    AddHist();
 /*******************************************************************************
 *  Observable
 *******************************************************************************/
-extern double Obs2( TVector3, TVector3, TVector3, TVector3, float );
+extern double Obs2( TVector3, TVector3, TVector3, TVector3 );
 extern double Obs3( TVector3, TVector3, TVector3, TVector3, float );
 extern double Obs4( TVector3, TVector3, TVector3, TVector3, float );
 extern double Obs7( TVector3, TVector3 );

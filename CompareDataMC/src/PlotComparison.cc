@@ -34,9 +34,9 @@ MakePlotCompare()
     /*******************************************************************************
     *  Stack Plot
     *******************************************************************************/
-    for( const auto& title : histlst ){
-        PlotCompare( ExtractMC( title ), ExtractData( title ), title, entry );
-    }
+    //for( const auto& title : histlst ){
+        //PlotCompare( ExtractMC( title ), ExtractData( title ), title, entry );
+    //}
     //GetYield( ExtractMC( "lep_tmass" ), ExtractData( "lep_tmass" ) );
     
     /*******************************************************************************
@@ -59,9 +59,9 @@ MakePlotCompare()
     /*******************************************************************************
     * Observerable Dist.
     *******************************************************************************/
-    //vector<string> mclst = { "Obs3", "Obs4", "Obs7", "Obs2" };
-    //vector<string> remclst = { "GenObs3", "GenObs4", "GenObs7", "GenObs2" };
+    vector<string> mclst = { "Obs2", "Obs3", "Obs4", "Obs7" };
+    //vector<string> remclst = { "GenObs2", "GenObs3", "GenObs4", "GenObs7" };
 
-    //GetAcp( mclst );
+    GetAcp( mclst );
     //GetSubtractAcp( mclst );
 }

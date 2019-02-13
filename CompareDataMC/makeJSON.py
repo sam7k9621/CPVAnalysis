@@ -41,14 +41,18 @@ def main(args):
 
         # mc = [ "sample", cross_section, gen_num ]
         content[ mc[0] ] = {
-                "elpath" : [ DC.sample_path + opt.prefix + "_el_" + mc[0] + opt.cut + ".root"] ,
-                "mupath" : [ DC.sample_path + opt.prefix + "_mu_" + mc[0] + opt.cut + ".root"] ,
+                "elpath" : [ DC.sample_path + opt.prefix + "_el_" + mc[0] + ".root"] ,
+                "mupath" : [ DC.sample_path + opt.prefix + "_mu_" + mc[0] + ".root"] ,
+                "elpath_CR" : [ DC.sample_path + opt.prefix + "_el_" + mc[0] + "_" + opt.cut + ".root"] ,
+                "mupath_CR" : [ DC.sample_path + opt.prefix + "_mu_" + mc[0] + "_" + opt.cut + ".root"] ,
                 "cross_section" : mc[1],
                 "gen_num" : gennumlst[ mc[0] ]
                 }
     content["Data"] = {
-            "elpath" : [ DC.sample_path + opt.prefix + "_el_Data" + opt.cut + ".root"] ,
-            "mupath" : [ DC.sample_path + opt.prefix + "_mu_Data" + opt.cut + ".root"] ,
+            "elpath" : [ DC.sample_path + opt.prefix + "_el_Data" + ".root"] ,
+            "mupath" : [ DC.sample_path + opt.prefix + "_mu_Data" + ".root"] ,
+            "elpath_CR" : [ DC.sample_path + opt.prefix + "_el_" + mc[0] + "_" + opt.cut + ".root"] ,
+            "mupath_CR" : [ DC.sample_path + opt.prefix + "_mu_" + mc[0] + "_" + opt.cut + ".root"] 
             }
 
     info_path = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/"

@@ -156,7 +156,7 @@ CEDMPlot()
             }
 
             // In Lab frame
-            double o2 = Obs2( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+            double o2 = Obs2( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect() );
             double o4 = Obs4( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
             double o7 = Obs7( b.Vect(), bbar.Vect() );
 

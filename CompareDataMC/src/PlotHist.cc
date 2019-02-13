@@ -109,56 +109,6 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
 }
 
 extern void
-PlotMC( vector<TH1D*> mclst, const string& title, const string& entry )
-{
-    TCanvas* c   = mgr::NewCanvas();
-    Color_t x[]  = { kGray + 1, kMagenta + 2, kRed - 7, kOrange + 1, kAzure - 3, kGreen - 6 };
-    THStack* bg  = new THStack();
-    TLegend* leg = mgr::NewLegend( 0.7, 0.51, 0.83, 0.81 );
-    leg->SetLineColor( kWhite );
-
-    for( int i = 0; i < (int)mclst.size(); i++ ){
-        mclst[ i ]->SetLineColor( x[ i ] );
-        mclst[ i ]->SetFillColor( x[ i ] );
-        bg->Add( mclst[ i ] );
-        leg->AddEntry( mclst[ i ], GetName( mclst[ i ] ).c_str(), "F" );
-    }
-
-    TH1D* bg_sum = SumHist( mclst );
-
-    bg->Draw( "HIST" );
-    leg->Draw();
-
-    mgr::SetSinglePad( c );
-    mgr::SetAxis( bg );
-    bg->SetMaximum( mgr::GetYmax(bg_sum) * 1.5 );
-    bg->GetHistogram()->GetXaxis()->SetTitle( bg_sum->GetXaxis()->GetTitle() );
-    bg->GetHistogram()->GetYaxis()->SetTitle( bg_sum->GetYaxis()->GetTitle() );
-    
-    mgr::DrawCMSLabel( SIMULATION );
-    mgr::LatexMgr latex;
-    latex.SetOrigin( PLOT_X_MIN, PLOT_Y_MAX + TEXT_MARGIN / 2, BOTTOM_LEFT)
-    .WriteLine( entry );
-    
-    c->SetLogy( kTRUE );
-    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_" + title + "_logy" ) );
-    
-    c->SetLogy( kFALSE );
-    SetYTitle( bg->GetHistogram() );
-    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_" + title ) );
-
-    delete leg;
-    delete bg_sum;
-
-    for( auto h : mclst ){
-        delete h;
-    }
-
-    delete bg;
-    delete c;
-}
-
-extern void
 PlotPDF(
     vector<TH1D*> correctlst,
     vector<TH1D*> misidlst,
@@ -485,16 +435,16 @@ GetAcp( const vector<string>& mclst )
     lepton =  lepton == "co" ? "el+#mu" : lepton;
    
     vector<string> obsentry = {
+        str( boost::format("#bf{O_{2}^{%1%}}") % lepton ),
         str( boost::format("#bf{O_{3}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{6}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{12}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{13}^{%1%}}") % lepton )
+        str( boost::format("#bf{O_{4}^{%1%}}") % lepton ),
+        str( boost::format("#bf{O_{7}^{%1%}}") % lepton )
     };
     
     for( int i = 0; i < 4; i++ ){
         
-        TH1D* h = ExtractData( mclst[i] );
-        //TH1D* h = SumHist( ExtractMC( mclst[i] ) );
+        //TH1D* h = ExtractData( mclst[i] );
+        TH1D* h = SumHist( ExtractMC( mclst[i] ) );
         double nm  = h->Integral( 0, h->FindBin(0) - 1 );
         double np  = h->Integral( h->FindBin(0), 201 );
         double Acp = ( np - nm ) / ( np + nm );
@@ -546,8 +496,8 @@ GetAcp( const vector<string>& mclst )
     mgr::SetSinglePad( c );
     mgr::SetAxis( hist );
     int lumi = lepton == "el" ? 35700 : 35900;
-    mgr::DrawCMSLabel( PRELIMINARY );
-    //mgr::DrawCMSLabel( SIMULATION );
+    //mgr::DrawCMSLabel( PRELIMINARY );
+    mgr::DrawCMSLabel( SIMULATION );
     mgr::DrawLuminosity( lumi );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_Acp" ) );
 }

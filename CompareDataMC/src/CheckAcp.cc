@@ -47,7 +47,7 @@ CheckAcp()
             TLorentzVector mchardjet = CompMgr().GetGenP4( genjetidx );
 
             // In Lab frame
-            double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect() );
             double mco4 = Obs4( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
             double mco7 = Obs7( mcbjet.Vect(), mcbbarjet.Vect() );
 

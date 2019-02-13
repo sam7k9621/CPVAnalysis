@@ -6,6 +6,150 @@
 using namespace std;
 
 extern void
+ReweighAcp()
+{
+    // Initialize file
+    string lepton            = CompMgr().GetOption<string>("lepton");
+    string sample            = CompMgr().GetOption<string>( "sample" );
+    vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
+    TChain* ch               = new TChain( "root" );
+
+    for( const auto& s : samplelst ){
+        ch->Add( s.c_str() );
+    }
+
+    CompMgr().AddSample( sample, ch );
+    AddHist();
+    
+    // Register reco sample
+    Int_t jet1;
+    Int_t jet2;
+    Int_t had_b;
+    Int_t lep_b;
+    Int_t lep;
+    Float_t chi2mass;
+    Float_t lep_tmass;
+
+    ch->SetBranchAddress( "jet1",  &jet1 );
+    ch->SetBranchAddress( "jet2",  &jet2 );
+    ch->SetBranchAddress( "had_b", &had_b );
+    ch->SetBranchAddress( "lep_b", &lep_b );
+    ch->SetBranchAddress( "lep", &lep );
+    ch->SetBranchAddress( "chi2mass",  &chi2mass );
+    ch->SetBranchAddress( "lep_tmass", &lep_tmass );
+
+    // Looping events
+    int events   = CompMgr().CheckOption( "test" ) ? 10000 : CompMgr().GetEntries();
+    for( int i = 0; i < events; i++ ){
+        CompMgr().GetEntry( i );
+        CompMgr().process( events, i );
+
+        /*******************************************************************************
+        * Chi2 minimum upper limit
+        *******************************************************************************/
+        if( CompMgr().CheckOption( "chi2" ) ){
+            if( chi2mass > CompMgr().GetOption<double>( "chi2" ) ){
+                continue;
+            }
+        }
+
+        /*******************************************************************************
+        * Leptonic tmass optimization cut
+        *******************************************************************************/
+        if( CompMgr().CheckOption( "Opt" ) ){
+            if( lep_tmass > CompMgr().GetOption<double>( "Opt" ) ){
+                continue;
+            }
+        }
+
+        /*******************************************************************************
+        *  Gen-level Acp
+        *******************************************************************************/
+        int genbidx    = CompMgr().GetGenJet(5);
+        int genbbaridx = CompMgr().GetGenJet(-5);
+        int genlepidx  = CompMgr().GetGenLepton();
+        int genjetidx  = CompMgr().GetGenHardJet();
+
+        int mccharge = CompMgr().GetPdgID( genlepidx ) > 0 ? -1 : 1;
+        // non-matched gen-level
+        if( genbidx == -1 || genbbaridx == -1 || genlepidx == -1 || genjetidx == -1 )
+            continue;
+
+        TLorentzVector mcbjet    = CompMgr().GetGenP4( genbidx );
+        TLorentzVector mcbbarjet = CompMgr().GetGenP4( genbbaridx );
+        TLorentzVector mcisolep  = CompMgr().GetGenP4( genlepidx );
+        TLorentzVector mchardjet = CompMgr().GetGenP4( genjetidx );
+
+        // In Lab frame
+        double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect() );
+        double mco4 = Obs4( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+        double mco7 = Obs7( mcbjet.Vect(), mcbbarjet.Vect() );
+
+        //CompMgr().DumpEvtInfo();
+        // In bbar CM frame
+        TVector3 mcbbCM = -( mcbjet + mcbbarjet ).BoostVector();
+        mcbjet.Boost( mcbbCM );
+        mcbbarjet.Boost( mcbbCM );
+        mcisolep.Boost( mcbbCM );
+        mchardjet.Boost( mcbbCM );
+        
+        double mco3 = Obs3( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+
+        bool acp2 = mco2 > 0;
+        bool acp3 = mco3 > 0;
+        bool acp4 = mco4 > 0;
+        bool acp7 = mco7 > 0;
+        
+        /*******************************************************************************
+        *  Reco Acp
+        *******************************************************************************/
+        float charge           = CompMgr().GetIsoLepCharge( lep );
+        TLorentzVector isolep  = CompMgr().GetLepP4( lep );
+        TLorentzVector hardjet = CompMgr().GetJetP4( jet1 );
+        TLorentzVector b       = charge < 0 ? CompMgr().GetJetP4( had_b ) : CompMgr().GetJetP4( lep_b );
+        TLorentzVector bbar    = charge < 0 ? CompMgr().GetJetP4( lep_b ) : CompMgr().GetJetP4( had_b );
+        // In Lab frame
+        double o2 = Obs2( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect() );
+        double o4 = Obs4( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+        double o7 = Obs7( b.Vect(), bbar.Vect() );
+
+        //CompMgr().DumpEvtInfo();
+        // In bbar CM frame
+        TVector3 bbCM = -( b + bbar ).BoostVector();
+        b.Boost( bbCM );
+        bbar.Boost( bbCM );
+        isolep.Boost( bbCM );
+        hardjet.Boost( bbCM );
+        
+        double o3 = Obs3( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+       
+        /*******************************************************************************
+        *  Fake Acp
+        *******************************************************************************/
+        FillWeighObservable( "Obs2", o2, acp2 );
+        FillWeighObservable( "Obs3", o3, acp3 );
+        FillWeighObservable( "Obs4", o4, acp4 );
+        FillWeighObservable( "Obs7", o7, acp7 );
+        FillWeighObservable( "GenObs2", mco2, acp2 );
+        FillWeighObservable( "GenObs3", mco3, acp3 );
+        FillWeighObservable( "GenObs4", mco4, acp4 );
+        FillWeighObservable( "GenObs7", mco7, acp7 );
+    }
+
+    StoreCompare();
+    delete ch;
+}
+
+extern void
+FillWeighObservable( const string& obs, const double& acp, const bool& flag )
+{
+    double weight = CompMgr().GetOption<double>("Acp") / 100;
+    weight = flag ? 1 + weight : 1 - weight ;
+    
+    CompMgr().Hist( obs )->Fill( acp / 1000000., weight );
+}
+
+extern void
 AddAcp()
 {
     // Initialize file
@@ -29,7 +173,7 @@ AddAcp()
     Int_t lep_b;
     Int_t lep;
     Float_t chi2mass;
-    Float_t had_tmass;
+    Float_t lep_tmass;
 
     ch->SetBranchAddress( "jet1",  &jet1 );
     ch->SetBranchAddress( "jet2",  &jet2 );
@@ -37,7 +181,7 @@ AddAcp()
     ch->SetBranchAddress( "lep_b", &lep_b );
     ch->SetBranchAddress( "lep", &lep );
     ch->SetBranchAddress( "chi2mass",  &chi2mass );
-    ch->SetBranchAddress( "had_tmass", &had_tmass );
+    ch->SetBranchAddress( "lep_tmass", &lep_tmass );
 
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : CompMgr().GetEntries();
@@ -63,6 +207,15 @@ AddAcp()
         *******************************************************************************/
         if( CompMgr().CheckOption( "chi2" ) ){
             if( chi2mass > CompMgr().GetOption<double>( "chi2" ) ){
+                continue;
+            }
+        }
+        
+        /*******************************************************************************
+        * Leptonic tmass optimization cut
+        *******************************************************************************/
+        if( CompMgr().CheckOption( "Opt" ) ){
+            if( lep_tmass > CompMgr().GetOption<double>( "Opt" ) ){
                 continue;
             }
         }
@@ -109,7 +262,7 @@ AddAcp()
             TLorentzVector mchardjet = CompMgr().GetGenP4( genjetidx );
 
             // In Lab frame
-            double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect() );
             double mco4 = Obs4( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
             double mco7 = Obs7( mcbjet.Vect(), mcbbarjet.Vect() );
 
@@ -200,7 +353,7 @@ FillObserable( const string& obs, const vector<int>& idx, const map<int, TLorent
         switch( StoI( obs.c_str() ) ){
             
             case StoI( "Obs2" ) :
-                oval = Obs2( copy_lep[i].Vect(), copy_jet[i].Vect(), copy_b[i].Vect(), copy_bbar[i].Vect(), copy_charge[i] );
+                oval = Obs2( copy_lep[i].Vect(), copy_jet[i].Vect(), copy_b[i].Vect(), copy_bbar[i].Vect() );
                 break;
 
             case StoI( "Obs4" ) :

@@ -7,6 +7,7 @@ import importlib
 import time
 import subprocess
 import random
+import random
 
 qsub ="""
 #!/usr/bin/env sh
@@ -104,7 +105,6 @@ def main(args):
     if opt.Trailer :
         opt.Command += " " + opt.Trailer
 
-
     for sample in getattr( samplelst, opt.Samplelst ) :
         while( not isQstatOk( 40, opt.maxQueJobs ) ):
             if isQsubOk( opt.maxRunJobs ) :
@@ -117,7 +117,8 @@ def main(args):
         output.write( qsub.format(command) )
         output.close()
         
-        cmd = "qsub .sentJob{}.sh -N ".format(idx) + sample
+        cmd = "qsub .sentJob{}.sh -N {} -l host='!node13.cluster'".format(idx, sample)
+        print cmd
         print ">>Sending {}".format(sample)
         sys.stdout.flush()
         os.system(cmd)
