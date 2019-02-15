@@ -8,3 +8,4 @@
 
 <bin name="FitTest"   file="roofit.cc"/>
 <bin name="PullTest"  file="pulltest.cc"/>
+<bin name="hello"  file="hello.cc"/>
