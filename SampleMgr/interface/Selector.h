@@ -29,6 +29,11 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Common
         *******************************************************************************/
+        int LHESize(){ return _sample->LHESize(); }
+        int LHESystematicId( const int& idx ){ return _sample->LHESystematicId( idx ); }
+        float LHESystematicWeights( const int& idx ){ return _sample->LHESystematicWeights( idx ); }
+
+        
         std::string GetResultsName( const std::string&, const std::string& );
         std::string Discript( TH1* );
         bool        OptionContent( const std::string&, const std::string& );

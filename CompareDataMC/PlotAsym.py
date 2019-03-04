@@ -46,7 +46,7 @@ def main() :
         histmgr.SetObjlst( file, objlst )
    
     # Loop object list
-    for obj in [ "Observable2", "Observable3", "Observable4", "Observable7" ] :
+    for obj in [ "Observable13", "Observable6", "Observable3", "Observable12" ] :
         gr1 = GetGraph( histmgr )
         gr2 = GetGraph( histmgr )
         

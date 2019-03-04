@@ -111,6 +111,7 @@ PreCut( bool is_data )
         PreMgr().GetEntry( i );
         PreMgr().process( events, i );
         
+        cout<<endl<<PreMgr().LHESize()<<endl;
         // pile-up reweighted
         // abandom events with >74 vertex
         if( !is_data ){
