@@ -9,6 +9,7 @@
 #define MAX_GENS    128
 #define MAX_Vertices    256
 #define MAX_BX        128
+#define MAX_LHE            256
 #define N_TRIGGER_BOOKINGS    5842// from 226 (CMSSW_3_6_1 : 8E29 & 1E31) to 644 (CMSSW_3_8_3 : 2E32) ; 904 (CMSSW_4_1_3 : 5E32); 1212 (CMSSW_4_1_4 : 1E33); 2014 (CMSSW_4_2_3)    ; 2390 (CMSSW_4_2_3) ; 2722 (prompt_v5); 2996 (prompt_v6)
 
 #include <TTree.h>
@@ -74,6 +75,7 @@ class GenInfoBranches {
             root->Branch( "GenInfo.GrandMo1Status", &GrandMo1Status[ 0 ], "GenInfo.GrandMo1Status[GenInfo.Size]/I" );
             root->Branch( "GenInfo.GrandMo2Status", &GrandMo2Status[ 0 ], "GenInfo.GrandMo2Status[GenInfo.Size]/I" );
         }
+        
 
         void Register( TTree* root )
         {
@@ -103,7 +105,7 @@ class GenInfoBranches {
             root->SetBranchAddress( "GenInfo.GrandMo2PdgID",  &GrandMo2PdgID[ 0 ] );
             root->SetBranchAddress( "GenInfo.GrandMo1Status", &GrandMo1Status[ 0 ] );
             root->SetBranchAddress( "GenInfo.GrandMo2Status", &GrandMo2Status[ 0 ] );
-        }
+       }
 };
 
 class EvtInfo {
@@ -1096,6 +1098,9 @@ class GenInfo {
         int GrandMo2PdgID[ MAX_GENS ];
         int GrandMo1Status[ MAX_GENS ];
         int GrandMo2Status[ MAX_GENS ];
+        int LHESize;
+        int LHESystematicId [MAX_LHE];
+        float LHESystematicWeights [MAX_LHE];
 
         void RegisterTree( TTree* root )
         {
@@ -1125,6 +1130,9 @@ class GenInfo {
             root->Branch( "GenInfo.GrandMo2PdgID",  &GrandMo2PdgID[ 0 ],  "GenInfo.GrandMo2PdgID[GenInfo.Size]/I" );
             root->Branch( "GenInfo.GrandMo1Status", &GrandMo1Status[ 0 ], "GenInfo.GrandMo1Status[GenInfo.Size]/I" );
             root->Branch( "GenInfo.GrandMo2Status", &GrandMo2Status[ 0 ], "GenInfo.GrandMo2Status[GenInfo.Size]/I" );
+            root->Branch( "GenInfo.LHESize",        &LHESize,             "GenInfo.LHESize/I");
+            root->Branch( "GenInfo.LHESystematicId",        &LHESystematicId[0],      "GenInfo.LHESystematicId[GenInfo.LHESize]/I" );
+            root->Branch( "GenInfo.LHESystematicWeights",   &LHESystematicWeights[0], "GenInfo.LHESystematicWeights[GenInfo.LHESize]/F" );
         }
 
         void Register( TTree* root )
@@ -1155,6 +1163,9 @@ class GenInfo {
             root->SetBranchAddress( "GenInfo.GrandMo2PdgID",  &GrandMo2PdgID[ 0 ] );
             root->SetBranchAddress( "GenInfo.GrandMo1Status", &GrandMo1Status[ 0 ] );
             root->SetBranchAddress( "GenInfo.GrandMo2Status", &GrandMo2Status[ 0 ] );
+            root->SetBranchAddress( "GenInfo.LHESize",        &LHESize );
+            root->SetBranchAddress( "GenInfo.LHESystematicId",        &LHESystematicId[0] );
+            root->SetBranchAddress( "GenInfo.LHESystematicWeights",   &LHESystematicWeights[0] );
         }
 };
 

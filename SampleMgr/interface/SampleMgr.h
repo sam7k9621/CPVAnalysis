@@ -30,6 +30,10 @@ namespace mgr{
             int LumiNo(){ return _evt.LumiNo; }
             
             // weight
+            int LHESize(){ return _gen.LHESize; }
+            int LHESystematicId( const int& idx ){ return _gen.LHESystematicId[idx]; }
+            float LHESystematicWeights( const int& idx ){ return _gen.LHESystematicWeights[idx]; }
+
             int   nPU()      { 
                 for( int i = 0; i < _evt.nBX ; i++ ){
                     if ( _evt.BXPU[i] == 0 ){

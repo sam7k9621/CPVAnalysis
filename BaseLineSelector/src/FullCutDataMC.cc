@@ -17,11 +17,11 @@ MakeFileName(bool is_data)
 
     if( is_data ){
         filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("lepton") + "_run*.root" );
-        // /wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/PreCut_mu_run*.root
+        // /afs/cern.ch/work/p/pusheng/CMSSW_8_0_32/src/CPVAnalysis/BaseLineSelector/results/PreCut_mu_run*.root
     }
     else{
         filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("sample") + "_[0-9]+.root" );
-        // /wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/PreCut_TTbar_[0-9]+.root
+        // /afs/cern.ch/work/p/pusheng/CMSSW_8_0_32/src/CPVAnalysis/BaseLineSelector/results/PreCut_TTbar_[0-9]+.root
     }
 
     return filename;

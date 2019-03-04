@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <math.h>
 #include "CPVAnalysis/SampleMgr/interface/Selector.h"
 
 using namespace std;
@@ -62,6 +64,62 @@ Selector::OptionContent( const string& opt, const string& content )
 
     return false;
 }
+
+void Selector::SetME_PSUnc( float& up, float& dn )
+{
+    up = _sample->LHESystematicWeights( 245 );
+    dn = _sample->LHESystematicWeights( 236 );
+}
+
+void Selector::SetMuFMuRUnc( float* unclst )
+{
+    //https://twiki.cern.ch/twiki/bin/view/CMS/LHEReaderCMSSW
+    //http://www.hep.wisc.edu/~nsmith/llvvAnalysis/lheWeights_Signal.txt
+    for( int i = 0; i < 9; i++){
+        unclst[i] = _sample->LHESystematicWeights( i );
+    }
+}
+
+void Selector::SetPDFUnc( float& up, float& dn )
+{
+    // https://indico.cern.ch/event/494682/contributions/1172505/attachments/1223578/1800218/mcaod-Feb15-2016.pdf
+    up = 0;
+    dn = 0;
+    int count_up = 0;
+    int count_dn = 0;
+    
+    // 9-108 PDF set
+    for(int i =9; i<109; i++){ 
+        float unc = _sample->LHESystematicWeights( i );
+        if( unc >= 1 ){
+            up += ( unc * unc );
+            count_up++;
+        }
+        else{
+            dn += ( unc * unc );
+            count_dn++;
+        }
+    }
+   
+    up = fabs( 1 - sqrt( up / count_up ) );
+    dn = fabs( 1 - sqrt( dn / count_dn ) );
+
+    // 109 as_0117
+    // 110 as_0119
+    for( int i = 109; i<111; i++){
+        float unc = fabs( 1 - _sample->LHESystematicWeights( i ) );
+        if( unc >= 0 ){
+            up += ( unc * unc );
+        }
+        else{
+            dn += ( unc * unc );
+        }
+    }
+
+    up = 1 + up;
+    dn = 1 - dn;
+}
+
 /*******************************************************************************
 *   Pre-selection
 *******************************************************************************/

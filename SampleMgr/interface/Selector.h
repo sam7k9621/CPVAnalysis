@@ -50,6 +50,9 @@ class Selector : public mgr::Pathmgr,
         float  GetPUWeightDn(){ return _sample->GetPUWeightDn(); }
         void   RegisterWeight(){ _sample->RegisterWeight(); }
         void   InitJES(){ _sample->InitJES(); }
+        void SetPDFUnc   ( float&, float& );
+        void SetMuFMuRUnc( float* );
+        void SetME_PSUnc( float&, float& );
         /*******************************************************************************
         *   Pre-selection
         *******************************************************************************/
