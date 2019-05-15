@@ -89,12 +89,24 @@ PreCut( bool is_data )
     }
 
     // Register new branch
+    int   muFR_size;
     float weight;
     float weight_up;
     float weight_dn;
-    newtree->Branch( "PUWeight",    &weight,    "PUWeight/F" );
-    newtree->Branch( "PUWeight_up", &weight_up, "PUWeight_up/F" );
-    newtree->Branch( "PUWeight_dn", &weight_dn, "PUWeight_dn/F" );
+    float pdfweight_up;
+    float pdfweight_dn;
+    float meps_up;
+    float meps_dn;
+    float muFmuR[9];
+    newtree->Branch( "PUWeight",        &weight,        "PUWeight/F" );
+    newtree->Branch( "PUWeight_up",     &weight_up,     "PUWeight_up/F" );
+    newtree->Branch( "PUWeight_dn",     &weight_dn,     "PUWeight_dn/F" );
+    newtree->Branch( "PDFWeight_up",    &pdfweight_up,  "PDFWeight_up/F" );
+    newtree->Branch( "PDFWeight_dn",    &pdfweight_dn,  "PDFWeight_dn/F" );
+    newtree->Branch( "ME_PS_up",        &meps_up,       "ME_PS_up/F" );
+    newtree->Branch( "ME_PS_dn",        &meps_dn,       "ME_PS_dn/F" );
+    newtree->Branch( "muFR_size",       &muFR_size,     "muFR_size/I");
+    newtree->Branch( "MuFMuR",          &muFmuR[0],     "MuFMuR[muFR_size]/F" );
 
     // Prepare Datacard
     int entries   = 0;
@@ -103,15 +115,20 @@ PreCut( bool is_data )
     double effective    = 0.0;
     double effective_up = 0.0;
     double effective_dn = 0.0;
+    double pdf_up = 0.0;
+    double pdf_dn = 0.0;
+    double MEPS_up = 0.0;
+    double MEPS_dn = 0.0;
+    double MuFMuR[9] = { 0.0 };
 
     // Looping events
-    int events = PreMgr().CheckOption( "test" ) ? 1 : PreMgr().GetEntries();
+    int events = PreMgr().CheckOption( "test" ) ? 10000 : PreMgr().GetEntries();
 
     for( int i = 0; i < events; i++ ){
         PreMgr().GetEntry( i );
         PreMgr().process( events, i );
-        
-        cout<<endl<<PreMgr().LHESize()<<endl;
+        muFR_size = 9;
+
         // pile-up reweighted
         // abandom events with >74 vertex
         if( !is_data ){
@@ -121,7 +138,12 @@ PreCut( bool is_data )
                 !SetPUWeight( weight_dn, puweight_dn ) 
                 ){
                 continue;
-            }
+            }    
+            
+            PreMgr().SetPDFUnc( pdfweight_up, pdfweight_dn );
+            PreMgr().SetMuFMuRUnc( muFmuR );
+            PreMgr().SetME_PSUnc( meps_up, meps_dn );
+            
         }
         else{
             weight    = 1;
@@ -140,6 +162,14 @@ PreCut( bool is_data )
         effective    += ( gen * weight );
         effective_up += ( gen * weight_up );
         effective_dn += ( gen * weight_dn );
+        pdf_up       += ( gen * weight * pdfweight_up );
+        pdf_dn       += ( gen * weight * pdfweight_dn );
+        MEPS_up      += ( gen * weight * meps_up );
+        MEPS_dn      += ( gen * weight * meps_dn );
+
+        for( int i = 0; i < 9; i++ ){
+            MuFMuR[i] += ( gen * weight * muFmuR[i] );
+        }
 
         // Lumimask
         if( is_data ){
@@ -174,9 +204,17 @@ PreCut( bool is_data )
         output<<"Effective number of events after PU    reweighting = "<< std::fixed << std::setprecision(2) <<effective<<endl;
         output<<"Effective number of events after PU_up reweighting = "<< std::fixed << std::setprecision(2) <<effective_up<<endl;
         output<<"Effective number of events after PU_dn reweighting = "<< std::fixed << std::setprecision(2) <<effective_dn<<endl;
+        output<<"Effective number of events after PDF_up reweighting = "<< std::fixed << std::setprecision(2) <<pdf_up<<endl;
+        output<<"Effective number of events after PDF_dn reweighting = "<< std::fixed << std::setprecision(2) <<pdf_dn<<endl;
+        output<<"Effective number of events after ME_PS_up reweighting = "<< std::fixed << std::setprecision(2) <<MEPS_up<<endl;
+        output<<"Effective number of events after ME_PS_dn reweighting = "<< std::fixed << std::setprecision(2) <<MEPS_dn<<endl;
+
+        for( int i = 0; i < 9; i++){
+            output<<"Effective number of events after MuFMuR_" <<i<<" reweighting = "<< std::fixed << std::setprecision(2) <<MuFMuR[i]<<endl;
+        }
         output.close();
     }
-
+    
     cout << endl;
     newtree->AutoSave();
     delete newfile;

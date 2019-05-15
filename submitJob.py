@@ -42,8 +42,6 @@ def isQstatOk( maxRunJobs, maxQueJobs, queue='cms'):
         if int(sout[0]) <= maxRunJobs and int(sout[1]) <= maxQueJobs:
             return True
         else:
-            print "Queue is full, halt for one minute..."
-            sys.stdout.flush()
             return False
     except ValueError:
         return False

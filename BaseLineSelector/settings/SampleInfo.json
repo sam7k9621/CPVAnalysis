@@ -597,6 +597,11 @@
         "path" : ["/wk_cms2/sam7k9621/QCD/BPK_80X_QCD_HT2000toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/*root"]
     },
 
+    "test17":{
+        "path" : ["/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/DYJetsToLL_M-50_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/bpk_ntuple_1.root"]
+    },
+    
+
     "mu_mc_HLT"   : [4809,4815], //HLT_Iso(Tk)Mu24_v4
     "mu_data_HLT" : [2748,2749,4174,4809,2760,2761,3541,4179,4815],  //HLT_Iso(Tk)Mu24_v*
     "el_mc_HLT"   : [4742], //HLT_Ele32_eta2p1_WPTight_Gsf_v8
