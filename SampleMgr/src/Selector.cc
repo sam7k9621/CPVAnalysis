@@ -23,7 +23,8 @@ Selector::~Selector()
 void
 Selector::AddSample( TChain* ch )
 {
-    _sample = new BaseLineMgr( ch );
+    _sample = new BaseLineMgr();
+    _sample->Register( ch );
 }
 
 /*******************************************************************************
@@ -469,10 +470,4 @@ void
 Selector::ChangeFile( const string& file )
 {
     ChangeJSON( SettingsDir() / file );
-}
-
-void
-Selector::GetEntry( const int& i )
-{
-    _sample->GetEntry( i );
 }

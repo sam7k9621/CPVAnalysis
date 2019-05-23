@@ -42,7 +42,7 @@ MakeHist()
     CompMgr().AddSample( sample, ch );
     AddHist();
     
-    CompMgr().RegisterWeight();
+    CompMgr().RegisterWeight( ch );
     CompMgr().InitBtagWeight( "bcheck", CompMgr().GetSingleData<string>( "BtagWeight" ) );
 
     // Register reco sample
@@ -75,11 +75,11 @@ MakeHist()
     TH2D* LepHLT  = GetLepSF( "Trg" ); 
 
     // Looping events
-    int events   = CompMgr().CheckOption( "test" ) ? 10000 : CompMgr().GetEntries();
+    int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
     bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
-        CompMgr().GetEntry( i );
+        ch->GetEntry( i );
         CompMgr().process( events, i );
 
         /*******************************************************************************
@@ -255,11 +255,11 @@ CheckHist()
     AddHist();
     
     // Looping events
-    int events   = CompMgr().CheckOption( "test" ) ? 1000 : CompMgr().GetEntries();
+    int events   = CompMgr().CheckOption( "test" ) ? 1000 : ch->GetEntries();
     bool is_data = ( sample == "Data" ) ? 1 : 0;
     
     for( int i = 0; i < events; i++ ){
-        CompMgr().GetEntry( i );
+        ch->GetEntry( i );
         CompMgr().process( events, i );
     
         float weight = is_data ? 1 : CompMgr().GenWeight();

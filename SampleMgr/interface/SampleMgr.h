@@ -15,10 +15,10 @@ namespace mgr{
             /*******************************************************************************
             *  Class initialization
             *******************************************************************************/
-            SampleMgr( TChain* );
+            SampleMgr();
             virtual ~SampleMgr();
             void SetIndex( const int& i ){ _idx = i; }
-
+            void Register( TChain* ); 
             /*******************************************************************************
             *  Return file info
             *******************************************************************************/
@@ -154,11 +154,12 @@ namespace mgr{
         protected:
 
             int _idx;
-            VertexInfo _vtx;
-            LeptonInfo _lep;
-            EvtInfo _evt;
-            JetInfo _jet;
-            GenInfo _gen;
+            TrgInfoBranches _trg;
+            VertexInfoBranches _vtx;
+            LepInfoBranches _lep;
+            EvtInfoBranches _evt;
+            JetInfoBranches _jet;
+            GenInfoBranches _gen;
     };
 }
 

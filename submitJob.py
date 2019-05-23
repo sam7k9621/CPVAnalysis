@@ -17,7 +17,7 @@ qsub ="""
 #PBS -d /wk_cms/sam7k9621/qsub/dMESSAGE
 #PBS -o /wk_cms/sam7k9621/qsub/oMESSAGE
 #PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
-cd /wk_cms2/sam7k9621/CMSSW_8_0_19/src && eval `scramv1 runtime -sh`
+cd {}/src && eval `scramv1 runtime -sh`
 {}
 """
 
@@ -112,10 +112,10 @@ def main(args):
         command = "{} -s {}".format(opt.Command, sample)
         idx     = random.randint(1, 10000)
         output = open( ".sentJob{}.sh".format(idx), 'w' )
-        output.write( qsub.format(command) )
+        output.write( qsub.format(os.environ['CMSSW_BASE'], command) )
         output.close()
         
-        cmd = "qsub .sentJob{}.sh -N {} -l host='!node13.cluster'".format(idx, sample)
+        cmd = "qsub .sentJob{}.sh -N {}".format(idx, sample)
         print cmd
         print ">>Sending {}".format(sample)
         sys.stdout.flush()

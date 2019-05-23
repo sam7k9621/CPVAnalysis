@@ -44,7 +44,7 @@ namespace mgr{
     float
     SampleMgr::AbsMuInnerTrackDxy_PV()
     {
-        return fabs( _lep.MuInnerTrackDxy_PV[ _idx ] );
+        return fabs( _lep.MuInnerTrackDxy[ _idx ] );
     }
 
     float
@@ -207,19 +207,19 @@ namespace mgr{
     float
     SampleMgr::ElAbsTrackDxy_PV()
     {
-        return fabs( _lep.ElTrackDxy_PV[ _idx ] );
+        return fabs( _lep.ElTrackDxy[ _idx ] );
     }
 
     float 
     SampleMgr::ElsigmaIetaIeta()
     {
-        return _lep.ElsigmaIetaIeta[ _idx ];
+        return _lep.SigmaIetaIeta[ _idx ];
     }
 
     float
     SampleMgr::EldEtaInSeed()
     {
-        return _lep.EldeltaEta[ _idx ] - LepEta() + _lep.caloEta[ _idx ];
+        return _lep.EldeltaPhiSeed[ _idx ];
     }
 
     float 
@@ -257,6 +257,6 @@ namespace mgr{
     float
     SampleMgr::ElPFISO()
     {
-        return _lep.IsoRhoCorrR03[ _idx ] / _lep.Pt[ _idx ];
+        return _lep.PFIsoRhoCorrR03[ _idx ] / _lep.Pt[ _idx ];
     }
 }

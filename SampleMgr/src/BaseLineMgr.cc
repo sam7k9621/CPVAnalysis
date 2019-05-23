@@ -2,18 +2,17 @@
 #include <climits>
 #include <iostream>
 #include <string>
+#include <random>
 using namespace std;
 using namespace mgr;
 
 /*******************************************************************************
 *   Class initialization
 *******************************************************************************/
-BaseLineMgr::BaseLineMgr( TChain* ch, const string& sample ) :
+BaseLineMgr::BaseLineMgr( const string& sample ) :
     Hist2DMgr( sample ),
-    HistMgr( sample ),
-    SampleMgr( ch )
+    HistMgr( sample )
 {
-    _ch = ch;
     _calib = NULL;
     _resolution = NULL;
     _resol_sf = NULL;
@@ -109,7 +108,7 @@ BaseLineMgr::IsWellMatched( const double& res )
     if( delR >= 0.4 / 2. ){
         return false;
     }
-    if( fabs( JetPt() - GenJetPt() ) >= 3 * res ){
+    if( fabs( JetPt() - GenJetPt() ) >= 3 * res * JetPt() ){
         return false;
     }
 
@@ -119,7 +118,7 @@ BaseLineMgr::IsWellMatched( const double& res )
 double
 BaseLineMgr::MakeScaled( const double& ressf )
 {
-    const double newpt    = std::max( 0.0, GenJetPt() + ressf*( JetPt() - GenJetPt() ) );;
+    const double newpt    = std::max( 0.0, GenJetPt() + ressf*( JetPt() - GenJetPt() ) );
     const double scale    = newpt / JetPt();
 
     return scale;
@@ -133,10 +132,12 @@ BaseLineMgr::MakeSmeared( const double& ressf, const double& res )
 
     // Generating random number
     // https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h
-    std::default_random_engine gen( bitconv( JetPhi() ) );
-    std::normal_distribution<double> myrand( 0, width );
+    std::normal_distribution<> myrand( 0, width );
+    std::uint32_t seed = 37428479;
+    std::mt19937 m_random_generator = std::mt19937(seed);
+    //std::default_random_engine gen( bitconv( JetPhi() ) );
 
-    double scale =  1. + myrand( gen );
+    double scale =  1. + myrand( m_random_generator );
     if( scale <= 0 || ::isnan( scale ) ){
         return 1;
     } 
@@ -470,20 +471,4 @@ BaseLineMgr::IsTightEl()
            PassElTightID() &&
            PassElTightKinematic()
     ;
-}
-
-/*******************************************************************************
-*   Event looping
-*******************************************************************************/
-void
-BaseLineMgr::GetEntry( const int& i )
-{
-    _ch->GetEntry( i );
-}
-
-TTree*
-BaseLineMgr::CloneTree()
-{
-    _ch->GetEntry( 0 );
-    return (TTree*)_ch->GetTree()->CloneTree( 0 );
 }

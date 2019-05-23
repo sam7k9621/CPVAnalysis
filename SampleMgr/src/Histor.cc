@@ -21,7 +21,8 @@ Histor::~Histor()
 void
 Histor::AddSample( const string& sample, TChain* ch )
 {
-    _sample = new BaseLineMgr( ch, sample );
+    _sample = new BaseLineMgr( sample );
+    _sample->Register( ch );
 }
 
 /*******************************************************************************
@@ -97,12 +98,6 @@ void
 Histor::ChangeFile( const string& file )
 {
     ChangeJSON( SettingsDir() / file );
-}
-
-void
-Histor::GetEntry( const int& i )
-{
-    _sample->GetEntry( i );
 }
 
 /*******************************************************************************

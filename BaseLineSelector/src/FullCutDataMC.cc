@@ -26,154 +26,21 @@ MakeFileName(bool is_data)
 
     return filename;
 }
+
 extern void
 MakeFullCut()
 {
+    // Build new file
+    TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
+    
     bool is_data = FullMgr().GetOption<string>("sample") == "Data" ? true : false;
     string filename = MakeFileName( is_data );
 
     TChain* ch = new TChain( "root" );
     ch->Add( ( filename ).c_str() );
     FullMgr().AddSample( ch );
-    FullCut( is_data );
 
-    delete ch;
-}
-
-extern void
-MakeCheckSelection()
-{
-    bool is_data = FullMgr().GetOption<string>("sample") == "Data" ? true : false;
-    string filename = MakeFileName( is_data );
-
-    TChain* ch = new TChain( "root" );
-    ch->Add( ( filename ).c_str() );
-    FullMgr().AddSample( ch );
-    CheckSelection( is_data );
-
-    delete ch;
-}
-
-extern void
-CheckSelection( bool is_data )
-{
-    // Build new file
-    TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
-    TTree* newtree = new TTree("root", "root");
-    
-    // Initialize data
-    string lepton = FullMgr().GetOption<string>("lepton");
-    vector<int> hlt = is_data ? FullMgr().GetListData<int>( lepton + "_data_HLT" ) : FullMgr().GetListData<int>( lepton + "_mc_HLT" );
-    FullMgr().RegisterWeight();
-    // Register new branch
-    Float_t LJetPt1;
-    Float_t LJetPt2;
-    Float_t LJetPt3;
-    Float_t LJetPt4;
-    Float_t LLepPt1;
-    Float_t LLepPt2;
-    Float_t LLepPt3;
-    Float_t LLepPt4;
-
-    Float_t puweight;
-
-    newtree->Branch( "LJetPt1", &LJetPt1, "LJetPt1/F" );
-    newtree->Branch( "LJetPt2", &LJetPt2, "LJetPt2/F" );
-    newtree->Branch( "LJetPt3", &LJetPt3, "LJetPt3/F" );
-    newtree->Branch( "LJetPt4", &LJetPt4, "LJetPt4/F" );
-    newtree->Branch( "LLepPt1", &LLepPt1, "LLepPt1/F" );
-    newtree->Branch( "LLepPt2", &LLepPt2, "LLepPt2/F" );
-    newtree->Branch( "LLepPt3", &LLepPt3, "LLepPt3/F" );
-    newtree->Branch( "LLepPt4", &LLepPt4, "LLepPt4/F" );
-
-    newtree->Branch( "PUWeight", &puweight, "PUWeight/F");
-    // Looping events
-    int events = FullMgr().CheckOption( "test" ) ? 10000 : FullMgr().GetEntries();
-
-    for( int i = 0; i < events; i++ ){
-    
-        LJetPt1 = -999;
-        LJetPt2 = -999;
-        LJetPt3 = -999;
-        LJetPt4 = -999;
-        LLepPt1 = -999;
-        LLepPt2 = -999;
-        LLepPt3 = -999;
-        LLepPt4 = -999;
-        
-        FullMgr().GetEntry( i );
-        FullMgr().process( events, i );
-
-        vector<int> lepidx;// store one tight lepton
-        vector<int> jetidx;// store every jets
-        vector<int> bjetidx;// store two bjets
-
-        puweight = FullMgr().GetPUWeight();
-
-        LJetPt1 = FullMgr().LJetPt();
-        LLepPt1 = FullMgr().LLepPt();
-        /*******************************************************************************
-        *  Baseline selection
-        *******************************************************************************/
-    
-        if( !FullMgr().PassHLT( hlt ) ){
-            newtree->Fill();
-            continue;
-        }
-   
-        LJetPt2 = FullMgr().LJetPt();
-        LLepPt2 = FullMgr().LLepPt();
-        /*******************************************************************************
-        *  Lepton selection
-        *******************************************************************************/
-        if( FullMgr().GetOption<string>( "lepton" ) == "el" ){
-            if( !FullMgr().PassFullEl( lepidx ) ){
-                newtree->Fill();
-                continue;
-            }
-        }
-
-        else if( FullMgr().GetOption<string>( "lepton" ) == "mu" ) {
-            if( !FullMgr().PassFullMu( lepidx ) ){
-                newtree->Fill();
-                continue;
-            }
-        }
-
-        else{
-            cout<<"[Warning] Should have assigned lepton type"<<endl;
-            newtree->Fill();
-            return;
-        }
-
-        LJetPt3 = FullMgr().LJetPt();
-        LLepPt3 = FullMgr().LLepPt();
-        /*******************************************************************************
-        *  Jet selection
-        *******************************************************************************/
-        if( !FullMgr().PassFullCRJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
-            newtree->Fill();
-            continue;
-        }
-
-        LJetPt4 = FullMgr().LJetPt();
-        LLepPt4 = FullMgr().LLepPt();
-
-        newtree->Fill();
-    }
-
-    cout << endl;
-    newtree->Write();
-    newfile->Close();
-    delete newfile;
-}
-
-extern void
-FullCut( bool is_data )
-{
-    // Build new file
-    TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
-    TTree* newtree = FullMgr().CloneTree();
+    TTree* newtree = ch->CloneTree( 0 );
     
     // Initialize data
     string lepton = FullMgr().GetOption<string>("lepton");
@@ -202,10 +69,10 @@ FullCut( bool is_data )
     newtree->Branch( "lep_tmass", &lep_tmass, "lep_tmass/F" );
 
     // Looping events
-    int events = FullMgr().CheckOption( "test" ) ? 10000 : FullMgr().GetEntries();
+    int events = FullMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
 
     for( int i = 0; i < events; i++ ){
-        FullMgr().GetEntry( i );
+        ch->GetEntry( i );
         FullMgr().process( events, i );
 
         vector<int> lepidx;// store one tight lepton
@@ -326,6 +193,6 @@ FullCut( bool is_data )
 
     cout << endl;
     newtree->AutoSave();
-    newfile->Close();
+    delete ch;
     delete newfile;
 }

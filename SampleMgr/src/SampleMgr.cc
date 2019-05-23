@@ -7,20 +7,25 @@ namespace mgr{
     /*******************************************************************************
     *  Class initialization
     *******************************************************************************/
-    SampleMgr::SampleMgr( TChain* ch ) :
+    SampleMgr::SampleMgr() :
         _idx( 0 )
     {
-        _vtx.Register( ch );
-        _lep.Register( ch );
-        _evt.Register( ch );
-        _jet.Register( ch );
-        _gen.Register( ch );
     }
 
     SampleMgr::~SampleMgr()
     {
     }
 
+    void
+    SampleMgr::Register( TChain* ch )
+    {
+        _trg.Register( ch );
+        _vtx.Register( ch );
+        _lep.Register( ch );
+        _evt.Register( ch );
+        _jet.Register( ch );
+        _gen.Register( ch );
+    }
     /*******************************************************************************
     *  Basic RECO
     *******************************************************************************/

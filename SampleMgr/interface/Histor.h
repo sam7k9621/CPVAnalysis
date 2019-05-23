@@ -87,14 +87,10 @@ class Histor : public mgr::Pathmgr,
         *******************************************************************************/
         void   process( const int&, const int& );
         void   ChangeFile( const std::string& );
-        void   GetEntry( const int& );
-        int    GetEntries(){ return _sample->GetEntries(); }
-        TTree* CloneTree() { return _sample->CloneTree(); }
-
         /*******************************************************************************
         *   Weight
         *******************************************************************************/
-        void   RegisterWeight(){ _sample->RegisterWeight(); }
+        void   RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
         void   InitBtagWeight( const std::string&, const std::string& );
         float  GetPUWeight(){ return _sample->GetPUWeight(); }
         float  GetPUWeightUp(){ return _sample->GetPUWeightUp(); }

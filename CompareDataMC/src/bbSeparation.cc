@@ -41,11 +41,11 @@ bbSeparation()
     ch->SetBranchAddress( "lep_tmass", &lep_tmass );
 
     // Looping events
-    int events   = CompMgr().CheckOption( "test" ) ? 10000 : CompMgr().GetEntries();
+    int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
     bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
-        CompMgr().GetEntry( i );
+        ch->GetEntry( i );
         CompMgr().process( events, i );
 
 

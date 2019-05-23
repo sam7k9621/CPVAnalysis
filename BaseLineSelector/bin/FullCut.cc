@@ -29,5 +29,4 @@ main( int argc, char* argv[] )
     FullMgr().AddCutName( { "test", "region" } );
 
     MakeFullCut();
-    //MakeCheckSelection();
 }

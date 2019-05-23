@@ -31,7 +31,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         /*******************************************************************************
         *   Class initialization
         *******************************************************************************/
-        BaseLineMgr( TChain*, const std::string& = "" );
+        BaseLineMgr( const std::string& = "" );
         ~BaseLineMgr();
 
         BaseLineMgr( const BaseLineMgr& )            = delete;
@@ -114,17 +114,10 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool IsTightEl();
 
         /*******************************************************************************
-        *   Event looping
-        *******************************************************************************/
-        void   GetEntry( const int& );
-        int    GetEntries(){ return _ch->GetEntries(); }
-        TTree* CloneTree();
-
-        /*******************************************************************************
         *   Event Weighting
         *******************************************************************************/
         // PU weight
-        void  RegisterWeight();
+        void  RegisterWeight( TChain* );
         float GetPUWeight(){ return _puweight; }
         float GetPUWeightUp(){ return _puweight_up; }
         float GetPUWeightDn(){ return _puweight_dn; }
@@ -148,8 +141,6 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         double TopPtWeight();
 
     private:
-
-        TChain* _ch;
 
         float _puweight;
         float _puweight_up;

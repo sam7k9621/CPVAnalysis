@@ -6,11 +6,11 @@
 using namespace std;
 
 void
-BaseLineMgr::RegisterWeight()
+BaseLineMgr::RegisterWeight( TChain* ch )
 {
-    _ch->SetBranchAddress( "PUWeight",    &_puweight );
-    _ch->SetBranchAddress( "PUWeight_up", &_puweight_up );
-    _ch->SetBranchAddress( "PUWeight_dn", &_puweight_dn );
+    ch->SetBranchAddress( "PUWeight",    &_puweight );
+    ch->SetBranchAddress( "PUWeight_up", &_puweight_up );
+    ch->SetBranchAddress( "PUWeight_dn", &_puweight_dn );
 }
 
 void

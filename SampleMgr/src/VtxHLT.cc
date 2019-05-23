@@ -39,7 +39,7 @@ namespace mgr{
     SampleMgr::PassHLT( const vector<int>& hlt )
     {
         for( const auto h : hlt ){
-            if( int(_evt.TrgBook[ h ]) == 1 ){
+            if( int(_trg.TrgBook[ h ]) == 1 ){
                 return true;
             }
         }
