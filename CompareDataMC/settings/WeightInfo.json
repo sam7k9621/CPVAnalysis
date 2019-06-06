@@ -1,555 +1,551 @@
 {
     "QCD_HT100to200": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 77777081.16, 
+        "gen_num": 92590802.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200_[0-9].root"
         ], 
         "cross_section": 27990000
     }, 
     "QCD_HT200to300": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 37608090.72, 
+        "gen_num": 58733167.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300_[0-9].root"
         ], 
         "cross_section": 1712000
     }, 
     "QCD_HT300to500": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 36293908.04, 
+        "gen_num": 59070469.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500_[0-9].root"
         ], 
         "cross_section": 347700
     }, 
     "QCD_HT500to700": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 40834533.94, 
+        "gen_num": 55673263.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700_[0-9].root"
         ], 
         "cross_section": 32100
     }, 
     "QCD_HT700to1000": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 15126220.94, 
+        "gen_num": 46332843.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000_[0-9].root"
         ], 
         "cross_section": 6831
     }, 
     "QCD_HT1000to1500": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 4612038.1, 
+        "gen_num": 16660716.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500_[0-9].root"
         ], 
         "cross_section": 1207
     }, 
     "QCD_HT1500to2000": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 7602053.43, 
+        "gen_num": 11433117.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000_[0-9].root"
         ], 
         "cross_section": 119.9
     }, 
     "QCD_HT2000toInf": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 3716194.9, 
+        "gen_num": 5787447.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf_[0-9].root"
         ], 
         "cross_section": 25.24
     }, 
-    "DYJet_HT-70to100": {
+    "DYJets_HT-70to100": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-70to100_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-70to100_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-70to100_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-70to100_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 9305772.21, 
+        "gen_num": 9272629.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-70to100.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-70to100_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-70to100.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-70to100_[0-9].root"
         ], 
         "cross_section": 208.977
     }, 
-    "DYJet_HT-100to200": {
+    "DYJets_HT-100to200": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-100to200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-100to200_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-100to200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-100to200_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 6916792.33, 
+        "gen_num": 11106724.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-100to200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-100to200_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-100to200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-100to200_[0-9].root"
         ], 
         "cross_section": 181.302
     }, 
-    "DYJet_HT-200to400": {
+    "DYJets_HT-200to400": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-200to400_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-200to400_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-200to400_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-200to400_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 4929696.44, 
+        "gen_num": 10628725.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-200to400.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-200to400_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-200to400.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-200to400_[0-9].root"
         ], 
         "cross_section": 50.4177
     }, 
-    "DYJet_HT-400to600": {
+    "DYJets_HT-400to600": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-400to600_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-400to600_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-400to600_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-400to600_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 1224284.52, 
+        "gen_num": 10108270.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-400to600.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-400to600_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-400to600.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-400to600_[0-9].root"
         ], 
         "cross_section": 6.98394
     }, 
-    "DYJet_HT-600to800": {
+    "DYJets_HT-600to800": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-600to800_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-600to800_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-600to800_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-600to800_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 8026406.77, 
+        "gen_num": 8634549.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-600to800.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-600to800_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-600to800.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-600to800_[0-9].root"
         ], 
         "cross_section": 1.68141
     }, 
-    "DYJet_HT-800to1200": {
+    "DYJets_HT-800to1200": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-800to1200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-800to1200_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-800to1200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-800to1200_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 2582923.23, 
+        "gen_num": 3069366.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-800to1200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-800to1200_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-800to1200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-800to1200_[0-9].root"
         ], 
         "cross_section": 0.775392
     }, 
-    "DYJet_HT-1200to2500": {
+    "DYJets_HT-1200to2500": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-1200to2500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-1200to2500_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-1200to2500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-1200to2500_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 576786.61, 
+        "gen_num": 610659.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-1200to2500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-1200to2500_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-1200to2500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-1200to2500_[0-9].root"
         ], 
         "cross_section": 0.186222
     }, 
-    "DYJet_HT-2500toInf": {
+    "DYJets_HT-2500toInf": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-2500toInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-2500toInf_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-2500toInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-2500toInf_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 386734.51, 
+        "gen_num": 398552.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJet_HT-2500toInf.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-2500toInf_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJet_HT-2500toInf.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-2500toInf_[0-9].root"
         ], 
         "cross_section": 0.00438495
     }, 
-    "SingleTop_s-ch": {
+    "SingleTop_s-channel": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_s-ch_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_s-channel_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_s-ch_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_s-channel_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 602629.53, 
+        "gen_num": 6126808.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_s-ch.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_s-channel_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_s-ch.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_s-channel_[0-9].root"
         ], 
         "cross_section": 3.36
     }, 
-    "SingleTop_t-ch": {
+    "SingleTop_t-channel_top": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_top_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_top_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 64296928.72, 
+        "gen_num": 5942749.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_top_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_top_[0-9].root"
         ], 
         "cross_section": 136.02
     }, 
-    "SingleTop_t-ch_anti": {
+    "SingleTop_t-channel_antitop": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_anti_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_antitop_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_anti_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_antitop_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 37536279.71, 
+        "gen_num": 3651708.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_t-ch_anti.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_antitop_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_t-ch_anti.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_antitop_[0-9].root"
         ], 
         "cross_section": 80.95
     }, 
-    "SingleTop_tW": {
+    "SingleTop_tW_top": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_top_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_top_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 6701499.35, 
+        "gen_num": 7683668.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_top_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_top_[0-9].root"
         ], 
         "cross_section": 35.6
     }, 
-    "SingleTop_tW_anti": {
+    "SingleTop_tW_antitop": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_anti_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_antitop_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_anti_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_antitop_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 6493495.85, 
+        "gen_num": 7865071.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_SingleTop_tW_anti.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_antitop_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_SingleTop_tW_anti.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_antitop_[0-9].root"
         ], 
         "cross_section": 35.6
     }, 
-    "TTbar": {
+    "ttbar": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTbar_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTToSemiLeptonic_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTbar_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTToSemiLeptonic_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 73900365.57, 
+        "gen_num": 43094155.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTbar.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTToSemiLeptonic_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTbar.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTToSemiLeptonic_[0-9].root"
         ], 
-        "cross_section": 831.76
+        "cross_section": 365.34
     }, 
     "VV_WW": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WW_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WW_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WW_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WW_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 961891.67, 
+        "gen_num": 7714926.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WW.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WW_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WW.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WW_[0-9].root"
         ], 
         "cross_section": 118.7
     }, 
     "VV_WZ": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WZ_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WZ_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WZ_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WZ_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 968023.47, 
+        "gen_num": 3875940.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_WZ.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WZ_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_WZ.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WZ_[0-9].root"
         ], 
         "cross_section": 47.13
     }, 
     "VV_ZZ": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_ZZ_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ZZ_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_ZZ_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ZZ_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 815915.9, 
+        "gen_num": 1913229.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_VV_ZZ.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ZZ_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_VV_ZZ.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ZZ_[0-9].root"
         ], 
         "cross_section": 16.52
     }, 
-    "WJetsToLNu_HT-100To200": {
+    "WJets_HT-100To200": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-100To200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-100To200_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-100To200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-100To200_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 9882644.31, 
+        "gen_num": 35569453.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-100To200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-100To200_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-100To200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-100To200_[0-9].root"
         ], 
         "cross_section": 1628.297
     }, 
-    "WJetsToLNu_HT-200To400": {
+    "WJets_HT-200To400": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-200To400_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-200To400_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-200To400_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-200To400_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 13358361.95, 
+        "gen_num": 21053538.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-200To400.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-200To400_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-200To400.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-200To400_[0-9].root"
         ], 
         "cross_section": 435.23699999999997
     }, 
-    "WJetsToLNu_HT-400To600": {
+    "WJets_HT-400To600": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-400To600_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-400To600_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-400To600_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-400To600_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 1900582.91, 
+        "gen_num": 14156499.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-400To600.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-400To600_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-400To600.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-400To600_[0-9].root"
         ], 
         "cross_section": 59.181099999999994
     }, 
-    "WJetsToLNu_HT-600To800": {
+    "WJets_HT-600To800": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-600To800_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-600To800_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-600To800_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-600To800_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 12020198.27, 
+        "gen_num": 21440850.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-600To800.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-600To800_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-600To800.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-600To800_[0-9].root"
         ], 
         "cross_section": 14.5805
     }, 
-    "WJetsToLNu_HT-800To1200": {
+    "WJets_HT-800To1200": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-800To1200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-800To1200_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-800To1200_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-800To1200_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 6001576.54, 
+        "gen_num": 20140280.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-800To1200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-800To1200_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-800To1200.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-800To1200_[0-9].root"
         ], 
         "cross_section": 6.656210000000001
     }, 
-    "WJetsToLNu_HT-1200To2500": {
+    "WJets_HT-1200To2500": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-1200To2500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-1200To2500_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-1200To2500_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-1200To2500_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 236702.43, 
+        "gen_num": 19860691.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-1200To2500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-1200To2500_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-1200To2500.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-1200To2500_[0-9].root"
         ], 
         "cross_section": 1.6080899999999998
     }, 
-    "WJetsToLNu_HT-2500ToInf": {
+    "WJets_HT-2500ToInf": {
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-2500ToInf_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-2500ToInf_[0-9]_region_0bjet.root"
         ], 
-        "gen_num": 245295.33, 
+        "gen_num": 20494604.0, 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-2500ToInf.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-2500ToInf_[0-9].root"
         ], 
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-2500ToInf_[0-9].root"
         ], 
         "cross_section": 0.0389136
     }, 
     "Data": {
         "elpath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_Data.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_Run2017[A-Z]_[0-9].root"
         ], 
         "mupath": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_Data.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_Run2017[A-Z]_[0-9].root"
         ], 
         "mupath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_Run2017[A-Z]_[0-9]_region_0bjet.root"
         ], 
         "elpath_CR": [
-            "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJetsToLNu_HT-2500ToInf_region_0bjet.root"
+            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_Run2017[A-Z]_[0-9]_region_0bjet.root"
         ]
     }, 
-    "ellumi": 35700, 
-    "mulumi": 35900, 
-    "BtagWeight": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/CSVv2_Moriond17_B_H.csv", 
-    "elTrg": {
-        "file": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/elTrgSF.root", 
-        "title": "scale_ele32"
-    }, 
+    "ellumi": 41540, 
+    "mulumi": 41540, 
+    "BtagWeight": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/data/CSVv2_94XSF_V2_B_F.csv", 
     "elID": {
-        "file": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/elTightIDSF.root", 
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/data/2017_ElectronTight.root", 
         "title": "EGamma_SF2D"
     }, 
     "elRECO": {
-        "file": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/elRECOSF.root", 
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", 
         "title": "EGamma_SF2D"
     }, 
     "muTrg": {
-        "file": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/muTrgSF.root", 
-        "title": "abseta_pt_ratio"
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/data/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root", 
+        "title": "IsoMu27_PtEtaBins"
     }, 
     "muID": {
-        "file": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/muIDSF.root", 
-        "title": "abseta_pt_ratio"
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/data/RunBCDEF_SF_ID.root", 
+        "title": "NUM_TightID_DEN_genTracks_pt_abseta"
     }, 
     "muRECO": {
-        "file": "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/muISOSF.root", 
-        "title": "abseta_pt_ratio"
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/data/RunBCDEF_SF_ISO.root", 
+        "title": "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta"
     }
 }

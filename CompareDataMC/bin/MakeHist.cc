@@ -12,6 +12,7 @@ main( int argc, char* argv[] )
         ( "uncertainty,e", opt::value<string>(), "uncertainty shift")
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
+        ( "pileup,p", "test pileup running" )
         ( "input,i", opt::value< vector<string> >()->multitoken(), "CEDM sample")
         ( "Opt,o",  opt::value<double>(), "lep_tmass optimization cut" )
         ( "mixed,x", "randomly choose event" )
@@ -32,7 +33,7 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "chi2", "bbSep", "SIM", "CEDM", "Acp", "Opt", "mixed", "region", "uncertainty" } );
+    CompMgr().AddCutName( { "test", "chi2", "bbSep", "SIM", "CEDM", "Acp", "Opt", "mixed", "region", "uncertainty", "pileup" } );
     
     if( CompMgr().CheckOption( "SIM" ) ){
         CompMgr().ChangeFile( "CheckAcp.json" );
@@ -46,9 +47,9 @@ main( int argc, char* argv[] )
         AddAcp();
         //ReweighAcp();
     }
-    else if( CompMgr().CheckOption( "bbSep" ) ){
-        bbSeparation();
-    }
+    //else if( CompMgr().CheckOption( "bbSep" ) ){
+        //bbSeparation();
+    //}
     else{
         MakeHist();
     }

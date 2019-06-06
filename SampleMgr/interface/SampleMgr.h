@@ -71,7 +71,7 @@ namespace mgr{
             float          GetLepCharge( const int& );
             TLorentzVector GetLepP4( const int& );
             int            Lep_Type(){ return _lep.LeptonType[ _idx ]; }
-
+            float          rho();
             /*******************************************************************************
             *   Muon info
             *******************************************************************************/
@@ -102,14 +102,17 @@ namespace mgr{
             float GsfEleEInverseMinusPInverseCut();
             float ElNumberOfExpectedInnerHits();
             float ElPFISO();
+            float EnergySC();
             bool  ElhasConv();
-            
+             
             /*******************************************************************************
             * Jet info
             *******************************************************************************/
             float          JesUnc();
             float          JERPt();
             float          JERScale();
+            float          JERScale_up();
+            float          JERScale_dn();
             float          JetPt();
             float          JetEta();
             float          JetAbsEta();

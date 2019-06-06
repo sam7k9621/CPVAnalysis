@@ -1,35 +1,12 @@
-sample = [
-        "WJetsToLNu_HT-100To200",
-        "WJetsToLNu_HT-200To400",
-        "WJetsToLNu_HT-400To600",
-        "WJetsToLNu_HT-600To800",
-        "WJetsToLNu_HT-800To1200",
-        "WJetsToLNu_HT-1200To2500",
-        "WJetsToLNu_HT-2500ToInf",
-        "QCD_HT100to200",
-        "QCD_HT200to300",
-        "QCD_HT300to500",
-        "QCD_HT500to700",
-        "QCD_HT700to1000",
-        "QCD_HT1000to1500",
-        "QCD_HT1500to2000",
-        "QCD_HT2000toInf",
-        "DYJet_HT-70to100",
-        "DYJet_HT-100to200",
-        "DYJet_HT-1200to2500",
-        "DYJet_HT-200to400",
-        "DYJet_HT-2500toInf",
-        "DYJet_HT-400to600",
-        "DYJet_HT-600to800",
-        "DYJet_HT-800to1200",
-        "SingleTop_s-ch",
-        "SingleTop_t-ch",
-        "SingleTop_t-ch_anti",
-        "SingleTop_tW",
-        "SingleTop_tW_anti",
-        "TTbar",
-        "VV_WW",
-        "VV_WZ",
-        "VV_ZZ",
-        "Data"
+el = [
+    'Run2017B_1', 'Run2017B_2', 'Run2017B_3', 'Run2017B_4', 'Run2017B_5', 'Run2017C_1', 'Run2017C_2', 'Run2017C_3', 'Run2017C_4', 'Run2017C_5', 'Run2017D_1', 'Run2017D_2', 'Run2017D_3', 'Run2017D_4', 'Run2017D_5', 'Run2017E_1', 'Run2017E_2', 'Run2017E_3', 'Run2017E_4', 'Run2017E_5', 'Run2017F_1', 'Run2017F_2', 'Run2017F_3', 'Run2017F_4', 'Run2017F_5'
     ]
+
+mu = [
+    'Run2017B_1', 'Run2017B_2', 'Run2017B_3', 'Run2017B_4', 'Run2017B_5', 'Run2017C_1', 'Run2017C_2', 'Run2017C_3', 'Run2017C_4', 'Run2017C_5', 'Run2017D_1', 'Run2017D_2', 'Run2017D_3', 'Run2017D_4', 'Run2017D_5', 'Run2017E_1', 'Run2017E_2', 'Run2017E_3', 'Run2017E_4', 'Run2017E_5', 'Run2017F_0', 'Run2017F_1', 'Run2017F_2', 'Run2017F_3', 'Run2017F_4', 'Run2017F_5', 'Run2017F_6', 'Run2017F_7', 'Run2017F_8', 'Run2017F_9', 'Run2017F_ext1_1', 'Run2017F_ext2_1'
+    ]
+
+mc = [
+    'DYJets_HT-100to200_1', 'DYJets_HT-100to200_2', 'DYJets_HT-100to200_3', 'DYJets_HT-100to200_4', 'DYJets_HT-100to200_5', 'DYJets_HT-1200to2500_1', 'DYJets_HT-1200to2500_2', 'DYJets_HT-1200to2500_3', 'DYJets_HT-1200to2500_4', 'DYJets_HT-1200to2500_5', 'DYJets_HT-200to400_1', 'DYJets_HT-200to400_2', 'DYJets_HT-200to400_3', 'DYJets_HT-200to400_4', 'DYJets_HT-200to400_5', 'DYJets_HT-2500toInf_1', 'DYJets_HT-2500toInf_2', 'DYJets_HT-2500toInf_3', 'DYJets_HT-2500toInf_4', 'DYJets_HT-2500toInf_5', 'DYJets_HT-400to600_1', 'DYJets_HT-400to600_2', 'DYJets_HT-400to600_3', 'DYJets_HT-400to600_4', 'DYJets_HT-400to600_5', 'DYJets_HT-600to800_1', 'DYJets_HT-600to800_2', 'DYJets_HT-600to800_3', 'DYJets_HT-600to800_4', 'DYJets_HT-600to800_5', 'DYJets_HT-70to100_1', 'DYJets_HT-70to100_2', 'DYJets_HT-70to100_3', 'DYJets_HT-70to100_4', 'DYJets_HT-70to100_5', 'DYJets_HT-800to1200_1', 'DYJets_HT-800to1200_2', 'DYJets_HT-800to1200_3', 'DYJets_HT-800to1200_4', 'DYJets_HT-800to1200_5', 'QCD_HT1000to1500_1', 'QCD_HT100to200_1', 'QCD_HT1500to2000_1', 'QCD_HT200to300_1', 'QCD_HT300to500_1', 'QCD_HT500to700_1', 'QCD_HT2000toInf_1', 'QCD_HT700to1000_1', 'ST_s-channel_1', 'ST_t-channel_antitop_1', 'ST_t-channel_top_1', 'ST_tW_antitop_1', 'ST_tW_top_1', 'TTToSemiLeptonic_0', 'TTToSemiLeptonic_1', 'TTToSemiLeptonic_2', 'TTToSemiLeptonic_3', 'TTToSemiLeptonic_4', 'TTToSemiLeptonic_5', 'TTToSemiLeptonic_6', 'TTToSemiLeptonic_7', 'TTToSemiLeptonic_8', 'TTToSemiLeptonic_9', 'WJets_HT-100To200_1', 'WJets_HT-100To200_2', 'WJets_HT-100To200_3', 'WJets_HT-100To200_4', 'WJets_HT-100To200_5', 'WJets_HT-1200To2500_1', 'WJets_HT-1200To2500_2', 'WJets_HT-1200To2500_3', 'WJets_HT-1200To2500_4', 'WJets_HT-1200To2500_5', 'WJets_HT-200To400_1', 'WJets_HT-200To400_2', 'WJets_HT-200To400_3', 'WJets_HT-200To400_4', 'WJets_HT-200To400_5', 'WJets_HT-2500ToInf_0', 'WJets_HT-2500ToInf_1', 'WJets_HT-2500ToInf_2', 'WJets_HT-2500ToInf_3', 'WJets_HT-2500ToInf_4', 'WJets_HT-2500ToInf_5', 'WJets_HT-2500ToInf_6', 'WJets_HT-2500ToInf_7', 'WJets_HT-2500ToInf_8', 'WJets_HT-2500ToInf_9', 'WJets_HT-400To600_1', 'WJets_HT-400To600_2', 'WJets_HT-400To600_3', 'WJets_HT-400To600_4', 'WJets_HT-400To600_5', 'WJets_HT-600To800_1', 'WJets_HT-600To800_2', 'WJets_HT-600To800_3', 'WJets_HT-600To800_4', 'WJets_HT-600To800_5', 'WJets_HT-70To100_1', 'WJets_HT-70To100_2', 'WJets_HT-70To100_3', 'WJets_HT-70To100_4', 'WJets_HT-70To100_5', 'WJets_HT-800To1200_1', 'WJets_HT-800To1200_2', 'WJets_HT-800To1200_3', 'WJets_HT-800To1200_4', 'WJets_HT-800To1200_5', 'WW_1', 'WZ_1', 'ZZ_1'
+    ]
+

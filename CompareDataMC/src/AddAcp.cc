@@ -81,9 +81,9 @@ ReweighAcp()
         TLorentzVector mchardjet = CompMgr().GetGenP4( genjetidx );
 
         // In Lab frame
-        double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect() );
-        double mco4 = Obs4( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
-        double mco7 = Obs7( mcbjet.Vect(), mcbbarjet.Vect() );
+        double mco13 = Obs13( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+        double mco6 = Obs6( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+        double mco12 = Obs12( mcbjet.Vect(), mcbbarjet.Vect() );
 
         //CompMgr().DumpEvtInfo();
         // In bbar CM frame
@@ -95,10 +95,10 @@ ReweighAcp()
         
         double mco3 = Obs3( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
 
-        bool acp2 = mco2 > 0;
-        bool acp3 = mco3 > 0;
-        bool acp4 = mco4 > 0;
-        bool acp7 = mco7 > 0;
+        bool acp13 = mco13 > 0;
+        bool acp6  = mco6 > 0;
+        bool acp12 = mco12 > 0;
+        bool acp3  = mco3 > 0;
         
         /*******************************************************************************
         *  Reco Acp
@@ -109,9 +109,9 @@ ReweighAcp()
         TLorentzVector b       = charge < 0 ? CompMgr().GetJetP4( had_b ) : CompMgr().GetJetP4( lep_b );
         TLorentzVector bbar    = charge < 0 ? CompMgr().GetJetP4( lep_b ) : CompMgr().GetJetP4( had_b );
         // In Lab frame
-        double o2 = Obs2( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect() );
-        double o4 = Obs4( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
-        double o7 = Obs7( b.Vect(), bbar.Vect() );
+        double o13 = Obs13( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+        double o6  = Obs6( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+        double o12 = Obs12( b.Vect(), bbar.Vect() );
 
         //CompMgr().DumpEvtInfo();
         // In bbar CM frame
@@ -126,14 +126,14 @@ ReweighAcp()
         /*******************************************************************************
         *  Fake Acp
         *******************************************************************************/
-        FillWeighObservable( "Obs2", o2, acp2 );
-        FillWeighObservable( "Obs3", o3, acp3 );
-        FillWeighObservable( "Obs4", o4, acp4 );
-        FillWeighObservable( "Obs7", o7, acp7 );
-        FillWeighObservable( "GenObs2", mco2, acp2 );
-        FillWeighObservable( "GenObs3", mco3, acp3 );
-        FillWeighObservable( "GenObs4", mco4, acp4 );
-        FillWeighObservable( "GenObs7", mco7, acp7 );
+        FillWeighObservable( "Obs13", o13, acp13 );
+        FillWeighObservable( "Obs6",  o6,  acp6 );
+        FillWeighObservable( "Obs12", o12, acp12 );
+        FillWeighObservable( "Obs3",  o3, acp3 );
+        FillWeighObservable( "GenObs13", mco13, acp13 );
+        FillWeighObservable( "GenObs6",  mco6,  acp6 );
+        FillWeighObservable( "GenObs12", mco12, acp12 );
+        FillWeighObservable( "GenObs3",  mco3,  acp3 );
     }
 
     StoreCompare();
@@ -193,10 +193,10 @@ AddAcp()
     map<int, TLorentzVector> reco_jet;
     map<int, int>            reco_charge;
 
-    vector<int> acp2idx;
+    vector<int> acp13idx;
+    vector<int> acp6idx;
+    vector<int> acp12idx;
     vector<int> acp3idx;
-    vector<int> acp4idx;
-    vector<int> acp7idx;
 
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
@@ -239,10 +239,10 @@ AddAcp()
         /*******************************************************************************
         *  Gen-level Acp
         *******************************************************************************/
-        bool acp2 = false;
+        bool acp13 = false;
+        bool acp6 = false;
+        bool acp12 = false;
         bool acp3 = false;
-        bool acp4 = false;
-        bool acp7 = false;
 
         if( !is_data ){
             
@@ -262,9 +262,9 @@ AddAcp()
             TLorentzVector mchardjet = CompMgr().GetGenP4( genjetidx );
 
             // In Lab frame
-            double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect() );
-            double mco4 = Obs4( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
-            double mco7 = Obs7( mcbjet.Vect(), mcbbarjet.Vect() );
+            double mco13 = Obs13( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco6  = Obs6( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco12 = Obs12( mcbjet.Vect(), mcbbarjet.Vect() );
 
             //CompMgr().DumpEvtInfo();
             // In bbar CM frame
@@ -276,22 +276,22 @@ AddAcp()
             
             double mco3 = Obs3( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
 
-            CompMgr().Hist( "GenObs2" )->Fill( mco2 / 1000000. );
+            CompMgr().Hist( "GenObs13" )->Fill( mco13 / 1000000. );
+            CompMgr().Hist( "GenObs6" ) ->Fill( mco6 / 1000000. );
+            CompMgr().Hist( "GenObs12" )->Fill( mco12 / 1000000. );
             CompMgr().Hist( "GenObs3" )->Fill( mco3 / 1000000. );
-            CompMgr().Hist( "GenObs4" )->Fill( mco4 / 1000000. );
-            CompMgr().Hist( "GenObs7" )->Fill( mco7 / 1000000. );
 
-            if( mco2 > 0 ){
-                acp2 = true;
+            if( mco13 > 0 ){
+                acp13 = true;
+            }
+            if( mco6 > 0 ){
+                acp6 = true;
+            }
+            if( mco12 > 0 ){
+                acp12 = true;
             }
             if( mco3 > 0 ){
                 acp3 = true;
-            }
-            if( mco4 > 0 ){
-                acp4 = true;
-            }
-            if( mco7 > 0 ){
-                acp7 = true;
             }
         }
        
@@ -302,25 +302,25 @@ AddAcp()
         int acp = CompMgr().GetOption<double>("Acp");
         
         if( x < acp ){
-            if( acp2 ){
-                acp2idx.push_back( i );
+            if( acp13 ){
+                acp13idx.push_back( i );
+            }
+            if( acp6 ){
+                acp6idx.push_back( i );
+            }
+            if( acp12 ){
+                acp12idx.push_back( i );
             }
             if( acp3 ){
                 acp3idx.push_back( i );
             }
-            if( acp4 ){
-                acp4idx.push_back( i );
-            }
-            if( acp7 ){
-                acp7idx.push_back( i );
-            }
         }
     }
 
-    FillObserable( "Obs2", acp2idx, reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    FillObserable( "Obs3", acp3idx, reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    FillObserable( "Obs4", acp4idx, reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    FillObserable( "Obs7", acp7idx, reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    FillObservable( "Obs3",  acp3idx,  reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    FillObservable( "Obs6",  acp6idx,  reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    FillObservable( "Obs12", acp12idx, reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    FillObservable( "Obs13", acp13idx, reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
 
     StoreCompare();
     delete ch;
@@ -332,7 +332,7 @@ constexpr unsigned int StoI(const char* str, const int& h )
 }
 
 void
-FillObserable( const string& obs, const vector<int>& idx, const map<int, TLorentzVector>& b, const map<int, TLorentzVector>& bbar, const map<int, TLorentzVector>& lep, const map<int, TLorentzVector>& jet, const map<int, int>& charge )
+FillObservable( const string& obs, const vector<int>& idx, const map<int, TLorentzVector>& b, const map<int, TLorentzVector>& bbar, const map<int, TLorentzVector>& lep, const map<int, TLorentzVector>& jet, const map<int, int>& charge )
 {
     deque<TLorentzVector> copy_b      = CopyEvent( idx, b );
     deque<TLorentzVector> copy_bbar   = CopyEvent( idx, bbar );
@@ -352,16 +352,16 @@ FillObserable( const string& obs, const vector<int>& idx, const map<int, TLorent
        
         switch( StoI( obs.c_str() ) ){
             
-            case StoI( "Obs2" ) :
-                oval = Obs2( copy_lep[i].Vect(), copy_jet[i].Vect(), copy_b[i].Vect(), copy_bbar[i].Vect() );
+            case StoI( "Obs13" ) :
+                oval = Obs13( copy_lep[i].Vect(), copy_jet[i].Vect(), copy_b[i].Vect(), copy_bbar[i].Vect(), copy_charge[i] );
                 break;
 
-            case StoI( "Obs4" ) :
-                oval = Obs4( copy_lep[i].Vect(), copy_jet[i].Vect(), copy_b[i].Vect(), copy_bbar[i].Vect(), copy_charge[i] );
+            case StoI( "Obs6" ) :
+                oval = Obs6( copy_lep[i].Vect(), copy_jet[i].Vect(), copy_b[i].Vect(), copy_bbar[i].Vect(), copy_charge[i] );
                 break;
 
-            case StoI( "Obs7" ) :
-                oval = Obs7( copy_b[i].Vect(), copy_bbar[i].Vect() );
+            case StoI( "Obs12" ) :
+                oval = Obs12( copy_b[i].Vect(), copy_bbar[i].Vect() );
                 break;
            
             //https://stackoverflow.com/questions/5685471/error-jump-to-case-label

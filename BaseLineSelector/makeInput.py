@@ -21,8 +21,8 @@ mclst = [
         ( 1, "QCD_HT200to300"),
         ( 1, "QCD_HT300to500"),
         ( 1, "QCD_HT500to700"),
-        ( 1, "QCD_HT50to100"),
         ( 1, "QCD_HT700to1000"),
+        ( 1, "QCD_HT2000toInf_1"),
         ( 1, "ST_s-channel"),
         ( 1, "ST_t-channel_antitop"),
         ( 1, "ST_t-channel_top"),
@@ -139,9 +139,9 @@ def main(args):
     el, mu, mc = [], [], []
     for c in content:
         if all( x in c for x in ["el", "Run"] ):
-            el.append( c )
+            el.append( c.split("_")[1] )
         elif all( x in c for x in ["mu", "Run"] ):
-            mu.append( c )
+            mu.append( c.split("_")[1] )
         else:
             mc.append( c )
 
@@ -151,8 +151,11 @@ def main(args):
     with open('python/PreCut.py', 'w' ) as fp:
         fp.write( context.format( ', '.join( el ), ', '.join( mu ), ', '.join( mc ) ) )
 
+    ###
     content[ "lumimask" ] = "/wk_cms2/sam7k9621/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt"
-    content[ "puweight" ] = "/wk_cms2/sam7k9621/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv"
+    # content[ "puweight" ] = "/wk_cms2/sam7k9621/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv"
+    content[ "mu_HLT" ] = [1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344]
+    content[ "el_HLT" ] = [938, 939, 940, 941, 942, 943, 944]
 
     with open('settings/SampleInfo.json', 'w') as fp:
         json.dump(content, fp, indent=4)

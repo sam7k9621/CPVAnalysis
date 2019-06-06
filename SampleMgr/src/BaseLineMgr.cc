@@ -14,15 +14,12 @@ BaseLineMgr::BaseLineMgr( const string& sample ) :
     HistMgr( sample )
 {
     _calib = NULL;
-    _resolution = NULL;
-    _resol_sf = NULL;
+    _jecUnc = NULL;
 }
 
 BaseLineMgr::~BaseLineMgr()
 {
     delete _jecUnc;
-    delete _resol_sf;
-    delete _resolution;
     delete _calib;
 }
 
@@ -174,20 +171,15 @@ BaseLineMgr::JECUp()
         jetp4 *= ( 1 + unc );
         SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
-
 }
 
 void
 BaseLineMgr::JERCorr()
 {
-    int js = Jsize();
-
-    JME::JetParameters jetparm;
-    for( int i = 0; i < js; i++ ){
+    for( int i = 0; i < Jsize(); i++ ){
         SetIndex( i );
 
-        jetparm.setJetPt( JetPt() ).setJetEta( JetEta() ).setRho( EvtRho() );
-        double ressf = (double)_resol_sf->getScaleFactor( jetparm );
+        double ressf = JERScale();
         double res   = JERPt();
         double scale = 1.;
      
@@ -206,14 +198,10 @@ BaseLineMgr::JERCorr()
 void
 BaseLineMgr::JERCorrDn()
 {
-    int js = Jsize();
-
-    JME::JetParameters jetparm;
-    for( int i = 0; i < js; i++ ){
+    for( int i = 0; i < Jsize(); i++ ){
         SetIndex( i );
 
-        jetparm.setJetPt( JetPt() ).setJetEta( JetEta() ).setRho( EvtRho() );
-        double ressf = (double)_resol_sf->getScaleFactor( jetparm, Variation::DOWN );
+        double ressf = JERScale_dn();
         double res   = JERPt();
         double scale = 1;
         if( IsWellMatched( res ) ){
@@ -232,14 +220,9 @@ BaseLineMgr::JERCorrDn()
 void
 BaseLineMgr::JERCorrUp()
 {
-    int js = Jsize();
-
-    JME::JetParameters jetparm;
-    for( int i = 0; i < js; i++ ){
+    for( int i = 0; i < Jsize(); i++ ){
         SetIndex( i );
-
-        jetparm.setJetPt( JetPt() ).setJetEta( JetEta() ).setRho( EvtRho() );
-        double ressf = (double)_resol_sf->getScaleFactor( jetparm, Variation::UP );
+        double ressf = JERScale_up();
         double res   = JERPt();
         double scale = 1;
         if( IsWellMatched( res ) ){
@@ -289,19 +272,19 @@ BaseLineMgr::IsSelJet()
 bool
 BaseLineMgr::PassBJet()
 {
-    return JetCSV() > 0.8484;
+    return JetCSV() > 0.8838;
 }
 
 bool
 BaseLineMgr::PassCS2BJet()
 {
-    return JetCSV() < 0.8484 && JetCSV() > 0.5426;
+    return JetCSV() < 0.8838 && JetCSV() > 0.5803;
 }
 
 bool 
 BaseLineMgr::RejectBJet()
 {
-    return JetCSV() < 0.5426;
+    return JetCSV() < 0.5803;
 }
 
 /*******************************************************************************
@@ -458,7 +441,7 @@ BaseLineMgr::PassElTightID()
 bool
 BaseLineMgr::PassElTightKinematic()
 {
-    return LepPt() > 35 &&
+    return LepPt() > 38 &&
            LepAbsEta() < 2.1 &&
            !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
     ;

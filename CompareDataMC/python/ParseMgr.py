@@ -60,7 +60,7 @@ class Parsemgr:
         return self.opt.lepton
 
     def Entry( self ):
-        lep  = "e" if self.opt.lepton is "el" else "#mu"
+        lep  = "e" if self.opt.lepton == "el" else "#mu"
         try :
             bjet = "2"
             if opt.region:

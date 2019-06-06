@@ -27,17 +27,18 @@ MakePlotCompare()
         "HBJetPt",
         "HBJetEta",
         "LepPt",
-        "LepEta"
+        "LepEta",
+        "Rho"
     };
 
 
     /*******************************************************************************
     *  Stack Plot
     *******************************************************************************/
-    //for( const auto& title : histlst ){
-        //PlotCompare( ExtractMC( title ), ExtractData( title ), title, entry );
-    //}
-    //GetYield( ExtractMC( "lep_tmass" ), ExtractData( "lep_tmass" ) );
+    for( const auto& title : histlst ){
+        PlotCompare( ExtractMC( title ), ExtractData( title ), title, entry );
+    }
+    GetYield( ExtractMC( "lep_tmass" ), ExtractData( "lep_tmass" ) );
     
     /*******************************************************************************
     *  CR Sample Check
@@ -53,15 +54,15 @@ MakePlotCompare()
         //ExtractMC( "chi2_Mistag" )
         //);
 
-    //Plot2D( ExtractMC2D( "chi2_tmass" ) );
-    /*PlotOpt( ExtractMC( "Cor_leptmass" ), ExtractMC( "Misid_leptmass" ), ExtractMC( "Mistag_leptmass" ) );*/
+    /*Plot2D( ExtractMC2D( "chi2_tmass" ) );*/
+    //PlotOpt( ExtractMC( "Cor_leptmass" ), ExtractMC( "Misid_leptmass" ), ExtractMC( "Mistag_leptmass" ) );
     
     /*******************************************************************************
     * Observerable Dist.
     *******************************************************************************/
-    vector<string> mclst = { "Obs2", "Obs3", "Obs4", "Obs7" };
+    //vector<string> mclst = { "Obs2", "Obs3", "Obs4", "Obs7" };
     //vector<string> remclst = { "GenObs2", "GenObs3", "GenObs4", "GenObs7" };
 
-    GetAcp( mclst );
+    //GetAcp( mclst );
     //GetSubtractAcp( mclst );
 }

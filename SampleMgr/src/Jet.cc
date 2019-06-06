@@ -26,6 +26,18 @@ namespace mgr{
     }
 
     float
+    SampleMgr::JERScale_up()
+    {
+        return _jet.JERScaleUp[ _idx ];
+    }
+
+    float
+    SampleMgr::JERScale_dn()
+    {
+        return _jet.JERScaleDown[_idx ];
+    }
+
+    float
     SampleMgr::JetPt()
     {
         return _jet.Pt[ _idx ];

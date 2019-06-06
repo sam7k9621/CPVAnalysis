@@ -39,53 +39,54 @@ def main(args):
     
     for mc in DC.mclst :
 
-        # mc = [ "sample", cross_section, gen_num ]
+        # mc = [ "tag", "sample", cross_section ]
         content[ mc[0] ] = {
-                "elpath" : [ DC.sample_path + opt.prefix + "_el_" + mc[0] + ".root"] ,
-                "mupath" : [ DC.sample_path + opt.prefix + "_mu_" + mc[0] + ".root"] ,
-                "elpath_CR" : [ DC.sample_path + opt.prefix + "_el_" + mc[0] + "_" + opt.cut + ".root"] ,
-                "mupath_CR" : [ DC.sample_path + opt.prefix + "_mu_" + mc[0] + "_" + opt.cut + ".root"] ,
-                "cross_section" : mc[1],
-                "gen_num" : gennumlst[ mc[0] ]
+                "elpath_CR" : [ DC.sample_path + opt.prefix + "_el_" + mc[1] + "_[0-9]_region_0bjet.root"] ,
+                "mupath_CR" : [ DC.sample_path + opt.prefix + "_mu_" + mc[1] + "_[0-9]_region_0bjet.root"] ,
+                "elpath" : [ DC.sample_path + opt.prefix + "_el_" + mc[1] + "_[0-9].root"] ,
+                "mupath" : [ DC.sample_path + opt.prefix + "_mu_" + mc[1] + "_[0-9].root"] ,
+                "cross_section" : mc[2],
+                "gen_num" : gennumlst[ mc[1] ]
                 }
+    
     content["Data"] = {
-            "elpath" : [ DC.sample_path + opt.prefix + "_el_Data" + ".root"] ,
-            "mupath" : [ DC.sample_path + opt.prefix + "_mu_Data" + ".root"] ,
-            "elpath_CR" : [ DC.sample_path + opt.prefix + "_el_" + mc[0] + "_" + opt.cut + ".root"] ,
-            "mupath_CR" : [ DC.sample_path + opt.prefix + "_mu_" + mc[0] + "_" + opt.cut + ".root"] 
+            "elpath_CR"    : [ DC.sample_path + opt.prefix + "_el_Run2017[A-Z]_[0-9]_region_0bjet.root"] ,
+            "mupath_CR"    : [ DC.sample_path + opt.prefix + "_mu_Run2017[A-Z]_[0-9]_region_0bjet.root"] ,
+            "elpath"    : [ DC.sample_path + opt.prefix + "_el_Run2017[A-Z]_[0-9].root"] ,
+            "mupath"    : [ DC.sample_path + opt.prefix + "_mu_Run2017[A-Z]_[0-9].root"] 
             }
 
-    info_path = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/data/"
+    info_path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/CompareDataMC/data/"
     #Event weight info
-    content["ellumi"] = 35700
-    content["mulumi"] = 35900
+    content["ellumi"] = 41540
+    content["mulumi"] = 41540
 
     #Scale factor weight info
-    content["BtagWeight"] = info_path + "CSVv2_Moriond17_B_H.csv"
+    content["BtagWeight"] = info_path + "CSVv2_94XSF_V2_B_F.csv"
 
-    content["elTrg"] = {
-            "file" : info_path + "elTrgSF.root",
-            "title": "scale_ele32"
-            }
+    # content["elTrg"] = {
+            # "file" : info_path + "elTrgSF.root",
+            # "title": "scale_ele32"
+            # }
     content["elID"] = {
-            "file" : info_path + "elTightIDSF.root",
+            "file" : info_path + "2017_ElectronTight.root",
             "title": "EGamma_SF2D"
             }
     content["elRECO"] = {
-            "file" : info_path + "elRECOSF.root",
+            "file" : info_path + "egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root",
             "title": "EGamma_SF2D"
             }
     content["muTrg"] = {
-            "file" : info_path + "muTrgSF.root",
-            "title": "abseta_pt_ratio"
+            "file" : info_path + "EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",
+            "title": "IsoMu27_PtEtaBins"
             }
     content["muID"] = {
-            "file" : info_path + "muIDSF.root",
-            "title": "abseta_pt_ratio"
+            "file" : info_path + "RunBCDEF_SF_ID.root",
+            "title": "NUM_TightID_DEN_genTracks_pt_abseta"
             }
     content["muRECO"] = {
-            "file" : info_path + "muISOSF.root",
-            "title": "abseta_pt_ratio"
+            "file" : info_path + "RunBCDEF_SF_ISO.root",
+            "title": "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta"
             }
 
     with open('settings/WeightInfo.json', 'w') as fp:

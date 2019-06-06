@@ -8,45 +8,43 @@ from decimal import Decimal
 def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "Opt").AddInput("r", "region")
+    opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "Opt").AddInput("r", "region").AddFlag("p","pileup")
     opt.Parsing("Stack") 
 
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
-    objlst=[ "had_tmass", "lep_tmass", "chi2", "LJetPt", "LJetEta", "LepPt", "LepEta" ]
+    objlst=[ "Obs3", "Obs6", "Obs12", "Obs13", "had_tmass", "lep_tmass", "chi2", "LJetPt", "LJetEta", "LepPt", "LepEta", "nVtx", "Rho" ]
     for sample in input.samplelst:
         histmgr.SetObjlst( opt.GetFileName( sample ), objlst )
 
     # Loop objlst
     for obj in objlst:
 
-        c = pltmgr.NewCanvas()
+        c = pltmgr.NewCanvas( obj )
         leg = pltmgr.NewLegend( 0.7, 0.51, 0.83, 0.81)
         bg = ROOT.THStack()
-       
         # Initiailze hist
         data = histmgr.GetObj( "Data" )
         histlst = []
         for i, mc in enumerate( info.mclst ):
-            hist = histmgr.GetMergedObj( mc )
-            hist.SetLineColor( pltmgr.colorlst[i] )
-            hist.SetFillColor( pltmgr.colorlst[i] )
-    
-            bg.Add( hist )
-            leg.AddEntry( hist, mc, "F" )
-            histlst.append( hist )
+            histlst.append( histmgr.GetMergedObj( mc ) )
+            histlst[i].SetLineColor( pltmgr.colorlst[i] )
+            histlst[i].SetFillColor( pltmgr.colorlst[i] )
+            bg.Add( histlst[i] )
+            leg.AddEntry( histlst[i], mc, "F" )
         leg.AddEntry( data, "Data", "le" )
-    
+ 
         bg_sum = pltmgr.SumHist( histlst )
-    
         top = pltmgr.NewTopPad()
         top.Draw()
         top.cd()
-    
+  
         bg.Draw("HIST")
+        bg_sum.Draw("EP same")
         data.Draw( "EP same" )
         leg.Draw()
     
+        bg.GetYaxis().SetTitle( "Events x 10^{3}" ) 
         pltmgr.SetTopPlotAxis( bg )
         bg.SetMaximum( pltmgr.GetHistYmax( data ) * 1.5 );
         data.SetLineColor( 1 )
@@ -86,7 +84,7 @@ def main() :
         c.cd()
     
         pltmgr.DrawCMSLabel( pltmgr.PRELIMINARY )
-        pltmgr.DrawLuminosity( opt.Lumi() )
+        pltmgr.DrawLuminosity( 41540 )
         pltmgr.DrawEntryLeft( opt.Entry() )
         c.SaveAs( opt.GetResultName( obj ) )
 

@@ -122,6 +122,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         float GetPUWeightUp(){ return _puweight_up; }
         float GetPUWeightDn(){ return _puweight_dn; }
         int   nVtx()       { return Vsize(); }
+        float Rho()        { return EvtRho(); }
 
         // B-tagging weight
         void   InitBtagWeight( const std::string&, const std::string& );
@@ -146,9 +147,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         float _puweight_up;
         float _puweight_dn;
         BTagCalibration* _calib;
-        JME::JetResolution* _resolution;
-        JME::JetResolutionScaleFactor* _resol_sf;
-        JetCorrectionUncertainty *_jecUnc;
+        JetCorrectionUncertainty* _jecUnc;
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
 };
 

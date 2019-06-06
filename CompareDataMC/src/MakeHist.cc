@@ -72,7 +72,7 @@ MakeHist()
 
     TH2D* LepID   = GetLepSF( "ID" ); 
     TH2D* LepRECO = GetLepSF( "RECO" ); 
-    TH2D* LepHLT  = GetLepSF( "Trg" ); 
+    //TH2D* LepHLT  = GetLepSF( "Trg" ); 
 
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
@@ -108,35 +108,36 @@ MakeHist()
             string tag = CompMgr().CheckOption( "uncertainty" ) ? CompMgr().GetOption<string>( "uncertainty" ) : "";
            
             // pile-up reweighting
-            if( tag.find( "pileup" ) != string::npos ){
-                if( tag.find( "pileup_up" ) != string::npos ){
-                    weight *= CompMgr().GetPUWeightUp();
+            if( CompMgr().CheckOption( "pileup" ) ){
+                if( tag.find( "pileup" ) != string::npos ){
+                    if( tag.find( "pileup_up" ) != string::npos ){
+                        weight *= CompMgr().GetPUWeightUp();
+                    }
+                    else if( tag.find( "pileup_dn" ) != string::npos ){
+                        weight *= CompMgr().GetPUWeightDn();
+                    }
                 }
-                else if( tag.find( "pileup_dn" ) != string::npos ){
-                    weight *= CompMgr().GetPUWeightDn();
+                else{    
+                    weight *= CompMgr().GetPUWeight();
                 }
-            }
-            else{    
-                weight *= CompMgr().GetPUWeight();
-            }
-            
-            // lepton ID, RECO and ISO re-weighting
+            }           
+            //lepton ID, RECO and ISO re-weighting
             if( tag.find( "lepton" ) != string::npos ){
                 if( tag.find( "up" ) != string::npos ){
                     weight *= CompMgr().GetSFUp( LepID, lep );
                     weight *= CompMgr().GetSFUp( LepRECO, lep );
-                    weight *= CompMgr().GetSFUp( LepHLT, lep );
+                    //weight *= CompMgr().GetSFUp( LepHLT, lep );
                 }
                 else if( tag.find( "dn" ) != string::npos ){
                     weight *= CompMgr().GetSFDn( LepID, lep );
                     weight *= CompMgr().GetSFDn( LepRECO, lep );
-                    weight *= CompMgr().GetSFDn( LepHLT, lep );
+                    //weight *= CompMgr().GetSFDn( LepHLT, lep );
                 }
             }
             else{
                 weight *= CompMgr().GetSF( LepID, lep );
                 weight *= CompMgr().GetSF( LepRECO, lep );    
-                weight *= CompMgr().GetSF( LepHLT, lep );    
+                //weight *= CompMgr().GetSF( LepHLT, lep );    
             }
             
             // b-tagging re-weighting
@@ -149,7 +150,7 @@ MakeHist()
                 }
             } 
             else{
-                // avoid CR sample
+                //avoid CR sample
                 if( !CompMgr().CheckOption( "region" ) ){
                     weight *= CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, had_b ) * CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, lep_b );
                 }
@@ -158,24 +159,50 @@ MakeHist()
                 }
             }
             
-            if( sample == "TTbar" && tag.find( "TopPt_dn" ) == string::npos ){
+            if( sample == "ttbar" && tag.find( "TopPt_dn" ) == string::npos ){
                 weight *= CompMgr().TopPtWeight();
             }
-
+            
+            // gen-level re-weighting
+            weight *=  CompMgr().GenWeight() < 0 ? -1 : 1;
         }
         
-        // gen-level re-weighting
-        weight *=  CompMgr().GenWeight() < 0 ? -1 : 1;
-        
+        /*******************************************************************************
+        *  bbSeparation / Optimisation
+        *******************************************************************************/
+        if( !is_data && CompMgr().CheckOption( "bbSep" ) ){
+            BaseLineMgr::MatchType flag = CompMgr().bbSeparation( had_b, lep_b, lep );
+
+            if( flag == BaseLineMgr::Correct ){
+                CompMgr().Hist( "tmass_Correct" )->Fill( had_tmass, weight );
+                CompMgr().Hist( "chi2_Correct" ) ->Fill( chi2mass , weight);
+                CompMgr().Hist( "Cor_leptmass" ) ->Fill( lep_tmass, weight );
+            }
+            else if( flag == BaseLineMgr::Misid ){
+                CompMgr().Hist( "tmass_Misid" ) ->Fill( had_tmass, weight );
+                CompMgr().Hist( "chi2_Misid" )  ->Fill( chi2mass , weight );
+                CompMgr().Hist( "Misid_leptmass" )->Fill( lep_tmass, weight );
+            }
+            else if( flag == BaseLineMgr::Mistag ){
+                CompMgr().Hist( "tmass_Mistag" )->Fill( had_tmass, weight );
+                CompMgr().Hist( "chi2_Mistag" ) ->Fill( chi2mass , weight);
+                CompMgr().Hist( "Mistag_leptmass" )->Fill( lep_tmass, weight );
+            }
+            else{
+                continue;
+            }
+
+            CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass, weight );
+        } 
         /*******************************************************************************
         *  Event filling
         *******************************************************************************/
-        float nVtx = CompMgr().nVtx();
-
         CompMgr().Hist( "had_tmass" )->Fill( had_tmass, weight );
         CompMgr().Hist( "lep_tmass" )->Fill( lep_tmass, weight );
         CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
-        CompMgr().Hist( "nVtx" )->Fill( nVtx, weight );
+        CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
+        CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
+
 
         CompMgr().Hist( "LJetPt"    )->Fill( CompMgr().LeadingJetPt ( jet1 ),  weight );
         CompMgr().Hist( "LJetEta"   )->Fill( CompMgr().LeadingJetEta( jet2 ), weight );
@@ -199,6 +226,22 @@ MakeHist()
         TLorentzVector b       = charge < 0 ? CompMgr().GetJetP4( had_b ) : CompMgr().GetJetP4( lep_b );
         TLorentzVector bbar    = charge < 0 ? CompMgr().GetJetP4( lep_b ) : CompMgr().GetJetP4( had_b );
 
+        double o6  = Obs6 ( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+        double o12 = Obs12( b.Vect(), bbar.Vect() );
+        double o13 = Obs13 ( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+
+        TVector3 bbCM = -( b + bbar ).BoostVector();
+        b.Boost( bbCM );
+        bbar.Boost( bbCM );
+        isolep.Boost( bbCM );
+        hardjet.Boost( bbCM );
+            
+        double o3 = Obs3( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+
+        CompMgr().Hist( "Obs3" ) ->Fill( o3 / 1000000., weight );
+        CompMgr().Hist( "Obs6" ) ->Fill( o6 / 1000000., weight );
+        CompMgr().Hist( "Obs12" )->Fill( o12 / 1000000., weight );
+        CompMgr().Hist( "Obs13" )->Fill( o13 / 1000000., weight );
         // Fill in list
         reco_b   [ i ]    = b;
         reco_bbar[ i ]    = bbar;
@@ -207,10 +250,11 @@ MakeHist()
         reco_charge [ i ] = charge;
     }
 
-    FillObserable( "Obs2", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    FillObserable( "Obs3", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    FillObserable( "Obs4", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    FillObserable( "Obs7", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+
+    //FillObservable( "Obs13", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    //FillObservable( "Obs6",  vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    //FillObservable( "Obs12", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
+    //FillObservable( "Obs3",  vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
     
     if( !is_data ){
         CompMgr().WeightMC( sample );

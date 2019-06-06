@@ -76,9 +76,8 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
     c->cd();
 
     string lepton = PlotMgr().GetOption<string>("lepton");
-    int lumi = lepton == "el" ? 35700 : 35900;
     mgr::DrawCMSLabel( PRELIMINARY );
-    mgr::DrawLuminosity( lumi );
+    mgr::DrawLuminosity( 41500 );
     mgr::LatexMgr latex;
     latex.SetOrigin( PLOT_X_MIN, PLOT_Y_MAX + TEXT_MARGIN / 2, BOTTOM_LEFT)
     .WriteLine( entry );
@@ -88,7 +87,8 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
 
     top->SetLogy( kFALSE );
     SetYTitle( bg->GetHistogram() );
-    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_" + title ) );
+    string region = PlotMgr().GetOption<string>("data") + "_" + PlotMgr().GetOption<string>("mc") + "_"; 
+    mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_" + region + title ) );
     
     delete leg;
     delete top;
@@ -327,8 +327,7 @@ TestBGLike( vector<TH1D*> mclst, TH1D* data, TH1D* data2 )
 
     mgr::DrawCMSLabelOuter( PRELIMINARY );
     string lepton = PlotMgr().GetOption<string>("lepton");
-    int lumi = lepton == "el" ? 35700 : 35900;
-    mgr::DrawLuminosity( lumi );
+    mgr::DrawLuminosity( 41500 );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "CompareCS" ) );
     
 }
@@ -435,10 +434,10 @@ GetAcp( const vector<string>& mclst )
     lepton =  lepton == "co" ? "el+#mu" : lepton;
    
     vector<string> obsentry = {
-        str( boost::format("#bf{O_{2}^{%1%}}") % lepton ),
         str( boost::format("#bf{O_{3}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{4}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{7}^{%1%}}") % lepton )
+        str( boost::format("#bf{O_{6}^{%1%}}") % lepton ),
+        str( boost::format("#bf{O_{12}^{%1%}}") % lepton ),
+        str( boost::format("#bf{O_{13}^{%1%}}") % lepton )
     };
     
     for( int i = 0; i < 4; i++ ){
@@ -495,10 +494,9 @@ GetAcp( const vector<string>& mclst )
     
     mgr::SetSinglePad( c );
     mgr::SetAxis( hist );
-    int lumi = lepton == "el" ? 35700 : 35900;
     //mgr::DrawCMSLabel( PRELIMINARY );
     mgr::DrawCMSLabel( SIMULATION );
-    mgr::DrawLuminosity( lumi );
+    mgr::DrawLuminosity( 41500 );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_Acp" ) );
 }
 

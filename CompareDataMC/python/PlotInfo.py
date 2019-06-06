@@ -1,7 +1,8 @@
 mclst = [
-    "DYJet",
+    # "QCD",
+    "DYJets",
     "SingleTop",
     "VV",
     "WJets",
-    "TTbar"
+    "ttbar"
     ]

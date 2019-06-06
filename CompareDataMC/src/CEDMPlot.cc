@@ -55,8 +55,8 @@ extern void
 CEDMPlot()
 {
     Double_t x[100];
-    Double_t y_2[100],  y_3[100],  y_4[100],  y_7[100];
-    Double_t ey_2[100], ey_3[100], ey_4[100], ey_7[100];
+    Double_t y_3[100],  y_6[100],  y_12[100],  y_13[100];
+    Double_t ey_3[100], ey_6[100], ey_12[100], ey_13[100];
 
     vector<string> dirlst  = CompMgr().GetOption< vector<string> >("input");
     for( int idx=0; idx<(int)dirlst.size(); idx++ ){
@@ -83,15 +83,15 @@ CEDMPlot()
         ch->SetBranchAddress( "pz", pz );
         ch->SetBranchAddress( "energy", energy );
 
-        double NO2p = 0.;
         double NO3p = 0.;
-        double NO4p = 0.;
-        double NO7p = 0.;
+        double NO6p = 0.;
+        double NO12p = 0.;
+        double NO13p = 0.;
 
-        double NO2n = 0.;
         double NO3n = 0.;
-        double NO4n = 0.;
-        double NO7n = 0.;
+        double NO6n = 0.;
+        double NO12n = 0.;
+        double NO13n = 0.;
 
         Particle part = { px, py, pz, energy};
         // Looping events
@@ -156,9 +156,9 @@ CEDMPlot()
             }
 
             // In Lab frame
-            double o2 = Obs2( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect() );
-            double o4 = Obs4( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
-            double o7 = Obs7( b.Vect(), bbar.Vect() );
+            double o13 = Obs13( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+            double o6  = Obs6 ( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+            double o12 = Obs12( b.Vect(), bbar.Vect() );
 
             // In bbar CM frame
             TVector3 bbCM = -( b + bbar ).BoostVector();
@@ -169,10 +169,10 @@ CEDMPlot()
         
             double o3 = Obs3( lepton.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
            
-            o2 > 0 ? NO2p++ : NO2n++ ;
-            o3 > 0 ? NO3p++ : NO3n++ ;
-            o4 > 0 ? NO4p++ : NO4n++ ;
-            o7 > 0 ? NO7p++ : NO7n++ ;
+            o3 > 0 ?  NO3p++  : NO3n++ ;
+            o6 > 0 ?  NO6p++  : NO6n++ ;
+            o12 > 0 ? NO12p++ : NO12n++ ;
+            o13 > 0 ? NO13p++ : NO13n++ ;
 
             if( ( NO3p + NO3n ) == 1000000 )
                 break;
@@ -182,15 +182,15 @@ CEDMPlot()
        
         x[idx]    = idx;
         
-        y_2[idx]  = (x_dtg / 19.86648916) / (NO2p + NO2n) * (NO2p - NO2n); 
-        y_3[idx]  = (x_dtg / 19.86648916) / (NO3p + NO3n) * (NO3p - NO3n); 
-        y_4[idx]  = (x_dtg / 19.86648916) / (NO4p + NO4n) * (NO4p - NO4n); 
-        y_7[idx]  = (x_dtg / 19.86648916) / (NO7p + NO7n) * (NO7p - NO7n); 
+        y_3[idx]  = (x_dtg / 19.86648916) / (NO3p  + NO3n)  * (NO3p - NO3n); 
+        y_6[idx]  = (x_dtg / 19.86648916) / (NO6p  + NO6n)  * (NO6p - NO6n); 
+        y_12[idx] = (x_dtg / 19.86648916) / (NO12p + NO12n) * (NO12p - NO12n); 
+        y_13[idx] = (x_dtg / 19.86648916) / (NO13p + NO13n) * (NO13p - NO13n); 
         
-        ey_2[idx] = (x_dtg / 19.86648916) / (NO2p + NO2n) * ErrorEstimate( NO2p, NO2n );
-        ey_3[idx] = (x_dtg / 19.86648916) / (NO3p + NO3n) * ErrorEstimate( NO3p, NO3n );
-        ey_4[idx] = (x_dtg / 19.86648916) / (NO4p + NO4n) * ErrorEstimate( NO4p, NO4n );
-        ey_7[idx] = (x_dtg / 19.86648916) / (NO7p + NO7n) * ErrorEstimate( NO7p, NO7n );
+        ey_3[idx]  = (x_dtg / 19.86648916) / (NO3p  + NO3n)  * ErrorEstimate( NO3p, NO3n );
+        ey_6[idx]  = (x_dtg / 19.86648916) / (NO6p  + NO6n)  * ErrorEstimate( NO6p, NO6n );
+        ey_12[idx] = (x_dtg / 19.86648916) / (NO12p + NO12n) * ErrorEstimate( NO12p, NO12n );
+        ey_13[idx] = (x_dtg / 19.86648916) / (NO13p + NO13n) * ErrorEstimate( NO13p, NO13n );
 
         delete ch;
    }
@@ -199,25 +199,25 @@ CEDMPlot()
         x[i] /= 2.0;
     }
 
-    TGraphErrors* gr_2 = new TGraphErrors( dirlst.size(), x, y_2, 0, ey_2 );
-    TGraphErrors* gr_3 = new TGraphErrors( dirlst.size(), x, y_3, 0, ey_3 );
-    TGraphErrors* gr_4 = new TGraphErrors( dirlst.size(), x, y_4, 0, ey_4 );
-    TGraphErrors* gr_7 = new TGraphErrors( dirlst.size(), x, y_7, 0, ey_7 );
+    TGraphErrors* gr_3  = new TGraphErrors( dirlst.size(), x, y_3,  0, ey_3 );
+    TGraphErrors* gr_6  = new TGraphErrors( dirlst.size(), x, y_6,  0, ey_6 );
+    TGraphErrors* gr_12 = new TGraphErrors( dirlst.size(), x, y_12, 0, ey_12 );
+    TGraphErrors* gr_13 = new TGraphErrors( dirlst.size(), x, y_13, 0, ey_13 );
     
     TCanvas* c = mgr::NewCanvas();
-    TF1* f2 = new TF1("f2","0.0*x", 0, 5);
-    gr_2->Draw("AEP");
-    f2->Draw("same");
+    TF1* f13 = new TF1("f13","0.0*x", 0, 5);
+    gr_13->Draw("AEP");
+    f13->Draw("same");
 
-    f2->SetLineColor( kGreen - 7 );
-    f2->SetLineStyle( 7 );
-    gr_2->SetMarkerStyle( 20 );
-    gr_2->SetTitle("Obs_{13}");
-    gr_2->GetXaxis()->SetTitle("d_{tG}");
-    gr_2->GetYaxis()->SetTitle("A_{CP}");
+    f13->SetLineColor( kGreen - 7 );
+    f13->SetLineStyle( 7 );
+    gr_13->SetMarkerStyle( 20 );
+    gr_13->SetTitle("Obs_{13}");
+    gr_13->GetXaxis()->SetTitle("d_{tG}");
+    gr_13->GetYaxis()->SetTitle("A_{CP}");
     
     mgr::SetSinglePad( c );
-    mgr::SetAxis( gr_2 );
+    mgr::SetAxis( gr_13 );
     TGaxis::SetMaxDigits( 5 );
     mgr::SaveToPDF( c, CompMgr().GetResultsName( "pdf", "CEDM_Obs13" ) );
     
@@ -237,43 +237,43 @@ CEDMPlot()
     TGaxis::SetMaxDigits( 5 );
     mgr::SaveToPDF( c, CompMgr().GetResultsName( "pdf", "CEDM_Obs3" ) );
 
-    TF1* f4 = new TF1("f4", "0.0095*x", 0, 5);
-    gr_4->Draw("AEP");
-    f4->Draw("same");
+    TF1* f6 = new TF1("f6", "0.0095*x", 0, 5);
+    gr_6->Draw("AEP");
+    f6->Draw("same");
 
-    f4->SetLineColor( kGreen - 7 );
-    f4->SetLineStyle( 7 );
-    gr_4->SetMarkerStyle( 20 );
-    gr_4->SetTitle("Obs_{6}");
-    gr_4->GetXaxis()->SetTitle("d_{tG}");
-    gr_4->GetYaxis()->SetTitle("A_{CP}");
+    f6->SetLineColor( kGreen - 7 );
+    f6->SetLineStyle( 7 );
+    gr_6->SetMarkerStyle( 20 );
+    gr_6->SetTitle("Obs_{6}");
+    gr_6->GetXaxis()->SetTitle("d_{tG}");
+    gr_6->GetYaxis()->SetTitle("A_{CP}");
     
     mgr::SetSinglePad( c );
-    mgr::SetAxis( gr_4 );
+    mgr::SetAxis( gr_6 );
     TGaxis::SetMaxDigits( 5 );
 
     mgr::SaveToPDF( c, CompMgr().GetResultsName( "pdf", "CEDM_Obs6" ) );
 
-    TF1* f7 = new TF1("f7","0.0018*x", 0, 5);
-    gr_7->Draw("AEP");
-    f7->Draw("same");
+    TF1* f12 = new TF1("f12","0.0018*x", 0, 5);
+    gr_12->Draw("AEP");
+    f12->Draw("same");
 
-    f7->SetLineColor( kGreen - 7 );
-    f7->SetLineStyle( 7 );
-    gr_7->SetMarkerStyle( 20 );
-    gr_7->SetTitle("Obs_{12}");
-    gr_7->GetXaxis()->SetTitle("d_{tG}");
-    gr_7->GetYaxis()->SetTitle("A_{CP}");
+    f12->SetLineColor( kGreen - 7 );
+    f12->SetLineStyle( 7 );
+    gr_12->SetMarkerStyle( 20 );
+    gr_12->SetTitle("Obs_{12}");
+    gr_12->GetXaxis()->SetTitle("d_{tG}");
+    gr_12->GetYaxis()->SetTitle("A_{CP}");
     
     mgr::SetSinglePad( c );
-    mgr::SetAxis( gr_7 );
+    mgr::SetAxis( gr_12 );
     TGaxis::SetMaxDigits( 5 );
     mgr::SaveToPDF( c, CompMgr().GetResultsName( "pdf", "CEDM_Obs12" ) );
     
-    delete gr_2;
     delete gr_3;
-    delete gr_4;
-    delete gr_7;
+    delete gr_6;
+    delete gr_12;
+    delete gr_13;
     delete c;
 
 }

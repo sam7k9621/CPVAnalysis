@@ -12,17 +12,15 @@ FullMgr( const string& subdir, const string& json )
 extern string
 MakeFileName(bool is_data)
 {
-    string pos = FullMgr().ResultsDir();
+    string pos = "/eos/cms/store/user/pusheng/2017/";
     string filename = "";
 
-    if( is_data ){
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("lepton") + "_run*.root" );
-        // /wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/PreCut_mu_run*.root
-    }
-    else{
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("sample") + "_[0-9]+.root" );
-        // /wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/results/PreCut_TTbar_[0-9]+.root
-    }
+    if( is_data )
+        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("lepton") + "_" +FullMgr().GetOption<string>("sample") + ".root" );
+        // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
+    else 
+        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("sample") + ".root" );
+        // /eos/cms/store/user/pusheng/files/PreCut_TTbar_7.root
 
     return filename;
 }
@@ -32,10 +30,12 @@ MakeFullCut()
 {
     // Build new file
     TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
-    
-    bool is_data = FullMgr().GetOption<string>("sample") == "Data" ? true : false;
+   
+    std::size_t found = FullMgr().GetOption<string>("sample").find( "Run" );
+    bool is_data = found!=std::string::npos ? true : false;
     string filename = MakeFileName( is_data );
-
+    cout<<">> Processing "<<filename<<endl;
+    
     TChain* ch = new TChain( "root" );
     ch->Add( ( filename ).c_str() );
     FullMgr().AddSample( ch );
@@ -44,11 +44,8 @@ MakeFullCut()
     
     // Initialize data
     string lepton = FullMgr().GetOption<string>("lepton");
-    vector<int> hlt = is_data ? FullMgr().GetListData<int>( lepton + "_data_HLT" ) : FullMgr().GetListData<int>( lepton + "_mc_HLT" );
+    vector<int> hlt = FullMgr().GetListData<int>( lepton + "_HLT" );
     
-    //Reading JES txt file
-    FullMgr().InitJES();
-
     // Register new branch
     Int_t had_b;
     Int_t lep_b;
@@ -89,18 +86,6 @@ MakeFullCut()
             }
             else{
                 FullMgr().JERCorr();
-            }
-        }
-        
-        // JECCorr
-        if( !is_data ){
-            if( FullMgr().GetOption<string>( "uncertainty" ) == "JEC_up" ){
-                FullMgr().JECCorrUp();
-            }
-            else if( FullMgr().GetOption<string>( "uncertainty" ) == "JEC_dn" ){
-                FullMgr().JECCorrDn();
-            }
-            else{
             }
         }
 

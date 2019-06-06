@@ -4,7 +4,7 @@ import os
 import sys
 import json
 import argparse
-
+import CPVAnalysis.CompareDataMC.MakeHist as MakeHist
 def main(args):
 
     parser = argparse.ArgumentParser(
@@ -55,6 +55,11 @@ def main(args):
             help='randomly choose events',
             action='store_true'
             )
+    parser.add_argument(
+            '-p', '--pileup',
+            help='randomly choose events',
+            action='store_true'
+            )
     try:
         opt = parser.parse_args(args[1:])
     except:
@@ -62,15 +67,15 @@ def main(args):
         parser.print_help()
         raise
 
-    sample_path = "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/"
-    samplelst       = [ "Data", "QCD", "DYJet", "SingleTop", "VV", "WJetsToLNu_HT", "TTbar" ] #sr all
+    sample_path = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/results/"
+    samplelst       = [ "Data", "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ] #sr all
     cmd         = "hadd -f "
 
     for s in samplelst :
         output = sample_path + "HistMerge_" + opt.lepton + "_" + s
 
         lep = opt.lepton if opt.lepton != "co" else "*"
-        input  = sample_path + "Hist_" + lep + "_" + s + "*"
+        input  = sample_path + "Hist_" + lep + "_{}"
 
         if opt.chi2 :
             input  += "_chi2_" + opt.chi2
@@ -91,7 +96,11 @@ def main(args):
         if opt.mixed :
             input  += "_mixed"
             output += "_mixed"
+        
+        if opt.pileup :
+            output += "_pileup"
 
+        
         if not opt.region :
            output += "_" + "SR"
 
@@ -103,10 +112,15 @@ def main(args):
             input  += "_region_" + opt.region
             output += "_" + "CS2"
         
+        if opt.pileup :
+            input += "_pileup"
+
+
         input  += ".root"
         output += ".root "
 
-        os.system( cmd + output + input )
+        inputlst = [ input.format( x ) for x in MakeHist.samplelst if s in x ]
+        os.system( cmd + output + " ".join( inputlst ) )
 
 
 if __name__ == '__main__':

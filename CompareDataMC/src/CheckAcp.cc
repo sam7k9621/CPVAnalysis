@@ -47,9 +47,9 @@ CheckAcp()
             TLorentzVector mchardjet = CompMgr().GetGenP4( genjetidx );
 
             // In Lab frame
-            double mco2 = Obs2( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect() );
-            double mco4 = Obs4( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
-            double mco7 = Obs7( mcbjet.Vect(), mcbbarjet.Vect() );
+            double mco13 = Obs13( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco6  = Obs6 ( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco12 = Obs12( mcbjet.Vect(), mcbbarjet.Vect() );
 
             // In bbar CM frame
             TVector3 mcbbCM = -( mcbjet + mcbbarjet ).BoostVector();
@@ -60,10 +60,10 @@ CheckAcp()
             
             double mco3 = Obs3( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
 
-            CompMgr().Hist( "GenObs2" )->Fill( mco2 / 1000000. );
-            CompMgr().Hist( "GenObs3" )->Fill( mco3 / 1000000. );
-            CompMgr().Hist( "GenObs4" )->Fill( mco4 / 1000000. );
-            CompMgr().Hist( "GenObs7" )->Fill( mco7 / 1000000. );
+            CompMgr().Hist( "GenObs12" )->Fill( mco12 / 1000000. );
+            CompMgr().Hist( "GenObs6" ) ->Fill( mco6 / 1000000. );
+            CompMgr().Hist( "GenObs13" )->Fill( mco13 / 1000000. );
+            CompMgr().Hist( "GenObs3" ) ->Fill( mco3 / 1000000. );
     
             //CompMgr().DumpEvtInfo();
         }

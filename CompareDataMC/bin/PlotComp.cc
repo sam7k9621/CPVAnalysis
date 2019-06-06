@@ -17,6 +17,7 @@ main( int argc, char* argv[] )
         ( "Opt,o",  opt::value<double>(), "lep_tmass optimization cut" )
         ( "bbSep,B", "bbseparation method")
         ( "mixed,x", "randomly choose event" )
+        ( "pileup,p", "randomly choose event" )
     ;
     PlotMgr( "CompareDataMC", "PlotInfo.json" ).AddOptions( de );
     const int run = PlotMgr().ParseOptions( argc, argv );
@@ -30,6 +31,6 @@ main( int argc, char* argv[] )
     }
 
     PlotMgr().SetFileName( { "lepton" } );
-    PlotMgr().AddCutName( { "chi2", "bbSep", "uncertainty", "Acp", "SIM", "Opt", "mixed", "region" } );
+    PlotMgr().AddCutName( { "chi2", "bbSep", "uncertainty", "Acp", "SIM", "Opt", "mixed", "region", "pileup" } );
     MakePlotCompare();
 }

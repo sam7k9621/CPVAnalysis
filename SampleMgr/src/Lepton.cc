@@ -23,6 +23,12 @@ namespace mgr{
         return fabs( _lep.Eta[ _idx ] );
     }
 
+    float 
+    SampleMgr::rho()
+    {
+        return _evt.Rho;
+    }
+
     float
     SampleMgr::GetLepCharge( const int& idx )
     {
@@ -110,30 +116,30 @@ namespace mgr{
     *   https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Cut_Based_Electron_ID_for_Run_2
     *   https://github.com/ntuhep/bprimeKit/blob/master/src/LeptonNtuplizer_Electron.cc#L101
     *******************************************************************************/
+    //https://github.com/cms-sw/cmssw/blob/CMSSW_9_4_X/RecoEgamma/ElectronIdentification/python/Identification/cutBasedElectronID_Fall17_94X_V2_cff.py
     bool
     SampleMgr::ElIDLoose()
     {
-        //removing PF isolation cut
         if( LepAbsEta() <= 1.479 ){
             return (
-            ElsigmaIetaIeta() < 0.011 &&
-            fabs( EldEtaInSeed() ) < 0.00477 &&
-            fabs( EldPhiIn() ) < 0.222 &&
-            ElGsfEleHadronicOverEMCut() < 0.298 &&
-            ElPFISO() < 0.0994 &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.241 &&
+            ElsigmaIetaIeta() < 0.0112 &&
+            fabs( EldEtaInSeed() ) < 0.00377 &&
+            fabs( EldPhiIn() ) < 0.0884 &&
+            ElGsfEleHadronicOverEMCut() < 0.05 + 1.16 / EnergySC() + 0.0324 * rho() / EnergySC() &&
+            ElPFISO() < 0.112 + 0.506 / LepPt() &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.193 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
             );
         }
         else{  //absEta > 1.479
             return (
-            ElsigmaIetaIeta() < 0.0314 &&
-            fabs( EldEtaInSeed() ) < 0.00868 &&
-            fabs( EldPhiIn() ) < 0.213 &&
-            ElGsfEleHadronicOverEMCut() < 0.101 &&
-            ElPFISO() < 0.107 &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.14 &&
+            ElsigmaIetaIeta() < 0.0425 &&
+            fabs( EldEtaInSeed() ) < 0.00674 &&
+            fabs( EldPhiIn() ) < 0.169 &&
+            ElGsfEleHadronicOverEMCut() < 0.0441 + 2.54 / EnergySC() + 0.183 * rho() / EnergySC() &&
+            ElPFISO() < 0.108 + 0.963 / LepPt()  &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.111 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
             );
@@ -146,24 +152,24 @@ namespace mgr{
         //removing PF isolation cut
         if( LepAbsEta() <= 1.479 ){
             return (
-            ElsigmaIetaIeta() < 0.00998 &&
-            fabs( EldEtaInSeed() ) < 0.00308 &&
-            fabs( EldPhiIn() ) < 0.0816 &&
-            ElGsfEleHadronicOverEMCut() < 0.0414 &&
-            ElPFISO() < 0.0588 &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0129 &&
+            ElsigmaIetaIeta() < 0.0104 &&
+            fabs( EldEtaInSeed() ) < 0.00255 &&
+            fabs( EldPhiIn() ) < 0.022 &&
+            ElGsfEleHadronicOverEMCut() < 0.026 + 1.15 / EnergySC() + 0.0324 * rho() / EnergySC() &&
+            ElPFISO() < 0.0287 + 0.506 / LepPt() &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.159 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
             );
         }
         else{  //absEta > 1.479
             return (
-            ElsigmaIetaIeta() < 0.0292 &&
-            fabs( EldEtaInSeed() ) < 0.00605 &&
-            fabs( EldPhiIn() ) < 0.0394 &&
-            ElGsfEleHadronicOverEMCut() < 0.0641 &&
-            ElPFISO() < 0.0571 &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0129 &&
+            ElsigmaIetaIeta() < 0.0353 &&
+            fabs( EldEtaInSeed() ) < 0.00501 &&
+            fabs( EldPhiIn() ) < 0.0236 &&
+            ElGsfEleHadronicOverEMCut() < 0.0188 + 2.06 / EnergySC() + 0.183 * rho() / EnergySC() &&
+            ElPFISO() < 0.0445 + 0.963 / LepPt() &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0197 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
             );
@@ -176,22 +182,22 @@ namespace mgr{
         //removing PF isolation cut
         if( LepAbsEta() <= 1.479 ){
             return (
-            ElsigmaIetaIeta() < 0.011 &&
-            fabs( EldEtaInSeed() ) < 0.00477 &&
-            fabs( EldPhiIn() ) < 0.222 &&
-            ElGsfEleHadronicOverEMCut() < 0.298 &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.241 &&
+            ElsigmaIetaIeta() < 0.0112 &&
+            fabs( EldEtaInSeed() ) < 0.00377 &&
+            fabs( EldPhiIn() ) < 0.0884 &&
+            ElGsfEleHadronicOverEMCut() < 0.005 + 1.16 / EnergySC() + 0.0324 * rho() / EnergySC() &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.193 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
             );
         }
         else{  //absEta > 1.479
             return (
-            ElsigmaIetaIeta() < 0.0314 &&
-            fabs( EldEtaInSeed() ) < 0.00868 &&
-            fabs( EldPhiIn() ) < 0.213 &&
-            ElGsfEleHadronicOverEMCut() < 0.101 &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.14 &&
+            ElsigmaIetaIeta() < 0.0425 &&
+            fabs( EldEtaInSeed() ) < 0.00674 &&
+            fabs( EldPhiIn() ) < 0.169 &&
+            ElGsfEleHadronicOverEMCut() < 0.0441 + 2.54 / EnergySC() + 0.183 * rho() / EnergySC() &&
+            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.111 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
             );
@@ -248,6 +254,12 @@ namespace mgr{
         return _lep.NumberOfExpectedInnerHits[ _idx ];
     }
 
+    float 
+    SampleMgr::EnergySC()
+    {
+        return _lep.EnergySC[ _idx ];
+    }
+    
     bool
     SampleMgr::ElhasConv()
     {

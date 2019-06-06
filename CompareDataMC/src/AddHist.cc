@@ -22,6 +22,7 @@ AddHist()
     CompMgr().AddHist( "had_tmass", "M_{jjb} [GeV]", "Events", 50, 0, 500 );
     CompMgr().AddHist( "chi2", "#chi^{2}_{min}", "Events", 40, 0, 200 );
     CompMgr().AddHist( "nVtx", "Number of primary vertex", "Yield", 50, 0, 50 );
+    CompMgr().AddHist( "Rho", "Rho", "Events", 100, 0, 100 );
 
     CompMgr().AddHist( "LJetPt"   , "Leading Jet P_{T}", "Events", 40, 0, 800 );
     CompMgr().AddHist( "LJetEta"  , "Leading Jet Eta",   "Events", 40, -3, 5 );
@@ -49,18 +50,18 @@ AddHist()
     /*******************************************************************************
     *  Observable
     *******************************************************************************/
-    CompMgr().AddHist( "Obs2", "O_{2}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "Obs3", "O_{3}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "Obs4", "O_{4}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "Obs7", "O_{7}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "Obs3",  "O_{3}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "Obs6",  "O_{6}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "Obs12", "O_{12}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "Obs13", "O_{13}", "Events", 200, -10, 10 );
 
     /*******************************************************************************
     *  Intrinsci Acp
     *******************************************************************************/
-    CompMgr().AddHist( "GenObs2", "O_{2}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "GenObs3", "O_{3}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "GenObs4", "O_{4}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "GenObs7", "O_{7}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "GenObs3",  "O_{3}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "GenObs6",  "O_{6}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "GenObs12", "O_{12}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "GenObs13", "O_{13}", "Events", 200, -10, 10 );
 
     /*******************************************************************************
     * bbSeparation
@@ -106,6 +107,7 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "had_tmass" ),       filename, "had_tmass" );
     mgr::SaveToROOT( CompMgr().Hist( "chi2" ),            filename, "chi2" );
     mgr::SaveToROOT( CompMgr().Hist( "nVtx" ),            filename, "nVtx" );
+    mgr::SaveToROOT( CompMgr().Hist( "Rho" ),             filename, "Rho" );
     
     mgr::SaveToROOT( CompMgr().Hist( "LJetPt"    ),       filename, "LJetPt"    );
     mgr::SaveToROOT( CompMgr().Hist( "LJetEta"   ),       filename, "LJetEta"   );
@@ -132,18 +134,18 @@ StoreCompare()
     /*******************************************************************************
     *  Observable
     *******************************************************************************/
-    mgr::SaveToROOT( CompMgr().Hist( "Obs2" ),            filename, "Obs2" );
-    mgr::SaveToROOT( CompMgr().Hist( "Obs3" ),            filename, "Obs3" );
-    mgr::SaveToROOT( CompMgr().Hist( "Obs4" ),            filename, "Obs4" );
-    mgr::SaveToROOT( CompMgr().Hist( "Obs7" ),            filename, "Obs7" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs3" ),             filename, "Obs3" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs6" ),             filename, "Obs6" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs12" ),            filename, "Obs12" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs13" ),            filename, "Obs13" );
 
     /*******************************************************************************
     *  Intrinsci Acp
     *******************************************************************************/
-    mgr::SaveToROOT( CompMgr().Hist( "GenObs2" ),          filename, "GenObs2" );
-    mgr::SaveToROOT( CompMgr().Hist( "GenObs3" ),          filename, "GenObs3" );
-    mgr::SaveToROOT( CompMgr().Hist( "GenObs4" ),          filename, "GenObs4" );
-    mgr::SaveToROOT( CompMgr().Hist( "GenObs7" ),          filename, "GenObs7" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs3" ),           filename, "GenObs3" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs6" ),           filename, "GenObs6" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs12" ),          filename, "GenObs12" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs13" ),          filename, "GenObs13" );
 
     /*******************************************************************************
     * bbSeparation

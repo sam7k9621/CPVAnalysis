@@ -16,9 +16,7 @@ BaseLineMgr::RegisterWeight( TChain* ch )
 void
 BaseLineMgr::InitJES()
 {
-    //_resolution = new JME::JetResolution("/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Spring16_25nsV10a_MC_PtResolution_AK4PFchs.txt");
     _jecUnc   = new JetCorrectionUncertainty("/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Spring16_25nsV6_MC_Uncertainty_AK4PFchs.txt");
-    _resol_sf = new JME::JetResolutionScaleFactor( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Spring16_25nsV6a_MC_SF_AK4PFchs.txt" );
 }
 
 double

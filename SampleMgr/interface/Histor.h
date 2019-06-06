@@ -115,7 +115,8 @@ class Histor : public mgr::Pathmgr,
         int                    GetPdgID( const int& i ) { return _sample->GetPdgID( i ); }
         int                    GetGenJetIdx( const int& i )      { return _sample->MCTruthJet( i ); }
         int                    GetGenLepIdx( const int& i )      { return _sample->MCTruthLep( i ); }
-        float                  nVtx()                         { return _sample->nVtx(); }
+        int                    nVtx()                         { return _sample->nVtx(); }
+        float                  Rho()                          { return _sample->Rho(); }
         float                  GetIsoLepCharge( const int& i ){ return _sample->GetLepCharge( i ); }
         BaseLineMgr::MatchType bbSeparation( const int& hb, const int& lb, const int& lep ){ return _sample->bbSeparation( hb, lb, lep ); }
         void                   DumpEvtInfo(){ return _sample->DumpEvtInfo(); }
