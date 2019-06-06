@@ -1,0 +1,34 @@
+qsub .sentJob2629.sh -N DYJets_HT-100to200_0
+>>Sending DYJets_HT-100to200_0
+2878950.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob7744.sh -N DYJets_HT-100to200_1
+>>Sending DYJets_HT-100to200_1
+2878961.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob1290.sh -N DYJets_HT-100to200_2
+>>Sending DYJets_HT-100to200_2
+2878967.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob7169.sh -N DYJets_HT-100to200_3
+>>Sending DYJets_HT-100to200_3
+2878970.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob2755.sh -N DYJets_HT-100to200_4
+>>Sending DYJets_HT-100to200_4
+2878973.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob667.sh -N DYJets_HT-1200to2500_0
+>>Sending DYJets_HT-1200to2500_0
+2878976.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob5228.sh -N DYJets_HT-1200to2500_1
+>>Sending DYJets_HT-1200to2500_1
+qsub .sentJob4785.sh -N DYJets_HT-1200to2500_2
+>>Sending DYJets_HT-1200to2500_2
+2878993.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob7687.sh -N DYJets_HT-1200to2500_3
+>>Sending DYJets_HT-1200to2500_3
+qsub .sentJob6216.sh -N DYJets_HT-1200to2500_4
+>>Sending DYJets_HT-1200to2500_4
+2879008.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob8.sh -N DYJets_HT-200to400_0
+>>Sending DYJets_HT-200to400_0
+2879012.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob4152.sh -N DYJets_HT-200to400_1
+>>Sending DYJets_HT-200to400_1
+2879024.ntugrid5.phys.ntu.edu.tw

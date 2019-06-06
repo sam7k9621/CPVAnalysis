@@ -60,7 +60,7 @@ namespace mgr{
             bool  IsFake();
             float Ndof();
             float AbsZ();
-            float Rho();
+            float VtxRho();
 
             /*******************************************************************************
             *   Lep common info

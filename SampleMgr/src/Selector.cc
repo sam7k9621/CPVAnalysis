@@ -172,7 +172,6 @@ Selector::PassVertex()
             return true;
         }
     }
-
     return false;
 }
 
@@ -191,15 +190,16 @@ Selector::PreJet()
 bool
 Selector::PreLep()
 {
+    int count = 0;
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
         if( _sample->IsTightMu() || _sample->IsTightEl() ){
-            return true;
+            count++;
         }
     }
 
-    return false;
+    return count == 1;
 }
 
 bool

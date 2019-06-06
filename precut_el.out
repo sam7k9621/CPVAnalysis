@@ -1,0 +1,33 @@
+qsub .sentJob3521.sh -N Run2017B
+>>Sending Run2017B
+2878951.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob4369.sh -N Run2017B
+>>Sending Run2017B
+2878965.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob3613.sh -N Run2017B
+>>Sending Run2017B
+2878969.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob6456.sh -N Run2017B
+>>Sending Run2017B
+2878971.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob7344.sh -N Run2017B
+>>Sending Run2017B
+2878974.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob8957.sh -N Run2017C
+>>Sending Run2017C
+qsub .sentJob4135.sh -N Run2017C
+>>Sending Run2017C
+qsub .sentJob4656.sh -N Run2017C
+>>Sending Run2017C
+2878992.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob3504.sh -N Run2017C
+>>Sending Run2017C
+qsub .sentJob8660.sh -N Run2017C
+>>Sending Run2017C
+2879007.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob603.sh -N Run2017D
+>>Sending Run2017D
+2879010.ntugrid5.phys.ntu.edu.tw
+qsub .sentJob9698.sh -N Run2017D
+>>Sending Run2017D
+2879023.ntugrid5.phys.ntu.edu.tw

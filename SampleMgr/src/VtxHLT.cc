@@ -27,7 +27,7 @@ namespace mgr{
     }
 
     float
-    SampleMgr::Rho()
+    SampleMgr::VtxRho()
     {
         return _vtx.Rho[ _idx ];
     }

@@ -79,7 +79,7 @@ BaseLineMgr::IsGoodPVtx()
     return !( IsFake() ) &&
            Ndof() > 4 &&
            AbsZ() < 24 &&
-           Rho() < 2
+           VtxRho() < 2
     ;
 }
 
