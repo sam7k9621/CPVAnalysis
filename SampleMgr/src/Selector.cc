@@ -193,19 +193,14 @@ Selector::PreLep()
     int count = 0;
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
+        _sample->ElEnergyCorr();
 
-        if( _sample->IsTightMu() || _sample->IsTightEl() ){
+        if( _sample->IsPreTightEl() || _sample->IsPreTightMu() ){
             count++;
         }
     }
 
     return count == 1;
-}
-
-bool
-Selector::PreSelection()
-{
-    return PreJet() && PreLep();
 }
 
 /*******************************************************************************

@@ -120,34 +120,17 @@ namespace mgr{
     bool
     SampleMgr::ElIDLoose()
     {
-        if( LepAbsEta() <= 1.479 ){
-            return (
-            ElsigmaIetaIeta() < 0.0112 &&
-            fabs( EldEtaInSeed() ) < 0.00377 &&
-            fabs( EldPhiIn() ) < 0.0884 &&
-            ElGsfEleHadronicOverEMCut() < 0.05 + 1.16 / EnergySC() + 0.0324 * rho() / EnergySC() &&
-            ElPFISO() < 0.112 + 0.506 / LepPt() &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.193 &&
-            ElNumberOfExpectedInnerHits() <= 1 &&
-            !ElhasConv() 
-            );
-        }
-        else{  //absEta > 1.479
-            return (
-            ElsigmaIetaIeta() < 0.0425 &&
-            fabs( EldEtaInSeed() ) < 0.00674 &&
-            fabs( EldPhiIn() ) < 0.169 &&
-            ElGsfEleHadronicOverEMCut() < 0.0441 + 2.54 / EnergySC() + 0.183 * rho() / EnergySC() &&
-            ElPFISO() < 0.108 + 0.963 / LepPt()  &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.111 &&
-            ElNumberOfExpectedInnerHits() <= 1 &&
-            !ElhasConv() 
-            );
-        }
+        return _lep.EgammaCutBasedEleIdLOOSE[ _idx ];
+    }
+
+    bool 
+    SampleMgr::ElIDTight()
+    {
+        return _lep.EgammaCutBasedEleIdTIGHT[ _idx ];
     }
 
     bool
-    SampleMgr::ElIDTight()
+    SampleMgr::ElIDCRTight()
     {
         //removing PF isolation cut
         if( LepAbsEta() <= 1.479 ){
@@ -156,7 +139,6 @@ namespace mgr{
             fabs( EldEtaInSeed() ) < 0.00255 &&
             fabs( EldPhiIn() ) < 0.022 &&
             ElGsfEleHadronicOverEMCut() < 0.026 + 1.15 / EnergySC() + 0.0324 * rho() / EnergySC() &&
-            ElPFISO() < 0.0287 + 0.506 / LepPt() &&
             fabs( GsfEleEInverseMinusPInverseCut() ) < 0.159 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
@@ -168,7 +150,6 @@ namespace mgr{
             fabs( EldEtaInSeed() ) < 0.00501 &&
             fabs( EldPhiIn() ) < 0.0236 &&
             ElGsfEleHadronicOverEMCut() < 0.0188 + 2.06 / EnergySC() + 0.183 * rho() / EnergySC() &&
-            ElPFISO() < 0.0445 + 0.963 / LepPt() &&
             fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0197 &&
             ElNumberOfExpectedInnerHits() <= 1 &&
             !ElhasConv() 
@@ -270,5 +251,14 @@ namespace mgr{
     SampleMgr::ElPFISO()
     {
         return _lep.PFIsoRhoCorrR03[ _idx ] / _lep.Pt[ _idx ];
+    }
+
+    void 
+    SampleMgr::ElEnergyCorr()
+    {
+        if( _lep.LeptonType[ _idx ] == 11 ){
+            float pt = _lep.Pt[ _idx ];
+            _lep.Pt[ _idx ] = pt * _lep.ElEnergyCorrFactor[ _idx ];
+        }
     }
 }

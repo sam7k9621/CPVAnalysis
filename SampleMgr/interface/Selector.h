@@ -67,7 +67,6 @@ class Selector : public mgr::Pathmgr,
         bool PassHLT( const std::vector<int>& );
         bool PreJet();
         bool PreLep();
-        bool PreSelection();
         int  nPU(){ return _sample->nPU(); }
 
         /*******************************************************************************

@@ -115,7 +115,11 @@ MakePreCut()
         // Preselection :
         // Jet : at least four jets
         // Lep : at least one lepton
-        if( !PreMgr().PreSelection() ){
+        if( !PreMgr().PreJet() ){
+            continue;
+        }
+
+        if( !PreMgr().PreLep() ){
             continue;
         }
 

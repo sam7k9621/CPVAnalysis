@@ -39,8 +39,10 @@ def PlotIntegral( correct, misid, mistag ):
     ide_eff = ROOT.TH1D( "ide_eff", "", 200, 0, 200 )
     eve_eff = ROOT.TH1D( "eve_eff", "", 200, 0, 200 )
 
-    total = correct.Integral() + misid.Integral() + mistag.Integral()
-    for i in range( 201 ):
+    total = correct.Integral( 1, 201 ) + misid.Integral( 1, 201 ) + mistag.Integral( 1, 201 )
+    print total
+
+    for i in range( 202 ):
         cor = correct.Integral( 1, i )
         ide = misid.Integral( 1, i )
         tag = mistag.Integral( 1, i )

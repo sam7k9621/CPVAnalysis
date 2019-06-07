@@ -369,9 +369,17 @@ BaseLineMgr::IsTightMu()
     ;
 }
 
+bool 
+BaseLineMgr::IsPreTightMu()
+{
+    return PassMuTightID() &&
+           PassMuTightKinematic() 
+    ;
+}
+
 /*******************************************************************************
 *   Electron selection
-*******************************************************************************/
+*******************************************************************************/    
 bool
 BaseLineMgr::PassImpactParameter()
 {
@@ -452,6 +460,15 @@ BaseLineMgr::IsTightEl()
 {
     return PassImpactParameter() &&
            PassElTightID() &&
+           PassElTightKinematic()
+    ;
+}
+
+bool 
+BaseLineMgr::IsPreTightEl()
+{
+    return PassImpactParameter() &&
+           ElIDCRTight() &&
            PassElTightKinematic()
     ;
 }

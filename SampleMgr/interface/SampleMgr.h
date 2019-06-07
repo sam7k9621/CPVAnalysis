@@ -92,6 +92,7 @@ namespace mgr{
             bool  ElIDLoose();
             bool  ElIDTight();
             bool  ElIDCRLoose();
+            bool  ElIDCRTight();
             float ElAbsTrackDz();
             float ElAbsTrackDxy_PV();
             
@@ -104,7 +105,8 @@ namespace mgr{
             float ElPFISO();
             float EnergySC();
             bool  ElhasConv();
-             
+            void  ElEnergyCorr();
+
             /*******************************************************************************
             * Jet info
             *******************************************************************************/

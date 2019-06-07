@@ -97,7 +97,8 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassMuTightKinematic();
         bool PassMuTightISO();
         bool IsTightMu();
-
+        bool IsPreTightMu();
+            
         /*******************************************************************************
         *   Electron selection
         *******************************************************************************/
@@ -112,6 +113,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassElTightID();
         bool PassElTightKinematic();
         bool IsTightEl();
+        bool IsPreTightEl();
 
         /*******************************************************************************
         *   Event Weighting
