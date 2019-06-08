@@ -12,7 +12,6 @@ __init__.py
 # General data file exclusions
 core*
 *.out
-*.txt
 *.root
 *.log
 temp
@@ -31,7 +30,6 @@ log*
 # Specific file exclusion
 # [relative/path/to/file]
 .remote-sync.json
-LimitCalc/.*.sh
 
 # Specific file inclusion
 # ![relative/path/to/file]
