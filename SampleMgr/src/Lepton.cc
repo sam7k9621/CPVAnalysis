@@ -256,9 +256,12 @@ namespace mgr{
     void 
     SampleMgr::ElEnergyCorr()
     {
-        if( _lep.LeptonType[ _idx ] == 11 ){
-            float pt = _lep.Pt[ _idx ];
-            _lep.Pt[ _idx ] = pt * _lep.ElEnergyCorrFactor[ _idx ];
+        for( int i = 0; i < Lsize(); i++ ){ 
+            
+            if( _lep.LeptonType[ _idx ] == 11 ){
+                float pt = _lep.Pt[ _idx ];
+                _lep.Pt[ _idx ] = pt * _lep.ElEnergyCorrFactor[ _idx ];
+            }
         }
     }
 }

@@ -106,6 +106,10 @@ MakePreCut()
                 continue;
             }
         }
+        
+        if( !is_data ){
+            PreMgr().LeptonECorr();
+        }
 
         // Pass vertex 
         if( !PreMgr().PassVertex() ){

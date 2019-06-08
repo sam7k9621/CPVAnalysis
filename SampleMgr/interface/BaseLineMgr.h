@@ -80,6 +80,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassJetLooseID();
         bool PassJetKinematic();
         bool IsSelJet();
+        bool IsPreSelJet();
         bool PassBJet();
         bool PassCS2BJet();
         bool RejectBJet();

@@ -49,7 +49,7 @@ class Selector : public mgr::Pathmgr,
         float  GetPUWeightUp(){ return _sample->GetPUWeightUp(); }
         float  GetPUWeightDn(){ return _sample->GetPUWeightDn(); }
         void   RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
-        void   InitJES(){ _sample->InitJES(); }
+        void InitJES(){ _sample->InitJES(); }
         void SetPDFUnc   ( float&, float& );
         void SetMuFMuRUnc( float* );
         void SetME_PSUnc( float&, float& );
@@ -67,6 +67,7 @@ class Selector : public mgr::Pathmgr,
         bool PassHLT( const std::vector<int>& );
         bool PreJet();
         bool PreLep();
+        void LeptonECorr();
         int  nPU(){ return _sample->nPU(); }
 
         /*******************************************************************************
