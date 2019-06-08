@@ -11,6 +11,7 @@ __init__.py
 
 # General data file exclusions
 core*
+*.out
 *.txt
 *.root
 *.log
