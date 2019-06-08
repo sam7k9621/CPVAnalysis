@@ -60,7 +60,7 @@ datalst = [
 context = """
 data = [
     {}
-    ],
+    ]
 
 mc = [
     {}
