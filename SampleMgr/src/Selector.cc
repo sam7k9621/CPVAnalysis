@@ -184,7 +184,15 @@ Selector::PassHLT( const vector<int>& hlt )
 bool
 Selector::PreJet()
 {
-    return _sample->Jsize() >= 4;
+    int count = 0;
+    for( int i = 0; i< _sample->Jsize(); i++ ){
+        _sample->SetIndex( i );
+
+        if( _sample->IsPreSelJet() ){
+            count++;
+        }
+    }
+    return count >= 4;
 }
 
 bool

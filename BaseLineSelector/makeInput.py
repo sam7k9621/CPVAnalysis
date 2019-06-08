@@ -28,15 +28,15 @@ mclst = [
         ( 1, "ST_t-channel_top"),
         ( 1, "ST_tW_antitop"),
         ( 1, "ST_tW_top"),
-        ( 10, "TTToSemiLeptonic"),
+        ( 15, "TTToSemiLeptonic"),
         ( 5, "WJets_HT-100To200"),
-        ( 5, "WJets_HT-1200To2500"),
+        ( 10, "WJets_HT-1200To2500"),
         ( 5, "WJets_HT-200To400"),
         ( 10, "WJets_HT-2500ToInf"),
         ( 5, "WJets_HT-400To600"),
-        ( 5, "WJets_HT-600To800"),
+        ( 10, "WJets_HT-600To800"),
         ( 5, "WJets_HT-70To100"),
-        ( 5, "WJets_HT-800To1200"),
+        ( 10, "WJets_HT-800To1200"),
         ( 1, "WW"),
         ( 1, "WZ"),
         ( 1, "ZZ")
@@ -51,8 +51,8 @@ datalst = [
         (5, "mu_Run2017B"),
         (5, "mu_Run2017C"),
         (5, "mu_Run2017D"),
-        (5, "mu_Run2017E"),
-        (10, "mu_Run2017F"),
+        (10, "mu_Run2017E"),
+        (15, "mu_Run2017F"),
         (1, "mu_Run2017F_ext1"),
         (1, "mu_Run2017F_ext2")
         ]
@@ -123,28 +123,17 @@ def main(args):
             for i in range( tag[0] ):
                 content[ tag[1] + "_{}".format( str( i ) ) ] = { "path" : opt.dir + sample + "/*{}.root".format( SplitFile( tag[0] )[i] ) }
         else:
-            pass
-        # elif tag[0] == 2:
-            # content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*[0-5].root" }
-            # content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*[6-9].root" }
-        # elif tag[0] == 5:
-            # content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*[0-1].root" }
-            # content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*[2-3].root" }
-            # content[ tag[1] + "_2" ] = { "path" : opt.dir + sample + "/*[4-5].root" }
-            # content[ tag[1] + "_3" ] = { "path" : opt.dir + sample + "/*[6-7].root" }
-            # content[ tag[1] + "_4" ] = { "path" : opt.dir + sample + "/*[8-9].root" }
-        # else:
-            # content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*0.root" }
-            # content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*1.root" }
-            # content[ tag[1] + "_2" ] = { "path" : opt.dir + sample + "/*2.root" }
-            # content[ tag[1] + "_3" ] = { "path" : opt.dir + sample + "/*3.root" }
-            # content[ tag[1] + "_4" ] = { "path" : opt.dir + sample + "/*4.root" }
-            # content[ tag[1] + "_5" ] = { "path" : opt.dir + sample + "/*5.root" }
-            # content[ tag[1] + "_6" ] = { "path" : opt.dir + sample + "/*6.root" }
-            # content[ tag[1] + "_7" ] = { "path" : opt.dir + sample + "/*7.root" }
-            # content[ tag[1] + "_8" ] = { "path" : opt.dir + sample + "/*8.root" }
-            # content[ tag[1] + "_9" ] = { "path" : opt.dir + sample + "/*9.root" }
-    
+            if tag[0] == 10:
+                filelst = [x+y for x in SplitFile(2) for y in SplitFile(5) ] 
+            else:
+                filelst = [x+y for x in SplitFile(3) for y in SplitFile(5) ] 
+            
+            for i in range( tag[0] ):
+                content[ tag[1] + "_{}".format( str( i ) ) ] = { "path" : opt.dir + sample + "/*{}.root".format( filelst[i] ) }
+            # include one-digit file
+            content[ tag[1] + "_{}".format( str( tag[0] ) ) ] = { "path" : opt.dir + sample + "/*_[0-9].root"}
+
+
     data, mc = [], []
     for c in content:
         if "Run" in c:

@@ -159,34 +159,37 @@
         "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/*.root"
     }, 
     "TTToSemiLeptonic_0": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*0.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[0-5][0-1].root"
     }, 
     "TTToSemiLeptonic_1": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*1.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[0-5][2-3].root"
     }, 
     "TTToSemiLeptonic_2": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*2.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[0-5][4-5].root"
     }, 
     "TTToSemiLeptonic_3": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*3.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[0-5][6-7].root"
     }, 
     "TTToSemiLeptonic_4": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*4.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[0-5][8-9].root"
     }, 
     "TTToSemiLeptonic_5": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*5.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[6-9][0-1].root"
     }, 
     "TTToSemiLeptonic_6": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*6.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[6-9][2-3].root"
     }, 
     "TTToSemiLeptonic_7": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*7.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[6-9][4-5].root"
     }, 
     "TTToSemiLeptonic_8": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*8.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[6-9][6-7].root"
     }, 
     "TTToSemiLeptonic_9": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*9.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*[6-9][8-9].root"
+    }, 
+    "TTToSemiLeptonic_10": {
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/*_[0-9].root"
     }, 
     "WJets_HT-100To200_0": {
         "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/*[0-1].root"
@@ -234,34 +237,37 @@
         "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/*[8-9].root"
     }, 
     "WJets_HT-2500ToInf_0": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*0.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[0-5][0-1].root"
     }, 
     "WJets_HT-2500ToInf_1": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*1.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[0-5][2-3].root"
     }, 
     "WJets_HT-2500ToInf_2": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*2.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[0-5][4-5].root"
     }, 
     "WJets_HT-2500ToInf_3": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*3.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[0-5][6-7].root"
     }, 
     "WJets_HT-2500ToInf_4": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*4.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[0-5][8-9].root"
     }, 
     "WJets_HT-2500ToInf_5": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*5.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[6-9][0-1].root"
     }, 
     "WJets_HT-2500ToInf_6": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*6.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[6-9][2-3].root"
     }, 
     "WJets_HT-2500ToInf_7": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*7.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[6-9][4-5].root"
     }, 
     "WJets_HT-2500ToInf_8": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*8.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[6-9][6-7].root"
     }, 
     "WJets_HT-2500ToInf_9": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*9.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*[6-9][8-9].root"
+    }, 
+    "WJets_HT-2500ToInf_10": {
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/*_[0-9].root"
     }, 
     "WJets_HT-400To600_0": {
         "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8/*[0-1].root"
@@ -468,34 +474,37 @@
         "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017E/*[8-9].root"
     }, 
     "mu_Run2017F_0": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*0.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[0-5][0-1].root"
     }, 
     "mu_Run2017F_1": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*1.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[0-5][2-3].root"
     }, 
     "mu_Run2017F_2": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*2.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[0-5][4-5].root"
     }, 
     "mu_Run2017F_3": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*3.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[0-5][6-7].root"
     }, 
     "mu_Run2017F_4": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*4.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[0-5][8-9].root"
     }, 
     "mu_Run2017F_5": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*5.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[6-9][0-1].root"
     }, 
     "mu_Run2017F_6": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*6.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[6-9][2-3].root"
     }, 
     "mu_Run2017F_7": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*7.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[6-9][4-5].root"
     }, 
     "mu_Run2017F_8": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*8.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[6-9][6-7].root"
     }, 
     "mu_Run2017F_9": {
-        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*9.root"
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*[6-9][8-9].root"
+    }, 
+    "mu_Run2017F_10": {
+        "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F/*_[0-9].root"
     }, 
     "mu_Run2017F_ext1": {
         "path": "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F_ext1/*.root"

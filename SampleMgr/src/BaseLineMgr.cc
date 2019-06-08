@@ -273,7 +273,8 @@ bool
 BaseLineMgr::IsPreSelJet()
 {
     return PassJetLooseID() &&
-           JetAbsEta() < 2.4
+           JetAbsEta() < 2.4 &&
+           JetPt() > 20
     ;
 }
 
