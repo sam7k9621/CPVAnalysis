@@ -453,9 +453,7 @@ Selector::LeptonECorr()
 {
     for( int i=0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
-        cout<<"before "<<_sample->LepPt()<<endl;
         _sample->ElEnergyCorr();
-        cout<<"after  "<<_sample->LepPt()<<endl;
     }
 }
 

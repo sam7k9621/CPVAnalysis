@@ -67,6 +67,14 @@ mc = [
     ]
 """
 
+def SplitFile( num ):
+    if num == 2:
+        return [ "[0-5]", "[6-9]"]
+    elif num == 3:
+        return [ "[0-3]", "[4-6]", "[7-9]"]
+    elif num == 5:
+        return [ "[0-1]", "[2-3]", "[4-5]", "[6-7]", "[8-9]" ]
+
 def main(args):
 
     parser = argparse.ArgumentParser(
@@ -111,26 +119,31 @@ def main(args):
     for sample, tag in samplelst:
         if tag[0] == 1:
             content[ tag[1] ] = { "path" : opt.dir + sample + "/*.root" }
-        elif tag[0] == 2:
-            content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*[0-5].root" }
-            content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*[6-9].root" }
-        elif tag[0] == 5:
-            content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*[0-1].root" }
-            content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*[2-3].root" }
-            content[ tag[1] + "_2" ] = { "path" : opt.dir + sample + "/*[4-5].root" }
-            content[ tag[1] + "_3" ] = { "path" : opt.dir + sample + "/*[6-7].root" }
-            content[ tag[1] + "_4" ] = { "path" : opt.dir + sample + "/*[8-9].root" }
+        elif tag[0] < 10:
+            for i in range( tag[0] ):
+                content[ tag[1] + "_{}".format( str( i ) ) ] = { "path" : opt.dir + sample + "/*{}.root".format( SplitFile( tag[0] )[i] ) }
         else:
-            content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*0.root" }
-            content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*1.root" }
-            content[ tag[1] + "_2" ] = { "path" : opt.dir + sample + "/*2.root" }
-            content[ tag[1] + "_3" ] = { "path" : opt.dir + sample + "/*3.root" }
-            content[ tag[1] + "_4" ] = { "path" : opt.dir + sample + "/*4.root" }
-            content[ tag[1] + "_5" ] = { "path" : opt.dir + sample + "/*5.root" }
-            content[ tag[1] + "_6" ] = { "path" : opt.dir + sample + "/*6.root" }
-            content[ tag[1] + "_7" ] = { "path" : opt.dir + sample + "/*7.root" }
-            content[ tag[1] + "_8" ] = { "path" : opt.dir + sample + "/*8.root" }
-            content[ tag[1] + "_9" ] = { "path" : opt.dir + sample + "/*9.root" }
+            pass
+        # elif tag[0] == 2:
+            # content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*[0-5].root" }
+            # content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*[6-9].root" }
+        # elif tag[0] == 5:
+            # content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*[0-1].root" }
+            # content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*[2-3].root" }
+            # content[ tag[1] + "_2" ] = { "path" : opt.dir + sample + "/*[4-5].root" }
+            # content[ tag[1] + "_3" ] = { "path" : opt.dir + sample + "/*[6-7].root" }
+            # content[ tag[1] + "_4" ] = { "path" : opt.dir + sample + "/*[8-9].root" }
+        # else:
+            # content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*0.root" }
+            # content[ tag[1] + "_1" ] = { "path" : opt.dir + sample + "/*1.root" }
+            # content[ tag[1] + "_2" ] = { "path" : opt.dir + sample + "/*2.root" }
+            # content[ tag[1] + "_3" ] = { "path" : opt.dir + sample + "/*3.root" }
+            # content[ tag[1] + "_4" ] = { "path" : opt.dir + sample + "/*4.root" }
+            # content[ tag[1] + "_5" ] = { "path" : opt.dir + sample + "/*5.root" }
+            # content[ tag[1] + "_6" ] = { "path" : opt.dir + sample + "/*6.root" }
+            # content[ tag[1] + "_7" ] = { "path" : opt.dir + sample + "/*7.root" }
+            # content[ tag[1] + "_8" ] = { "path" : opt.dir + sample + "/*8.root" }
+            # content[ tag[1] + "_9" ] = { "path" : opt.dir + sample + "/*9.root" }
     
     data, mc = [], []
     for c in content:
