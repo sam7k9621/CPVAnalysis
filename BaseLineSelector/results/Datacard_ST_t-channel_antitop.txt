@@ -1,5 +1,0 @@
-ST_t-channel_antitop
-Number of events = 3651708
-Sum of Positive weights = 3651708
-Sum of Negative weights = 0
-Effective number of events = 3651708

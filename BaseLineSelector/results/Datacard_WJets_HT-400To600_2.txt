@@ -1,5 +1,0 @@
-WJets_HT-400To600_2
-Number of events = 2837800
-Sum of Positive weights = 2831558
-Sum of Negative weights = 6242
-Effective number of events = 2825316

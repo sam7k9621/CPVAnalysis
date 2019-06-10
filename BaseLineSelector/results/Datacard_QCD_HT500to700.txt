@@ -1,5 +1,0 @@
-QCD_HT500to700
-Number of events = 55838903
-Sum of Positive weights = 55756083
-Sum of Negative weights = 82820
-Effective number of events = 55673263

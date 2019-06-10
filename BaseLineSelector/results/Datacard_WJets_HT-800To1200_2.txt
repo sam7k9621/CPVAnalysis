@@ -1,5 +1,0 @@
-WJets_HT-800To1200_2
-Number of events = 2428591
-Sum of Positive weights = 2419048
-Sum of Negative weights = 9543
-Effective number of events = 2409505

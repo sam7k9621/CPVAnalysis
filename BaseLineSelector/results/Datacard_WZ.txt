@@ -1,5 +1,0 @@
-WZ
-Number of events = 3875940
-Sum of Positive weights = 3875940
-Sum of Negative weights = 0
-Effective number of events = 3875940

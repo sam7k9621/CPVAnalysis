@@ -1,5 +1,0 @@
-TTToSemiLeptonic_8
-Number of events = 2530975
-Sum of Positive weights = 2520669
-Sum of Negative weights = 10306
-Effective number of events = 2510363

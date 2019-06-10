@@ -1,5 +1,0 @@
-WW
-Number of events = 7714926
-Sum of Positive weights = 7714926
-Sum of Negative weights = 0
-Effective number of events = 7714926

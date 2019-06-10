@@ -1,5 +1,0 @@
-WJets_HT-100To200_2
-Number of events = 7133262
-Sum of Positive weights = 7127396
-Sum of Negative weights = 5866
-Effective number of events = 7121530

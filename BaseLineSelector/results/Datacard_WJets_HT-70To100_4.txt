@@ -1,5 +1,0 @@
-WJets_HT-70To100_4
-Number of events = 4414375
-Sum of Positive weights = 4411868
-Sum of Negative weights = 2507
-Effective number of events = 4409361

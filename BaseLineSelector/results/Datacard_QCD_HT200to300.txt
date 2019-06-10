@@ -1,5 +1,0 @@
-QCD_HT200to300
-Number of events = 58799685
-Sum of Positive weights = 58766426
-Sum of Negative weights = 33259
-Effective number of events = 58733167

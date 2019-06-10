@@ -1,5 +1,0 @@
-QCD_HT2000toInf_1
-Number of events = 5902403
-Sum of Positive weights = 5844925
-Sum of Negative weights = 57478
-Effective number of events = 5787447

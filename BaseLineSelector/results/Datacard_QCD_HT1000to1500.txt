@@ -1,5 +1,0 @@
-QCD_HT1000to1500
-Number of events = 16772066
-Sum of Positive weights = 16716391
-Sum of Negative weights = 55675
-Effective number of events = 16660716
