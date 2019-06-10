@@ -1,0 +1,5 @@
+DYJets_HT-100to200_1
+Number of events = 2337406
+Sum of Positive weights = 2335602
+Sum of Negative weights = 1804
+Effective number of events = 2333798

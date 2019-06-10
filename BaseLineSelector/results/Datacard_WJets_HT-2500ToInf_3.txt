@@ -1,0 +1,5 @@
+WJets_HT-2500ToInf_3
+Number of events = 2590157
+Sum of Positive weights = 2538374
+Sum of Negative weights = 51783
+Effective number of events = 2486591

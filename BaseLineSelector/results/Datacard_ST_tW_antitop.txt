@@ -1,0 +1,5 @@
+ST_tW_antitop
+Number of events = 7925465
+Sum of Positive weights = 7895268
+Sum of Negative weights = 30197
+Effective number of events = 7865071

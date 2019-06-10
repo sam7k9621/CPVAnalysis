@@ -1,0 +1,5 @@
+ST_s-channel
+Number of events = 9818694
+Sum of Positive weights = 7972751
+Sum of Negative weights = 1845943
+Effective number of events = 6126808

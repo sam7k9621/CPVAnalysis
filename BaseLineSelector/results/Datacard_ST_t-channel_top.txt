@@ -1,0 +1,5 @@
+ST_t-channel_top
+Number of events = 5942749
+Sum of Positive weights = 5942749
+Sum of Negative weights = 0
+Effective number of events = 5942749
