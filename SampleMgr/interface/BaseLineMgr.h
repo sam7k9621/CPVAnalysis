@@ -25,7 +25,7 @@
 
 class BaseLineMgr : public mgr::Hist2DMgr,
                     public mgr::HistMgr,
-                    public mgr::SampleMgr{
+                    public mgr::SampleMgr {
     public:
 
         /*******************************************************************************
@@ -69,7 +69,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         // Jet energy resolution correction
         unsigned bitconv( const float& x );
         bool     IsWellMatched( const double& );
-        double   MakeScaled( const  double& );
+        double   MakeScaled( const double& );
         double   MakeSmeared( const double&, const double& );
         void     JECUp();
         void     JECDn();
@@ -99,7 +99,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassMuTightISO();
         bool IsTightMu();
         bool IsPreTightMu();
-            
+
         /*******************************************************************************
         *   Electron selection
         *******************************************************************************/
@@ -121,11 +121,11 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         *******************************************************************************/
         // PU weight
         void  RegisterWeight( TChain* );
-        float GetPUWeight(){ return _puweight; }
+        float GetPUWeight()  { return _puweight; }
         float GetPUWeightUp(){ return _puweight_up; }
         float GetPUWeightDn(){ return _puweight_dn; }
-        int   nVtx()       { return Vsize(); }
-        float Rho()        { return EvtRho(); }
+        int   nVtx()         { return Vsize(); }
+        float Rho()          { return EvtRho(); }
 
         // B-tagging weight
         void   InitBtagWeight( const std::string&, const std::string& );
@@ -141,7 +141,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         // JES
         void InitJES();
 
-        //Top Pt Weighting
+        // Top Pt Weighting
         double TopPtWeight();
 
     private:

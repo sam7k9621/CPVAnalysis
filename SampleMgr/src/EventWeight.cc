@@ -16,7 +16,7 @@ BaseLineMgr::RegisterWeight( TChain* ch )
 void
 BaseLineMgr::InitJES()
 {
-    _jecUnc   = new JetCorrectionUncertainty("/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Spring16_25nsV6_MC_Uncertainty_AK4PFchs.txt");
+    _jecUnc = new JetCorrectionUncertainty( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Spring16_25nsV6_MC_Uncertainty_AK4PFchs.txt" );
 }
 
 double
@@ -71,10 +71,10 @@ BaseLineMgr::InitBtagWeight( const string& tagger, const string& filename )
 
     for( int i = BTagEntry::OP_LOOSE; i != BTagEntry::OP_RESHAPING; ++i ){
         _reader_map[ BTagEntry::OperatingPoint( i ) ] = BTagCalibrationReader(
-            BTagEntry::OperatingPoint( i ),       // operating point
-            "central",       // central sys type
+            BTagEntry::OperatingPoint( i ),// operating point
+            "central",// central sys type
             { "up", "down" }
-            );       // other sys types
+            );// other sys types
         _reader_map[ BTagEntry::OperatingPoint( i ) ].load(
             *_calib,
             BTagEntry::FLAV_B,
@@ -124,17 +124,18 @@ BaseLineMgr::TopPtWeight()
 {
     double topweight     = 1.;
     double antitopweight = 1.;
-    
-    for( int i = 0; i < 20; i++ ){ // should be in first 20 entries
+
+    for( int i = 0; i < 20; i++ ){// should be in first 20 entries
         if( _gen.PdgID[ i ] == 6 && _gen.nMo[ i ] >= 2 && topweight == 1 ){
-            topweight = exp( 0.0615 - 0.0005 * _gen.Pt[i] );
+            topweight = exp( 0.0615 - 0.0005 * _gen.Pt[ i ] );
         }
         else if( _gen.PdgID[ i ] == -6 && _gen.nMo[ i ] >= 2 && topweight == 1 ){
-            antitopweight = exp( 0.0615 - 0.0005 * _gen.Pt[i] );
+            antitopweight = exp( 0.0615 - 0.0005 * _gen.Pt[ i ] );
         }
 
-        if( topweight != 1 && antitopweight != 1 )
+        if( topweight != 1 && antitopweight != 1 ){
             break;
+        }
     }
 
     return sqrt( topweight * antitopweight );

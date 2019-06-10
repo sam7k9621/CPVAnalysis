@@ -18,7 +18,8 @@ namespace mgr{
             SampleMgr();
             virtual ~SampleMgr();
             void SetIndex( const int& i ){ _idx = i; }
-            void Register( TChain* ); 
+            void Register( TChain* );
+
             /*******************************************************************************
             *  Return file info
             *******************************************************************************/
@@ -28,23 +29,26 @@ namespace mgr{
             int Gsize() { return _gen.Size; }
             int RunNo() { return _evt.RunNo; }
             int LumiNo(){ return _evt.LumiNo; }
-        
-            // weight
-            int LHESize(){ return _gen.LHESize; }
-            int LHESystematicId( const int& idx ){ return _gen.LHESystematicId[idx]; }
-            float LHESystematicWeights( const int& idx ){ return _gen.LHESystematicWeights[idx]; }
 
-            int   nPU()      { 
-                for( int i = 0; i < _evt.nBX ; i++ ){
-                    if ( _evt.BXPU[i] == 0 ){
-                        return _evt.nPU[i];
+            // weight
+            int   LHESize()                             { return _gen.LHESize; }
+            int   LHESystematicId( const int& idx )     { return _gen.LHESystematicId[ idx ]; }
+            float LHESystematicWeights( const int& idx ){ return _gen.LHESystematicWeights[ idx ]; }
+
+            int nPU()
+            {
+                for( int i = 0; i < _evt.nBX; i++ ){
+                    if( _evt.BXPU[ i ] == 0 ){
+                        return _evt.nPU[ i ];
                     }
                 }
 
-                return _evt.nPU[0];
+                return _evt.nPU[ 0 ];
             }
+
             float GenWeight(){ return _gen.Weight; }
-            float EvtRho(){ return _evt.Rho; }
+            float EvtRho()   { return _evt.Rho; }
+
             /*******************************************************************************
             *   Basic RECO
             *******************************************************************************/
@@ -72,6 +76,7 @@ namespace mgr{
             TLorentzVector GetLepP4( const int& );
             int            Lep_Type(){ return _lep.LeptonType[ _idx ]; }
             float          rho();
+
             /*******************************************************************************
             *   Muon info
             *******************************************************************************/
@@ -95,7 +100,7 @@ namespace mgr{
             bool  ElIDCRTight();
             float ElAbsTrackDz();
             float ElAbsTrackDxy_PV();
-            
+
             float ElsigmaIetaIeta();
             float EldEtaInSeed();
             float EldPhiIn();
@@ -146,16 +151,16 @@ namespace mgr{
             int            MCTruthLep( const int& );
             int            MatchGenlevel( const float&, const float& );
             TLorentzVector GetMCP4( const int& );
-          
-            int FindJet( const int& );
-            int FindLepton( );
-            int FindHardJet();
+
+            int  FindJet( const int& );
+            int  FindLepton();
+            int  FindHardJet();
             void DumpEvtInfo();
 
             int AvoidDuplicate( const int& );
             int GetDirectMo1( const int& );
             int GetDirectMo2( const int& );
-        
+
         protected:
 
             int _idx;

@@ -19,12 +19,12 @@
 class checkEvtTool {
     public:
 
-        checkEvtTool( bool debug = false );
+        checkEvtTool( bool debug                     = false );
         checkEvtTool( std::string myJson, bool debug = false );
         ~checkEvtTool(){}
 
         void addJson( std::string myJson );
-        void makeJsonMap( bool savejson = false, std::string saveAs = "myJSON.txt" );
+        void makeJsonMap( bool savejson   = false, std::string saveAs = "myJSON.txt" );
         void saveJson( std::string saveAs = "myJSON.txt" );
         void listMyJsons();
         void listGoodLumis();

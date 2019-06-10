@@ -22,26 +22,26 @@ extern void
 MakeHist()
 {
     // Initialize file
-    string lepton            = CompMgr().GetOption<string>("lepton");
-    string sample            = CompMgr().GetOption<string>( "sample" );
+    string lepton = CompMgr().GetOption<string>( "lepton" );
+    string sample = CompMgr().GetOption<string>( "sample" );
     vector<string> samplelst;
-    if( CompMgr().CheckOption( "region" ) ){ 
+    if( CompMgr().CheckOption( "region" ) ){
         samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path_CR" );
     }
     else{
         samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
     }
 
-    TChain* ch               = new TChain( "root" );
-    
+    TChain* ch = new TChain( "root" );
+
     for( const auto& s : samplelst ){
-        cout<<s<<endl;
+        cout << s << endl;
         ch->Add( s.c_str() );
     }
 
     CompMgr().AddSample( sample, ch );
     AddHist();
-    
+
     CompMgr().RegisterWeight( ch );
     CompMgr().InitBtagWeight( "bcheck", CompMgr().GetSingleData<string>( "BtagWeight" ) );
 
@@ -55,24 +55,24 @@ MakeHist()
     Float_t had_tmass;
     Float_t lep_tmass;
 
-    ch->SetBranchAddress( "jet1", &jet1 );
-    ch->SetBranchAddress( "jet2", &jet2 );
-    ch->SetBranchAddress( "lep", &lep );
-    ch->SetBranchAddress( "had_b", &had_b );
-    ch->SetBranchAddress( "lep_b", &lep_b );
+    ch->SetBranchAddress( "jet1",      &jet1 );
+    ch->SetBranchAddress( "jet2",      &jet2 );
+    ch->SetBranchAddress( "lep",       &lep );
+    ch->SetBranchAddress( "had_b",     &had_b );
+    ch->SetBranchAddress( "lep_b",     &lep_b );
     ch->SetBranchAddress( "chi2mass",  &chi2mass );
-    ch->SetBranchAddress( "had_tmass",  &had_tmass );
-    ch->SetBranchAddress( "lep_tmass",  &lep_tmass );
-    
+    ch->SetBranchAddress( "had_tmass", &had_tmass );
+    ch->SetBranchAddress( "lep_tmass", &lep_tmass );
+
     map<int, TLorentzVector> reco_b;
     map<int, TLorentzVector> reco_bbar;
     map<int, TLorentzVector> reco_lep;
     map<int, TLorentzVector> reco_jet;
-    map<int, int>            reco_charge;
+    map<int, int> reco_charge;
 
-    TH2D* LepID   = GetLepSF( "ID" ); 
-    TH2D* LepRECO = GetLepSF( "RECO" ); 
-    //TH2D* LepHLT  = GetLepSF( "Trg" ); 
+    TH2D* LepID   = GetLepSF( "ID" );
+    TH2D* LepRECO = GetLepSF( "RECO" );
+    // TH2D* LepHLT  = GetLepSF( "Trg" );
 
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
@@ -101,12 +101,12 @@ MakeHist()
         }
 
         /*******************************************************************************
-        *  Event weighting 
+        *  Event weighting
         *******************************************************************************/
         double weight = 1.0;
         if( !is_data ){
             string tag = CompMgr().CheckOption( "uncertainty" ) ? CompMgr().GetOption<string>( "uncertainty" ) : "";
-           
+
             // pile-up reweighting
             if( CompMgr().CheckOption( "pileup" ) ){
                 if( tag.find( "pileup" ) != string::npos ){
@@ -117,29 +117,29 @@ MakeHist()
                         weight *= CompMgr().GetPUWeightDn();
                     }
                 }
-                else{    
+                else{
                     weight *= CompMgr().GetPUWeight();
                 }
-            }           
-            //lepton ID, RECO and ISO re-weighting
+            }
+            // lepton ID, RECO and ISO re-weighting
             if( tag.find( "lepton" ) != string::npos ){
                 if( tag.find( "up" ) != string::npos ){
                     weight *= CompMgr().GetSFUp( LepID, lep );
                     weight *= CompMgr().GetSFUp( LepRECO, lep );
-                    //weight *= CompMgr().GetSFUp( LepHLT, lep );
+                    // weight *= CompMgr().GetSFUp( LepHLT, lep );
                 }
                 else if( tag.find( "dn" ) != string::npos ){
                     weight *= CompMgr().GetSFDn( LepID, lep );
                     weight *= CompMgr().GetSFDn( LepRECO, lep );
-                    //weight *= CompMgr().GetSFDn( LepHLT, lep );
+                    // weight *= CompMgr().GetSFDn( LepHLT, lep );
                 }
             }
             else{
                 weight *= CompMgr().GetSF( LepID, lep );
-                weight *= CompMgr().GetSF( LepRECO, lep );    
-                //weight *= CompMgr().GetSF( LepHLT, lep );    
+                weight *= CompMgr().GetSF( LepRECO, lep );
+                // weight *= CompMgr().GetSF( LepHLT, lep );
             }
-            
+
             // b-tagging re-weighting
             if( tag.find( "b-tag" ) != string::npos ){
                 if( tag.find( "up" ) != string::npos ){
@@ -148,25 +148,25 @@ MakeHist()
                 else if( tag.find( "dn" ) != string::npos ){
                     weight *= CompMgr().BtagScaleFactorDn( BTagEntry::OP_MEDIUM, had_b ) * CompMgr().BtagScaleFactorDn( BTagEntry::OP_MEDIUM, lep_b );
                 }
-            } 
+            }
             else{
-                //avoid CR sample
+                // avoid CR sample
                 if( !CompMgr().CheckOption( "region" ) ){
                     weight *= CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, had_b ) * CompMgr().BtagScaleFactor( BTagEntry::OP_MEDIUM, lep_b );
                 }
-                else if ( CompMgr().GetOption<string>( "region") == "CSVL" ){
+                else if( CompMgr().GetOption<string>( "region" ) == "CSVL" ){
                     weight *= CompMgr().BtagScaleFactor( BTagEntry::OP_LOOSE, had_b ) * CompMgr().BtagScaleFactor( BTagEntry::OP_LOOSE, lep_b );
                 }
             }
-            
+
             if( sample == "ttbar" && tag.find( "TopPt_dn" ) == string::npos ){
                 weight *= CompMgr().TopPtWeight();
             }
-            
+
             // gen-level re-weighting
-            weight *=  CompMgr().GenWeight() < 0 ? -1 : 1;
+            weight *= CompMgr().GenWeight() < 0 ? -1 : 1;
         }
-        
+
         /*******************************************************************************
         *  bbSeparation / Optimisation
         *******************************************************************************/
@@ -175,17 +175,17 @@ MakeHist()
 
             if( flag == BaseLineMgr::Correct ){
                 CompMgr().Hist( "tmass_Correct" )->Fill( had_tmass, weight );
-                CompMgr().Hist( "chi2_Correct" ) ->Fill( chi2mass , weight);
-                CompMgr().Hist( "Cor_leptmass" ) ->Fill( lep_tmass, weight );
+                CompMgr().Hist( "chi2_Correct" )->Fill( chi2mass, weight );
+                CompMgr().Hist( "Cor_leptmass" )->Fill( lep_tmass, weight );
             }
             else if( flag == BaseLineMgr::Misid ){
-                CompMgr().Hist( "tmass_Misid" ) ->Fill( had_tmass, weight );
-                CompMgr().Hist( "chi2_Misid" )  ->Fill( chi2mass , weight );
+                CompMgr().Hist( "tmass_Misid" )->Fill( had_tmass, weight );
+                CompMgr().Hist( "chi2_Misid" )->Fill( chi2mass, weight );
                 CompMgr().Hist( "Misid_leptmass" )->Fill( lep_tmass, weight );
             }
             else if( flag == BaseLineMgr::Mistag ){
                 CompMgr().Hist( "tmass_Mistag" )->Fill( had_tmass, weight );
-                CompMgr().Hist( "chi2_Mistag" ) ->Fill( chi2mass , weight);
+                CompMgr().Hist( "chi2_Mistag" )->Fill( chi2mass, weight );
                 CompMgr().Hist( "Mistag_leptmass" )->Fill( lep_tmass, weight );
             }
             else{
@@ -193,7 +193,8 @@ MakeHist()
             }
 
             CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass, weight );
-        } 
+        }
+
         /*******************************************************************************
         *  Event filling
         *******************************************************************************/
@@ -204,19 +205,19 @@ MakeHist()
         CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
 
 
-        CompMgr().Hist( "LJetPt"    )->Fill( CompMgr().LeadingJetPt ( jet1 ),  weight );
-        CompMgr().Hist( "LJetEta"   )->Fill( CompMgr().LeadingJetEta( jet2 ), weight );
-        CompMgr().Hist( "HBJetPt"   )->Fill( CompMgr().LeadingJetPt ( had_b ), weight );
-        CompMgr().Hist( "HBJetEta"  )->Fill( CompMgr().LeadingJetEta( had_b ), weight );
-        CompMgr().Hist( "LBJetPt"   )->Fill( CompMgr().LeadingJetPt ( lep_b ), weight );
-        CompMgr().Hist( "LBJetEta"  )->Fill( CompMgr().LeadingJetEta( lep_b ), weight );
-        CompMgr().Hist( "LepPt"     )->Fill( CompMgr().GetLepPt( lep ),  weight  );
-        CompMgr().Hist( "LepEta"    )->Fill( CompMgr().GetLepEta( lep ), weight  );
+        CompMgr().Hist( "LJetPt" )->Fill( CompMgr().LeadingJetPt( jet1 ), weight );
+        CompMgr().Hist( "LJetEta" )->Fill( CompMgr().LeadingJetEta( jet2 ), weight );
+        CompMgr().Hist( "HBJetPt" )->Fill( CompMgr().LeadingJetPt( had_b ), weight );
+        CompMgr().Hist( "HBJetEta" )->Fill( CompMgr().LeadingJetEta( had_b ), weight );
+        CompMgr().Hist( "LBJetPt" )->Fill( CompMgr().LeadingJetPt( lep_b ), weight );
+        CompMgr().Hist( "LBJetEta" )->Fill( CompMgr().LeadingJetEta( lep_b ), weight );
+        CompMgr().Hist( "LepPt" )->Fill( CompMgr().GetLepPt( lep ), weight );
+        CompMgr().Hist( "LepEta" )->Fill( CompMgr().GetLepEta( lep ), weight );
 
         if( !is_data ){
             CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass );
         }
-        
+
         /*******************************************************************************
         *  Reco Acp
         *******************************************************************************/
@@ -226,36 +227,35 @@ MakeHist()
         TLorentzVector b       = charge < 0 ? CompMgr().GetJetP4( had_b ) : CompMgr().GetJetP4( lep_b );
         TLorentzVector bbar    = charge < 0 ? CompMgr().GetJetP4( lep_b ) : CompMgr().GetJetP4( had_b );
 
-        double o6  = Obs6 ( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+        double o6  = Obs6( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
         double o12 = Obs12( b.Vect(), bbar.Vect() );
-        double o13 = Obs13 ( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
+        double o13 = Obs13( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
 
         TVector3 bbCM = -( b + bbar ).BoostVector();
         b.Boost( bbCM );
         bbar.Boost( bbCM );
         isolep.Boost( bbCM );
         hardjet.Boost( bbCM );
-            
+
         double o3 = Obs3( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
 
-        CompMgr().Hist( "Obs3" ) ->Fill( o3 / 1000000., weight );
-        CompMgr().Hist( "Obs6" ) ->Fill( o6 / 1000000., weight );
+        CompMgr().Hist( "Obs3" )->Fill( o3 / 1000000., weight );
+        CompMgr().Hist( "Obs6" )->Fill( o6 / 1000000., weight );
         CompMgr().Hist( "Obs12" )->Fill( o12 / 1000000., weight );
         CompMgr().Hist( "Obs13" )->Fill( o13 / 1000000., weight );
         // Fill in list
         reco_b   [ i ]    = b;
         reco_bbar[ i ]    = bbar;
-        reco_lep [ i ]    = isolep ;
-        reco_jet [ i ]    = hardjet ;
+        reco_lep [ i ]    = isolep;
+        reco_jet [ i ]    = hardjet;
         reco_charge [ i ] = charge;
     }
 
+    // FillObservable( "Obs13", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );
+    // FillObservable( "Obs6",  vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );
+    // FillObservable( "Obs12", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );
+    // FillObservable( "Obs3",  vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );
 
-    //FillObservable( "Obs13", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    //FillObservable( "Obs6",  vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    //FillObservable( "Obs12", vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    //FillObservable( "Obs3",  vector<int>(), reco_b, reco_bbar, reco_lep, reco_jet, reco_charge );  
-    
     if( !is_data ){
         CompMgr().WeightMC( sample );
         cout << ">>Weighting " << sample << endl;
@@ -266,14 +266,14 @@ MakeHist()
 }
 
 extern void
-CheckHist() 
+CheckHist()
 {
     // Initialize file
-    string lepton            = CompMgr().GetOption<string>("lepton");
+    string lepton            = CompMgr().GetOption<string>( "lepton" );
     string sample            = CompMgr().GetOption<string>( "sample" );
     vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
     TChain* ch               = new TChain( "root" );
-    
+
     Float_t LJetPt1;
     Float_t LJetPt2;
     Float_t LJetPt3;
@@ -291,24 +291,25 @@ CheckHist()
     ch->SetBranchAddress( "LLepPt2", &LLepPt2 );
     ch->SetBranchAddress( "LLepPt3", &LLepPt3 );
     ch->SetBranchAddress( "LLepPt4", &LLepPt4 );
-    
+
     for( const auto& s : samplelst ){
         ch->Add( s.c_str() );
     }
+
     CompMgr().AddSample( sample, ch );
     AddHist();
-    
+
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 1000 : ch->GetEntries();
     bool is_data = ( sample == "Data" ) ? 1 : 0;
-    
+
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         CompMgr().process( events, i );
-    
+
         float weight = is_data ? 1 : CompMgr().GenWeight();
-        weight = weight < 0 ? -1 : 1 ;
-    
+        weight = weight < 0 ? -1 : 1;
+
         CompMgr().Hist( "LJetPt1" )->Fill( LJetPt1, weight );
         CompMgr().Hist( "LJetPt2" )->Fill( LJetPt2, weight );
         CompMgr().Hist( "LJetPt3" )->Fill( LJetPt3, weight );
@@ -318,12 +319,12 @@ CheckHist()
         CompMgr().Hist( "LLepPt3" )->Fill( LLepPt3, weight );
         CompMgr().Hist( "LLepPt4" )->Fill( LLepPt4, weight );
     }
-   
+
     if( !is_data ){
-    CompMgr().WeightMC( sample );
-    cout << ">>Weighting " << sample << endl;
+        CompMgr().WeightMC( sample );
+        cout << ">>Weighting " << sample << endl;
     }
-    
+
     StoreCompare();
     delete ch;
 }

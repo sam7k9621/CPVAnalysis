@@ -1,8 +1,8 @@
+#include "boost/format.hpp"
 #include "CPVAnalysis/CompareDataMC/interface/CompareDataMC.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
-#include "THStack.h"
 #include "TGraphErrors.h"
-#include "boost/format.hpp"
+#include "THStack.h"
 #include <iomanip>
 
 using namespace std;
@@ -39,11 +39,11 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
     data->SetMarkerSize( 0.5 );
     data->SetMarkerStyle( 20 );
     leg->AddEntry( data, "Data", "le" );
-    
+
     bg->SetMaximum( mgr::GetYmax( data ) * 1.5 );
     bg->GetHistogram()->GetXaxis()->SetTitle( data->GetXaxis()->GetTitle() );
     bg->GetHistogram()->GetYaxis()->SetTitle( data->GetYaxis()->GetTitle() );
-    
+
     c->cd();
 
     TPad* bot = mgr::NewBottomPad();
@@ -75,11 +75,11 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
 
     c->cd();
 
-    string lepton = PlotMgr().GetOption<string>("lepton");
+    string lepton = PlotMgr().GetOption<string>( "lepton" );
     mgr::DrawCMSLabel( PRELIMINARY );
     mgr::DrawLuminosity( 41500 );
     mgr::LatexMgr latex;
-    latex.SetOrigin( PLOT_X_MIN, PLOT_Y_MAX + TEXT_MARGIN / 2, BOTTOM_LEFT)
+    latex.SetOrigin( PLOT_X_MIN, PLOT_Y_MAX + TEXT_MARGIN / 2, BOTTOM_LEFT )
     .WriteLine( entry );
 
     top->SetLogy( kTRUE );
@@ -87,9 +87,9 @@ PlotCompare( vector<TH1D*> mclst, TH1D* data, const string& title, const string&
 
     top->SetLogy( kFALSE );
     SetYTitle( bg->GetHistogram() );
-    string region = PlotMgr().GetOption<string>("data") + "_" + PlotMgr().GetOption<string>("mc") + "_"; 
+    string region = PlotMgr().GetOption<string>( "data" ) + "_" + PlotMgr().GetOption<string>( "mc" ) + "_";
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Stack_" + region + title ) );
-    
+
     delete leg;
     delete top;
     delete bot;
@@ -115,9 +115,9 @@ PlotPDF(
     vector<TH1D*> mistaglst
     )
 {
-    TH1D* correct   = SumHist( correctlst );
-    TH1D* misid     = SumHist( misidlst );
-    TH1D* mistag    = SumHist( mistaglst );
+    TH1D* correct = SumHist( correctlst );
+    TH1D* misid   = SumHist( misidlst );
+    TH1D* mistag  = SumHist( mistaglst );
 
     PlotIntegral( correct, misid, mistag );
 
@@ -148,9 +148,9 @@ PlotPDF(
     mgr::SetAxis( correct );
     correct->SetMaximum( 1. );
 
-    leg->AddEntry( correct,   "Correct",       "l" );
-    leg->AddEntry( misid,     "b-Misidentified", "l" );
-    leg->AddEntry( mistag,    "Mistag",        "l" );
+    leg->AddEntry( correct, "Correct",         "l" );
+    leg->AddEntry( misid,   "b-Misidentified", "l" );
+    leg->AddEntry( mistag,  "Mistag",          "l" );
 
     c->SetLogy( kTRUE );
     mgr::DrawCMSLabel( SIMULATION );
@@ -182,11 +182,10 @@ PlotIntegral( TH1D* correct, TH1D* misid, TH1D* mistag )
     TH1D* eve_eff = new TH1D( "eve_eff", "", 200, 0, 200 );
 
     double total = correct->Integral() + misid->Integral() + mistag->Integral();
-    cout<<"**********************************************"<<endl;
-    cout<< "correct "<<(double) correct->Integral() / total <<endl;
-    cout<< "misid   "<<(double) misid->Integral() / total <<endl;
-    cout<< "mistag  "<<(double) mistag->Integral() / total <<endl;
-
+    cout << "**********************************************" << endl;
+    cout << "correct " << (double)correct->Integral() / total << endl;
+    cout << "misid   " << (double)misid->Integral() / total << endl;
+    cout << "mistag  " << (double)mistag->Integral() / total << endl;
 
     for( int i = 1; i <= 200; i++ ){
         double cor = correct->Integral( 1, i );
@@ -227,7 +226,7 @@ PlotIntegral( TH1D* correct, TH1D* misid, TH1D* mistag )
     eve_eff->SetLineWidth( 2 );
 
     TLine* line = new TLine( 20, 0, 20, 1 );
-    line->Draw("same");
+    line->Draw( "same" );
     line->SetLineColor( kRed - 7 );
     line->SetLineWidth( 2 );
 
@@ -238,7 +237,7 @@ PlotIntegral( TH1D* correct, TH1D* misid, TH1D* mistag )
 
     leg->AddEntry( cor_eff, "Correct",          "l" );
     leg->AddEntry( tag_eff, "Mistag",           "l" );
-    leg->AddEntry( ide_eff, "b-Misidentified",    "l" );
+    leg->AddEntry( ide_eff, "b-Misidentified",  "l" );
     leg->AddEntry( eve_eff, "Event efficiency", "l" );
 
     c->SetGrid();
@@ -275,48 +274,50 @@ Plot2D( vector<TH2D*> mclst )
     delete c;
 }
 
-extern void 
+extern void
 GetYield( vector<TH1D*> mclst, TH1D* data )
 {
     ofstream output;
     output.open( PlotMgr().GetResultsName( "txt", "Yield" ) );
 
-    output << std::fixed<<std::setprecision(5);
+    output << std::fixed << std::setprecision( 5 );
+
     for( const auto& h : mclst ){
-        output<<h->GetName()<<" "<<h->Integral()<<endl;
+        output << h->GetName() << " " << h->Integral() << endl;
     }
-    output<<"data "<<data->Integral()<<endl;
+
+    output << "data " << data->Integral() << endl;
 }
 
-extern void 
+extern void
 TestBGLike( vector<TH1D*> mclst, TH1D* data, TH1D* data2 )
 {
-    //without signal MC
+    // without signal MC
     TH1D* sumMC = SumHist( mclst );
-    
+
     TCanvas* c   = mgr::NewCanvas();
     TLegend* leg = mgr::NewLegend( 0.68, 0.57, 0.8, 0.87 );
     leg->SetLineColor( kWhite );
 
     sumMC->Draw( "hist e" );
     data2->Draw( "ep same" );
-    data ->Draw( "ep same" );
+    data->Draw( "ep same" );
     leg->Draw();
 
-    data  ->SetLineColor( kAzure - 3 );
-    sumMC ->SetLineColor( kRed - 7 );
-    data2 ->SetLineColor( kGreen - 6 );
-    data  ->SetLineWidth( 2 );
-    sumMC ->SetLineWidth( 2 );
-    data2 ->SetLineWidth( 2 );
-  
-    sumMC->SetMaximum( mgr::GetYmax( sumMC) * 1.5 );
+    data->SetLineColor( kAzure - 3 );
+    sumMC->SetLineColor( kRed - 7 );
+    data2->SetLineColor( kGreen - 6 );
+    data->SetLineWidth( 2 );
+    sumMC->SetLineWidth( 2 );
+    data2->SetLineWidth( 2 );
+
+    sumMC->SetMaximum( mgr::GetYmax( sumMC ) * 1.5 );
     sumMC->GetYaxis()->SetTitle( "PDF" );
 
-    leg->SetHeader( ( PlotMgr().GetOption<string>("lepton")+"-channel" ).c_str() );
-    leg->AddEntry( data , ( PlotMgr().GetOption<string>("data") + " data ( #chi^{2} < 20 )" ).c_str(), "lep" );
-    leg->AddEntry( data2, ( PlotMgr().GetOption<string>("data") + " data ( #chi^{2} > 20 )" ).c_str(), "lep" );
-    leg->AddEntry( sumMC, ( PlotMgr().GetOption<string>("mc")   + " bkg. MC" ).c_str(), "lep" );
+    leg->SetHeader( ( PlotMgr().GetOption<string>( "lepton" ) + "-channel" ).c_str() );
+    leg->AddEntry( data,  ( PlotMgr().GetOption<string>( "data" ) + " data ( #chi^{2} < 20 )" ).c_str(), "lep" );
+    leg->AddEntry( data2, ( PlotMgr().GetOption<string>( "data" ) + " data ( #chi^{2} > 20 )" ).c_str(), "lep" );
+    leg->AddEntry( sumMC, ( PlotMgr().GetOption<string>( "mc" ) + " bkg. MC" ).c_str(),                  "lep" );
 
     mgr::SetNormToUnity( data );
     mgr::SetNormToUnity( data2 );
@@ -326,44 +327,43 @@ TestBGLike( vector<TH1D*> mclst, TH1D* data, TH1D* data2 )
     mgr::SetAxis( sumMC );
 
     mgr::DrawCMSLabelOuter( PRELIMINARY );
-    string lepton = PlotMgr().GetOption<string>("lepton");
+    string lepton = PlotMgr().GetOption<string>( "lepton" );
     mgr::DrawLuminosity( 41500 );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "CompareCS" ) );
-    
 }
 
 extern void
 PlotOpt( vector<TH1D*> cor, vector<TH1D*> misid, vector<TH1D*> mistag )
 {
-    TH1D* sumCor = SumHist( cor );
-    TH1D* sumMisid = SumHist( misid );
+    TH1D* sumCor    = SumHist( cor );
+    TH1D* sumMisid  = SumHist( misid );
     TH1D* sumMistag = SumHist( mistag );
 
-    TCanvas* c = mgr::NewCanvas();
+    TCanvas* c   = mgr::NewCanvas();
     TLegend* leg = mgr::NewLegend( 0.68, 0.57, 0.8, 0.87 );
     leg->SetLineColor( kWhite );
 
-    sumCor->Draw("hist");
-    sumMisid->Draw("hist same");
-    sumMistag->Draw("hist same");
+    sumCor->Draw( "hist" );
+    sumMisid->Draw( "hist same" );
+    sumMistag->Draw( "hist same" );
     leg->Draw();
 
-    sumCor   ->SetLineColor( kAzure - 3 );
-    sumMisid ->SetLineColor( kGreen - 6 );
+    sumCor->SetLineColor( kAzure - 3 );
+    sumMisid->SetLineColor( kGreen - 6 );
     sumMistag->SetLineColor( kMagenta + 2 );
-    sumCor   ->SetLineWidth( 2 );
-    sumMisid ->SetLineWidth( 2 );
+    sumCor->SetLineWidth( 2 );
+    sumMisid->SetLineWidth( 2 );
     sumMistag->SetLineWidth( 2 );
 
     mgr::SetSinglePad( c );
     mgr::SetAxis( sumCor );
-    sumCor->SetMaximum( mgr::GetYmax( sumCor ) * 1.1 ); 
+    sumCor->SetMaximum( mgr::GetYmax( sumCor ) * 1.1 );
     sumCor->GetYaxis()->SetTitle( "Events x 10^{3}" );
     sumCor->GetXaxis()->SetTitle( "M_{lb} [GeV]" );
 
-    leg->AddEntry( sumCor,    "Correct",   "l" );
+    leg->AddEntry( sumCor,    "Correct",        "l" );
     leg->AddEntry( sumMisid,  "Mistidentified", "l" );
-    leg->AddEntry( sumMistag, "Mistag", "l" );
+    leg->AddEntry( sumMistag, "Mistag",         "l" );
 
     mgr::DrawCMSLabelOuter( SIMULATION );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Optimisation" ) );
@@ -384,10 +384,10 @@ PlotOpt( vector<TH1D*> cor, vector<TH1D*> misid, vector<TH1D*> mistag )
     leg2->AddEntry( eff_cor, "Correct type", "l" );
 
     TLine* line = new TLine( 150, 0, 150, 1 );
-    line->Draw("same");
+    line->Draw( "same" );
     line->SetLineColor( kRed - 7 );
     line->SetLineWidth( 2 );
-    
+
     mgr::SetSinglePad( c );
     mgr::SetAxis( eff_cor );
     mgr::DrawCMSLabelOuter( SIMULATION );
@@ -396,19 +396,17 @@ PlotOpt( vector<TH1D*> cor, vector<TH1D*> misid, vector<TH1D*> mistag )
     delete line;
     delete leg;
     delete c;
-
 }
 
-extern TH1D* 
+extern TH1D*
 EffHist( TH1D* num, TH1D* den )
 {
     TH1D* numm = (TH1D*)( num->Clone() );
     TH1D* denn = (TH1D*)( den->Clone() );
     denn->Add( numm );
     numm->Divide( denn );
-    
+
     for( int i = 0; i < numm->GetNcells(); ++i ){
-        
         double N = denn->GetBinContent( i );
         double p = numm->GetBinContent( i );
 
@@ -417,9 +415,9 @@ EffHist( TH1D* num, TH1D* den )
             continue;
         }
 
-        numm->SetBinError( i, TMath::Sqrt( p * ( 1-p ) / N ) );
+        numm->SetBinError( i, TMath::Sqrt( p * ( 1 - p ) / N ) );
     }
-    
+
     return numm;
 }
 
@@ -429,72 +427,71 @@ GetAcp( const vector<string>& mclst )
     TH1D* hist = new TH1D( "hist", "", 4, 0, 4 );
     TH1D* err1 = new TH1D( "err1", "", 4, 0, 4 );
     TH1D* err2 = new TH1D( "err2", "", 4, 0, 4 );
-   
-    string lepton = PlotMgr().GetOption<string>("lepton");
-    lepton =  lepton == "co" ? "el+#mu" : lepton;
-   
+
+    string lepton = PlotMgr().GetOption<string>( "lepton" );
+    lepton = lepton == "co" ? "el+#mu" : lepton;
+
     vector<string> obsentry = {
-        str( boost::format("#bf{O_{3}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{6}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{12}^{%1%}}") % lepton ),
-        str( boost::format("#bf{O_{13}^{%1%}}") % lepton )
+        str( boost::format( "#bf{O_{3}^{%1%}}" ) % lepton ),
+        str( boost::format( "#bf{O_{6}^{%1%}}" ) % lepton ),
+        str( boost::format( "#bf{O_{12}^{%1%}}" ) % lepton ),
+        str( boost::format( "#bf{O_{13}^{%1%}}" ) % lepton )
     };
-    
+
     for( int i = 0; i < 4; i++ ){
-        
-        //TH1D* h = ExtractData( mclst[i] );
-        TH1D* h = SumHist( ExtractMC( mclst[i] ) );
-        double nm  = h->Integral( 0, h->FindBin(0) - 1 );
-        double np  = h->Integral( h->FindBin(0), 201 );
+        // TH1D* h = ExtractData( mclst[i] );
+        TH1D* h    = SumHist( ExtractMC( mclst[ i ] ) );
+        double nm  = h->Integral( 0, h->FindBin( 0 ) - 1 );
+        double np  = h->Integral( h->FindBin( 0 ), 201 );
         double Acp = ( np - nm ) / ( np + nm );
 
-        double err_sq = 4. * np * nm / TMath::Power( (np + nm), 3 );
+        double err_sq = 4. * np * nm / TMath::Power( ( np + nm ), 3 );
         double err    = TMath::Sqrt( err_sq );
- 
-        hist->SetBinContent( i + 1, Acp * 100 );
-        hist->SetBinError  ( i + 1, err * 100 );
-        err1->SetBinContent( i + 1, Acp * 100 );
-        err1->SetBinError  ( i + 1, err * 100 );
-        err2->SetBinContent( i + 1, Acp * 100 );
-        err2->SetBinError  ( i + 1, err * 200 );
-        
-        cout<<"idx "<<i<<endl;
-        cout<<"Acp "<<Acp * 100 << "  "<<err * 100<<endl;
 
-        hist->GetXaxis()->SetBinLabel( i + 1, obsentry[i].c_str() );
+        hist->SetBinContent( i + 1, Acp * 100 );
+        hist->SetBinError( i + 1, err * 100 );
+        err1->SetBinContent( i + 1, Acp * 100 );
+        err1->SetBinError( i + 1, err * 100 );
+        err2->SetBinContent( i + 1, Acp * 100 );
+        err2->SetBinError( i + 1, err * 200 );
+
+        cout << "idx " << i << endl;
+        cout << "Acp " << Acp * 100 << "  " << err * 100 << endl;
+
+        hist->GetXaxis()->SetBinLabel( i + 1, obsentry[ i ].c_str() );
     }
 
     TCanvas* c = mgr::NewCanvas();
     hist->Draw();
-    err2->Draw("E2 same");
-    err1->Draw("E2 same");
-    hist->Draw("EP same");
-    
+    err2->Draw( "E2 same" );
+    err1->Draw( "E2 same" );
+    hist->Draw( "EP same" );
+
     err2->SetFillColor( kYellow );
     err1->SetFillColor( kGreen );
 
-    TLine* line = new TLine( 0, 0, 4, 0);
+    TLine* line = new TLine( 0, 0, 4, 0 );
     line->Draw( "same" );
     line->SetLineColor( kRed );
     line->SetLineWidth( 2 );
-  
+
     TLegend* leg = mgr::NewLegend( 0.65, 0.7, 0.8, 0.87 );
     leg->Draw();
-    leg->AddEntry( hist, "Nominal value", "LEP" );
+    leg->AddEntry( hist, "Nominal value",       "LEP" );
     leg->AddEntry( err1, "1#sigma stat. error", "F" );
     leg->AddEntry( err2, "2#sigma stat. error", "F" );
 
     hist->SetMaximum( ceil( mgr::GetYmax( hist ) ) );
     hist->SetMinimum( -1 * ceil( mgr::GetYmax( hist ) ) );
-    //hist->SetMaximum( 0.4 );
-    //hist->SetMinimum( -0.4 );
-    hist->GetYaxis()->SetTitle("A'_{cp}[%]");
+    // hist->SetMaximum( 0.4 );
+    // hist->SetMinimum( -0.4 );
+    hist->GetYaxis()->SetTitle( "A'_{cp}[%]" );
     hist->GetXaxis()->SetLabelSize( 19 );
-    hist->SetStats(0);
-    
+    hist->SetStats( 0 );
+
     mgr::SetSinglePad( c );
     mgr::SetAxis( hist );
-    //mgr::DrawCMSLabel( PRELIMINARY );
+    // mgr::DrawCMSLabel( PRELIMINARY );
     mgr::DrawCMSLabel( SIMULATION );
     mgr::DrawLuminosity( 41500 );
     mgr::SaveToPDF( c, PlotMgr().GetResultsName( "pdf", "Simulation_Acp" ) );
@@ -503,8 +500,8 @@ GetAcp( const vector<string>& mclst )
 extern double
 GetNorm()
 {
-    TH1D*  h      = ExtractData( "lep_tmass", "CS" );
-    double expected = h->Integral( 1, h->FindBin(150) - 1 );
+    TH1D* h         = ExtractData( "lep_tmass", "CS" );
+    double expected = h->Integral( 1, h->FindBin( 150 ) - 1 );
     double fitted   = PlotMgr().GetOption<double>( "fitted" );
     return fitted / expected;
 }
@@ -513,28 +510,28 @@ extern void
 GetSubtractAcp( const vector<string>& mclst )
 {
     for( int i = 0; i < 4; i++ ){
-        TH1D*  data    = ExtractData( mclst[i] );
-        double data_nm = data->Integral( 0, data->FindBin(0) - 1 );
-        double data_np = data->Integral( data->FindBin(0), 201 );
-        
-        TH1D*  bg      = ExtractData( mclst[i], "CS" );
-        double bg_nm   = bg->Integral( 0, bg->FindBin(0) - 1 );
-        double bg_np   = bg->Integral( bg->FindBin(0), 201 );        
-    
+        TH1D* data     = ExtractData( mclst[ i ] );
+        double data_nm = data->Integral( 0, data->FindBin( 0 ) - 1 );
+        double data_np = data->Integral( data->FindBin( 0 ), 201 );
+
+        TH1D* bg     = ExtractData( mclst[ i ], "CS" );
+        double bg_nm = bg->Integral( 0, bg->FindBin( 0 ) - 1 );
+        double bg_np = bg->Integral( bg->FindBin( 0 ), 201 );
+
         double norm = GetNorm();
         bg_nm *= norm;
         bg_np *= norm;
 
-        cout<<"data_nm "<<data_nm<<endl;
-        cout<<"data_np "<<data_np<<endl;
-        cout<<"bg_nm "<<bg_nm<<endl;
-        cout<<"bg_np "<<bg_np<<endl;
+        cout << "data_nm " << data_nm << endl;
+        cout << "data_np " << data_np << endl;
+        cout << "bg_nm " << bg_nm << endl;
+        cout << "bg_np " << bg_np << endl;
 
         data_nm -= bg_nm;
         data_np -= bg_np;
-        
+
         double Acp = 100 * ( data_np - data_nm ) / ( data_np + data_nm );
-        cout<<"idx "<<i<<endl;
-        cout<<"Acp "<<Acp<<endl;
+        cout << "idx " << i << endl;
+        cout << "Acp " << Acp << endl;
     }
 }

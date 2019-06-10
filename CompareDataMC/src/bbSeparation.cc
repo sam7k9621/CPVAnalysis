@@ -9,7 +9,7 @@ extern void
 bbSeparation()
 {
     // Initialize file
-    string lepton            = CompMgr().GetOption<string>("lepton");
+    string lepton            = CompMgr().GetOption<string>( "lepton" );
     string sample            = CompMgr().GetOption<string>( "sample" );
     vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
     TChain* ch               = new TChain( "root" );
@@ -20,7 +20,7 @@ bbSeparation()
 
     CompMgr().AddSample( sample, ch );
     AddHist();
-    
+
     // Register reco sample
     Int_t jet1;
     Int_t jet2;
@@ -31,12 +31,12 @@ bbSeparation()
     Float_t had_tmass;
     Float_t lep_tmass;
 
-    ch->SetBranchAddress( "jet1", &jet1 );
-    ch->SetBranchAddress( "jet2", &jet2 );
-    ch->SetBranchAddress( "had_b", &had_b );
-    ch->SetBranchAddress( "lep_b", &lep_b );
-    ch->SetBranchAddress( "lep", &lep );
-    ch->SetBranchAddress( "chi2mass", &chi2mass );
+    ch->SetBranchAddress( "jet1",      &jet1 );
+    ch->SetBranchAddress( "jet2",      &jet2 );
+    ch->SetBranchAddress( "had_b",     &had_b );
+    ch->SetBranchAddress( "lep_b",     &lep_b );
+    ch->SetBranchAddress( "lep",       &lep );
+    ch->SetBranchAddress( "chi2mass",  &chi2mass );
     ch->SetBranchAddress( "had_tmass", &had_tmass );
     ch->SetBranchAddress( "lep_tmass", &lep_tmass );
 
@@ -57,6 +57,7 @@ bbSeparation()
                 continue;
             }
         }
+
         /*******************************************************************************
         *  bbSeparation / Optimisation
         *******************************************************************************/
@@ -83,10 +84,9 @@ bbSeparation()
             }
 
             CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass );
-        } 
+        }
     }
-    
+
     StoreCompare();
     delete ch;
-
 }
