@@ -126,13 +126,14 @@ Histor::BtagScaleFactorDn( BTagEntry::OperatingPoint op, const int& idx )
 {
     return _sample->BtagScaleFactorDn( op, idx );
 }
+
 double
 Histor::GetSF( TH2D* hist, const int& idx )
 {
     return _sample->GetSFTH2( hist, idx );
 }
 
-double 
+double
 Histor::GetSFUp( TH2D* hist, const int& idx )
 {
     return _sample->GetSFTH2Up( hist, idx );
@@ -151,14 +152,14 @@ Histor::GetSFHist( const string& tag )
     string title    = mgr::GetSingle<string>( "title", GetSubTree( tag ) );
 
     TFile* f = TFile::Open( filename.c_str() );
-    TH2D* h   = (TH2D*)( f->Get( title.c_str() )->Clone() );
+    TH2D* h  = (TH2D*)( f->Get( title.c_str() )->Clone() );
     h->SetDirectory( 0 );
     f->Close();
 
     return h;
 }
 
-double 
+double
 Histor::TopPtWeight()
 {
     return _sample->TopPtWeight();

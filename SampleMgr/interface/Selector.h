@@ -35,24 +35,25 @@ class Selector : public mgr::Pathmgr,
 
         float LJetPt()
         {
-            _sample->SetIndex(0);
+            _sample->SetIndex( 0 );
             return _sample->JetPt();
         }
+
         float LLepPt()
         {
-            _sample->SetIndex(0);
+            _sample->SetIndex( 0 );
             return _sample->LepPt();
         }
 
-        float  GenWeight(){ return _sample->GenWeight(); }
-        float  GetPUWeight(){ return _sample->GetPUWeight(); }
-        float  GetPUWeightUp(){ return _sample->GetPUWeightUp(); }
-        float  GetPUWeightDn(){ return _sample->GetPUWeightDn(); }
-        void   RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
-        void InitJES(){ _sample->InitJES(); }
-        void SetPDFUnc   ( float&, float& );
-        void SetMuFMuRUnc( float* );
-        void SetME_PSUnc( float&, float& );
+        float GenWeight()                 { return _sample->GenWeight(); }
+        float GetPUWeight()               { return _sample->GetPUWeight(); }
+        float GetPUWeightUp()             { return _sample->GetPUWeightUp(); }
+        float GetPUWeightDn()             { return _sample->GetPUWeightDn(); }
+        void  RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
+        void  InitJES()                   { _sample->InitJES(); }
+        void  SetPDFUnc( float&, float& );
+        void  SetMuFMuRUnc( float* );
+        void  SetME_PSUnc( float&, float& );
 
         /*******************************************************************************
         *   Pre-selection
@@ -73,22 +74,22 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Full-selection
         *******************************************************************************/
-        bool                            PassFullEl( std::vector<int>& );
-        bool                            PassFullMu( std::vector<int>& );
-        bool                            PassFullCREl( std::vector<int>& );
-        bool                            PassFullCRMu( std::vector<int>& );
-        
-        bool                            PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
-        bool                            PassFullCRJet( std::vector<int>&, std::vector<int>&, const int& );
-        bool                            PassFullCR2Jet( std::vector<int>&, std::vector<int>&, const int& );
+        bool PassFullEl( std::vector<int>& );
+        bool PassFullMu( std::vector<int>& );
+        bool PassFullCREl( std::vector<int>& );
+        bool PassFullCRMu( std::vector<int>& );
+
+        bool                                      PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullCRJet( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullCR2Jet( std::vector<int>&, std::vector<int>&, const int& );
         std::tuple<double, double, int, int, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
-        double                          GetLeptonicM( const int&, const int& );
+        double                                    GetLeptonicM( const int&, const int& );
 
         /*******************************************************************************
         *   Looping event
         *******************************************************************************/
-        void   process( const int&, const int& );
-        void   ChangeFile( const std::string& );
+        void process( const int&, const int& );
+        void ChangeFile( const std::string& );
 
     private:
 

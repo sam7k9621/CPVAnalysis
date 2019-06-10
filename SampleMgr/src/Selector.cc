@@ -1,6 +1,6 @@
+#include "CPVAnalysis/SampleMgr/interface/Selector.h"
 #include <algorithm>
 #include <math.h>
-#include "CPVAnalysis/SampleMgr/interface/Selector.h"
 
 using namespace std;
 
@@ -59,30 +59,33 @@ bool
 Selector::OptionContent( const string& opt, const string& content )
 {
     if( CheckOption( opt ) ){
-        if( GetOption<string>( opt ) == content )
+        if( GetOption<string>( opt ) == content ){
             return true;
+        }
     }
 
     return false;
 }
 
+void
+Selector::SetME_PSUnc( float& up, float& dn )
+{
+    up = _sample->LHESystematicWeights( 245 );
+    dn = _sample->LHESystematicWeights( 236 );
+}
 
-  void Selector::SetME_PSUnc( float& up, float& dn )
- {
-     up = _sample->LHESystematicWeights( 245 );
-     dn = _sample->LHESystematicWeights( 236 );
- }
+void
+Selector::SetMuFMuRUnc( float* unclst )
+{
+    // https://twiki.cern.ch/twiki/bin/view/CMS/LHEReaderCMSSW
+    // http://www.hep.wisc.edu/~nsmith/llvvAnalysis/lheWeights_Signal.txt
+    for( int i = 0; i < 9; i++ ){
+        unclst[ i ] = _sample->LHESystematicWeights( i );
+    }
+}
 
-  void Selector::SetMuFMuRUnc( float* unclst )
- {
-     //https://twiki.cern.ch/twiki/bin/view/CMS/LHEReaderCMSSW
-     //http://www.hep.wisc.edu/~nsmith/llvvAnalysis/lheWeights_Signal.txt
-     for( int i = 0; i < 9; i++){
-         unclst[i] = _sample->LHESystematicWeights( i );
-     }
- }
-
- void Selector::SetPDFUnc( float& up, float& dn )
+void
+Selector::SetPDFUnc( float& up, float& dn )
 {
     // https://indico.cern.ch/event/494682/contributions/1172505/attachments/1223578/1800218/mcaod-Feb15-2016.pdf
     up = 0;
@@ -90,8 +93,8 @@ Selector::OptionContent( const string& opt, const string& content )
     int count_up = 0;
     int count_dn = 0;
 
-     // 9-108 PDF set
-    for(int i =9; i<109; i++){ 
+    // 9-108 PDF set
+    for( int i = 9; i < 109; i++ ){
         float unc = _sample->LHESystematicWeights( i );
         if( unc >= 1 ){
             up += ( unc * unc );
@@ -103,12 +106,12 @@ Selector::OptionContent( const string& opt, const string& content )
         }
     }
 
-     up = fabs( 1 - sqrt( up / count_up ) );
+    up = fabs( 1 - sqrt( up / count_up ) );
     dn = fabs( 1 - sqrt( dn / count_dn ) );
 
-     // 109 as_0117
+    // 109 as_0117
     // 110 as_0119
-    for( int i = 109; i<111; i++){
+    for( int i = 109; i < 111; i++ ){
         float unc = fabs( 1 - _sample->LHESystematicWeights( i ) );
         if( unc >= 0 ){
             up += ( unc * unc );
@@ -118,10 +121,9 @@ Selector::OptionContent( const string& opt, const string& content )
         }
     }
 
-     up = 1 + up;
+    up = 1 + up;
     dn = 1 - dn;
 }
-
 
 /*******************************************************************************
 *   Pre-selection
@@ -132,7 +134,7 @@ Selector::IsGoodEvt( checkEvtTool& evt )
     return _sample->IsGoodEvt( evt );
 }
 
-void 
+void
 Selector::JECCorrUp()
 {
     _sample->JECUp();
@@ -172,6 +174,7 @@ Selector::PassVertex()
             return true;
         }
     }
+
     return false;
 }
 
@@ -185,13 +188,15 @@ bool
 Selector::PreJet()
 {
     int count = 0;
-    for( int i = 0; i< _sample->Jsize(); i++ ){
+
+    for( int i = 0; i < _sample->Jsize(); i++ ){
         _sample->SetIndex( i );
 
         if( _sample->IsPreSelJet() ){
             count++;
         }
     }
+
     return count >= 4;
 }
 
@@ -199,6 +204,7 @@ bool
 Selector::PreLep()
 {
     int count = 0;
+
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
@@ -257,7 +263,7 @@ Selector::PassFullMu( vector<int>& lepidx )
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
-        if(  _sample->IsTightMu() ){
+        if( _sample->IsTightMu() ){
             lepidx.push_back( i );
             continue;
         }
@@ -276,7 +282,7 @@ Selector::PassFullCRMu( vector<int>& lepidx )
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
-        if(  _sample->IsTightMu() ){
+        if( _sample->IsTightMu() ){
             lepidx.push_back( i );
             continue;
         }
@@ -325,7 +331,7 @@ bool
 Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
     // list of index, csv value
-    vector< tuple<int, float> > jetlst;
+    vector<tuple<int, float> > jetlst;
 
     for( int j = 0; j < _sample->Jsize(); j++ ){
         _sample->SetIndex( j );
@@ -344,29 +350,29 @@ Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& l
             continue;
         }
 
-        jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );    
+        jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );
     }
-    
+
     if( jetlst.size() < 4 ){
         return false;
     }
 
-    //https://stackoverflow.com/questions/23030267/custom-sorting-a-vector-of-tuples
-    std::sort( 
-        begin(jetlst),
-        end(jetlst),
-        [](  const auto& t1, const auto& t2 ){
-            return get<1>(t1) < get<1>(t2);
-        }
-    );
+    // https://stackoverflow.com/questions/23030267/custom-sorting-a-vector-of-tuples
+    std::sort(
+        begin( jetlst ),
+        end( jetlst ),
+        [ ]( const auto& t1, const auto& t2 ){
+        return get<1>( t1 ) < get<1>( t2 );
+    }
+        );
 
-    //define the 2 max CSV value index as bjet
+    // define the 2 max CSV value index as bjet
     bjetidx.push_back( get<0>( jetlst.back() ) );
     jetlst.pop_back();
     bjetidx.push_back( get<0>( jetlst.back() ) );
     jetlst.pop_back();
 
-    for(const auto& j : jetlst ){
+    for( const auto& j : jetlst ){
         jetidx.push_back( get<0>( j ) );
     }
 
@@ -409,11 +415,13 @@ std::tuple<double, double, int, int, int>
 Selector::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
 {
     vector<TLorentzVector> jethandle;
+
     for( const auto& j : jetidx ){
         jethandle.push_back( _sample->GetJetP4( j ) );
     }
 
     vector<TLorentzVector> bjethandle;
+
     for( const auto& b : bjetidx ){
         bjethandle.push_back( _sample->GetJetP4( b ) );
     }
@@ -421,9 +429,9 @@ Selector::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
     // Mass constrain method - find hadronic b
     double chi2mass  = INT_MAX;
     double had_tmass = 0;
-    int    had_b     = -1;
-    int    jet1      = -1;
-    int    jet2      = -1;
+    int had_b        = -1;
+    int jet1         = -1;
+    int jet2         = -1;
 
     for( unsigned int i = 0; i < jethandle.size(); i++ ){
         for( unsigned int j = ( i + 1 ); j < jethandle.size(); j++ ){
@@ -456,10 +464,10 @@ Selector::GetLeptonicM( const int& lidx, const int& bidx )
     return ( lep + bjet ).M();
 }
 
-void 
+void
 Selector::LeptonECorr()
 {
-    for( int i=0; i < _sample->Lsize(); i++ ){
+    for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
         _sample->ElEnergyCorr();
     }

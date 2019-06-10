@@ -17,7 +17,7 @@ CheckAcp()
 
     CompMgr().AddSample( sample, ch );
     AddHist();
-    
+
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
     bool is_data = ( sample == "Data" ) ? 1 : 0;
@@ -30,16 +30,16 @@ CheckAcp()
         *  Gen-level Acp
         *******************************************************************************/
         if( !is_data ){
-            
-            int genbidx    = CompMgr().GetGenJet(5);
-            int genbbaridx = CompMgr().GetGenJet(-5);
+            int genbidx    = CompMgr().GetGenJet( 5 );
+            int genbbaridx = CompMgr().GetGenJet( -5 );
             int genlepidx  = CompMgr().GetGenLepton();
             int genjetidx  = CompMgr().GetGenHardJet();
 
             int mccharge = CompMgr().GetPdgID( genlepidx ) > 0 ? -1 : 1;
             // non-matched gen-level
-            if( genbidx == -1 || genbbaridx == -1 || genlepidx == -1 || genjetidx == -1 )
+            if( genbidx == -1 || genbbaridx == -1 || genlepidx == -1 || genjetidx == -1 ){
                 continue;
+            }
 
             TLorentzVector mcbjet    = CompMgr().GetGenP4( genbidx );
             TLorentzVector mcbbarjet = CompMgr().GetGenP4( genbbaridx );
@@ -48,7 +48,7 @@ CheckAcp()
 
             // In Lab frame
             double mco13 = Obs13( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
-            double mco6  = Obs6 ( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco6  = Obs6( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
             double mco12 = Obs12( mcbjet.Vect(), mcbbarjet.Vect() );
 
             // In bbar CM frame
@@ -57,15 +57,15 @@ CheckAcp()
             mcbbarjet.Boost( mcbbCM );
             mcisolep.Boost( mcbbCM );
             mchardjet.Boost( mcbbCM );
-            
+
             double mco3 = Obs3( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
 
             CompMgr().Hist( "GenObs12" )->Fill( mco12 / 1000000. );
-            CompMgr().Hist( "GenObs6" ) ->Fill( mco6 / 1000000. );
+            CompMgr().Hist( "GenObs6" )->Fill( mco6 / 1000000. );
             CompMgr().Hist( "GenObs13" )->Fill( mco13 / 1000000. );
-            CompMgr().Hist( "GenObs3" ) ->Fill( mco3 / 1000000. );
-    
-            //CompMgr().DumpEvtInfo();
+            CompMgr().Hist( "GenObs3" )->Fill( mco3 / 1000000. );
+
+            // CompMgr().DumpEvtInfo();
         }
     }
 

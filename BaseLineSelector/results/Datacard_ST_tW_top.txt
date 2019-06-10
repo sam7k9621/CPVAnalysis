@@ -1,0 +1,5 @@
+ST_tW_top
+Number of events = 7743114
+Sum of Positive weights = 7713391
+Sum of Negative weights = 29723
+Effective number of events = 7683668

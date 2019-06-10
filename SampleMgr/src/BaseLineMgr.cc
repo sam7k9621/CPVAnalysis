@@ -1,8 +1,8 @@
 #include "CPVAnalysis/SampleMgr/interface/BaseLineMgr.h"
 #include <climits>
 #include <iostream>
-#include <string>
 #include <random>
+#include <string>
 using namespace std;
 using namespace mgr;
 
@@ -13,7 +13,7 @@ BaseLineMgr::BaseLineMgr( const string& sample ) :
     Hist2DMgr( sample ),
     HistMgr( sample )
 {
-    _calib = NULL;
+    _calib  = NULL;
     _jecUnc = NULL;
 }
 
@@ -30,30 +30,34 @@ BaseLineMgr::MatchType
 BaseLineMgr::bbSeparation( const int& had_b, const int& lep_b, const int& lep )
 {
     // hadronic b charge equals to muon, and vice versa
-    int genbidx    = FindJet(5);
-    int genbbaridx = FindJet(-5);
-   
-    if( genbidx == -1 || genbbaridx == -1 )
+    int genbidx    = FindJet( 5 );
+    int genbbaridx = FindJet( -5 );
+
+    if( genbidx == -1 || genbbaridx == -1 ){
         return Nomatched;
+    }
 
     float charge = GetLepCharge( lep );
 
     int recobidx    = charge > 0 ? MCTruthJet( lep_b ) : MCTruthJet( had_b );
     int recobbaridx = charge > 0 ? MCTruthJet( had_b ) : MCTruthJet( lep_b );
 
-    if( recobidx == -1 || recobbaridx == -1 )
+    if( recobidx == -1 || recobbaridx == -1 ){
         return Nomatched;
+    }
 
-    if( 
-        genbidx == recobidx && 
-        genbbaridx == recobbaridx 
-        ){
+    if(
+        genbidx == recobidx &&
+        genbbaridx == recobbaridx
+        )
+    {
         return Correct;
     }
     else if(
-        genbidx == recobbaridx && 
-        genbbaridx == recobidx  
-        ){
+        genbidx == recobbaridx &&
+        genbbaridx == recobidx
+        )
+    {
         return Misid;
     }
     else{
@@ -98,9 +102,9 @@ BaseLineMgr::IsWellMatched( const double& res )
 {
     // To avoid pile-up jet
     // (compare genjet and jet)
-    double deta      = JetEta() - GenJetEta();
-    double dphi      = Phi_mpi_pi( (double)( JetPhi() - GenJetPhi() ) );
-    double delR      = TMath::Sqrt( deta * deta + dphi * dphi );
+    double deta = JetEta() - GenJetEta();
+    double dphi = Phi_mpi_pi( (double)( JetPhi() - GenJetPhi() ) );
+    double delR = TMath::Sqrt( deta * deta + dphi * dphi );
 
     if( delR >= 0.4 / 2. ){
         return false;
@@ -115,8 +119,8 @@ BaseLineMgr::IsWellMatched( const double& res )
 double
 BaseLineMgr::MakeScaled( const double& ressf )
 {
-    const double newpt    = std::max( 0.0, GenJetPt() + ressf*( JetPt() - GenJetPt() ) );
-    const double scale    = newpt / JetPt();
+    const double newpt = std::max( 0.0, GenJetPt() + ressf * ( JetPt() - GenJetPt() ) );
+    const double scale = newpt / JetPt();
 
     return scale;
 }
@@ -130,15 +134,15 @@ BaseLineMgr::MakeSmeared( const double& ressf, const double& res )
     // Generating random number
     // https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h
     std::normal_distribution<> myrand( 0, width );
-    std::uint32_t seed = 37428479;
-    std::mt19937 m_random_generator = std::mt19937(seed);
-    //std::default_random_engine gen( bitconv( JetPhi() ) );
+    std::uint32_t seed              = 37428479;
+    std::mt19937 m_random_generator = std::mt19937( seed );
+    // std::default_random_engine gen( bitconv( JetPhi() ) );
 
-    double scale =  1. + myrand( m_random_generator );
+    double scale = 1. + myrand( m_random_generator );
     if( scale <= 0 || ::isnan( scale ) ){
         return 1;
-    } 
-    else {
+    }
+    else{
         return scale;
     }
 }
@@ -147,12 +151,13 @@ void
 BaseLineMgr::JECDn()
 {
     int js = Jsize();
+
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
         TLorentzVector jetp4 = GetJetP4( i );
-        _jecUnc->setJetPt ( jetp4.Pt()  );
+        _jecUnc->setJetPt( jetp4.Pt() );
         _jecUnc->setJetEta( jetp4.Eta() );
-        double unc = _jecUnc->getUncertainty(true);
+        double unc = _jecUnc->getUncertainty( true );
         jetp4 *= ( 1 - unc );
         SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
@@ -162,12 +167,13 @@ void
 BaseLineMgr::JECUp()
 {
     int js = Jsize();
+
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
         TLorentzVector jetp4 = GetJetP4( i );
-        _jecUnc->setJetPt ( jetp4.Pt()  );
+        _jecUnc->setJetPt( jetp4.Pt() );
         _jecUnc->setJetEta( jetp4.Eta() );
-        double unc = _jecUnc->getUncertainty(true);
+        double unc = _jecUnc->getUncertainty( true );
         jetp4 *= ( 1 + unc );
         SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
@@ -182,7 +188,7 @@ BaseLineMgr::JERCorr()
         double ressf = JERScale();
         double res   = JERPt();
         double scale = 1.;
-     
+
         if( IsWellMatched( res ) ){
             scale = MakeScaled( ressf );
         }
@@ -195,6 +201,7 @@ BaseLineMgr::JERCorr()
         SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
 }
+
 void
 BaseLineMgr::JERCorrDn()
 {
@@ -269,7 +276,7 @@ BaseLineMgr::IsSelJet()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::IsPreSelJet()
 {
     return PassJetLooseID() &&
@@ -290,7 +297,7 @@ BaseLineMgr::PassCS2BJet()
     return JetCSV() < 0.8838 && JetCSV() > 0.5803;
 }
 
-bool 
+bool
 BaseLineMgr::RejectBJet()
 {
     return JetCSV() < 0.5803;
@@ -334,9 +341,9 @@ BaseLineMgr::IsLooseMu()
 bool
 BaseLineMgr::IsCRLooseMu()
 {
-    //removing PF isolation cut
+    // removing PF isolation cut
     return PassMuLooseID() &&
-           PassMuLooseKinematic() 
+           PassMuLooseKinematic()
     ;
 }
 
@@ -378,17 +385,17 @@ BaseLineMgr::IsTightMu()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::IsPreTightMu()
 {
     return PassMuTightID() &&
-           PassMuTightKinematic() 
+           PassMuTightKinematic()
     ;
 }
 
 /*******************************************************************************
 *   Electron selection
-*******************************************************************************/    
+*******************************************************************************/
 bool
 BaseLineMgr::PassImpactParameter()
 {
@@ -473,7 +480,7 @@ BaseLineMgr::IsTightEl()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::IsPreTightEl()
 {
     return PassImpactParameter() &&

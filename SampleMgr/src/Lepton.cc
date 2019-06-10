@@ -23,7 +23,7 @@ namespace mgr{
         return fabs( _lep.Eta[ _idx ] );
     }
 
-    float 
+    float
     SampleMgr::rho()
     {
         return _evt.Rho;
@@ -116,14 +116,14 @@ namespace mgr{
     *   https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Cut_Based_Electron_ID_for_Run_2
     *   https://github.com/ntuhep/bprimeKit/blob/master/src/LeptonNtuplizer_Electron.cc#L101
     *******************************************************************************/
-    //https://github.com/cms-sw/cmssw/blob/CMSSW_9_4_X/RecoEgamma/ElectronIdentification/python/Identification/cutBasedElectronID_Fall17_94X_V2_cff.py
+    // https://github.com/cms-sw/cmssw/blob/CMSSW_9_4_X/RecoEgamma/ElectronIdentification/python/Identification/cutBasedElectronID_Fall17_94X_V2_cff.py
     bool
     SampleMgr::ElIDLoose()
     {
         return _lep.EgammaCutBasedEleIdLOOSE[ _idx ];
     }
 
-    bool 
+    bool
     SampleMgr::ElIDTight()
     {
         return _lep.EgammaCutBasedEleIdTIGHT[ _idx ];
@@ -132,56 +132,56 @@ namespace mgr{
     bool
     SampleMgr::ElIDCRTight()
     {
-        //removing PF isolation cut
+        // removing PF isolation cut
         if( LepAbsEta() <= 1.479 ){
-            return (
-            ElsigmaIetaIeta() < 0.0104 &&
-            fabs( EldEtaInSeed() ) < 0.00255 &&
-            fabs( EldPhiIn() ) < 0.022 &&
-            ElGsfEleHadronicOverEMCut() < 0.026 + 1.15 / EnergySC() + 0.0324 * rho() / EnergySC() &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.159 &&
-            ElNumberOfExpectedInnerHits() <= 1 &&
-            !ElhasConv() 
-            );
+            return
+                ElsigmaIetaIeta() < 0.0104 &&
+                fabs( EldEtaInSeed() ) < 0.00255 &&
+                fabs( EldPhiIn() ) < 0.022 &&
+                ElGsfEleHadronicOverEMCut() < 0.026 + 1.15 / EnergySC() + 0.0324 * rho() / EnergySC() &&
+                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.159 &&
+                ElNumberOfExpectedInnerHits() <= 1 &&
+                !ElhasConv()
+            ;
         }
-        else{  //absEta > 1.479
-            return (
-            ElsigmaIetaIeta() < 0.0353 &&
-            fabs( EldEtaInSeed() ) < 0.00501 &&
-            fabs( EldPhiIn() ) < 0.0236 &&
-            ElGsfEleHadronicOverEMCut() < 0.0188 + 2.06 / EnergySC() + 0.183 * rho() / EnergySC() &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0197 &&
-            ElNumberOfExpectedInnerHits() <= 1 &&
-            !ElhasConv() 
-            );
+        else{// absEta > 1.479
+            return
+                ElsigmaIetaIeta() < 0.0353 &&
+                fabs( EldEtaInSeed() ) < 0.00501 &&
+                fabs( EldPhiIn() ) < 0.0236 &&
+                ElGsfEleHadronicOverEMCut() < 0.0188 + 2.06 / EnergySC() + 0.183 * rho() / EnergySC() &&
+                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0197 &&
+                ElNumberOfExpectedInnerHits() <= 1 &&
+                !ElhasConv()
+            ;
         }
     }
 
-    bool 
+    bool
     SampleMgr::ElIDCRLoose()
     {
-        //removing PF isolation cut
+        // removing PF isolation cut
         if( LepAbsEta() <= 1.479 ){
-            return (
-            ElsigmaIetaIeta() < 0.0112 &&
-            fabs( EldEtaInSeed() ) < 0.00377 &&
-            fabs( EldPhiIn() ) < 0.0884 &&
-            ElGsfEleHadronicOverEMCut() < 0.005 + 1.16 / EnergySC() + 0.0324 * rho() / EnergySC() &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.193 &&
-            ElNumberOfExpectedInnerHits() <= 1 &&
-            !ElhasConv() 
-            );
+            return
+                ElsigmaIetaIeta() < 0.0112 &&
+                fabs( EldEtaInSeed() ) < 0.00377 &&
+                fabs( EldPhiIn() ) < 0.0884 &&
+                ElGsfEleHadronicOverEMCut() < 0.005 + 1.16 / EnergySC() + 0.0324 * rho() / EnergySC() &&
+                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.193 &&
+                ElNumberOfExpectedInnerHits() <= 1 &&
+                !ElhasConv()
+            ;
         }
-        else{  //absEta > 1.479
-            return (
-            ElsigmaIetaIeta() < 0.0425 &&
-            fabs( EldEtaInSeed() ) < 0.00674 &&
-            fabs( EldPhiIn() ) < 0.169 &&
-            ElGsfEleHadronicOverEMCut() < 0.0441 + 2.54 / EnergySC() + 0.183 * rho() / EnergySC() &&
-            fabs( GsfEleEInverseMinusPInverseCut() ) < 0.111 &&
-            ElNumberOfExpectedInnerHits() <= 1 &&
-            !ElhasConv() 
-            );
+        else{// absEta > 1.479
+            return
+                ElsigmaIetaIeta() < 0.0425 &&
+                fabs( EldEtaInSeed() ) < 0.00674 &&
+                fabs( EldPhiIn() ) < 0.169 &&
+                ElGsfEleHadronicOverEMCut() < 0.0441 + 2.54 / EnergySC() + 0.183 * rho() / EnergySC() &&
+                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.111 &&
+                ElNumberOfExpectedInnerHits() <= 1 &&
+                !ElhasConv()
+            ;
         }
     }
 
@@ -197,7 +197,7 @@ namespace mgr{
         return fabs( _lep.ElTrackDxy[ _idx ] );
     }
 
-    float 
+    float
     SampleMgr::ElsigmaIetaIeta()
     {
         return _lep.SigmaIetaIeta[ _idx ];
@@ -209,13 +209,13 @@ namespace mgr{
         return _lep.EldeltaPhiSeed[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::EldPhiIn()
     {
         return _lep.EldeltaPhi[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::ElGsfEleHadronicOverEMCut()
     {
         return _lep.ElHadoverEm[ _idx ];
@@ -225,8 +225,8 @@ namespace mgr{
     SampleMgr::GsfEleEInverseMinusPInverseCut()
     {
         const float ecal_energy_inverse = 1.0 / _lep.ElEcalE[ _idx ];
-        const float eSCoverP = _lep.ElEoverP[ _idx ];
-        return std::fabs(1.0 - eSCoverP)*ecal_energy_inverse;
+        const float eSCoverP            = _lep.ElEoverP[ _idx ];
+        return std::fabs( 1.0 - eSCoverP ) * ecal_energy_inverse;
     }
 
     float
@@ -235,12 +235,12 @@ namespace mgr{
         return _lep.NumberOfExpectedInnerHits[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::EnergySC()
     {
         return _lep.EnergySC[ _idx ];
     }
-    
+
     bool
     SampleMgr::ElhasConv()
     {
@@ -253,11 +253,10 @@ namespace mgr{
         return _lep.PFIsoRhoCorrR03[ _idx ] / _lep.Pt[ _idx ];
     }
 
-    void 
+    void
     SampleMgr::ElEnergyCorr()
     {
-        for( int i = 0; i < Lsize(); i++ ){ 
-            
+        for( int i = 0; i < Lsize(); i++ ){
             if( _lep.LeptonType[ _idx ] == 11 ){
                 float pt = _lep.Pt[ _idx ];
                 _lep.Pt[ _idx ] = pt * _lep.ElEnergyCorrFactor[ _idx ];

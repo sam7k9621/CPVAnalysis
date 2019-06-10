@@ -5,8 +5,8 @@ using namespace std;
 extern vector<TH1D*>
 ExtractMC( const string& title )
 {
-     //Extracting MC hist
-    string region = PlotMgr().GetOption<string>("mc");
+    // Extracting MC hist
+    string region              = PlotMgr().GetOption<string>( "mc" );
     vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
     vector<TH1D*> mclst;
 
@@ -14,7 +14,7 @@ ExtractMC( const string& title )
         string file = GetFilename() + "_" + region + ".root";
         file.insert( file.find( "HistMerge" ) + 12, "_" + s );
 
-        cout<<"[ "<<file<<" ]"<<endl;
+        cout << "[ " << file << " ]" << endl;
         TFile* f = TFile::Open( file.c_str() );
         TH1D* h  = (TH1D*)( f->Get( title.c_str() )->Clone() );
         h->SetDirectory( 0 );
@@ -29,8 +29,8 @@ ExtractMC( const string& title )
 extern vector<TH2D*>
 ExtractMC2D( const string& title )
 {
-     //Extracting MC hist
-    string region = PlotMgr().GetOption<string>("mc");
+    // Extracting MC hist
+    string region              = PlotMgr().GetOption<string>( "mc" );
     vector<string> MCsamplelst = PlotMgr().GetListData<string>( "MClst" );
     vector<TH2D*> mclst;
 
@@ -52,14 +52,14 @@ ExtractMC2D( const string& title )
 extern TH1D*
 ExtractData( const string& title, string region )
 {
-     //Extracting Data hist
+    // Extracting Data hist
     if( region == "" ){
-        region = PlotMgr().GetOption<string>("data");
+        region = PlotMgr().GetOption<string>( "data" );
     }
     string file = GetFilename() + "_" + region + ".root";
     file.insert( file.find( "HistMerge" ) + 12, "_Data" );
-    
-    cout<<"[ "<<file<<" ]"<<endl;
+
+    cout << "[ " << file << " ]" << endl;
     TFile* f = TFile::Open( file.c_str() );
     TH1D* h  = (TH1D*)( f->Get( title.c_str() )->Clone() );
     h->SetDirectory( 0 );
@@ -71,7 +71,7 @@ extern string
 GetFilename()
 {
     string filename = PlotMgr().GetResultsName( "", "HistMerge" );
-    auto pos = filename.find( "_region" );
+    auto pos        = filename.find( "_region" );
     if( pos != std::string::npos ){
         filename.erase( filename.begin() + pos, filename.end() );
     }
@@ -90,21 +90,23 @@ GetErrSum( TH1D* hist )
 
     return sqrt( binerror );
 }
+
 extern void
 SetYTitle( TH1* plot )
 {
     const double ymax = plot->GetMaximum();
-    string ytitle = plot->GetYaxis()->GetTitle();
-    
-    int order = 0;
+    string ytitle     = plot->GetYaxis()->GetTitle();
+
+    int order   = 0;
     double loop = ymax;
-    while( (loop / 1000) > 1 ){
+
+    while( ( loop / 1000 ) > 1 ){
         order++;
         loop /= 1000;
     }
-    
-    if(order){
-        ytitle += " x 10^{" + to_string(order*3) + "}";
+
+    if( order ){
+        ytitle += " x 10^{" + to_string( order * 3 ) + "}";
     }
     plot->GetYaxis()->SetTitle( ytitle.c_str() );
 }

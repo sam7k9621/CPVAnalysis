@@ -1,0 +1,5 @@
+DYJets_HT-2500toInf_2
+Number of events = 157467
+Sum of Positive weights = 154130
+Sum of Negative weights = 3337
+Effective number of events = 150793

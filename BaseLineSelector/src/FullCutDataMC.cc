@@ -9,18 +9,21 @@ FullMgr( const string& subdir, const string& json )
     static Selector mgr( subdir, json );
     return mgr;
 }
+
 extern string
-MakeFileName(bool is_data)
+MakeFileName( bool is_data )
 {
-    string pos = "/eos/cms/store/user/pusheng/2017/";
+    string pos      = "/eos/cms/store/user/pusheng/2017/";
     string filename = "";
 
-    if( is_data )
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("lepton") + "_" +FullMgr().GetOption<string>("sample") + ".root" );
-        // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
-    else 
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>("sample") + ".root" );
-        // /eos/cms/store/user/pusheng/files/PreCut_TTbar_7.root
+    if( is_data ){
+        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "lepton" ) + "_" + FullMgr().GetOption<string>( "sample" ) + ".root" );
+    }
+    // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
+    else{
+        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "sample" ) + ".root" );
+    }
+    // /eos/cms/store/user/pusheng/files/PreCut_TTbar_7.root
 
     return filename;
 }
@@ -30,28 +33,28 @@ MakeFullCut()
 {
     // Build new file
     TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
-   
-    std::size_t found = FullMgr().GetOption<string>("sample").find( "Run" );
-    bool is_data = found!=std::string::npos ? true : false;
-    string filename = MakeFileName( is_data );
-    cout<<">> Processing "<<filename<<endl;
-    
+
+    std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
+    bool is_data      = found != std::string::npos ? true : false;
+    string filename   = MakeFileName( is_data );
+    cout << ">> Processing " << filename << endl;
+
     TChain* ch = new TChain( "root" );
     ch->Add( ( filename ).c_str() );
     FullMgr().AddSample( ch );
 
     TTree* newtree = ch->CloneTree( 0 );
-    
+
     // Initialize data
-    string lepton = FullMgr().GetOption<string>("lepton");
+    string lepton   = FullMgr().GetOption<string>( "lepton" );
     vector<int> hlt = FullMgr().GetListData<int>( lepton + "_HLT" );
-    
+
     // Register new branch
     Int_t had_b;
     Int_t lep_b;
     Int_t lep;
     Int_t jet1;
-    Int_t jet2; 
+    Int_t jet2;
     Float_t chi2mass;
     Float_t had_tmass;
     Float_t lep_tmass;
@@ -92,11 +95,11 @@ MakeFullCut()
         /*******************************************************************************
         *  Baseline selection
         *******************************************************************************/
-    
+
         if( !FullMgr().PassHLT( hlt ) ){
             continue;
         }
-   
+
         /*******************************************************************************
         *  Lepton selection
         *******************************************************************************/
@@ -112,7 +115,6 @@ MakeFullCut()
                 }
             }
         }
-
         else if( FullMgr().OptionContent( "lepton", "mu" ) ){
             if( FullMgr().OptionContent( "region", "0bjet" ) ){
                 if( !FullMgr().PassFullCRMu( lepidx ) ){
@@ -125,9 +127,8 @@ MakeFullCut()
                 }
             }
         }
-
         else{
-            cout<<endl<<"[Warning] Should have assigned lepton type"<<endl;
+            cout << endl << "[Warning] Should have assigned lepton type" << endl;
             return;
         }
 
@@ -158,17 +159,17 @@ MakeFullCut()
         /*******************************************************************************
         *  Storing sample
         *******************************************************************************/
-        chi2mass = (Float_t)get<0>( tup );
+        chi2mass  = (Float_t)get<0>( tup );
         had_tmass = (Float_t)get<1>( tup );
-        had_b = get<2>( tup );
-        jet1  = get<3>( tup );
-        jet2  = get<4>( tup );
-        lep_b = had_b ? 0 : 1;
+        had_b     = get<2>( tup );
+        jet1      = get<3>( tup );
+        jet2      = get<4>( tup );
+        lep_b     = had_b ? 0 : 1;
 
         had_b = bjetidx[ had_b ];
         lep_b = bjetidx[ lep_b ];
-        jet1  = jetidx [ jet1  ];
-        jet2  = jetidx [ jet2  ];
+        jet1  = jetidx [ jet1 ];
+        jet2  = jetidx [ jet2 ];
         lep   = lepidx[ 0 ]; // choose leading lepton
 
         lep_tmass = FullMgr().GetLeptonicM( lep, lep_b );

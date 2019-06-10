@@ -14,10 +14,11 @@ extern Selector& FullMgr( const std::string& = "", const string& = "" );
 *******************************************************************************/
 extern void MakePreCut();
 extern bool SetPUWeight( float&, const std::vector<double>& );
+
 /*******************************************************************************
 *   PreCut
 *******************************************************************************/
-extern std::string MakeFileName(bool);
-extern void MakeFullCut();
+extern std::string MakeFileName( bool );
+extern void        MakeFullCut();
 
 #endif
