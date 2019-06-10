@@ -24,7 +24,12 @@ extern void FillObservable(
     const std::map<int, TLorentzVector>&,
     const std::map<int, TLorentzVector>&,
     const std::map<int, TLorentzVector>&,
+<<<<<<< HEAD
     const std::map<int, int>& );
+=======
+    const std::map<int, int>&
+    );
+>>>>>>> d9d5a9391149dd6f16d75117de666b31847eb8b4
 
 extern constexpr unsigned int     StoI( const char*, const int& = 0 );
 extern std::deque<TLorentzVector> CopyEvent( const std::vector<int>&, const std::map<int, TLorentzVector>& );

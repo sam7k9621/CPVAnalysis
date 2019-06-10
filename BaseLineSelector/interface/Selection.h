@@ -6,7 +6,7 @@
 /*******************************************************************************
 *   Global function
 *******************************************************************************/
-extern Selector& PreMgr( const std::string& = "", const string& = "" );
+extern Selector& PreMgr( const std::string&  = "", const string& = "" );
 extern Selector& FullMgr( const std::string& = "", const string& = "" );
 
 /*******************************************************************************
