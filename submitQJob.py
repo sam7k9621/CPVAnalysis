@@ -97,8 +97,7 @@ def main(args):
     filelst = " ".join( outputfilelst )
     log = command.split("-s")[0].rstrip().replace(" ", "_")
     cmd = "nohup ./SentQJob.py -r {} -q {} -i {} > {}.out &".format( opt.maxRunJobs, opt.maxQueJobs, filelst, log )
-    print cmd
-    # os.system( cmd )
+    os.system( cmd )
     print "DONE"
 
 if __name__ == '__main__':
