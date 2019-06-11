@@ -50,24 +50,13 @@ def main(args):
             version = len([name for name in os.listdir( path ) if re.search( d + "_[0-9]+.txt", name ) ])
             number = 0.0
             
-            #####
-            if not version:
-                filename = path + "Datacard_" + d + ".txt"
-                with open(filename) as f:
+            for i in range( version ) :
+                filename = path +  "Datacard_" + d + "_" + str(i) + ".txt"
+                with open(filename) as f :
                     content = f.readlines()
-                content = [x.strip() for x in content ]
+                content = [ x.strip() for x in content ]
                 number += float(content[4].split("=")[1])
                 f.close()
-
-            #####
-            else:
-                for i in range( version ) :
-                    filename = path +  "Datacard_" + d + "_" + str(i) + ".txt"
-                    with open(filename) as f :
-                        content = f.readlines()
-                    content = [ x.strip() for x in content ]
-                    number += float(content[4].split("=")[1])
-                    f.close()
 
             outputfile.write( d + "\n" )
             outputfile.write("Effective events : {}\n ".format( number ))
