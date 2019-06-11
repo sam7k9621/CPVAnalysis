@@ -17,7 +17,7 @@ MakeFileName( bool is_data )
     string filename = "";
 
     if( is_data ){
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "lepton" ) + "_" + FullMgr().GetOption<string>( "sample" ) + ".root" );
+        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "sample" ) + ".root" );
     }
     // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
     else{

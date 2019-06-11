@@ -22,7 +22,7 @@ mclst = [
         ( 1, "QCD_HT300to500"),
         ( 1, "QCD_HT500to700"),
         ( 1, "QCD_HT700to1000"),
-        ( 1, "QCD_HT2000toInf_1"),
+        ( 1, "QCD_HT2000toInf"),
         ( 1, "ST_s-channel"),
         ( 1, "ST_t-channel_antitop"),
         ( 1, "ST_t-channel_top"),
@@ -118,7 +118,7 @@ def main(args):
 
     for sample, tag in samplelst:
         if tag[0] == 1:
-            content[ tag[1] ] = { "path" : opt.dir + sample + "/*.root" }
+            content[ tag[1] + "_0" ] = { "path" : opt.dir + sample + "/*.root" }
         elif tag[0] < 10:
             for i in range( tag[0] ):
                 content[ tag[1] + "_{}".format( str( i ) ) ] = { "path" : opt.dir + sample + "/*{}.root".format( SplitFile( tag[0] )[i] ) }
