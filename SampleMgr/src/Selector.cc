@@ -327,7 +327,8 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
             mask <<= 1;
         }
 
-        if( _sample->PassMediumBJet() ){
+        //if( _sample->PassCSVM() ){
+        if( _sample->PassDeepCSVM() ){
             mask <<= 2;
         }
 
@@ -352,7 +353,8 @@ Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const 
         _sample->SetIndex( j );
 
         // Rejecting events containing any loose b-tagged jet
-        if( _sample->PassLooseBJet() ){
+        //if( _sample->PassCSVL() ){
+        if( _sample->PassDeepCSVL() ){
             return false;
         }
 
@@ -365,7 +367,8 @@ Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const 
             continue;
         }
 
-        jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );
+        //jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );
+        jetlst.push_back( make_tuple( j, _sample->JetDeepCSV() ) );
     }
 
     if( jetlst.size() < 4 ){
@@ -398,24 +401,25 @@ bool
 Selector::PassFullJet_CRQCD( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
     // list of index, csv value
-    vector<tuple<int, float, bool> > jetlst;
+    vector<tuple<int, float> > jetlst;
 
+    int bjet_count = 0;
     for( int j = 0; j < _sample->Jsize(); j++ ){
         _sample->SetIndex( j );
 
         if( !_sample->IsSelJet() ){
             continue;
         }
-
-        jetlst.push_back( make_tuple( j, _sample->JetCSV(), _sample->PassLooseBJet() ) );
+        
+        //if( _sample->PassCSVL() ){
+        if( _sample->PassDeepCSVL() ){
+            bjet_count++;
+        }
+        //jetlst.push_back( make_tuple( j, _sample->JetCSV() ) );
+        jetlst.push_back( make_tuple( j, _sample->JetDeepCSV() ) );
     }
 
-    if( jetlst.size() < 4 ){
-        return false;
-    }
-
-    // reject event with more than 2 b-jets
-    if( std::count_if( jetlst.begin(), jetlst.end(), []( const auto& t ){ return get<2>( t ); } ) >= 2 ){
+    if( jetlst.size() < 4 || bjet_count >= 2 ){
         return false;
     }
 

@@ -41,14 +41,17 @@ Histor::PassISOLepton( const int& jid, const int& lid )
 }
 
 bool 
-Histor::HasLooseB( const int& j1, const int& j2 )
+Histor::HasLooseB( const initializer_list<int>& list )
 {
-    _sample->SetIndex( j1 );
-    bool jet1 = _sample->PassLooseBJet();
-    _sample->SetIndex( j2 );
-    bool jet2 = _sample->PassLooseBJet();
+    for( const auto& l : list ){
+        _sample->SetIndex( l );
+        //if( _sample->PassCSVL() ){
+        if( _sample->PassDeepCSVL() ){
+            return true;
+        }
+    }
 
-    return jet1 || jet2;
+    return false;
 }
 
 string

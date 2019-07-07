@@ -135,4 +135,10 @@ namespace mgr{
     {
         return _jet.pfCombinedInclusiveSecondaryVertexV2BJetTags[ _idx ];
     }
+
+    float 
+    SampleMgr::JetDeepCSV()
+    {
+        return _jet.pfDeepCSVJetTags_probb[ _idx ] + _jet.pfDeepCSVJetTags_probbb[ _idx ];
+    }
 }

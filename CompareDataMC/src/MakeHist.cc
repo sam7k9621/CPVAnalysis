@@ -92,7 +92,7 @@ MakeHist()
             continue;
         }
 
-        if( CompMgr().CheckOption( "0bjet" ) && CompMgr().HasLooseB( had_b, lep_b ) ){
+        if( CompMgr().CheckOption( "0bjet" ) && CompMgr().HasLooseB( { had_b, lep_b } ) ){
             continue;
         }
 

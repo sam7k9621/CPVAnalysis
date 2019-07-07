@@ -31,7 +31,7 @@ class Histor : public mgr::Pathmgr,
         *******************************************************************************/
         bool PassHLT( const std::vector<int>& );
         bool PassISOLepton( const int&, const int& );
-        bool HasLooseB( const int&, const int& );
+        bool HasLooseB( const std::initializer_list<int>& );
         std::string GetResultsName( const std::string&, const std::string& );
         std::string Discript( TH1* );
         void        Scale( const double x )            { _sample->Scale( x ); };

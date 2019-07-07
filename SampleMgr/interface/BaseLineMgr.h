@@ -81,8 +81,10 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassJetKinematic();
         bool IsSelJet();
         bool IsPreSelJet();
-        bool PassMediumBJet();
-        bool PassLooseBJet();
+        bool PassCSVM();
+        bool PassCSVL();
+        bool PassDeepCSVM();
+        bool PassDeepCSVL();
 
         /*******************************************************************************
         *   Muon selection

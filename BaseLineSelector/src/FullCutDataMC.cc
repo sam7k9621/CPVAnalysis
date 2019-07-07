@@ -32,7 +32,7 @@ extern void
 MakeFullCut()
 {
     // Build new file
-    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "2017results" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "2017results_DeepCSV" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
     bool is_data      = found != std::string::npos ? true : false;
