@@ -29,6 +29,9 @@ class Histor : public mgr::Pathmgr,
         /*******************************************************************************
         *   Common
         *******************************************************************************/
+        bool PassHLT( const std::vector<int>& );
+        bool PassISOLepton( const int&, const int& );
+        bool HasLooseB( const int&, const int& );
         std::string GetResultsName( const std::string&, const std::string& );
         std::string Discript( TH1* );
         void        Scale( const double x )            { _sample->Scale( x ); };
@@ -58,30 +61,33 @@ class Histor : public mgr::Pathmgr,
             );
 
 
-        float GetLepPt( int i )
+        float GetLepPt( const int& i )
         {
             _sample->SetIndex( i );
             return _sample->LepPt();
         }
 
-        float GetLepEta( int i )
+        float GetLepEta( const int& i )
         {
             _sample->SetIndex( i );
             return _sample->LepEta();
         }
 
-        float LeadingJetEta( int i )
+        float LeadingJetEta( const int& i )
         {
             _sample->SetIndex( i );
             return _sample->JetEta();
         }
 
-        float LeadingJetPt( int i )
+        float LeadingJetPt( const int& i )
         {
             _sample->SetIndex( i );
             return _sample->JetPt();
         }
 
+        float GetMuISO( const int& );
+        float GetElISO( const int& );
+        
         /*******************************************************************************
         *   Looping event
         *******************************************************************************/

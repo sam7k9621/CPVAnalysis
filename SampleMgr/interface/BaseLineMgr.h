@@ -81,9 +81,8 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassJetKinematic();
         bool IsSelJet();
         bool IsPreSelJet();
-        bool PassBJet();
-        bool PassCS2BJet();
-        bool RejectBJet();
+        bool PassMediumBJet();
+        bool PassLooseBJet();
 
         /*******************************************************************************
         *   Muon selection
@@ -99,6 +98,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassMuTightISO();
         bool IsTightMu();
         bool IsPreTightMu();
+        bool IsInvTightMu();
 
         /*******************************************************************************
         *   Electron selection
@@ -115,7 +115,8 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         bool PassElTightKinematic();
         bool IsTightEl();
         bool IsPreTightEl();
-
+        bool IsInvTightEl();
+        bool PassElTightISO();
         /*******************************************************************************
         *   Event Weighting
         *******************************************************************************/

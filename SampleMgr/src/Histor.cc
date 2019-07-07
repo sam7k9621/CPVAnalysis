@@ -28,6 +28,29 @@ Histor::AddSample( const string& sample, TChain* ch )
 /*******************************************************************************
 *   Common
 *******************************************************************************/
+bool 
+Histor::PassHLT( const vector<int>& hlt )
+{
+    return _sample->PassHLT( hlt );
+}
+   
+bool 
+Histor::PassISOLepton( const int& jid, const int& lid )
+{
+    return _sample->IsIsoLepton( lid, jid );
+}
+
+bool 
+Histor::HasLooseB( const int& j1, const int& j2 )
+{
+    _sample->SetIndex( j1 );
+    bool jet1 = _sample->PassLooseBJet();
+    _sample->SetIndex( j2 );
+    bool jet2 = _sample->PassLooseBJet();
+
+    return jet1 || jet2;
+}
+
 string
 Histor::GetResultsName( const string& type, const string& prefix )
 {
@@ -80,6 +103,20 @@ Histor::AddHist2D(
     )
 {
     _sample->AddHist2D( label, xtitle, ytitle, xbin, xmin, xmax, ybin, ymin, ymax );
+}
+
+float 
+Histor::GetMuISO( const int& i )
+{
+    _sample->SetIndex( i );
+    return _sample->RelIsoR04();
+}
+
+float 
+Histor::GetElISO( const int& i )
+{
+    _sample->SetIndex( i );
+    return _sample->ElPFISO();
 }
 
 /*******************************************************************************

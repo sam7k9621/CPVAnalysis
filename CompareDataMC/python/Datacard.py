@@ -1,5 +1,4 @@
 import os
-sample_path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/results/"
 
 # sample, cross_section
 mclst =[

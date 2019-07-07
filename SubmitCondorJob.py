@@ -10,13 +10,13 @@ CMSSW_BASE =  os.environ['CMSSW_BASE']
 sub ="""
 executable = {0}/src/CPVAnalysis/SentJob.sh
 
-arguments  = $(cmd) $(opt)
-output     = /afs/cern.ch/user/p/pusheng/condor/output/{1}.out 
-error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}.err 
-log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}.log 
+arguments  = $(cmd) $(opt) $(ClusterID) $(ProcId)
+output     = /afs/cern.ch/user/p/pusheng/condor/output/{1}.$(ClusterID).$(ProcId).out 
+error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}.$(ClusterID).$(ProcId).err 
+log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}.$(ClusterID).$(ProcId).log 
 
 requirements = (OpSysAndVer =?= "CentOS7")
-+JobFlavour = "microcentury"
++JobFlavour = "longlunch"
 
 queue cmd,opt from job.dat
 """

@@ -286,21 +286,15 @@ BaseLineMgr::IsPreSelJet()
 }
 
 bool
-BaseLineMgr::PassBJet()
+BaseLineMgr::PassMediumBJet()
 {
     return JetCSV() > 0.8838;
 }
 
-bool
-BaseLineMgr::PassCS2BJet()
+bool 
+BaseLineMgr::PassLooseBJet()
 {
-    return JetCSV() < 0.8838 && JetCSV() > 0.5803;
-}
-
-bool
-BaseLineMgr::RejectBJet()
-{
-    return JetCSV() < 0.5803;
+    return JetCSV() > 0.5803;
 }
 
 /*******************************************************************************
@@ -382,6 +376,15 @@ BaseLineMgr::IsTightMu()
     return PassMuTightID() &&
            PassMuTightKinematic() &&
            PassMuTightISO()
+    ;
+}
+
+bool 
+BaseLineMgr::IsInvTightMu()
+{
+    return PassMuTightID() &&
+           PassMuTightKinematic() &&
+           !PassMuTightISO()
     ;
 }
 
@@ -481,10 +484,31 @@ BaseLineMgr::IsTightEl()
 }
 
 bool
+BaseLineMgr::IsInvTightEl()
+{
+    return PassImpactParameter() &&
+           ElIDCRTight() &&
+           PassElTightKinematic() &&
+           !PassElTightISO()
+    ;
+}
+
+bool
 BaseLineMgr::IsPreTightEl()
 {
     return PassImpactParameter() &&
            ElIDCRTight() &&
            PassElTightKinematic()
     ;
+}
+
+bool 
+BaseLineMgr::PassElTightISO()
+{
+    if( LepAbsEta() <= 1.479 ){
+        return ElPFISO() < 0.0287 + 0.506 / LepPt();
+    }
+    else{  //absEta > 1.479
+        return ElPFISO() < 0.0445 + 0.963 / LepPt();
+    }
 }

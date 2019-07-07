@@ -1,5 +1,5 @@
 mclst = [
-    # "QCD",
+    "QCD",
     "DYJets",
     "SingleTop",
     "VV",

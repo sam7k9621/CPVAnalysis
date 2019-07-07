@@ -12,15 +12,17 @@ class Parsemgr:
     # *******************************************************************************/
     def AddInput( self, abbr, full ):
         self.parser.add_argument( "-" + abbr, "--" + full, type=str )     
-        self.optionlst.append( full ) 
         return self
 
     def AddFlag( self, abbr, full ):
         self.parser.add_argument( "-" + abbr, "--" + full, action='store_true' )
-        self.optionlst.append( full ) 
         return self
 
-    def Parsing( self, output="Simulation", input="Hist" ):
+    def SetName( self, *args ):
+        for arg in args:
+            self.optionlst.append( arg )
+
+    def Parsing( self, input="Hist" ):
         try:
             self.opt = self.parser.parse_args(sys.argv[1:])
         except:
@@ -29,30 +31,44 @@ class Parsemgr:
             raise
         
         self.inputname  = "{}_{}".format( input, self.opt.lepton  ) + "_{}"
-        self.outputname = "{}_{}".format( output, self.opt.lepton ) + "_{}"
         for option in self.optionlst :
             arg = getattr( self.opt, option )
             if arg:
                 if isinstance( arg, bool ):
                     self.inputname  += "_" + option 
-                    self.outputname += "_" + option
                 else:
                     self.inputname  += "_" + option + "_" + arg 
-                    self.outputname += "_" + option + "_" + arg
     
+    def GetOption( self, option ):
+        try:
+            arg = getattr( self.opt, option )
+        except AttributeError:
+            print "Error processing arguments!"
+            raise
+        if arg:
+            return arg
+
     # /*******************************************************************************
     # *   Get file name
     # *******************************************************************************/
     def GetFileName( self, sample, type="root", dir="results" ):
         file = self.inputname.format( sample )
         file = "{}/{}.{}".format(dir, file, type)
-        print ">> Processing root file : {}".format( file )
         return file
 
-    def GetResultName( self, topic, type="pdf", dir="results"):
+    def GetResultName( self, topic, output="Stack", type="pdf", dir="results"):
+        self.outputname = "{}_{}".format( output, self.opt.lepton ) + "_{}"
+        for option in self.optionlst :
+            arg = getattr( self.opt, option )
+            if arg:
+                if isinstance( arg, bool ):
+                    self.outputname += "_" + option
+                else:
+                    self.outputname += "_" + option + "_" + arg
+        
         file = self.outputname.format( topic )
         return "{}/{}.{}".format( dir, file, type )
-    
+
     # /*******************************************************************************
     # *   Default settings for lumi and entry
     # /*******************************************************************************
@@ -63,7 +79,7 @@ class Parsemgr:
         lep  = "e" if self.opt.lepton == "el" else "#mu"
         try :
             bjet = "2"
-            if opt.region:
+            if self.opt.region:
                 bjet = "0"
         except:
             pass

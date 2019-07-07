@@ -13,21 +13,21 @@ Effective events : 19860691.0
  WJets_HT-2500ToInf
 Effective events : 20494604.0
  QCD_HT100to200
-Effective events : 0.0
+Effective events : 92590802.0
  QCD_HT200to300
-Effective events : 0.0
+Effective events : 58733167.0
  QCD_HT300to500
-Effective events : 0.0
+Effective events : 59070469.0
  QCD_HT500to700
-Effective events : 0.0
+Effective events : 55673263.0
  QCD_HT700to1000
-Effective events : 0.0
+Effective events : 46332843.0
  QCD_HT1000to1500
-Effective events : 0.0
+Effective events : 16660716.0
  QCD_HT1500to2000
-Effective events : 0.0
+Effective events : 11433117.0
  QCD_HT2000toInf
-Effective events : 0.0
+Effective events : 5787447.0
  DYJets_HT-70to100
 Effective events : 9272629.0
  DYJets_HT-100to200

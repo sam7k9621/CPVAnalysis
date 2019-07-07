@@ -48,6 +48,23 @@ Selector::GetResultsName( const string& type, const string& prefix )
 }
 
 string
+Selector::GetEOSName( const string& type, const string& prefix, const string& dir )
+{
+    string ans = OptName();
+
+    if( prefix == "" ){
+        ans.erase( ans.begin() );
+    }
+
+    if( type == "" ){
+        return "/eos/cms/store/user/pusheng" /  dir / ( prefix + ans );
+    }
+    else{
+        return "/eos/cms/store/user/pusheng" / dir / ( prefix + ans + "." + type );
+    }
+}
+
+string
 Selector::Discript( TH1* h )
 {
     string tag = _sample->GetTag();
@@ -220,16 +237,22 @@ Selector::PreLep()
 *   Pre-selection
 *******************************************************************************/
 bool
-Selector::PassFullEl( vector<int>& lepidx )
+Selector::PassFullLepton( vector<int>& lepidx, const string& lepton )
 {
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
-        if( _sample->IsTightEl() ){
+        // assign Tight lepton
+        if( lepton == "el" && _sample->IsTightEl() ){
+            lepidx.push_back( i );
+            continue;
+        }
+        else if( lepton == "mu" && _sample->IsTightMu() ){
             lepidx.push_back( i );
             continue;
         }
 
+        // veto Loose lepton
         if( _sample->IsLooseMu() || _sample->IsLooseEl() ){
             return false;
         }
@@ -238,13 +261,18 @@ Selector::PassFullEl( vector<int>& lepidx )
     return lepidx.size() == 1;
 }
 
-bool
-Selector::PassFullCREl( vector<int>& lepidx )
+bool 
+Selector::PassFullLepton_CRWJets( vector<int>& lepidx, const string& lepton )
 {
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
-        if( _sample->IsTightEl() ){
+        // assign Tight lepton
+        if( lepton == "el" && _sample->IsTightEl() ){
+            lepidx.push_back( i );
+            continue;
+        }
+        else if( lepton == "mu" && _sample->IsTightMu() ){
             lepidx.push_back( i );
             continue;
         }
@@ -253,21 +281,26 @@ Selector::PassFullCREl( vector<int>& lepidx )
             return false;
         }
     }
-
     return lepidx.size() == 1;
 }
 
 bool
-Selector::PassFullMu( vector<int>& lepidx )
+Selector::PassFullLepton_CRQCD( vector<int>& lepidx, const string& lepton )
 {
     for( int i = 0; i < _sample->Lsize(); i++ ){
         _sample->SetIndex( i );
 
-        if( _sample->IsTightMu() ){
+        // assign Tight lepton
+        if( lepton == "el" && _sample->IsInvTightEl() ){
+            lepidx.push_back( i );
+            continue;
+        }
+        else if( lepton == "mu" && _sample->IsInvTightMu() ){
             lepidx.push_back( i );
             continue;
         }
 
+        // veto Loose lepton
         if( _sample->IsLooseMu() || _sample->IsLooseEl() ){
             return false;
         }
@@ -276,24 +309,6 @@ Selector::PassFullMu( vector<int>& lepidx )
     return lepidx.size() == 1;
 }
 
-bool
-Selector::PassFullCRMu( vector<int>& lepidx )
-{
-    for( int i = 0; i < _sample->Lsize(); i++ ){
-        _sample->SetIndex( i );
-
-        if( _sample->IsTightMu() ){
-            lepidx.push_back( i );
-            continue;
-        }
-
-        if( _sample->IsCRLooseMu() || _sample->IsCRLooseEl() ){
-            return false;
-        }
-    }
-
-    return lepidx.size() == 1;
-}
 
 bool
 Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
@@ -312,7 +327,7 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
             mask <<= 1;
         }
 
-        if( _sample->PassBJet() ){
+        if( _sample->PassMediumBJet() ){
             mask <<= 2;
         }
 
@@ -328,7 +343,7 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
 }
 
 bool
-Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
+Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
     // list of index, csv value
     vector<tuple<int, float> > jetlst;
@@ -336,8 +351,8 @@ Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& l
     for( int j = 0; j < _sample->Jsize(); j++ ){
         _sample->SetIndex( j );
 
-        // Rejecting events containing any b-tagged jet
-        if( !_sample->RejectBJet() ){
+        // Rejecting events containing any loose b-tagged jet
+        if( _sample->PassLooseBJet() ){
             return false;
         }
 
@@ -380,37 +395,52 @@ Selector::PassFullCRJet( vector<int>& jetidx, vector<int>& bjetidx, const int& l
 }
 
 bool
-Selector::PassFullCR2Jet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
+Selector::PassFullJet_CRQCD( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
+    // list of index, csv value
+    vector<tuple<int, float, bool> > jetlst;
+
     for( int j = 0; j < _sample->Jsize(); j++ ){
         _sample->SetIndex( j );
 
-        // Cleaning against leptons (isolated lepton)
-        if( !_sample->IsIsoLepton( lepidx, j ) ){
+        if( !_sample->IsSelJet() ){
             continue;
         }
 
-        int mask = 0x01;
-
-        if( _sample->IsSelJet() ){
-            mask <<= 1;
-        }
-
-        if( _sample->PassCS2BJet() ){
-            mask <<= 2;
-        }
-
-        if( mask & 0x02 ){
-            jetidx.push_back( j );
-        }
-        else if( mask & 0x08 ){
-            bjetidx.push_back( j );
-        }
+        jetlst.push_back( make_tuple( j, _sample->JetCSV(), _sample->PassLooseBJet() ) );
     }
 
-    return jetidx.size() >= 2 && bjetidx.size() == 2;
-}
+    if( jetlst.size() < 4 ){
+        return false;
+    }
 
+    // reject event with more than 2 b-jets
+    if( std::count_if( jetlst.begin(), jetlst.end(), []( const auto& t ){ return get<2>( t ); } ) >= 2 ){
+        return false;
+    }
+
+    // https://stackoverflow.com/questions/23030267/custom-sorting-a-vector-of-tuples
+    std::sort(
+        begin( jetlst ),
+        end( jetlst ),
+        [ ]( const auto& t1, const auto& t2 ){
+        return get<1>( t1 ) < get<1>( t2 );
+    }
+        );
+
+    // define the 2 max CSV value index as bjet
+    bjetidx.push_back( get<0>( jetlst.back() ) );
+    jetlst.pop_back();
+    bjetidx.push_back( get<0>( jetlst.back() ) );
+    jetlst.pop_back();
+
+    for( const auto& j : jetlst ){
+        jetidx.push_back( get<0>( j ) );
+    }
+
+    return true;
+}
+    
 std::tuple<double, double, int, int, int>
 Selector::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
 {

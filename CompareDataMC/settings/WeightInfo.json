@@ -1,528 +1,726 @@
 {
     "QCD_HT100to200": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT100to200_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT100to200_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT100to200_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 27990000, 
         "gen_num": 92590802.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT100to200_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT100to200_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT100to200_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT100to200_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 27990000
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT100to200_[0-9]+_region_QCD.root"
+        ]
     }, 
     "QCD_HT200to300": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT200to300_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT200to300_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT200to300_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 1712000, 
         "gen_num": 58733167.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT200to300_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT200to300_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT200to300_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT200to300_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 1712000
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT200to300_[0-9]+_region_QCD.root"
+        ]
     }, 
     "QCD_HT300to500": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT300to500_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT300to500_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT300to500_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 347700, 
         "gen_num": 59070469.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT300to500_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT300to500_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT300to500_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT300to500_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 347700
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT300to500_[0-9]+_region_QCD.root"
+        ]
     }, 
     "QCD_HT500to700": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT500to700_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT500to700_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT500to700_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 32100, 
         "gen_num": 55673263.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT500to700_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT500to700_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT500to700_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT500to700_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 32100
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT500to700_[0-9]+_region_QCD.root"
+        ]
     }, 
     "QCD_HT700to1000": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT700to1000_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT700to1000_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT700to1000_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 6831, 
         "gen_num": 46332843.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT700to1000_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT700to1000_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT700to1000_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT700to1000_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 6831
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT700to1000_[0-9]+_region_QCD.root"
+        ]
     }, 
     "QCD_HT1000to1500": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT1000to1500_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT1000to1500_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT1000to1500_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 1207, 
         "gen_num": 16660716.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1000to1500_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT1000to1500_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1000to1500_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT1000to1500_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 1207
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT1000to1500_[0-9]+_region_QCD.root"
+        ]
     }, 
     "QCD_HT1500to2000": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT1500to2000_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT1500to2000_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT1500to2000_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 119.9, 
         "gen_num": 11433117.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT1500to2000_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT1500to2000_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT1500to2000_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT1500to2000_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 119.9
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT1500to2000_[0-9]+_region_QCD.root"
+        ]
     }, 
     "QCD_HT2000toInf": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT2000toInf_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT2000toInf_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT2000toInf_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 25.24, 
         "gen_num": 5787447.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_QCD_HT2000toInf_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT2000toInf_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_QCD_HT2000toInf_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_QCD_HT2000toInf_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 25.24
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_QCD_HT2000toInf_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-70to100": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-70to100_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-70to100_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-70to100_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-70to100_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-70to100_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 208.977, 
         "gen_num": 9272629.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-70to100_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-70to100_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-70to100_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-70to100_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 208.977
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-70to100_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-100to200": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-100to200_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-100to200_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-100to200_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-100to200_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-100to200_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 181.302, 
         "gen_num": 11106724.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-100to200_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-100to200_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-100to200_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-100to200_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 181.302
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-100to200_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-200to400": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-200to400_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-200to400_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-200to400_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-200to400_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-200to400_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 50.4177, 
         "gen_num": 10628725.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-200to400_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-200to400_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-200to400_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-200to400_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 50.4177
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-200to400_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-400to600": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-400to600_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-400to600_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-400to600_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-400to600_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-400to600_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 6.98394, 
         "gen_num": 10108270.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-400to600_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-400to600_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-400to600_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-400to600_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 6.98394
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-400to600_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-600to800": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-600to800_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-600to800_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-600to800_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-600to800_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-600to800_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 1.68141, 
         "gen_num": 8634549.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-600to800_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-600to800_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-600to800_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-600to800_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 1.68141
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-600to800_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-800to1200": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-800to1200_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-800to1200_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-800to1200_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-800to1200_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-800to1200_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 0.775392, 
         "gen_num": 3069366.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-800to1200_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-800to1200_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-800to1200_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-800to1200_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 0.775392
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-800to1200_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-1200to2500": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-1200to2500_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-1200to2500_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-1200to2500_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-1200to2500_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-1200to2500_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 0.186222, 
         "gen_num": 610659.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-1200to2500_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-1200to2500_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-1200to2500_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-1200to2500_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 0.186222
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-1200to2500_[0-9]+_region_QCD.root"
+        ]
     }, 
     "DYJets_HT-2500toInf": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-2500toInf_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-2500toInf_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-2500toInf_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-2500toInf_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-2500toInf_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 0.00438495, 
         "gen_num": 398552.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_DYJets_HT-2500toInf_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-2500toInf_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_DYJets_HT-2500toInf_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_DYJets_HT-2500toInf_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 0.00438495
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_DYJets_HT-2500toInf_[0-9]+_region_QCD.root"
+        ]
     }, 
     "SingleTop_s-channel": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_s-channel_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_s-channel_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_s-channel_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_s-channel_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_s-channel_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 3.36, 
         "gen_num": 6126808.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_s-channel_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_s-channel_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_s-channel_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_s-channel_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 3.36
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_s-channel_[0-9]+_region_QCD.root"
+        ]
     }, 
     "SingleTop_t-channel_top": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_top_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_t-channel_top_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_top_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_t-channel_top_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_t-channel_top_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 136.02, 
         "gen_num": 5942749.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_top_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_t-channel_top_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_top_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_t-channel_top_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 136.02
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_t-channel_top_[0-9]+_region_QCD.root"
+        ]
     }, 
     "SingleTop_t-channel_antitop": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_antitop_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_t-channel_antitop_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_antitop_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_t-channel_antitop_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_t-channel_antitop_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 80.95, 
         "gen_num": 3651708.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_t-channel_antitop_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_t-channel_antitop_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_t-channel_antitop_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_t-channel_antitop_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 80.95
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_t-channel_antitop_[0-9]+_region_QCD.root"
+        ]
     }, 
     "SingleTop_tW_top": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_top_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_tW_top_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_top_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_tW_top_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_tW_top_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 35.6, 
         "gen_num": 7683668.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_top_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_tW_top_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_top_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_tW_top_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 35.6
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_tW_top_[0-9]+_region_QCD.root"
+        ]
     }, 
     "SingleTop_tW_antitop": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_antitop_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_tW_antitop_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_antitop_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_tW_antitop_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_tW_antitop_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 35.6, 
         "gen_num": 7865071.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ST_tW_antitop_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_tW_antitop_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ST_tW_antitop_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ST_tW_antitop_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 35.6
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ST_tW_antitop_[0-9]+_region_QCD.root"
+        ]
     }, 
     "ttbar": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTToSemiLeptonic_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_TTToSemiLeptonic_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTToSemiLeptonic_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_TTToSemiLeptonic_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_TTToSemiLeptonic_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 365.34, 
         "gen_num": 43094155.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_TTToSemiLeptonic_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_TTToSemiLeptonic_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_TTToSemiLeptonic_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_TTToSemiLeptonic_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 365.34
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_TTToSemiLeptonic_[0-9]+_region_QCD.root"
+        ]
     }, 
     "VV_WW": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WW_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WW_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WW_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WW_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WW_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 118.7, 
         "gen_num": 7714926.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WW_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WW_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WW_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WW_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 118.7
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WW_[0-9]+_region_QCD.root"
+        ]
     }, 
     "VV_WZ": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WZ_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WZ_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WZ_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WZ_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WZ_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 47.13, 
         "gen_num": 3875940.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WZ_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WZ_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WZ_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WZ_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 47.13
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WZ_[0-9]+_region_QCD.root"
+        ]
     }, 
     "VV_ZZ": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ZZ_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ZZ_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ZZ_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ZZ_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ZZ_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 16.52, 
         "gen_num": 1913229.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_ZZ_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ZZ_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_ZZ_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_ZZ_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 16.52
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_ZZ_[0-9]+_region_QCD.root"
+        ]
     }, 
     "WJets_HT-100To200": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-100To200_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-100To200_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-100To200_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-100To200_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-100To200_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 1628.297, 
         "gen_num": 35569453.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-100To200_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-100To200_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-100To200_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-100To200_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 1628.297
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-100To200_[0-9]+_region_QCD.root"
+        ]
     }, 
     "WJets_HT-200To400": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-200To400_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-200To400_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-200To400_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-200To400_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-200To400_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 435.23699999999997, 
         "gen_num": 21053538.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-200To400_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-200To400_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-200To400_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-200To400_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 435.23699999999997
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-200To400_[0-9]+_region_QCD.root"
+        ]
     }, 
     "WJets_HT-400To600": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-400To600_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-400To600_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-400To600_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-400To600_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-400To600_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 59.181099999999994, 
         "gen_num": 14156499.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-400To600_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-400To600_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-400To600_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-400To600_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 59.181099999999994
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-400To600_[0-9]+_region_QCD.root"
+        ]
     }, 
     "WJets_HT-600To800": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-600To800_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-600To800_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-600To800_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-600To800_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-600To800_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 14.5805, 
         "gen_num": 21440850.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-600To800_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-600To800_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-600To800_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-600To800_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 14.5805
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-600To800_[0-9]+_region_QCD.root"
+        ]
     }, 
     "WJets_HT-800To1200": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-800To1200_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-800To1200_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-800To1200_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-800To1200_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-800To1200_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 6.656210000000001, 
         "gen_num": 20140280.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-800To1200_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-800To1200_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-800To1200_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-800To1200_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 6.656210000000001
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-800To1200_[0-9]+_region_QCD.root"
+        ]
     }, 
     "WJets_HT-1200To2500": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-1200To2500_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-1200To2500_[0-9]+_region_WJets.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-1200To2500_[0-9]_region_0bjet.root"
+        "elpath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-1200To2500_[0-9]+.root"
         ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-1200To2500_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 1.6080899999999998, 
         "gen_num": 19860691.0, 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-1200To2500_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-1200To2500_[0-9]+.root"
         ], 
-        "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-1200To2500_[0-9].root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-1200To2500_[0-9]+_region_QCD.root"
         ], 
-        "cross_section": 1.6080899999999998
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-1200To2500_[0-9]+_region_QCD.root"
+        ]
     }, 
     "WJets_HT-2500ToInf": {
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-2500ToInf_[0-9]_region_0bjet.root"
-        ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-2500ToInf_[0-9]_region_0bjet.root"
-        ], 
-        "gen_num": 20494604.0, 
-        "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_WJets_HT-2500ToInf_[0-9].root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-2500ToInf_[0-9]+_region_WJets.root"
         ], 
         "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_WJets_HT-2500ToInf_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-2500ToInf_[0-9]+.root"
         ], 
-        "cross_section": 0.0389136
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-2500ToInf_[0-9]+_region_WJets.root"
+        ], 
+        "cross_section": 0.0389136, 
+        "gen_num": 20494604.0, 
+        "mupath": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-2500ToInf_[0-9]+.root"
+        ], 
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_WJets_HT-2500ToInf_[0-9]+_region_QCD.root"
+        ], 
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_WJets_HT-2500ToInf_[0-9]+_region_QCD.root"
+        ]
     }, 
     "Data": {
         "elpath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_Run2017[A-Z]_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_Run2017[A-Z]_[0-9]+.root"
         ], 
         "mupath": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_Run2017[A-Z]_[0-9].root"
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_Run2017[A-Z]_[0-9]+.root"
         ], 
-        "mupath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_mu_Run2017[A-Z]_[0-9]_region_0bjet.root"
+        "mupath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_Run2017[A-Z]_[0-9]+_region_QCD.root"
         ], 
-        "elpath_CR": [
-            "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/results/FullCut_el_Run2017[A-Z]_[0-9]_region_0bjet.root"
+        "elpath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_Run2017[A-Z]_[0-9]+_region_WJets.root"
+        ], 
+        "mupath_WJets": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_mu_Run2017[A-Z]_[0-9]+_region_WJets.root"
+        ], 
+        "elpath_QCD": [
+            "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017results/FullCut_el_Run2017[A-Z]_[0-9]+_region_QCD.root"
         ]
     }, 
     "ellumi": 41540, 
@@ -547,5 +745,27 @@
     "muRECO": {
         "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/data/RunBCDEF_SF_ISO.root", 
         "title": "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta"
-    }
+    }, 
+    "mu_HLT": [
+        1334, 
+        1335, 
+        1336, 
+        1337, 
+        1338, 
+        1339, 
+        1340, 
+        1341, 
+        1342, 
+        1343, 
+        1344
+    ], 
+    "el_HLT": [
+        938, 
+        939, 
+        940, 
+        941, 
+        942, 
+        943, 
+        944
+    ]
 }

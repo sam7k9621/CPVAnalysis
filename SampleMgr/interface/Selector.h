@@ -30,6 +30,7 @@ class Selector : public mgr::Pathmgr,
         *   Common
         *******************************************************************************/
         std::string GetResultsName( const std::string&, const std::string& );
+        std::string GetEOSName( const std::string&, const std::string&, const std::string& );
         std::string Discript( TH1* );
         bool        OptionContent( const std::string&, const std::string& );
 
@@ -74,14 +75,13 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Full-selection
         *******************************************************************************/
-        bool PassFullEl( std::vector<int>& );
-        bool PassFullMu( std::vector<int>& );
-        bool PassFullCREl( std::vector<int>& );
-        bool PassFullCRMu( std::vector<int>& );
+        bool PassFullLepton( std::vector<int>&, const std::string& );
+        bool PassFullLepton_CRQCD( std::vector<int>&, const std::string& );
+        bool PassFullLepton_CRWJets( std::vector<int>&, const std::string& );
 
         bool                                      PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
-        bool                                      PassFullCRJet( std::vector<int>&, std::vector<int>&, const int& );
-        bool                                      PassFullCR2Jet( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullJet_CRQCD( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullJet_CRWJets( std::vector<int>&, std::vector<int>&, const int& );
         std::tuple<double, double, int, int, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
         double                                    GetLeptonicM( const int&, const int& );
 

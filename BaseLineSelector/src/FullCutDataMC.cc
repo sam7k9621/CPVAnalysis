@@ -13,7 +13,7 @@ FullMgr( const string& subdir, const string& json )
 extern string
 MakeFileName( bool is_data )
 {
-    string pos      = "/eos/cms/store/user/pusheng/2017/";
+    string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017/";
     string filename = "";
 
     if( is_data ){
@@ -32,7 +32,7 @@ extern void
 MakeFullCut()
 {
     // Build new file
-    TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "2017results" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
     bool is_data      = found != std::string::npos ? true : false;
@@ -69,7 +69,7 @@ MakeFullCut()
     newtree->Branch( "lep_tmass", &lep_tmass, "lep_tmass/F" );
 
     // Looping events
-    int events = FullMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    int events = FullMgr().CheckOption( "test" ) ? 100000 : ch->GetEntries();
 
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
@@ -103,45 +103,33 @@ MakeFullCut()
         /*******************************************************************************
         *  Lepton selection
         *******************************************************************************/
-        if( FullMgr().OptionContent( "lepton", "el" ) ){
-            if( FullMgr().OptionContent( "region", "0bjet" ) ){
-                if( !FullMgr().PassFullCREl( lepidx ) ){
-                    continue;
-                }
-            }
-            else{
-                if( !FullMgr().PassFullEl( lepidx ) ){
-                    continue;
-                }
+        if( FullMgr().OptionContent( "region", "WJets" ) ){
+            if( !FullMgr().PassFullLepton_CRWJets( lepidx, lepton ) ){
+                continue;
             }
         }
-        else if( FullMgr().OptionContent( "lepton", "mu" ) ){
-            if( FullMgr().OptionContent( "region", "0bjet" ) ){
-                if( !FullMgr().PassFullCRMu( lepidx ) ){
-                    continue;
-                }
-            }
-            else{
-                if( !FullMgr().PassFullMu( lepidx ) ){
-                    continue;
-                }
+        else if( FullMgr().OptionContent( "region", "QCD" ) ){
+            if( !FullMgr().PassFullLepton_CRQCD( lepidx, lepton ) ){
+                continue;
             }
         }
-        else{
-            cout << endl << "[Warning] Should have assigned lepton type" << endl;
-            return;
+        else{ 
+            if( !FullMgr().PassFullLepton( lepidx, lepton ) ){
+                continue;
+            }
         }
 
         /*******************************************************************************
         *  Jet selection
         *******************************************************************************/
-        if( FullMgr().OptionContent( "region", "0bjet" ) ){
-            if( !FullMgr().PassFullCRJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
+        if( FullMgr().OptionContent( "region", "WJets" ) ){
+            if( !FullMgr().PassFullJet_CRWJets( jetidx, bjetidx, lepidx[ 0 ] ) ){
                 continue;
             }
+           
         }
-        else if( FullMgr().OptionContent( "region", "CSVL" ) ){
-            if( !FullMgr().PassFullCR2Jet( jetidx, bjetidx, lepidx[ 0 ] ) ){
+        else if( FullMgr().OptionContent( "region", "QCD" ) ){
+            if( !FullMgr().PassFullJet_CRQCD( jetidx, bjetidx, lepidx[ 0 ] ) ){
                 continue;
             }
         }
@@ -150,7 +138,6 @@ MakeFullCut()
                 continue;
             }
         }
-
         /*******************************************************************************
         *  Chi2 sorting
         *******************************************************************************/

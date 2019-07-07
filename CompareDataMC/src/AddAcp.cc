@@ -268,7 +268,6 @@ AddAcp()
             double mco6  = Obs6( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
             double mco12 = Obs12( mcbjet.Vect(), mcbbarjet.Vect() );
 
-            // CompMgr().DumpEvtInfo();
             // In bbar CM frame
             TVector3 mcbbCM = -( mcbjet + mcbbarjet ).BoostVector();
             mcbjet.Boost( mcbbCM );
