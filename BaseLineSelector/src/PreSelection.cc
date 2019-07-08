@@ -50,7 +50,7 @@ MakePreCut()
     ch->Add( source.c_str() );
     PreMgr().AddSample( ch );
 
-    //Discard useless branches
+    // Discard useless branches
     Discard( ch );
     TTree* newtree = ch->CloneTree( 0 );
 
