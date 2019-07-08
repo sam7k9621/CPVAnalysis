@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -25,7 +26,7 @@ extern bool
 SetPUWeight( float& weight, const vector<double>& puweight )
 {
     int pv = PreMgr().nPU();
-    if( pv > 74 ){
+    if( pv >= 99 ){
         return false;
     }
     else{
@@ -49,6 +50,8 @@ MakePreCut()
     ch->Add( source.c_str() );
     PreMgr().AddSample( ch );
 
+    //Discard useless branches
+    Discard( ch );
     TTree* newtree = ch->CloneTree( 0 );
 
     // Running over golden_json
@@ -83,28 +86,16 @@ MakePreCut()
         PreMgr().process( events, i );
 
         // pile-up reweighted
-        // abandom events with >74 vertex
-        if( !is_data ){
-            if(
-                !SetPUWeight( weight, puweight )
-                )
-            {
-                continue;
-            }
-        }
-        else{
-            weight = 1;
+        // abandom events with larger than 99 vertex
+        weight = 1;
+        if( !is_data && !SetPUWeight( weight, puweight ) ){
+            continue;
         }
 
         // datacard
-        double gen = PreMgr().GenWeight() > 0 ? 1.0 : -1.0;
-        if( gen > 0 ){
-            positive++;
-        }
-        else{
-            negative++;
-        }
-
+        double gen = PreMgr().GenWeight();
+        positive += std::max( 0., gen );                                                
+        negative -= std::min( 0., gen );                                                
         entries++;
 
         // Lumimask

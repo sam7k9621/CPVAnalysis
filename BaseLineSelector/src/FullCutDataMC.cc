@@ -69,7 +69,7 @@ MakeFullCut()
     newtree->Branch( "lep_tmass", &lep_tmass, "lep_tmass/F" );
 
     // Looping events
-    int events = FullMgr().CheckOption( "test" ) ? 100000 : ch->GetEntries();
+    int events = FullMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
 
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );

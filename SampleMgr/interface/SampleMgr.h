@@ -75,7 +75,6 @@ namespace mgr{
             float          GetLepCharge( const int& );
             TLorentzVector GetLepP4( const int& );
             int            Lep_Type(){ return _lep.LeptonType[ _idx ]; }
-            float          rho();
 
             /*******************************************************************************
             *   Muon info
