@@ -5,6 +5,14 @@ import sys
 import argparse
 import importlib
 
+# espresso	20min	
+# microcentury	1h	
+# longlunch	2h	
+# workday	8h	
+# tomorrow	1d	
+# testmatch	3d	
+# nextweek	1w	
+
 CMSSW_BASE =  os.environ['CMSSW_BASE']
 
 sub ="""
@@ -16,7 +24,7 @@ error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}.$(ClusterID).$(ProcId)
 log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}.$(ClusterID).$(ProcId).log 
 
 requirements = (OpSysAndVer =?= "CentOS7")
-+JobFlavour = "longlunch"
++JobFlavour = "workday"
 
 queue cmd,opt from job.dat
 """
@@ -55,7 +63,14 @@ def main(args):
             help='Input sample list',
             type=str
             )
-    
+   
+    parser.add_argument(
+            '-I', '--InputOption',
+            help='Input argument',
+            type=str,
+            default=""
+            )
+
     parser.add_argument(
             '--test',
             help='test',
@@ -84,7 +99,7 @@ def main(args):
     # writing dat file
     output_dat = open( "job.dat", 'w' )
     for sample in getattr( samplelst, opt.Samplelst ):
-        trailer = "{} -s {}".format( opt.Trailer, sample )
+        trailer = "{} {}{}".format( opt.Trailer, opt.InputOption, sample )
         output_dat.write( '{0}, {1}\n'.format( opt.Command, trailer ) )
     output_dat.close()
 

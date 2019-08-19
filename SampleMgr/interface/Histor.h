@@ -98,17 +98,13 @@ class Histor : public mgr::Pathmgr,
         *   Weight
         *******************************************************************************/
         void   RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
-        void   InitBtagWeight( const std::string&, const std::string& );
         float  GetPUWeight()  { return _sample->GetPUWeight(); }
         float  GetPUWeightUp(){ return _sample->GetPUWeightUp(); }
         float  GetPUWeightDn(){ return _sample->GetPUWeightDn(); }
         float  GenWeight()    { return _sample->GenWeight(); }
-        double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
-        double BtagScaleFactorDn( BTagEntry::OperatingPoint, const int& );
-        double BtagScaleFactorUp( BTagEntry::OperatingPoint, const int& );
-        double GetSF( TH2D*, const int& );
-        double GetSFUp( TH2D*, const int& );
-        double GetSFDn( TH2D*, const int& );
+        double GetLepSF( TH2D*, const int& );
+        double GetLepSFUp( TH2D*, const int& );
+        double GetLepSFDn( TH2D*, const int& );
         TH2D*  GetSFHist( const std::string& );
         double TopPtWeight();
         void   WeightMC( const std::string& );

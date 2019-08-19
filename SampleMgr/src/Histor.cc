@@ -1,4 +1,5 @@
 #include "CPVAnalysis/SampleMgr/interface/Histor.h"
+#include "ManagerUtils/Common/interface/ProgressBar.hpp"
 #include "TFile.h"
 using namespace std;
 
@@ -45,8 +46,8 @@ Histor::HasLooseB( const initializer_list<int>& list )
 {
     for( const auto& l : list ){
         _sample->SetIndex( l );
-        //if( _sample->PassCSVL() ){
-        if( _sample->PassDeepCSVL() ){
+        if( _sample->PassCSVL() ){
+        //if( _sample->PassDeepCSVL() ){
             return true;
         }
     }
@@ -129,8 +130,7 @@ void
 Histor::process( const int& total, const int& progress )
 {
     if( CheckOption( "count" ) ){
-        printf( "[%d|%d]\r", total, progress );
-        fflush( stdout );
+        mgr::ProgressBar( progress, total );
     }
 }
 
@@ -143,46 +143,25 @@ Histor::ChangeFile( const string& file )
 /*******************************************************************************
 *   Weight
 *******************************************************************************/
-void
-Histor::InitBtagWeight( const string& wp, const string& type )
+double
+Histor::GetLepSF( TH2D* hist, const int& idx )
 {
-    _sample->InitBtagWeight( wp, type );
+    _sample->SetIndex( idx );
+    return _sample->GetSFTH2( hist, _sample->LepEta(), _sample->LepPt() );
 }
 
 double
-Histor::BtagScaleFactor( BTagEntry::OperatingPoint op, const int& idx )
+Histor::GetLepSFUp( TH2D* hist, const int& idx )
 {
-    return _sample->BtagScaleFactor( op, idx );
+    _sample->SetIndex( idx );
+    return _sample->GetSFTH2( hist, _sample->LepEta(), _sample->LepPt(), 1 );
 }
 
 double
-Histor::BtagScaleFactorUp( BTagEntry::OperatingPoint op, const int& idx )
+Histor::GetLepSFDn( TH2D* hist, const int& idx )
 {
-    return _sample->BtagScaleFactorUp( op, idx );
-}
-
-double
-Histor::BtagScaleFactorDn( BTagEntry::OperatingPoint op, const int& idx )
-{
-    return _sample->BtagScaleFactorDn( op, idx );
-}
-
-double
-Histor::GetSF( TH2D* hist, const int& idx )
-{
-    return _sample->GetSFTH2( hist, idx );
-}
-
-double
-Histor::GetSFUp( TH2D* hist, const int& idx )
-{
-    return _sample->GetSFTH2Up( hist, idx );
-}
-
-double
-Histor::GetSFDn( TH2D* hist, const int& idx )
-{
-    return _sample->GetSFTH2Dn( hist, idx );
+    _sample->SetIndex( idx );
+    return _sample->GetSFTH2( hist, _sample->LepEta(), _sample->LepPt(), -1 );
 }
 
 TH2D*

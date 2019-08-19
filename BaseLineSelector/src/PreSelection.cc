@@ -22,20 +22,6 @@ PreMgr( const string& subdir, const string& json )
 /*******************************************************************************
 *   PreCut
 *******************************************************************************/
-extern bool
-SetPUWeight( float& weight, const vector<double>& puweight )
-{
-    int pv = PreMgr().nPU();
-    if( pv >= 99 ){
-        return false;
-    }
-    else{
-        weight = puweight[ pv ];
-    }
-
-    return true;
-}
-
 extern void
 MakePreCut()
 {
@@ -65,13 +51,29 @@ MakePreCut()
     string line;
     vector<double> puweight;
     std::ifstream fin( PreMgr().GetSingleData<string>( "puweight" ) );
+    vector<double> puweight_up;
+    std::ifstream fin_up( PreMgr().GetSingleData<string>( "puweight_up" ) );
+    vector<double> puweight_dn;
+    std::ifstream fin_dn( PreMgr().GetSingleData<string>( "puweight_dn" ) );
 
     while( std::getline( fin, line ) ){
         puweight.push_back( stod( line ) );
     }
 
+    while( std::getline( fin_up, line ) ){
+        puweight_up.push_back( stod( line ) );
+    }
+
+    while( std::getline( fin_dn, line ) ){
+        puweight_dn.push_back( stod( line ) );
+    }
+
     float weight;
     newtree->Branch( "PUWeight", &weight, "PUWeight/F" );
+    float weight_up;
+    newtree->Branch( "PUWeight_up", &weight_up, "PUWeight_up/F" );
+    float weight_dn;
+    newtree->Branch( "PUWeight_dn", &weight_dn, "PUWeight_dn/F" );
 
     // Prepare Datacard
     int entries  = 0;
@@ -88,8 +90,18 @@ MakePreCut()
         // pile-up reweighted
         // abandom events with larger than 99 vertex
         weight = 1;
-        if( !is_data && !SetPUWeight( weight, puweight ) ){
-            continue;
+        weight_up = 1;
+        weight_dn = 1;
+        
+        if( !is_data ){
+            int pv = PreMgr().nPU();
+            if( pv >= (int)puweight.size() ){
+                continue;
+            }
+        
+            weight = puweight[ pv ];
+            weight_up = puweight_up[ pv ];
+            weight_dn = puweight_dn[ pv ];
         }
 
         // datacard

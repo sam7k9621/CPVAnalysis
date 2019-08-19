@@ -126,6 +126,7 @@ namespace mgr{
             float          GenJetPt();
             float          GenJetEta();
             float          GenJetPhi();
+            int            GenJetFlavor();
             int            JetNConstituents();
             float          JetNEF();
             float          JetNHF();

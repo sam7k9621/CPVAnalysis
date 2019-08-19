@@ -13,55 +13,35 @@ BaseLineMgr::RegisterWeight( TChain* ch )
     ch->SetBranchAddress( "PUWeight_dn", &_puweight_dn );
 }
 
-void
-BaseLineMgr::InitJES()
-{
-    _jecUnc = new JetCorrectionUncertainty( "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/BaseLineSelector/data/Spring16_25nsV6_MC_Uncertainty_AK4PFchs.txt" );
-}
-
 double
-BaseLineMgr::GetSFTH2Dn( TH2D* hist, const int& idx )
+BaseLineMgr::GetSFTH2( TH2D* hist, double eta, double pt, const int& stat )
 {
-    SetIndex( idx );
-    double eta = LepEta();
-    double pt  = LepPt();
+    // Pt-Eta plot
+    if( hist->GetXaxis()->GetXmax() > 3 ){
+        
+        // absEta Plot
+        if( hist->GetYaxis()->GetXmin() >= 0 ){
+            eta = fabs( eta );
+        }
+        eta = min( eta, hist->GetYaxis()->GetXmax() - 0.01 );
+        eta = max( eta, hist->GetYaxis()->GetXmin() + 0.01 );
+        pt  = min( pt,  hist->GetXaxis()->GetXmax() - 0.01 );
 
-    // Re-evaluating to avoid overflow
-    eta = min( eta, hist->GetXaxis()->GetXmax() - 0.01 );
-    eta = max( eta, hist->GetXaxis()->GetXmin() + 0.01 );
-    pt  = min( pt, hist->GetYaxis()->GetXmax() - 0.01 );
+        return hist->GetBinContent( hist->FindFixBin( pt, eta ) ) + stat * hist->GetBinError( hist->FindFixBin( pt, eta ) );
+    }
+    
+    // Eta-Pt plot
+    else{
+        // absEta Plot
+        if( hist->GetXaxis()->GetXmin() >= 0 ){
+            eta = fabs( eta );
+        }
+        eta = min( eta, hist->GetXaxis()->GetXmax() - 0.01 );
+        eta = max( eta, hist->GetXaxis()->GetXmin() + 0.01 );
+        pt  = min( pt,  hist->GetYaxis()->GetXmax() - 0.01 );
 
-    return hist->GetBinContent( hist->FindFixBin( eta, pt ) ) - hist->GetBinError( hist->FindFixBin( eta, pt ) );
-}
-
-double
-BaseLineMgr::GetSFTH2Up( TH2D* hist, const int& idx )
-{
-    SetIndex( idx );
-    double eta = LepEta();
-    double pt  = LepPt();
-
-    // Re-evaluating to avoid overflow
-    eta = min( eta, hist->GetXaxis()->GetXmax() - 0.01 );
-    eta = max( eta, hist->GetXaxis()->GetXmin() + 0.01 );
-    pt  = min( pt, hist->GetYaxis()->GetXmax() - 0.01 );
-
-    return hist->GetBinContent( hist->FindFixBin( eta, pt ) ) + hist->GetBinError( hist->FindFixBin( eta, pt ) );
-}
-
-double
-BaseLineMgr::GetSFTH2( TH2D* hist, const int& idx )
-{
-    SetIndex( idx );
-    double eta = LepEta();
-    double pt  = LepPt();
-
-    // Re-evaluating to avoid overflow
-    eta = min( eta, hist->GetXaxis()->GetXmax() - 0.01 );
-    eta = max( eta, hist->GetXaxis()->GetXmin() + 0.01 );
-    pt  = min( pt, hist->GetYaxis()->GetXmax() - 0.01 );
-
-    return hist->GetBinContent( hist->FindFixBin( eta, pt ) );
+        return hist->GetBinContent( hist->FindFixBin( eta, pt ) ) + stat * hist->GetBinError( hist->FindFixBin( eta, pt ) );
+    }
 }
 
 void
@@ -80,40 +60,26 @@ BaseLineMgr::InitBtagWeight( const string& tagger, const string& filename )
             BTagEntry::FLAV_B,
             "comb"
             );
+        _reader_map[ BTagEntry::OperatingPoint( i ) ].load(
+            *_calib,
+            BTagEntry::FLAV_C,
+            "comb"
+            );
+        _reader_map[ BTagEntry::OperatingPoint( i ) ].load(
+            *_calib,
+            BTagEntry::FLAV_UDSG,
+            "incl"
+            );
     }
 }
 
 double
-BaseLineMgr::BtagScaleFactor( BTagEntry::OperatingPoint op, const int& idx )
+BaseLineMgr::BtagScaleFactor( const int& idx, const BTagEntry::OperatingPoint& op, const BTagEntry::JetFlavor& jf, const std::string& unc )
 {
     SetIndex( idx );
     return _reader_map.at( op ).eval_auto_bounds(
-        "central",
-        BTagEntry::FLAV_B,
-        JetEta(),
-        JetPt()
-        );
-}
-
-double
-BaseLineMgr::BtagScaleFactorUp( BTagEntry::OperatingPoint op, const int& idx )
-{
-    SetIndex( idx );
-    return _reader_map.at( op ).eval_auto_bounds(
-        "up",
-        BTagEntry::FLAV_B,
-        JetEta(),
-        JetPt()
-        );
-}
-
-double
-BaseLineMgr::BtagScaleFactorDn( BTagEntry::OperatingPoint op, const int& idx )
-{
-    SetIndex( idx );
-    return _reader_map.at( op ).eval_auto_bounds(
-        "down",
-        BTagEntry::FLAV_B,
+        unc,
+        jf,
         JetEta(),
         JetPt()
         );

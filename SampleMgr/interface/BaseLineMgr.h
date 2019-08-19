@@ -132,17 +132,10 @@ class BaseLineMgr : public mgr::Hist2DMgr,
 
         // B-tagging weight
         void   InitBtagWeight( const std::string&, const std::string& );
-        double BtagScaleFactor( BTagEntry::OperatingPoint, const int& );
-        double BtagScaleFactorUp( BTagEntry::OperatingPoint, const int& );
-        double BtagScaleFactorDn( BTagEntry::OperatingPoint, const int& );
+        double BtagScaleFactor( const int&, const BTagEntry::OperatingPoint&, const BTagEntry::JetFlavor&, const std::string& ="" );
 
-        // ID ISO Trg weight
-        double GetSFTH2( TH2D*, const int& );
-        double GetSFTH2Up( TH2D*, const int& );
-        double GetSFTH2Dn( TH2D*, const int& );
-
-        // JES
-        void InitJES();
+        // ID ISO Trg Btag weight
+        double GetSFTH2  ( TH2D*, double, double, const int& =0 );
 
         // Top Pt Weighting
         double TopPtWeight();
@@ -153,7 +146,6 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         float _puweight_up;
         float _puweight_dn;
         BTagCalibration* _calib;
-        JetCorrectionUncertainty* _jecUnc;
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
 };
 

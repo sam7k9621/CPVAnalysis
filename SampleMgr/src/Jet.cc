@@ -7,12 +7,12 @@ namespace mgr{
     /*******************************************************************************
     * Jet info
     *******************************************************************************/
-    float
+    float 
     SampleMgr::JesUnc()
     {
-        return _jet.Unc[ _idx ];
+        return _jet.JesUnc[ _idx ];  
     }
-
+    
     float
     SampleMgr::JERPt()
     {
@@ -37,8 +37,7 @@ namespace mgr{
         return _jet.JERScaleDown[ _idx ];
     }
 
-    float
-    SampleMgr::JetPt()
+    float SampleMgr::JetPt()
     {
         return _jet.Pt[ _idx ];
     }
@@ -77,6 +76,12 @@ namespace mgr{
     SampleMgr::GenJetPhi()
     {
         return _jet.GenJetPhi[ _idx ];
+    }
+
+    int 
+    SampleMgr::GenJetFlavor()
+    {
+        return _jet.GenFlavor[ _idx ];
     }
 
     int

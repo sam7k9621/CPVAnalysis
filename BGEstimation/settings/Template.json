@@ -1,8 +1,0 @@
-{
-    "el_template_sg" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/HistMerge_el_TTbar_chi2_20_SR.root",
-    "el_template_bg" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/HistMerge_el_Data_chi2_20_CS.root",
-    "el_template_cs" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/HistMerge_el_Data_chi2_20_SR.root",
-    "mu_template_sg" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/HistMerge_mu_TTbar_chi2_20_SR.root",
-    "mu_template_bg" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/HistMerge_mu_Data_chi2_20_CS.root",
-    "mu_template_cs" : "/wk_cms2/sam7k9621/CMSSW_8_0_19/src/CPVAnalysis/CompareDataMC/results/HistMerge_mu_Data_chi2_20_SR.root"
-}

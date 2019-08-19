@@ -51,10 +51,10 @@ AddHist()
     /*******************************************************************************
     *  Observable
     *******************************************************************************/
-    CompMgr().AddHist( "Obs3", "O_{3}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "Obs6", "O_{6}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "Obs12", "O_{12}", "Events", 200, -10, 10 );
-    CompMgr().AddHist( "Obs13", "O_{13}", "Events", 200, -10, 10 );
+    CompMgr().AddHist( "Obs3", "O_{3}",   "Events", 2, -1, 1 );
+    CompMgr().AddHist( "Obs6", "O_{6}",   "Events", 2, -1, 1 );
+    CompMgr().AddHist( "Obs12", "O_{12}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "Obs13", "O_{13}", "Events", 2, -1, 1 );
 
     /*******************************************************************************
     *  Intrinsci Acp

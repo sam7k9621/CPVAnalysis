@@ -13,6 +13,7 @@ FullMgr( const string& subdir, const string& json )
 extern string
 MakeFileName( bool is_data )
 {
+    //string pos      = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/";
     string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017/";
     string filename = "";
 
@@ -32,7 +33,7 @@ extern void
 MakeFullCut()
 {
     // Build new file
-    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "2017results_DeepCSV" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut2017" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
     bool is_data      = found != std::string::npos ? true : false;
@@ -48,7 +49,13 @@ MakeFullCut()
     // Initialize data
     string lepton   = FullMgr().GetOption<string>( "lepton" );
     vector<int> hlt = FullMgr().GetListData<int>( lepton + "_HLT" );
-
+    string region = FullMgr().CheckOption( "region" ) ? "CR" : "SR";
+    TH2D* beff = FullMgr().GetSFHist( region + "_b_eff" );
+    TH2D* ceff = FullMgr().GetSFHist( region + "_c_eff" );
+    TH2D* leff = FullMgr().GetSFHist( region + "_l_eff" );
+    FullMgr().InitBtagWeight( "bcheck", FullMgr().GetSingleData<string>( "BtagWeight" ) );
+    FullMgr().InitBtagEffPlot( beff, ceff, leff );
+    
     // Register new branch
     Int_t had_b;
     Int_t lep_b;
@@ -58,33 +65,38 @@ MakeFullCut()
     Float_t chi2mass;
     Float_t had_tmass;
     Float_t lep_tmass;
+    Float_t b_weight;
+    Float_t b_weight_up;
+    Float_t b_weight_dn;
 
-    newtree->Branch( "had_b",     &had_b,     "had_b/I" );
-    newtree->Branch( "lep_b",     &lep_b,     "lep_b/I" );
-    newtree->Branch( "jet1",      &jet1,      "jet1/I" );
-    newtree->Branch( "jet2",      &jet2,      "jet2/I" );
-    newtree->Branch( "lep",       &lep,       "lep/I" );
-    newtree->Branch( "chi2mass",  &chi2mass,  "chimass/F" );
-    newtree->Branch( "had_tmass", &had_tmass, "had_tmass/F" );
-    newtree->Branch( "lep_tmass", &lep_tmass, "lep_tmass/F" );
+    newtree->Branch( "had_b",       &had_b,       "had_b/I" );
+    newtree->Branch( "lep_b",       &lep_b,       "lep_b/I" );
+    newtree->Branch( "jet1",        &jet1,        "jet1/I" );
+    newtree->Branch( "jet2",        &jet2,        "jet2/I" );
+    newtree->Branch( "lep",         &lep,         "lep/I" );
+    newtree->Branch( "chi2mass",    &chi2mass,    "chimass/F" );
+    newtree->Branch( "had_tmass",   &had_tmass,   "had_tmass/F" );
+    newtree->Branch( "lep_tmass",   &lep_tmass,   "lep_tmass/F" );
+    newtree->Branch( "b_weight",    &b_weight,    "b_weight/F" );
+    newtree->Branch( "b_weight_up", &b_weight_up, "b_weight_up/F" );
+    newtree->Branch( "b_weight_dn", &b_weight_dn, "b_weight_dn/F" );
 
     // Looping events
-    int events = FullMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
-
+    string tag = FullMgr().GetOption<string>( "uncertainty" );
+    int events = FullMgr().CheckOption( "test" ) ? 100 : ch->GetEntries();
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         FullMgr().process( events, i );
-
         vector<int> lepidx;// store one tight lepton
         vector<int> jetidx;// store every jets
         vector<int> bjetidx;// store two bjets
 
         // JERCorr
         if( !is_data ){
-            if( FullMgr().GetOption<string>( "uncertainty" ) == "JER_up" ){
+            if( tag == "JER_up" ){
                 FullMgr().JERCorrUp();
             }
-            else if( FullMgr().GetOption<string>( "uncertainty" ) == "JER_dn" ){
+            else if( tag == "JER_dn" ){
                 FullMgr().JERCorrDn();
             }
             else{
@@ -92,10 +104,19 @@ MakeFullCut()
             }
         }
 
+        // JEC 
+        if( !is_data ){
+            if( tag == "JEC_up" ){
+                FullMgr().JECCorrUp();
+            }
+            else if( tag == "JEC_dn" ){
+                FullMgr().JECCorrDn();
+            }
+        }
+
         /*******************************************************************************
         *  Baseline selection
         *******************************************************************************/
-
         if( !FullMgr().PassHLT( hlt ) ){
             continue;
         }
@@ -136,6 +157,20 @@ MakeFullCut()
         else{
             if( !FullMgr().PassFullJet( jetidx, bjetidx, lepidx[ 0 ] ) ){
                 continue;
+            }
+        }
+        
+        /*******************************************************************************
+        *  b-tagging probability
+        *******************************************************************************/
+        if( !is_data ){
+            if( FullMgr().CheckOption( "region" ) ){
+                b_weight    = FullMgr().GetBtagWeight_CR( bjetidx, jetidx );
+            }
+            else{
+                b_weight    = FullMgr().GetBtagWeight( bjetidx, jetidx );
+                b_weight_up = FullMgr().GetBtagWeight( bjetidx, jetidx, "up" );
+                b_weight_dn = FullMgr().GetBtagWeight( bjetidx, jetidx, "down" );
             }
         }
         /*******************************************************************************

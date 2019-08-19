@@ -1,11 +1,4 @@
 {
-    "TT_test": {
-        "path": "/afs/cern.ch/work/p/pusheng/*.root"
-    },
-    "TT_test_wo": {
-        "path": "/afs/cern.ch/work/p/pusheng/*.root"
-    },
-
     "lumimask": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt", 
     "puweight": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv", 
     "mu_HLT": [
@@ -29,5 +22,30 @@
         942, 
         943, 
         944
-    ]
+    ], 
+    "BtagWeight": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_94XSF_V4_B_F.csv", 
+    "SR_b_eff": {
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root", 
+        "title": "eff_b"
+    }, 
+    "SR_c_eff": {
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root", 
+        "title": "eff_c"
+    }, 
+    "SR_l_eff": {
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root", 
+        "title": "eff_l"
+    }, 
+    "CR_b_eff": {
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root", 
+        "title": "eff_b"
+    }, 
+    "CR_c_eff": {
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root", 
+        "title": "eff_c"
+    }, 
+    "CR_l_eff": {
+        "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root", 
+        "title": "eff_l"
+    }
 }

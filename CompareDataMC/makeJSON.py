@@ -30,7 +30,7 @@ def main(args):
             '-d', '--dir',
             help='input directory',
             type=str,
-            default="2017results"
+            default="FullCut2017"
             )
     try:
         opt = parser.parse_args(args[1:])
@@ -45,7 +45,7 @@ def main(args):
     content = OrderedDict()
     datalst = []
    
-    sample_path = "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/" + opt.dir + "/"
+    sample_path = "/eos/cms/store/user/youying/public/" + opt.dir + "/"
     for mc in DC.mclst :
 
         # mc = [ "tag", "sample", cross_section ]
@@ -75,7 +75,6 @@ def main(args):
     content["mulumi"] = 41540
 
     #Scale factor weight info
-    content["BtagWeight"] = info_path + "CSVv2_94XSF_V2_B_F.csv"
 
     # content["elTrg"] = {
             # "file" : info_path + "elTrgSF.root",

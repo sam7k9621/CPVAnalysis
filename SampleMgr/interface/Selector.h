@@ -25,6 +25,7 @@ class Selector : public mgr::Pathmgr,
         Selector& operator=( const Selector& ) = delete;
 
         void AddSample( TChain* );
+        void InitBtagEffPlot( TH2D*, TH2D*, TH2D* );
 
         /*******************************************************************************
         *   Common
@@ -45,17 +46,30 @@ class Selector : public mgr::Pathmgr,
             _sample->SetIndex( 0 );
             return _sample->LepPt();
         }
+        void  SetPDFUnc( float&, float& );
+        void  SetMuFMuRUnc( float* );
+        void  SetME_PSUnc( float&, float& );
 
+        /*******************************************************************************
+        *   Weight
+        *******************************************************************************/
+        double GetJetSF( TH2D*, const int& );
+        double GetJetSFUp( TH2D*, const int& );
+        double GetJetSFDn( TH2D*, const int& );
         float GenWeight()                 { return _sample->GenWeight(); }
         float GetPUWeight()               { return _sample->GetPUWeight(); }
         float GetPUWeightUp()             { return _sample->GetPUWeightUp(); }
         float GetPUWeightDn()             { return _sample->GetPUWeightDn(); }
         void  RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
-        void  InitJES()                   { _sample->InitJES(); }
-        void  SetPDFUnc( float&, float& );
-        void  SetMuFMuRUnc( float* );
-        void  SetME_PSUnc( float&, float& );
-
+        TH2D*  GetSFHist( const std::string& );
+        void   InitBtagWeight( const std::string&, const std::string& );
+        TH2D*  GetBtagEffPlot( const int& );
+        BTagEntry::JetFlavor GetBtagFlavor( const int& );
+        double  GetTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint& =BTagEntry::OP_MEDIUM);
+        double  GetNonTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint& =BTagEntry::OP_MEDIUM );
+        double GetBtagWeight( const std::vector<int>&, const std::vector<int>&, const std::string& ="central" );
+        double GetBtagWeight_CR( const std::vector<int>&, const std::vector<int>& );
+       
         /*******************************************************************************
         *   Pre-selection
         *******************************************************************************/
@@ -94,6 +108,9 @@ class Selector : public mgr::Pathmgr,
     private:
 
         BaseLineMgr* _sample;
+        TH2D*        _eff_b;
+        TH2D*        _eff_c;
+        TH2D*        _eff_l;
 };
 
 #endif

@@ -14,12 +14,10 @@ BaseLineMgr::BaseLineMgr( const string& sample ) :
     HistMgr( sample )
 {
     _calib  = NULL;
-    _jecUnc = NULL;
 }
 
 BaseLineMgr::~BaseLineMgr()
 {
-    delete _jecUnc;
     delete _calib;
 }
 
@@ -155,9 +153,7 @@ BaseLineMgr::JECDn()
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
         TLorentzVector jetp4 = GetJetP4( i );
-        _jecUnc->setJetPt( jetp4.Pt() );
-        _jecUnc->setJetEta( jetp4.Eta() );
-        double unc = _jecUnc->getUncertainty( true );
+        double unc = JesUnc();
         jetp4 *= ( 1 - unc );
         SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
@@ -171,11 +167,8 @@ BaseLineMgr::JECUp()
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
         TLorentzVector jetp4 = GetJetP4( i );
-        _jecUnc->setJetPt( jetp4.Pt() );
-        _jecUnc->setJetEta( jetp4.Eta() );
-        double unc = _jecUnc->getUncertainty( true );
+        double unc = JesUnc();
         jetp4 *= ( 1 + unc );
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
     }
 }
 
@@ -249,14 +242,13 @@ BaseLineMgr::PassJetLooseID()
 {
     return
         // Loose ID
-        JetNHF() <= 0.99 &&
-        JetNEF() <= 0.99 &&
+        JetNHF() < 0.9 &&
+        JetNEF() < 0.9 &&
         JetNConstituents() > 1 &&
 
-        JetAbsEta() < 2.4 &&
+        JetAbsEta() <= 2.4 &&
         JetCHF() > 0 &&
-        JetNCH() > 0 &&
-        JetCEF() <= 0.99
+        JetNCH() > 0 
     ;
 }
 

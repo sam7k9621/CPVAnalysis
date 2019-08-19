@@ -14,7 +14,6 @@ extern Selector& FullMgr( const std::string& = "", const string& = "" );
 *******************************************************************************/
 extern void Discard( TChain* );
 extern void MakePreCut();
-extern bool SetPUWeight( float&, const std::vector<double>& );
 
 /*******************************************************************************
 *   PreCut

@@ -5,6 +5,7 @@ class Parsemgr:
     def __init__( self ):
         self.parser = argparse.ArgumentParser("Plotmgr")
         self.parser.add_argument('-l', '--lepton',type=str,required=True)
+        self.parser.add_argument('-s', '--sample',type=str)
         self.optionlst = []
     
     # /*******************************************************************************
@@ -39,14 +40,18 @@ class Parsemgr:
                 else:
                     self.inputname  += "_" + option + "_" + arg 
     
-    def GetOption( self, option ):
+    def GetOption( self, option, add=False ):
         try:
             arg = getattr( self.opt, option )
         except AttributeError:
             print "Error processing arguments!"
             raise
-        if arg:
-            return arg
+        if arg and add:
+            return "_" + option + "_" + arg
+        elif arg and not add:
+            return arg 
+        else:
+            return ""
 
     # /*******************************************************************************
     # *   Get file name
@@ -56,8 +61,11 @@ class Parsemgr:
         file = "{}/{}.{}".format(dir, file, type)
         return file
 
-    def GetResultName( self, topic, output="Stack", type="pdf", dir="results"):
-        self.outputname = "{}_{}".format( output, self.opt.lepton ) + "_{}"
+    def GetCustomFileName( self, s1, s2, sample ):
+        return self.GetFileName( sample ).replace( s1, s2 )
+
+    def GetResultName( self, output, topic="Stack", type="pdf", dir="results"):
+        self.outputname = "{}_{}".format( topic, self.opt.lepton ) + "_{}"
         for option in self.optionlst :
             arg = getattr( self.opt, option )
             if arg:
@@ -66,7 +74,7 @@ class Parsemgr:
                 else:
                     self.outputname += "_" + option + "_" + arg
         
-        file = self.outputname.format( topic )
+        file = self.outputname.format( output )
         return "{}/{}.{}".format( dir, file, type )
 
     # /*******************************************************************************
@@ -75,12 +83,21 @@ class Parsemgr:
     def LeptonType( self ):
         return self.opt.lepton
 
+    def SampleInfo( self ):
+        return self.opt.sample
+
     def Entry( self ):
         lep  = "e" if self.opt.lepton == "el" else "#mu"
         try :
             bjet = "2"
-            if self.opt.region:
+            if self.opt.region == "WJets":
                 bjet = "0"
+
+            if self.opt.region == "QCD":
+                bjet = "< 2"
+                if getattr( self.opt, "0bjet" ):
+                    bjet = "0"
+
         except:
             pass
         return "1 {}, #geq 4 jets ( {} b jets )".format( lep, bjet )

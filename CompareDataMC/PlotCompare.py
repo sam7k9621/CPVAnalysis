@@ -1,7 +1,6 @@
 import ROOT
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
-import CPVAnalysis.CompareDataMC.PlotInfo as info
 import CPVAnalysis.CompareDataMC.MakeHist as input
 from decimal import Decimal
 
@@ -9,42 +8,58 @@ def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "opt").AddInput("r", "region")
-    opt.AddFlag("p","pileup").AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "i", "ISO" )
+    opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "i", "ISO" )
     
-    opt.SetName( "chi2", "uncertainty", "opt", "region", "pileup", "0bjet", "ISO" )
+    opt.SetName( "chi2", "uncertainty", "opt", "region", "0bjet", "ISO" )
     opt.Parsing() 
+    
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
-    objlst=[ "Obs3", "Obs6", "Obs12", "Obs13", "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho" ]
+    objlst=[ "had_tmass", "lep_tmass", "LepIso" ]
+    mclst = ["QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
+    region = opt.GetOption( "region" )
+    if not region:
+        mclst.remove( "QCD" )
+    else:
+        mclst.remove( region )
+        mclst.append( region ) # Dominant sample should be added last
+    
+    # objlst=[ "Obs3", "Obs6", "Obs12", "Obs13", "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho" ]
+    
     for sample in input.samplelst:
         histmgr.SetObjlst( opt.GetFileName( sample ), objlst, sample )
 
     if opt.GetOption( "driven" ):
         qcd_histlst = [ histmgr.GetMergedObj( "QCD" ) for o in objlst ]
         histmgr.RemoveObj( "QCD" )
-        histmgr.SetObjlst( opt.GetFileName( "Data" ).replace("_WJets", "_QCD"), objlst, "QCD" )
+        histmgr.SetObjlst( opt.GetFileName( "Data" ).replace("_WJets", "_QCD_0bjet"), objlst, "QCD" )
         opt.SetName( "driven" )
 
     # Loop objlst
-    for obj in objlst:
-
+    for idx, obj in enumerate( objlst ):
         c = pltmgr.NewCanvas( obj )
         leg = pltmgr.NewLegend( 0.67, 0.51, 0.8, 0.81)
         bg = ROOT.THStack()
         # Initiailze hist
         data = histmgr.GetObj( "Data" )
         histlst = []
-        for i, mc in enumerate( info.mclst ):
+        total = 0.
+        for i, mc in enumerate( mclst ):
             histlst.append( histmgr.GetMergedObj( mc ) )
             histlst[i].SetLineColor( pltmgr.colorlst[i] )
             histlst[i].SetFillColor( pltmgr.colorlst[i] )
             bg.Add( histlst[i] )
+
+            print mc, histlst[i].Integral()
+            total += histlst[i].Integral()
+
             leg.AddEntry( histlst[i], mc, "F" )
             if mc == "QCD" and opt.GetOption( "driven" ):
                 pltmgr.SetNormToUnity( histlst[ i ] )
-                histlst[ i ].Scale( qcd_histlst[i].Integral() )
+                histlst[ i ].Scale( qcd_histlst[ idx ].Integral() )
         leg.AddEntry( data, "Data", "le" )
 
+        print "Total", total 
 
         bg_sum = pltmgr.SumHist( histlst )
         top = pltmgr.NewTopPad()
@@ -56,7 +71,7 @@ def main() :
         leg.Draw()
     
         bg.GetYaxis().SetTitle( "Events" ) 
-        bg.SetMaximum( pltmgr.GetHistYmax( data ) * 1.5 );
+        bg.SetMaximum( max( pltmgr.GetHistYmax( bg_sum ), pltmgr.GetHistYmax( data ) ) * 1.5 );
         pltmgr.SetTopPlotAxis( bg )
         data.SetLineColor( 1 )
         data.SetLineWidth( 1 )

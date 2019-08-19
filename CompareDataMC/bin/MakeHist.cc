@@ -12,20 +12,18 @@ main( int argc, char* argv[] )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "input,i", opt::value<vector<string> >()->multitoken(), "CEDM sample" )
         ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
-        ( "invChi2,iu", opt::value<double>(), "inverse chi2 upper cut" )
+        ( "invChi2", opt::value<double>(), "inverse chi2 upper cut" )
         ( "region,r", opt::value<string>(), "which region" )
         ( "uncertainty,e", opt::value<string>(), "uncertainty shift" )
         ( "opt,o", opt::value<double>(), "lep_tmass optimization cut" )
-        ( "HLT", "high level trigger" )
-        ( "ISO", "isolated lepton" )
+        ( "Acp,a", opt::value<int>(), "intrinsic Acp(%)" )
+        ( "mixed,m", opt::value<int>(), "shuffle with nearby events" )
         ( "0bjet", "0bjet" )
-        ( "pileup,p", "test pileup running" )
-        ( "mixed,x", "randomly choose event" )
+        ( "wopileup,p", "without pileup running" )
         ( "bbSep,B", "bbSeparation method" )
         
-        ( "Acp,A", opt::value<double>(), "intrinsci acp(%)" )
+        ( "TLV,L", "Get Acp TLorentzVector list" )
         ( "SIM,S", "check gen-level simulation Acp" )
-        ( "CEDM,C", "make CEDM model plot" )
     ;
     CompMgr( "CompareDataMC", "WeightInfo.json" ).AddOptions( de );
     const int run = CompMgr().ParseOptions( argc, argv );
@@ -39,19 +37,17 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "SIM", "CEDM", "Acp", "opt", "mixed", "region", "uncertainty", "pileup", "HLT", "0bjet", "ISO" } );
+    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "0bjet", "SIM", "TLV" } );
 
     if( CompMgr().CheckOption( "SIM" ) ){
         CompMgr().ChangeFile( "CheckAcp.json" );
         CheckAcp();
     }
-    else if( CompMgr().CheckOption( "CEDM" ) ){
-        CompMgr().ChangeFile( "CEDM.json" );
-        CEDMPlot();
+    else if( CompMgr().CheckOption( "TLV" ) ){
+        StoreTLV();
     }
     else if( CompMgr().CheckOption( "Acp" ) ){
-        AddAcp();
-        // ReweighAcp();
+        ReweighAcp();
     }
     else{
         MakeHist();

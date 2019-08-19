@@ -147,10 +147,38 @@ def main(args):
         fp.write( context.format( ', '.join( data ), ', '.join( mc ) ) )
 
     ###
-    content[ "lumimask" ] = "/wk_cms2/sam7k9621/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt"
-    content[ "puweight" ] = "/wk_cms2/sam7k9621/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/pileupweights_69200.csv"
+    info_path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/"
+    content[ "lumimask" ] = info_path + "Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt"
+    content[ "puweight" ] = info_path + "pileupweights_69200.csv"
     content[ "mu_HLT" ] = [1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344]
     content[ "el_HLT" ] = [938, 939, 940, 941, 942, 943, 944]
+    content[ "BtagWeight" ] = info_path + "DeepCSV_94XSF_V4_B_F.csv"
+    
+    content[ "SR_b_eff" ] = {
+            "file": info_path + "beffPlot_TTToSemiLeptonic_0pt8838.root",
+            "title": "eff_b"
+            }
+    content[ "SR_c_eff" ] = {
+            "file": info_path + "beffPlot_TTToSemiLeptonic_0pt8838.root",
+            "title": "eff_c"
+            }
+    content[ "SR_l_eff" ] = {
+            "file": info_path + "beffPlot_TTToSemiLeptonic_0pt8838.root",
+            "title": "eff_l"
+            }
+
+    content[ "CR_b_eff" ] = {
+            "file": info_path + "beffPlot_TTToSemiLeptonic_0pt5803.root",
+            "title": "eff_b"
+            }
+    content[ "CR_c_eff" ] = {
+            "file": info_path + "beffPlot_TTToSemiLeptonic_0pt5803.root",
+            "title": "eff_c"
+            }
+    content[ "CR_l_eff" ] = {
+            "file": info_path + "beffPlot_TTToSemiLeptonic_0pt5803.root",
+            "title": "eff_l"
+            }
 
     with open('settings/SampleInfo.json', 'w') as fp:
         json.dump(content, fp, indent=4)
