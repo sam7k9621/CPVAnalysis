@@ -67,7 +67,7 @@ def main(args):
         parser.print_help()
         raise
 
-    sample_path = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/results/"
+    sample_path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/CompareDataMC/results/"
     samplelst       = [ "Data", "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ] #sr all
     cmd         = "hadd -f "
 
