@@ -280,25 +280,25 @@ BaseLineMgr::IsPreSelJet()
 bool
 BaseLineMgr::PassCSVM()
 {
-    return JetCSV() > 0.8838;
+    return JetCSV() > 0.8838; //old
 }
 
 bool 
 BaseLineMgr::PassCSVL()
 {
-    return JetCSV() > 0.5803;
+    return JetCSV() > 0.5803; //old
 }
 
 bool 
 BaseLineMgr::PassDeepCSVM()
 {
-    return JetDeepCSV() > 0.4941;
+    return JetDeepCSV() > 0.4184;
 }
 
 bool 
 BaseLineMgr::PassDeepCSVL()
 {
-    return JetDeepCSV() > 0.1522;
+    return JetDeepCSV() > 0.1241;
 }
 
 /*******************************************************************************
