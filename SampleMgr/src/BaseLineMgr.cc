@@ -242,13 +242,14 @@ BaseLineMgr::PassJetLooseID()
 {
     return
         // Loose ID
-        JetNHF() < 0.9 &&
-        JetNEF() < 0.9 &&
+        JetNHF() < 0.99 &&
+        JetNEF() < 0.99 &&
         JetNConstituents() > 1 &&
 
-        JetAbsEta() <= 2.4 &&
+        JetAbsEta() < 2.4 &&
         JetCHF() > 0 &&
-        JetNCH() > 0 
+        JetNCH() > 0 &&
+        JetCEF() < 0.99
     ;
 }
 
@@ -280,25 +281,25 @@ BaseLineMgr::IsPreSelJet()
 bool
 BaseLineMgr::PassCSVM()
 {
-    return JetCSV() > 0.8838;
+    return JetCSV() > 0.8838; //old
 }
 
 bool 
 BaseLineMgr::PassCSVL()
 {
-    return JetCSV() > 0.5803;
+    return JetCSV() > 0.5803; //old
 }
 
 bool 
 BaseLineMgr::PassDeepCSVM()
 {
-    return JetDeepCSV() > 0.4941;
+    return JetDeepCSV() > 0.6321;
 }
 
 bool 
 BaseLineMgr::PassDeepCSVL()
 {
-    return JetDeepCSV() > 0.1522;
+    return JetDeepCSV() > 0.2217;
 }
 
 /*******************************************************************************
