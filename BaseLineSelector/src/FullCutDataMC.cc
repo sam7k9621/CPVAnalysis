@@ -14,13 +14,14 @@ extern string
 MakeFileName( bool is_data )
 {
     //string pos      = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/";
-    string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017/";
+    string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2018/";
     string filename = "";
 
     if( is_data ){
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "lepton" ) + "_" +  FullMgr().GetOption<string>( "sample" ) + ".root" );
+        string type   = FullMgr().GetOption<string>( "lepton" ) == "el" ? "EGamma" : "SingleMuon";
+        filename = pos / ( "PreCut_" + type + "_" +  FullMgr().GetOption<string>( "sample" ) + ".root" );
     }
-    // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
+    // /eos/cms/store/user/pusheng/files/PreCut_SingleMuon_runG_2.root
     else{
         filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "sample" ) + ".root" );
     }
@@ -33,7 +34,7 @@ extern void
 MakeFullCut()
 {
     // Build new file
-    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut2017" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut2018" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
     bool is_data      = found != std::string::npos ? true : false;

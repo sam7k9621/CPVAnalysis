@@ -25,8 +25,10 @@ def main(args):
     
     run.getByLabel (label, handle)
     myLHERunInfoProduct = handle.product()
-    for lhe in myLHERunInfoProduct:
-        print lhe
+    
+    with open('data/PDF_info_ttbar.txt', 'a') as output:
+        for lhe in myLHERunInfoProduct:
+            output.write( lhe )
 
 
 if __name__ == '__main__':
