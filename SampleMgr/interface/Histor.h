@@ -108,6 +108,8 @@ class Histor : public mgr::Pathmgr,
         TH2D*  GetSFHist( const std::string& );
         double TopPtWeight();
         void   WeightMC( const std::string& );
+        float  PDFWeight( const int& );
+        float  muFmuRWeight( const int& );
 
         /*******************************************************************************
         *   Basic RECO

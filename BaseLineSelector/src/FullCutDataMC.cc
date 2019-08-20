@@ -14,7 +14,7 @@ extern string
 MakeFileName( bool is_data )
 {
     //string pos      = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/";
-    string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/pusheng/2017/";
+    string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/youying/public/2016";
     string filename = "";
 
     if( is_data ){
@@ -33,7 +33,7 @@ extern void
 MakeFullCut()
 {
     // Build new file
-    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut2017" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut2016" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
     bool is_data      = found != std::string::npos ? true : false;

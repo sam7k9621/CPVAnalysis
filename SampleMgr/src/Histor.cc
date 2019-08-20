@@ -46,8 +46,7 @@ Histor::HasLooseB( const initializer_list<int>& list )
 {
     for( const auto& l : list ){
         _sample->SetIndex( l );
-        if( _sample->PassCSVL() ){
-        //if( _sample->PassDeepCSVL() ){
+        if( _sample->PassDeepCSVL() ){
             return true;
         }
     }
@@ -182,6 +181,18 @@ double
 Histor::TopPtWeight()
 {
     return _sample->TopPtWeight();
+}
+
+float
+Histor::PDFWeight( const int& idx )
+{
+    return _sample->PDFWeight( idx );
+}
+
+float
+Histor::muFmuRWeight( const int& idx )
+{
+    return _sample->muFmuRWeight( idx );
 }
 
 void
