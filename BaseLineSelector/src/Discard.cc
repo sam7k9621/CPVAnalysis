@@ -98,7 +98,6 @@ Discard( TChain* ch )
     ch->SetBranchStatus( "JetInfo.summaryDeepCSVJetTags_CvsB", 0);                   
     ch->SetBranchStatus( "JetInfo.summaryDeepCSVJetTags_CvsL", 0);                   
     ch->SetBranchStatus( "JetInfo.GenPdgID", 0);                                  
-    ch->SetBranchStatus( "JetInfo.GenFlavor", 0);                                 
     ch->SetBranchStatus( "JetInfo.GenHadronFlavor", 0);                           
     ch->SetBranchStatus( "JetInfo.GenMCTag", 0);                                  
     ch->SetBranchStatus( "JetInfo.NSubjets", 0);                                  

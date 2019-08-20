@@ -1,4 +1,6 @@
-WJets_HT-100To200
+WJets_HT-70To100
+Effective events : 22229420.0
+ WJets_HT-100To200
 Effective events : 35804114.0
  WJets_HT-200To400
 Effective events : 21191913.0

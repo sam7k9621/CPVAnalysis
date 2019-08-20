@@ -140,6 +140,10 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         // Top Pt Weighting
         double TopPtWeight();
 
+        // PDF weight 
+        float PDFWeight( const int& );
+        float muFmuRWeight( const int& );
+
     private:
 
         float _puweight;

@@ -46,9 +46,6 @@ class Selector : public mgr::Pathmgr,
             _sample->SetIndex( 0 );
             return _sample->LepPt();
         }
-        void  SetPDFUnc( float&, float& );
-        void  SetMuFMuRUnc( float* );
-        void  SetME_PSUnc( float&, float& );
 
         /*******************************************************************************
         *   Weight

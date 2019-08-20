@@ -160,16 +160,22 @@ MakeHist()
                 //weight *= CompMgr().GetLepSF( LepHLT, lep );
             }
 
+            // PDF unc 
+            if( tag.find( "PDF" ) != string::npos ){
+                int pdfidx = std::stoi( tag.substr( tag.find( "_" ) + 1 ) );
+                weight *= CompMgr().PDFWeight( pdfidx );
+            }
+            
+            // muFmuR unc 
+            if( tag.find( "muFmuR" ) != string::npos ){
+                int pdfidx = std::stoi( tag.substr( tag.find( "_" ) + 1 ) );
+                weight *= CompMgr().muFmuRWeight( pdfidx );
+            }
+
             // gen-level re-weighting
             weight *= CompMgr().GenWeight();
         }
        
-        //
-        if( isnan( weight ) ){
-            continue;
-        }
-        //
-
         /*******************************************************************************
         *  bbSeparation / Optimisation
         *******************************************************************************/
@@ -228,31 +234,6 @@ MakeHist()
             CompMgr().Hist2D( "chi2_tmass" )->Fill( had_tmass, chi2mass );
         }
 
-        /*******************************************************************************
-        *  Reco Acp
-        *******************************************************************************/
-/*        float charge           = CompMgr().GetIsoLepCharge( lep );*/
-        //TLorentzVector isolep  = CompMgr().GetLepP4( lep );
-        //TLorentzVector hardjet = CompMgr().GetJetP4( jet1 );
-        //TLorentzVector b       = charge < 0 ? CompMgr().GetJetP4( had_b ) : CompMgr().GetJetP4( lep_b );
-        //TLorentzVector bbar    = charge < 0 ? CompMgr().GetJetP4( lep_b ) : CompMgr().GetJetP4( had_b );
-
-        //double o6  = Obs6( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
-        //double o12 = Obs12( b.Vect(), bbar.Vect() );
-        //double o13 = Obs13( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
-
-        //TVector3 bbCM = -( b + bbar ).BoostVector();
-        //b.Boost( bbCM );
-        //bbar.Boost( bbCM );
-        //isolep.Boost( bbCM );
-        //hardjet.Boost( bbCM );
-
-        //double o3 = Obs3( isolep.Vect(), hardjet.Vect(), b.Vect(), bbar.Vect(), charge );
-
-        //FillObservable( "Obs3", o3,  weight );
-        //FillObservable( "Obs3", o6,  weight );
-        //FillObservable( "Obs3", o12, weight );
-        /*FillObservable( "Obs3", o13, weight );*/
     }
     cout<<endl;
     

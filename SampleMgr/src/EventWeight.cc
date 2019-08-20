@@ -106,3 +106,21 @@ BaseLineMgr::TopPtWeight()
 
     return sqrt( topweight * antitopweight );
 }
+
+float 
+BaseLineMgr::PDFWeight( const int& idx )
+{
+    float nominal = _gen.LHEOriginalWeight;  
+    float weight  = _gen.LHESystematicWeights[ idx ] / nominal - 1;
+    float scale   = weight > 0 ? 1.0 : -1.0;
+    int   alpid   = weight > 0 ? 111 : 110;
+    float alpha   = _gen.LHESystematicWeights[ alpid ] / nominal - 1; 
+
+    return 1 + scale * sqrt( weight * weight + alpha * alpha );
+}
+
+float  
+BaseLineMgr::muFmuRWeight( const int& idx )
+{
+    return _gen.LHESystematicWeights[ idx ] / _gen.LHEOriginalWeight;
+}
