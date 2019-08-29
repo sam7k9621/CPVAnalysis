@@ -47,6 +47,7 @@ MakePreCut()
         checkEvt.makeJsonMap();
     }
 
+    vector<int> hlt = PreMgr().GetListData<int>( "m_HLT" );
     // Reading PUWeight file
     string line;
     vector<double> puweight;
@@ -80,6 +81,10 @@ MakePreCut()
     int positive = 0;
     int negative = 0;
 
+    for( auto h : hlt ){
+        cout<<h<<endl;
+    }
+
     // Looping events
     int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
 
@@ -92,10 +97,14 @@ MakePreCut()
         weight = 1;
         weight_up = 1;
         weight_dn = 1;
-        
+       
+        if( !PreMgr().PassHLT( hlt ) ){
+            continue;
+        }
+
         if( !is_data ){
             int pv = PreMgr().nPU();
-            if( pv >= (int)puweight.size() ){
+            if( pv < 0 || pv >= (int)puweight.size() ){
                 continue;
             }
         

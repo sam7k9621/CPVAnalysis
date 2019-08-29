@@ -1,5 +1,18 @@
 {
-    "mu_HLT": [
+    "mu_Run_test": {
+        "path": "/eos/cms/store/user/youying/public/bpk_ntuple_HLT.root"
+    },
+   
+    "lumimask":    "/afs/cern.ch/work/p/pusheng/CMSSW_8_0_32/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt",
+    "puweight":    "/afs/cern.ch/work/p/pusheng/CMSSW_8_0_32/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_69200.csv",
+    "puweight_up": "/afs/cern.ch/work/p/pusheng/CMSSW_8_0_32/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_72400.csv",
+    "puweight_dn": "/afs/cern.ch/work/p/pusheng/CMSSW_8_0_32/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_66000.csv",
+
+    "m_HLT": [
+        2412, 2413, 2414, 2415
+    ],
+     
+    "mu_HLT":[
         1315, 
         1316, 
         1317, 

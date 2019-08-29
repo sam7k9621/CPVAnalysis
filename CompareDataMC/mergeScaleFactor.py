@@ -10,45 +10,43 @@ import argparse
 
 import ROOT
 
-import ManagerUtils.SysUtils.pluginPathUtils as mypath
-
 mergelist = {
     'muid': [
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/IDSF_BtoF.root',
-            'fileobj': 'MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio',
-            'lumi': 20.1
+            'filename': 'RunBCDEF_SF_ID.root',
+            'fileobj': 'NUM_TightID_DEN_genTracks_eta_pt',
+            'lumi': 19.7
         },
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/IDSF_GH.root',
-            'fileobj': 'MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio',
-            'lumi': 16.3
+            'filename': 'RunGH_SF_ID.root',
+            'fileobj': 'NUM_TightID_DEN_genTracks_eta_pt',
+            'lumi': 16.2
         }
     ],
     'muiso': [
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/ISOSF_BtoF.root',
-            'fileobj': 'TightISO_TightID_pt_eta/abseta_pt_ratio',
-            'lumi': 20.1
+            'filename': 'RunBCDEF_SF_ISO.root',
+            'fileobj': 'NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt',
+            'lumi': 19.7
         },
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/ISOSF_GH.root',
-            'fileobj': 'TightISO_TightID_pt_eta/abseta_pt_ratio',
-            'lumi': 16.3
-        }
-    ],
-    'mutrig':[
-        {
-            'filename': 'CPVAnalysis/CompareDataMC/data/TrgSF_BtoF.root',
-            'fileobj': 'IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio',
-            'lumi': 20.1
-        },
-        {
-            'filename': 'CPVAnalysis/CompareDataMC/data/TrgSF_GH.root',
-            'fileobj': 'IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio',
-            'lumi': 16.3
+            'filename': 'RunGH_SF_ISO.root',
+            'fileobj': 'NUM_TightRelIso_DEN_TightIDandIPCut_eta_pt',
+            'lumi': 16.2
         }
     ]
+#     'mutrig':[
+        # {
+            # 'filename': 'CPVAnalysis/CompareDataMC/data/TrgSF_BtoF.root',
+            # 'fileobj': 'IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio',
+            # 'lumi': 20.1
+        # },
+        # {
+            # 'filename': 'CPVAnalysis/CompareDataMC/data/TrgSF_GH.root',
+            # 'fileobj': 'IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio',
+            # 'lumi': 16.3
+        # }
+    # ]
 }
 
 # Stop directory association with file call
@@ -56,7 +54,7 @@ mergelist = {
 ROOT.TH1.AddDirectory(False);
 
 def GetHist(arg):
-  tfile = ROOT.TFile.Open(mypath.CMSSWSrc() + '/' + arg['filename'])
+  tfile = ROOT.TFile.Open( "data/" + arg['filename'] )
   obj   = tfile.Get(arg['fileobj']).Clone()
   return obj
 
@@ -96,11 +94,11 @@ def main():
   mergehist.Reset()
 
   for obj in mergelist[arg.merge]:
-      hist = ROOT.TH2F( GetHist( obj ) )
+      hist = GetHist( obj )
       hist.Scale( obj['lumi'] / totallumi )
       mergehist.Add( hist )
 
-  tfile = ROOT.TFile.Open(arg.output,'UPDATE')
+  tfile = ROOT.TFile.Open( "data/" + arg.output + ".root",'UPDATE')
   mergehist.Write(arg.name)
   tfile.Close()
 

@@ -49,15 +49,15 @@ def main(args):
         raise
 
     # pos  = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/PreCut_{}_[0-9]+.root";
-    pos  = "/eos/cms/store/user/pusheng/2017/PreCut_{}*.root";
+    pos  = "/eos/cms/store/user/youying/public/2016/PreCut_{}*.root";
     ch   = TChain( "root" )
     ch.Add( pos.format( opt.sample ) )
     print ">> Processing " + pos.format( opt.sample )
 
-    newfile = TFile( "data/beffPlot_{}_{}.root".format( opt.sample, str(opt.discriminator).replace(".","pt") ), 'RECREATE' )
+    newfile = TFile( "beffPlot_{}_{}.root".format( opt.sample, str(opt.discriminator).replace(".","pt") ), 'RECREATE' )
     
     xbins = array( 'd', [0., 20., 30., 50., 70., 100., 140., 200., 300., 600., 1000.] )
-    ybins = array( 'd', [-3, -2.6, -2.2, -1.8, -1.4, -1.0, -0.6, -0.2, 0.2, 0.6, 1.0, 1.4, 1.8, 2.2, 2.6, 3.0] )
+    ybins = array( 'd', [-2.4, -2.0, -1.6, -1.2, -0.8, -0.4, 0., 0.4, 0.8, 1.2, 1.6, 2.0, 2.4] )
     eff_b = TEfficiency( "eff_b", "eff_b", len(xbins) - 1, xbins, len(ybins) - 1, ybins )
     eff_c = TEfficiency( "eff_c", "eff_c", len(xbins) - 1, xbins, len(ybins) - 1, ybins )
     eff_l = TEfficiency( "eff_l", "eff_l", len(xbins) - 1, xbins, len(ybins) - 1, ybins )

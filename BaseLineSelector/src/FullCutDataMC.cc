@@ -14,7 +14,8 @@ extern string
 MakeFileName( bool is_data )
 {
     //string pos      = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/";
-    string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/youying/public/2016";
+    //string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/youying/public/2016";
+    string pos      = "/eos/cms/store/user/youying/public/2016";
     string filename = "";
 
     if( is_data ){

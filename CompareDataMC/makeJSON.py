@@ -30,7 +30,7 @@ def main(args):
             '-d', '--dir',
             help='input directory',
             type=str,
-            default="FullCut2017"
+            default="FullCut2016"
             )
     try:
         opt = parser.parse_args(args[1:])
@@ -61,18 +61,18 @@ def main(args):
                 }
     
     content["Data"] = {
-            "elpath_WJets"  : [ sample_path + opt.prefix + "_el_Run2017[A-Z]_[0-9]+_region_WJets.root"] ,
-            "mupath_WJets"  : [ sample_path + opt.prefix + "_mu_Run2017[A-Z]_[0-9]+_region_WJets.root"] ,
-            "elpath_QCD"    : [ sample_path + opt.prefix + "_el_Run2017[A-Z]_[0-9]+_region_QCD.root"] ,
-            "mupath_QCD"    : [ sample_path + opt.prefix + "_mu_Run2017[A-Z]_[0-9]+_region_QCD.root"] ,
-            "elpath"        : [ sample_path + opt.prefix + "_el_Run2017[A-Z]_[0-9]+.root"] ,
-            "mupath"        : [ sample_path + opt.prefix + "_mu_Run2017[A-Z]_[0-9]+.root"] 
+            "elpath_WJets"  : [ sample_path + opt.prefix + "_el_Run2016[A-Z]_[0-9]+_region_WJets.root"] ,
+            "mupath_WJets"  : [ sample_path + opt.prefix + "_mu_Run2016[A-Z]_[0-9]+_region_WJets.root"] ,
+            "elpath_QCD"    : [ sample_path + opt.prefix + "_el_Run2016[A-Z]_[0-9]+_region_QCD.root"] ,
+            "mupath_QCD"    : [ sample_path + opt.prefix + "_mu_Run2016[A-Z]_[0-9]+_region_QCD.root"] ,
+            "elpath"        : [ sample_path + opt.prefix + "_el_Run2016[A-Z]_[0-9]+.root"] ,
+            "mupath"        : [ sample_path + opt.prefix + "_mu_Run2016[A-Z]_[0-9]+.root"] 
             }
 
     info_path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/CompareDataMC/data/"
     #Event weight info
-    content["ellumi"] = 41540
-    content["mulumi"] = 41540
+    content["ellumi"] = 35922
+    content["mulumi"] = 35922
 
     #Scale factor weight info
 
@@ -81,27 +81,25 @@ def main(args):
             # "title": "scale_ele32"
             # }
     content["elID"] = {
-            "file" : info_path + "2017_ElectronTight.root",
+            "file" : info_path + "2016LegacyReReco_ElectronTight_Fall17V2.root",
             "title": "EGamma_SF2D"
             }
     content["elRECO"] = {
-            "file" : info_path + "egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root",
+            "file" : info_path + "EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root",
             "title": "EGamma_SF2D"
             }
-    content["muTrg"] = {
-            "file" : info_path + "EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",
-            "title": "IsoMu27_PtEtaBins"
-            }
+    # content["muTrg"] = {
+            # "file" : info_path + "EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",
+            # "title": "IsoMu27_PtEtaBins"
+            # }
     content["muID"] = {
-            "file" : info_path + "RunBCDEF_SF_ID.root",
-            "title": "NUM_TightID_DEN_genTracks_pt_abseta"
+            "file" : info_path + "muid_Run16All.root",
+            "title": "muid"
             }
     content["muRECO"] = {
-            "file" : info_path + "RunBCDEF_SF_ISO.root",
-            "title": "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta"
+            "file" : info_path + "muiso_Run16All.root",
+            "title": "muiso"
             }
-    content[ "mu_HLT" ] = [1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344]
-    content[ "el_HLT" ] = [938, 939, 940, 941, 942, 943, 944]
 
     with open('settings/WeightInfo.json', 'w') as fp:
         json.dump(content, fp, indent=4)

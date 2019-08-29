@@ -8,14 +8,15 @@ def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "opt").AddInput("r", "region")
-    opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "i", "ISO" )
+    opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "i", "ISO" ).AddFlag( "p", "wopileup" )
     
-    opt.SetName( "chi2", "uncertainty", "opt", "region", "0bjet", "ISO" )
+    opt.SetName( "chi2", "uncertainty", "opt", "region", "0bjet", "ISO", "wopileup" )
     opt.Parsing() 
     
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
-    objlst=[ "had_tmass", "lep_tmass", "LepIso" ]
+    # objlst=[ "had_tmass", "lep_tmass" ]
+    objlst=[ "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho" ]
     mclst = ["QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
     region = opt.GetOption( "region" )
     if not region:
@@ -72,6 +73,9 @@ def main() :
     
         bg.GetYaxis().SetTitle( "Events" ) 
         bg.SetMaximum( max( pltmgr.GetHistYmax( bg_sum ), pltmgr.GetHistYmax( data ) ) * 1.5 );
+        
+        print bg.GetMaximum()
+
         pltmgr.SetTopPlotAxis( bg )
         data.SetLineColor( 1 )
         data.SetLineWidth( 1 )
@@ -110,7 +114,7 @@ def main() :
         c.cd()
     
         pltmgr.DrawCMSLabel( pltmgr.PRELIMINARY )
-        pltmgr.DrawLuminosity( 41540 )
+        pltmgr.DrawLuminosity( 35922 )
         pltmgr.DrawEntryLeft( opt.Entry() )
         c.SaveAs( opt.GetResultName( obj ) )
         
