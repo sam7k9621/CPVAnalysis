@@ -252,9 +252,21 @@ namespace mgr{
     {
         for( int i = 0; i < Lsize(); i++ ){
             if( _lep.LeptonType[ _idx ] == 11 ){
-                float pt = _lep.Pt[ _idx ];
-                _lep.Pt[ _idx ] = pt * _lep.ElEnergyCorrFactor[ _idx ];
+                SetIndex( i );
+                TLorentzVector lepp4 = GetLepP4( i );
+                lepp4 *= _lep.ElEnergyCorrFactor[ _idx ]; 
+                SetLepP4( lepp4 );
             }
         }
+    }
+
+    void 
+    SampleMgr::SetLepP4( const TLorentzVector& tl )
+    {
+        _lep.Energy[ _idx ] = tl.Energy();
+        _lep.Pt[ _idx ] = tl.Pt();
+        _lep.Px[ _idx ] = tl.Px();
+        _lep.Py[ _idx ] = tl.Py();
+        _lep.Pz[ _idx ] = tl.Pz();
     }
 }

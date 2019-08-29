@@ -24,7 +24,7 @@ error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}.$(ClusterID).$(ProcId)
 log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}.$(ClusterID).$(ProcId).log 
 
 requirements = (OpSysAndVer =?= "CentOS7")
-+JobFlavour = "workday"
++JobFlavour = "longlunch"
 
 queue cmd,opt from job.dat
 """

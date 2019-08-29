@@ -39,11 +39,11 @@ namespace mgr{
             {
                 for( int i = 0; i < _evt.nBX; i++ ){
                     if( _evt.BXPU[ i ] == 0 ){
-                        return _evt.nPU[ i ];
+                        return _evt.TrueIT[ i ];
                     }
                 }
 
-                return _evt.nPU[ 0 ];
+                return -1;
             }
 
             float GenWeight(){ return _gen.Weight; }
@@ -74,6 +74,7 @@ namespace mgr{
             float          LepAbsEta();
             float          GetLepCharge( const int& );
             TLorentzVector GetLepP4( const int& );
+            void           SetLepP4( const TLorentzVector& );
             int            Lep_Type(){ return _lep.LeptonType[ _idx ]; }
 
             /*******************************************************************************
@@ -137,7 +138,7 @@ namespace mgr{
 
             // Jet smeared
             // https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution
-            void SetJetPtEta( const float&, const float& );
+            void SetJetP4( const TLorentzVector& );
 
             // b-tagging
             float JetCSV();

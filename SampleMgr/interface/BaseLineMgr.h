@@ -22,6 +22,7 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <random>
 
 class BaseLineMgr : public mgr::Hist2DMgr,
                     public mgr::HistMgr,
@@ -151,6 +152,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         float _puweight_dn;
         BTagCalibration* _calib;
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
+        std::default_random_engine _generator;
 };
 
 

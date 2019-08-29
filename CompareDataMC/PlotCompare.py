@@ -15,7 +15,8 @@ def main() :
     
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
-    objlst=[ "had_tmass", "lep_tmass", "LepIso" ]
+    # objlst=[ "had_tmass", "lep_tmass" ]
+    objlst=[ "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho" ]
     mclst = ["QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
     region = opt.GetOption( "region" )
     if not region:

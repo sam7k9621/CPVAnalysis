@@ -132,11 +132,7 @@ BaseLineMgr::MakeSmeared( const double& ressf, const double& res )
     // Generating random number
     // https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h
     std::normal_distribution<> myrand( 0, width );
-    std::uint32_t seed              = 37428479;
-    std::mt19937 m_random_generator = std::mt19937( seed );
-    // std::default_random_engine gen( bitconv( JetPhi() ) );
-
-    double scale = 1. + myrand( m_random_generator );
+    double scale = 1. + myrand( _generator );
     if( scale <= 0 || ::isnan( scale ) ){
         return 1;
     }
@@ -155,7 +151,7 @@ BaseLineMgr::JECDn()
         TLorentzVector jetp4 = GetJetP4( i );
         double unc = JesUnc();
         jetp4 *= ( 1 - unc );
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -169,6 +165,7 @@ BaseLineMgr::JECUp()
         TLorentzVector jetp4 = GetJetP4( i );
         double unc = JesUnc();
         jetp4 *= ( 1 + unc );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -190,8 +187,7 @@ BaseLineMgr::JERCorr()
         }
         TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
-
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -213,7 +209,7 @@ BaseLineMgr::JERCorrDn()
 
         TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -233,7 +229,7 @@ BaseLineMgr::JERCorrUp()
         }
         TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 

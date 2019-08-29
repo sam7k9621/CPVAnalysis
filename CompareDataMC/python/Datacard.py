@@ -21,8 +21,8 @@ mclst =[
      [ "SingleTop_s-channel",          "ST_s-channel",               3.36             ],
      [ "SingleTop_t-channel_top",      "ST_t-channel_top",           136.02           ],
      [ "SingleTop_t-channel_antitop",  "ST_t-channel_antitop",       80.95            ],
-     [ "SingleTop_tW_top",             "ST_tW_top",                  35.6             ],
-     [ "SingleTop_tW_antitop",         "ST_tW_antitop",              35.6             ],
+     [ "SingleTop_tW_top",             "ST_tW_top",                  38.85            ],
+     [ "SingleTop_tW_antitop",         "ST_tW_antitop",              38.85            ],
      [ "ttbar",                        "TTToSemiLeptonic",           365.34           ],
      [ "VV_WW",                        "WW",                         118.7            ],
      [ "VV_WZ",                        "WZ",                         47.13            ],
@@ -37,7 +37,7 @@ mclst =[
 ]
 
 def GetGennumber() :
-    with open( "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/Datacard.txt" ) as file:  
+    with open( os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/Datacard.txt" ) as file:  
         content = file.readlines()
     
     content = filter( None, [x.strip() for x in content] )

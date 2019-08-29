@@ -88,10 +88,10 @@ def main(args):
             "file" : info_path + "egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root",
             "title": "EGamma_SF2D"
             }
-    content["muTrg"] = {
-            "file" : info_path + "EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",
-            "title": "IsoMu27_PtEtaBins"
-            }
+    # content["muTrg"] = {
+            # "file" : info_path + "EfficienciesAndSF_RunBtoF_Nov17Nov2017.root",
+            # "title": "IsoMu27_PtEtaBins"
+            # }
     content["muID"] = {
             "file" : info_path + "RunBCDEF_SF_ID.root",
             "title": "NUM_TightID_DEN_genTracks_pt_abseta"
@@ -100,8 +100,6 @@ def main(args):
             "file" : info_path + "RunBCDEF_SF_ISO.root",
             "title": "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta"
             }
-    content[ "mu_HLT" ] = [1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344]
-    content[ "el_HLT" ] = [938, 939, 940, 941, 942, 943, 944]
 
     with open('settings/WeightInfo.json', 'w') as fp:
         json.dump(content, fp, indent=4)
