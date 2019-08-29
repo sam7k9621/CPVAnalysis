@@ -95,7 +95,7 @@ MakePreCut()
         
         if( !is_data ){
             int pv = PreMgr().nPU();
-            if( pv >= (int)puweight.size() ){
+            if( pv < 0 || pv >= (int)puweight.size() ){
                 continue;
             }
         

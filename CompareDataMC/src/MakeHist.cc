@@ -163,13 +163,7 @@ MakeHist()
             // gen-level re-weighting
             weight *= CompMgr().GenWeight();
         }
-       
-        //
-        if( isnan( weight ) ){
-            continue;
-        }
-        //
-
+        
         /*******************************************************************************
         *  bbSeparation / Optimisation
         *******************************************************************************/
@@ -206,7 +200,6 @@ MakeHist()
         CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
         CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
         CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
-
 
         CompMgr().Hist( "LJetPt" )->Fill( CompMgr().LeadingJetPt( jet1 ), weight );
         CompMgr().Hist( "LJetEta" )->Fill( CompMgr().LeadingJetEta( jet2 ), weight );

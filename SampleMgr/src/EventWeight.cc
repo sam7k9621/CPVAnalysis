@@ -77,12 +77,14 @@ double
 BaseLineMgr::BtagScaleFactor( const int& idx, const BTagEntry::OperatingPoint& op, const BTagEntry::JetFlavor& jf, const std::string& unc )
 {
     SetIndex( idx );
-    return _reader_map.at( op ).eval_auto_bounds(
+    double sf = _reader_map.at( op ).eval_auto_bounds(
         unc,
         jf,
         JetEta(),
         JetPt()
         );
+
+    return sf;
 }
 
 double

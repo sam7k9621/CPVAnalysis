@@ -41,21 +41,22 @@ dataset = [
         "ZZ"
     ]
 
-path = "/eos/cms/store/user/pusheng/2017/"
+path = "/eos/cms/store/user/pusheng/2018/"
 
 def main(args):
 
     with open( os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/Datacard.txt", "w") as outputfile:
         for d in dataset :
-            version = len([name for name in os.listdir( path ) if re.search( d + "_[0-9]+.txt", name ) ])
+            version = [name for name in os.listdir( path ) if re.search( d + "_[0-9]+.txt", name ) ]
             number = 0.0
             
-            for i in range( version ) :
-                filename = path +  "Datacard_" + d + "_" + str(i) + ".txt"
+            for ver in version :
+                filename = path + ver 
                 with open(filename) as f :
                     content = f.readlines()
                 content = [ x.strip() for x in content ]
                 number += float(content[4].split("=")[1])
+                print ver, float(content[4].split("=")[1])
                 f.close()
 
             outputfile.write( d + "\n" )

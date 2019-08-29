@@ -155,7 +155,7 @@ BaseLineMgr::JECDn()
         TLorentzVector jetp4 = GetJetP4( i );
         double unc = JesUnc();
         jetp4 *= ( 1 - unc );
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -169,6 +169,7 @@ BaseLineMgr::JECUp()
         TLorentzVector jetp4 = GetJetP4( i );
         double unc = JesUnc();
         jetp4 *= ( 1 + unc );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -190,8 +191,7 @@ BaseLineMgr::JERCorr()
         }
         TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
-
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -210,10 +210,9 @@ BaseLineMgr::JERCorrDn()
         else{
             scale = MakeSmeared( ressf, res );
         }
-
         TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 
@@ -233,7 +232,7 @@ BaseLineMgr::JERCorrUp()
         }
         TLorentzVector jetp4 = GetJetP4( i );
         jetp4 *= scale;
-        SetJetPtEta( jetp4.Pt(), jetp4.Eta() );
+        SetJetP4( jetp4 );
     }
 }
 

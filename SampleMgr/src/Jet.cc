@@ -128,10 +128,13 @@ namespace mgr{
 
     // Jet smeared
     void
-    SampleMgr::SetJetPtEta( const float& pt, const float& eta )
+    SampleMgr::SetJetP4( const TLorentzVector& tl )
     {
-        _jet.Pt[ _idx ]  = pt;
-        _jet.Eta[ _idx ] = eta;
+        _jet.Pt[ _idx ]  = tl.Pt();
+        _jet.Px[ _idx ]  = tl.Px();
+        _jet.Py[ _idx ]  = tl.Py();
+        _jet.Pz[ _idx ]  = tl.Pz();
+        _jet.Energy[ _idx ]  = tl.Energy();
     }
 
     // b-tagging
