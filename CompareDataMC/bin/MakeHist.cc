@@ -41,7 +41,7 @@ main( int argc, char* argv[] )
     CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "0bjet", "SIM", "TLV" } );
 
     if( CompMgr().CheckOption( "SIM" ) ){
-        CompMgr().ChangeFile( "CheckAcp.json" );
+        CompMgr().InitRoot( "CheckAcp.json" );
         CheckAcp();
     }
     else if( CompMgr().CheckOption( "TLV" ) ){

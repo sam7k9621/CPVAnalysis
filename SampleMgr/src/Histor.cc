@@ -6,9 +6,9 @@ using namespace std;
 /*******************************************************************************
 *   Initialization
 *******************************************************************************/
-Histor::Histor( const string& subdir, const string& json ) :
+Histor::Histor( const string& subdir, const string& py ) :
     Pathmgr( "CPVAnalysis", subdir ),
-    Readmgr( SettingsDir() / json ),
+    Readmgr( PythonDir() / py ),
     Parsermgr()
 {
     _sample = NULL;
@@ -22,7 +22,7 @@ Histor::~Histor()
 void
 Histor::AddSample( const string& sample, TChain* ch )
 {
-    _sample = new BaseLineMgr( GetOption<string>( "year") + "SelectCut.json", sample );
+    _sample = new BaseLineMgr( GetOption<string>( "year") + "Selection.py", sample );
     _sample->Register( ch );
 }
 
@@ -133,12 +133,6 @@ Histor::process( const int& total, const int& progress )
     }
 }
 
-void
-Histor::ChangeFile( const string& file )
-{
-    ChangeJSON( SettingsDir() / file );
-}
-
 /*******************************************************************************
 *   Weight
 *******************************************************************************/
@@ -166,8 +160,8 @@ Histor::GetLepSFDn( TH2D* hist, const int& idx )
 TH2D*
 Histor::GetSFHist( const string& tag )
 {
-    string filename = mgr::GetSingle<string>( "file", GetSubTree( tag ) );
-    string title    = mgr::GetSingle<string>( "title", GetSubTree( tag ) );
+    string filename = GetParam<string>( tag, "path" );
+    string title    = GetParam<string>( tag, "title" );
 
     TFile* f = TFile::Open( filename.c_str() );
     TH2D* h  = (TH2D*)( f->Get( title.c_str() )->Clone() );
@@ -198,9 +192,9 @@ Histor::muFmuRWeight( const int& idx )
 void
 Histor::WeightMC( const string& sample )
 {
-    double lumi    = GetSingleData<double>( GetOption<string>( "lepton" ) + "lumi" );
-    double xs      = mgr::GetSingle<double>( "cross_section", GetSubTree( sample ) );
-    double gen_num = mgr::GetSingle<double>( "gen_num", GetSubTree( sample ) );
+    double lumi    = GetParam<double>( "Data", GetOption<string>( "lepton" ) + "lumi" );
+    double xs      = GetParam<double>( sample, "cross_section" );
+    double gen_num = GetParam<double>( sample, "gen_num" );
 
     Scale( ( lumi * xs ) / gen_num );
 }

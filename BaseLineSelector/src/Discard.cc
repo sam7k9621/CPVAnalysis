@@ -17,7 +17,6 @@ Discard( TChain* ch )
     ch->SetBranchStatus( "EvtInfo.BeamSpotY", 0);                           
     ch->SetBranchStatus( "EvtInfo.BeamSpotZ", 0);                           
     ch->SetBranchStatus( "EvtInfo.BSsigmaZ", 0);                            
-    ch->SetBranchStatus( "EvtInfo.TrueIT", 0);                              
     ch->SetBranchStatus( "EvtInfo.PFMETPhi", 0);                            
     ch->SetBranchStatus( "EvtInfo.PFMETType1CorrPtShiftJetEnUp", 0);        
     ch->SetBranchStatus( "EvtInfo.PFMETType1CorrPtShiftJetEnDown", 0);      

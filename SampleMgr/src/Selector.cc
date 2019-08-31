@@ -8,9 +8,9 @@ using namespace std;
 /*******************************************************************************
 *   Initialization
 *******************************************************************************/
-Selector::Selector( const string& subdir, const string& json ) :
+Selector::Selector( const string& subdir, const string& py ) :
     Pathmgr( "CPVAnalysis", subdir ),
-    Readmgr( SettingsDir() / json ),
+    Readmgr( PythonDir() / py ),
     Parsermgr()
 {
     _sample = NULL;
@@ -27,7 +27,7 @@ Selector::~Selector()
 void
 Selector::AddSample( TChain* ch )
 {
-    _sample = new BaseLineMgr( GetOption<string>( "year" ) + "SelectCut.json" );
+    _sample = new BaseLineMgr( GetOption<string>( "year" ) + "Selection.py" );
     _sample->Register( ch );
 }
 
@@ -123,8 +123,8 @@ Selector::GetJetSFDn( TH2D* hist, const int& idx )
 TH2D*
 Selector::GetSFHist( const string& tag )
 {
-    string filename = mgr::GetSingle<string>( "file", GetSubTree( tag ) );
-    string title    = mgr::GetSingle<string>( "title", GetSubTree( tag ) );
+    string filename = GetParam<string>( tag, "path" );
+    string title    = GetParam<string>( tag, "title" );
 
     TFile* f = TFile::Open( filename.c_str() );
     TH2D* h  = (TH2D*)( f->Get( title.c_str() )->Clone() );
@@ -598,10 +598,4 @@ Selector::process( const int& total, const int& progress )
     if( CheckOption( "count" ) ){
         mgr::ProgressBar( progress, total );
     }
-}
-
-void
-Selector::ChangeFile( const string& file )
-{
-    ChangeJSON( SettingsDir() / file );
 }

@@ -30,7 +30,7 @@ MakeHist()
         sample_path += "_" + CompMgr().GetOption<string>( "region" );
     }
 
-    vector<string> samplelst = CompMgr().GetSubListData<string>( sample, sample_path );
+    vector<string> samplelst = CompMgr().GetVParam<string>( sample, sample_path );
     TChain* ch = new TChain( "root" );
     for( const auto& s : samplelst ){
         cout << s << endl;
@@ -252,7 +252,7 @@ CheckHist()
     // Initialize file
     string lepton            = CompMgr().GetOption<string>( "lepton" );
     string sample            = CompMgr().GetOption<string>( "sample" );
-    vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
+    vector<string> samplelst = CompMgr().GetVParam<string>( sample, lepton + "path" );
     TChain* ch               = new TChain( "root" );
 
     Float_t LJetPt1;

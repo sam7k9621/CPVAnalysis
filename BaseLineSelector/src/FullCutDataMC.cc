@@ -13,10 +13,7 @@ FullMgr( const string& subdir, const string& json )
 extern string
 MakeFileName( bool is_data )
 {
-    //string pos      = "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/";
-    //string pos      = "root://cms-xrd-global.cern.ch//eos/cms/store/user/youying/public/2017/";
-    //string pos      = "/eos/cms/store/user/youying/public" / FullMgr().GetOption<string>( "year" );
-    string pos      = "/afs/cern.ch/work/p/pusheng/public/CMSSW_8_0_20/src";
+    string pos      = "/eos/cms/store/user/youying/public" / FullMgr().GetOption<string>( "year" );
     
     string filename = "";
 
@@ -36,6 +33,7 @@ extern void
 MakeFullCut()
 {
     // Build new file
+    FullMgr().InitRoot( "sample" + FullMgr().GetOption<string>( "year" ) );
     TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut_test" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
@@ -50,18 +48,14 @@ MakeFullCut()
 
     // Initialize data
     string lepton   = FullMgr().GetOption<string>( "lepton" );
-    vector<int> hlt = FullMgr().GetListData<int>( FullMgr().GetOption<string>( "year" ) + "_" + lepton + "_HLT" );
+    vector<int> hlt = FullMgr().GetVParam<int>( "Info", lepton + "_HLT" );
     string region = FullMgr().CheckOption( "region" ) ? "CR" : "SR";
     TH2D* beff = FullMgr().GetSFHist( region + "_b_eff" );
     TH2D* ceff = FullMgr().GetSFHist( region + "_c_eff" );
     TH2D* leff = FullMgr().GetSFHist( region + "_l_eff" );
-    FullMgr().InitBtagWeight( "bcheck", FullMgr().GetSingleData<string>( "BtagWeight" ) );
+    FullMgr().InitBtagWeight( "bcheck", FullMgr().GetParam<string>( "BtagWeight", "path" ) );
     FullMgr().InitBtagEffPlot( beff, ceff, leff );
    
-    for( auto h : hlt ){
-        cout<<h<<endl;
-    }
-
     // Register new branch
     Int_t had_b;
     Int_t lep_b;
@@ -86,12 +80,6 @@ MakeFullCut()
     newtree->Branch( "b_weight",    &b_weight,    "b_weight/F" );
     newtree->Branch( "b_weight_up", &b_weight_up, "b_weight_up/F" );
     newtree->Branch( "b_weight_dn", &b_weight_dn, "b_weight_dn/F" );
-
-    int a = 0;
-    int b = 0;
-    int c = 0;
-    int d = 0;
-
 
     // Looping events
     string tag = FullMgr().GetOption<string>( "uncertainty" );
@@ -133,7 +121,6 @@ MakeFullCut()
             continue;
         }
 
-        a++;
         /*******************************************************************************
         *  Lepton selection
         *******************************************************************************/
@@ -153,7 +140,6 @@ MakeFullCut()
             }
         }
 
-        b++;
         /*******************************************************************************
         *  Jet selection
         *******************************************************************************/
@@ -174,7 +160,6 @@ MakeFullCut()
             }
         }
         
-        c++;
         /*******************************************************************************
         *  b-tagging probability
         *******************************************************************************/
@@ -211,13 +196,11 @@ MakeFullCut()
 
         lep_tmass = FullMgr().GetLeptonicM( lep, lep_b );
 
-        d++;
         newtree->Fill();
     }
 
     cout << endl;
     newtree->AutoSave();
-    cout<<endl<<a<<"  "<<b<<"  "<<c<<"  "<<d<<endl;
     delete ch;
     delete newfile;
 }

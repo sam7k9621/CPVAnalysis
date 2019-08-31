@@ -10,9 +10,10 @@ main( int argc, char* argv[] )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "year,y", opt::value<string>()->required(), "which year" )
         ( "count,c", "count events" )
+        ( "datacard,d", "only produce datacard" )
         ( "test,t", "run testing events number" )
     ;
-    PreMgr( "BaseLineSelector", "SampleInfo.json" ).AddOptions( de );
+    PreMgr( "BaseLineSelector", "SampleInfo.py" ).AddOptions( de );
     const int run = PreMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){
@@ -25,5 +26,10 @@ main( int argc, char* argv[] )
 
     PreMgr().SetFileName( { "year", "sample" } );
     PreMgr().AddCutName( { "test" } );
-    MakePreCut();
+    if( PreMgr().CheckOption( "datacard" ) ){
+        MakeDataCard();
+    }
+    else{
+        MakePreCut();
+    }
 }

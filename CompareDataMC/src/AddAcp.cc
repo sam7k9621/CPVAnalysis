@@ -171,7 +171,7 @@ StoreTLV()
     // Initialize file
     string lepton            = CompMgr().GetOption<string>( "lepton" );
     string sample            = CompMgr().GetOption<string>( "sample" );
-    vector<string> samplelst = CompMgr().GetSubListData<string>( sample, lepton + "path" );
+    vector<string> samplelst = CompMgr().GetVParam<string>( sample, lepton + "path" );
     TChain* ch               = new TChain( "root" );
     for( const auto& s : samplelst ){
         ch->Add( s.c_str() );

@@ -8,7 +8,7 @@ CheckAcp()
 {
     // Initialize file
     string sample            = CompMgr().GetOption<string>( "sample" );
-    vector<string> samplelst = CompMgr().GetSubListData<string>( sample, "path" );
+    vector<string> samplelst = CompMgr().GetVParam<string>( sample, "path" );
     TChain* ch               = new TChain( "bprimeKit/root" );
 
     for( const auto& s : samplelst ){

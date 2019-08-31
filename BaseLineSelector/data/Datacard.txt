@@ -1,65 +1,65 @@
 WJets_HT-100To200
-Effective events : 35804623.0
+Effective events : 35569453.0
  WJets_HT-200To400
-Effective events : 21192211.0
+Effective events : 21053538.0
  WJets_HT-400To600
-Effective events : 14250114.0
+Effective events : 14156499.0
  WJets_HT-600To800
-Effective events : 21582309.0
+Effective events : 21440850.0
  WJets_HT-800To1200
-Effective events : 20272990.0
+Effective events : 20140280.0
  WJets_HT-1200To2500
-Effective events : 19991892.0
+Effective events : 19860691.0
  WJets_HT-2500ToInf
-Effective events : 20629585.0
+Effective events : 20494604.0
  QCD_HT100to200
-Effective events : 93201987.0
+Effective events : 92590802.0
  QCD_HT200to300
-Effective events : 59119905.0
+Effective events : 58733167.0
  QCD_HT300to500
-Effective events : 59459614.0
+Effective events : 59070469.0
  QCD_HT500to700
-Effective events : 56041018.0
+Effective events : 55673263.0
  QCD_HT700to1000
-Effective events : 46638985.0
+Effective events : 46332843.0
  QCD_HT1000to1500
-Effective events : 16770762.0
+Effective events : 16660716.0
  QCD_HT1500to2000
-Effective events : 11508604.0
+Effective events : 11433117.0
  QCD_HT2000toInf
-Effective events : 5825566.0
+Effective events : 5787447.0
  DYJets_HT-70to100
-Effective events : 9333543.0
+Effective events : 9272629.0
  DYJets_HT-100to200
-Effective events : 11180126.0
+Effective events : 11106724.0
  DYJets_HT-1200to2500
-Effective events : 616923.0
+Effective events : 610659.0
  DYJets_HT-200to400
-Effective events : 10699051.0
+Effective events : 10628725.0
  DYJets_HT-2500toInf
-Effective events : 401334.0
+Effective events : 398552.0
  DYJets_HT-400to600
-Effective events : 10174800.0
+Effective events : 10108270.0
  DYJets_HT-600to800
-Effective events : 8691608.0
+Effective events : 8634549.0
  DYJets_HT-800to1200
-Effective events : 3089712.0
+Effective events : 3069366.0
  ST_s-channel
-Effective events : 36965036.53
+Effective events : 6126808.0
  ST_t-channel_antitop
-Effective events : 3675910.0
+Effective events : 3651708.0
  ST_t-channel_top
-Effective events : 5982064.0
+Effective events : 5942749.0
  ST_tW_antitop
-Effective events : 279005358.57
+Effective events : 7865071.0
  ST_tW_top
-Effective events : 272081065.42
+Effective events : 7683668.0
  TTToSemiLeptonic
-Effective events : 13154405080.0
+Effective events : 43094155.0
  WW
-Effective events : 7765891.02
+Effective events : 7714926.0
  WZ
-Effective events : 3928630.0
+Effective events : 3875940.0
  ZZ
-Effective events : 1925931.0
+Effective events : 1913229.0
  

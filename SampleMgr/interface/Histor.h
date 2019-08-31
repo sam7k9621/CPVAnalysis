@@ -92,7 +92,7 @@ class Histor : public mgr::Pathmgr,
         *   Looping event
         *******************************************************************************/
         void process( const int&, const int& );
-        void ChangeFile( const std::string& );
+        BaseLineMgr* GetSample(){ return _sample; }
 
         /*******************************************************************************
         *   Weight
