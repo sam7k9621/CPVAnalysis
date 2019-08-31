@@ -101,6 +101,7 @@ class Selector : public mgr::Pathmgr,
         *******************************************************************************/
         void process( const int&, const int& );
         void ChangeFile( const std::string& );
+        BaseLineMgr* GetSample(){ return _sample; }
 
     private:
 

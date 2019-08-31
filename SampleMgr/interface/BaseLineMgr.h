@@ -13,6 +13,8 @@
 #include "ManagerUtils/HistMgr/interface/HistMgr.h"
 
 #include "CPVAnalysis/SampleMgr/interface/checkEvtTool.h"
+#include "ManagerUtils/ArgHelper/interface/Pathmgr.hpp"
+#include "ManagerUtils/ArgHelper/interface/Readmgr.hpp"
 #include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
 
 #include "TChain.h"
@@ -24,7 +26,9 @@
 #include <vector>
 #include <random>
 
-class BaseLineMgr : public mgr::Hist2DMgr,
+class BaseLineMgr : public mgr::Pathmgr,
+                    public mgr::Readmgr,
+                    public mgr::Hist2DMgr,
                     public mgr::HistMgr,
                     public mgr::SampleMgr {
     public:
@@ -32,7 +36,7 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         /*******************************************************************************
         *   Class initialization
         *******************************************************************************/
-        BaseLineMgr( const std::string& = "" );
+        BaseLineMgr( const std::string&, const std::string& = "" );
         ~BaseLineMgr();
 
         BaseLineMgr( const BaseLineMgr& )            = delete;
@@ -107,6 +111,8 @@ class BaseLineMgr : public mgr::Hist2DMgr,
         *   Electron selection
         *******************************************************************************/
         bool PassImpactParameter();
+        bool ElIDCRLoose();
+        bool ElIDCRTight();
 
         bool PassElLooseKinematic();
         bool PassElLooseID();

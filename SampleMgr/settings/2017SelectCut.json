@@ -1,0 +1,92 @@
+{
+    "PV" : {
+        "Ndof": 4,
+        "AbsZ": 24,
+        "VtxRho": 2
+    },
+
+    "Jet": {
+        "NHF": 0.9,
+        "NEF": 0.9,
+        "NConstituents": 1,
+        "AbsEta": 2.4,
+        "CHF": 0,
+        "NCH": 0,
+        "CEF": 2.147483647E9,
+        
+        "AbsEta": 2.4,
+        "Pt": 30,
+        "Pre_AbsEta": 2.4,
+        "Pre_Pt": 20,
+        
+        "CSVL": 0.5803,
+        "CSVM": 0.8838,
+        "DeepCSVL": 0.1522,
+        "DeepCSVM": 0.4941
+    },
+    
+    "Mu" : {
+        "GlobalNormalizedChi2": 10,
+        "MuNMuonhits": 0,
+        "MuNMatchedStations": 1,
+        "AbsMuInnerTrackDxy_PV": 0.2,
+        "AbsMuInnerTrackDz": 0.5,
+        "MuNPixelLayers": 0,
+        "MuNTrackLayersWMeasurement": 5,
+        
+        "LooseISO": 0.25,
+        "LoosePt": 15,
+        "LooseAbsEta": 2.4,
+        "TightISO": 0.15,
+        "TightPt": 30,
+        "TightAbsEta": 2.4
+    },
+    
+    "El" : {
+        "LoosePt": 15,
+        "LooseAbsEta": 2.4,
+        "TightPt": 38,
+        "TightAbsEta": 2.1,
+        
+        "Tight_Bar_ISOc0": 0.0287,
+        "Tight_Bar_ISOcpt": 0.506,
+        "Tight_End_ISOc0": 0.0445,
+        "Tight_End_ISOcpt": 0.963,
+        
+        "Loose_Bar_ElsigmaIetaIeta": 0.0112,
+        "Loose_Bar_EldEtaInSeed": 0.00377,
+        "Loose_Bar_EldPhiIn": 0.0884,
+        "Loose_Bar_HE_c0": 0.005,
+        "Loose_Bar_HE_cE": 1.16,
+        "Loose_Bar_HE_cR": 0.0324,
+        "Loose_Bar_GsfEleEInverseMinusPInverseCut": 0.193,
+        "Loose_Bar_ElNumberOfExpectedInnerHits": 1,
+        
+        "Loose_End_ElsigmaIetaIeta": 0.0425,
+        "Loose_End_EldEtaInSeed": 0.00674,
+        "Loose_End_EldPhiIn": 0.169,
+        "Loose_End_HE_c0": 0.0441,
+        "Loose_End_HE_cE": 2.54,
+        "Loose_End_HE_cR": 0.183,
+        "Loose_End_GsfEleEInverseMinusPInverseCut": 0.111,
+        "Loose_End_ElNumberOfExpectedInnerHits": 1,
+        
+        "Tight_Bar_ElsigmaIetaIeta": 0.0104,
+        "Tight_Bar_EldEtaInSeed": 0.00255,
+        "Tight_Bar_EldPhiIn": 0.022,
+        "Tight_Bar_HE_c0": 0.026,
+        "Tight_Bar_HE_cE": 1.15,
+        "Tight_Bar_HE_cR": 0.0324,
+        "Tight_Bar_GsfEleEInverseMinusPInverseCut": 0.159,
+        "Tight_Bar_ElNumberOfExpectedInnerHits": 1,
+        
+        "Tight_End_ElsigmaIetaIeta": 0.0353,
+        "Tight_End_EldEtaInSeed": 0.00501,
+        "Tight_End_EldPhiIn": 0.0236,
+        "Tight_End_HE_c0": 0.0188,
+        "Tight_End_HE_cE": 2.06,
+        "Tight_End_HE_cR": 0.183,
+        "Tight_End_GsfEleEInverseMinusPInverseCut": 0.0197,
+        "Tight_End_ElNumberOfExpectedInnerHits": 1
+    }
+}

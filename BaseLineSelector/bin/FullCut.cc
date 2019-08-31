@@ -9,6 +9,7 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
+        ( "year,y", opt::value<string>()->required(), "which sample" )
         ( "uncertainty,e", opt::value<string>(), "uncertainty" )
         ( "region,r", opt::value<string>(), "which region" )
         ( "count,c", "count events" )
@@ -25,7 +26,7 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    FullMgr().SetFileName( { "lepton", "sample", "uncertainty" } );
+    FullMgr().SetFileName( { "year", "lepton", "sample", "uncertainty" } );
     FullMgr().AddCutName( { "test", "region" } );
 
     MakeFullCut();

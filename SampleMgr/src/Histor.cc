@@ -22,7 +22,7 @@ Histor::~Histor()
 void
 Histor::AddSample( const string& sample, TChain* ch )
 {
-    _sample = new BaseLineMgr( sample );
+    _sample = new BaseLineMgr( GetOption<string>( "year") + "SelectCut.json", sample );
     _sample->Register( ch );
 }
 

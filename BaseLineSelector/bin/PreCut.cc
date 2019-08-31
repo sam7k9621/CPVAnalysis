@@ -8,6 +8,7 @@ main( int argc, char* argv[] )
     opt::options_description de( "Command for Pre-selection" );
     de.add_options()
         ( "sample,s", opt::value<string>()->required(), "which sample" )
+        ( "year,y", opt::value<string>()->required(), "which year" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
     ;
@@ -22,7 +23,7 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    PreMgr().SetFileName( { "sample" } );
+    PreMgr().SetFileName( { "year", "sample" } );
     PreMgr().AddCutName( { "test" } );
     MakePreCut();
 }

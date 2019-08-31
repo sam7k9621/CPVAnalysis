@@ -9,7 +9,9 @@ using namespace mgr;
 /*******************************************************************************
 *   Class initialization
 *******************************************************************************/
-BaseLineMgr::BaseLineMgr( const string& sample ) :
+BaseLineMgr::BaseLineMgr( const string& json, const string& sample ) :
+    Pathmgr( "CPVAnalysis", "SampleMgr" ),
+    Readmgr( SettingsDir() / json ),
     Hist2DMgr( sample ),
     HistMgr( sample )
 {
@@ -79,9 +81,9 @@ bool
 BaseLineMgr::IsGoodPVtx()
 {
     return !( IsFake() ) &&
-           Ndof() > 4 &&
-           AbsZ() < 24 &&
-           VtxRho() < 2
+           Ndof() > GetSubSingleData<double>( "PV", "Ndof" ) &&
+           AbsZ() < GetSubSingleData<double>( "PV", "AbsZ" ) &&
+           VtxRho() < GetSubSingleData<double>( "PV", "VtxRho" )
     ;
 }
 
@@ -238,21 +240,22 @@ BaseLineMgr::PassJetLooseID()
 {
     return
         // Loose ID
-        JetNHF() < 0.9 &&
-        JetNEF() < 0.9 &&
-        JetNConstituents() > 1 &&
+        JetNHF() < GetSubSingleData<double>( "Jet", "NHF" ) &&
+        JetNEF() < GetSubSingleData<double>( "Jet", "NEF" ) &&
+        JetNConstituents() > GetSubSingleData<double>( "Jet", "NConstituents" ) &&
 
-        JetAbsEta() <= 2.4 &&
-        JetCHF() > 0 &&
-        JetNCH() > 0 
+        JetAbsEta() <= GetSubSingleData<double>( "Jet", "AbsEta" ) &&
+        JetCHF() > GetSubSingleData<double>( "Jet", "CHF" ) &&
+        JetNCH() > GetSubSingleData<double>( "Jet", "NCH" ) && 
+        JetCEF() < GetSubSingleData<double>( "Jet", "CEF" )
     ;
 }
 
 bool
 BaseLineMgr::PassJetKinematic()
 {
-    return JetPt() > 30 &&
-           JetAbsEta() < 2.4
+    return JetPt() > GetSubSingleData<double>( "Jet", "Pt" ) &&
+           JetAbsEta() < GetSubSingleData<double>( "Jet", "AbsEta" )
     ;
 }
 
@@ -268,33 +271,33 @@ bool
 BaseLineMgr::IsPreSelJet()
 {
     return PassJetLooseID() &&
-           JetAbsEta() < 2.4 &&
-           JetPt() > 20
+           JetPt() > GetSubSingleData<double>( "Jet", "Pre_Pt" ) &&
+           JetAbsEta() < GetSubSingleData<double>( "Jet", "Pre_AbsEta" )
     ;
 }
 
 bool
 BaseLineMgr::PassCSVM()
 {
-    return JetCSV() > 0.8838;
+    return JetCSV() > GetSubSingleData<double>( "Jet", "CSVM" );
 }
 
 bool 
 BaseLineMgr::PassCSVL()
 {
-    return JetCSV() > 0.5803;
+    return JetCSV() > GetSubSingleData<double>( "Jet", "CSVL" );
 }
 
 bool 
 BaseLineMgr::PassDeepCSVM()
 {
-    return JetDeepCSV() > 0.4941;
+    return JetDeepCSV() > GetSubSingleData<double>( "Jet", "DeepCSVM" );
 }
 
 bool 
 BaseLineMgr::PassDeepCSVL()
 {
-    return JetDeepCSV() > 0.1522;
+    return JetDeepCSV() > GetSubSingleData<double>( "Jet", "DeepCSVL" );
 }
 
 /*******************************************************************************
@@ -312,15 +315,15 @@ BaseLineMgr::PassMuLooseID()
 bool
 BaseLineMgr::PassMuLooseKinematic()
 {
-    return LepPt() > 15 &&
-           LepAbsEta() < 2.4
+    return LepPt() > GetSubSingleData<double>( "Mu", "LoosePt" ) &&
+           LepAbsEta() < GetSubSingleData<double>( "Mu", "LooseAbsEta" )
     ;
 }
 
 bool
 BaseLineMgr::PassMuLooseISO()
 {
-    return RelIsoR04() < 0.25;
+    return RelIsoR04() < GetSubSingleData<double>( "Mu", "LooseISO" );
 }
 
 bool
@@ -346,28 +349,28 @@ BaseLineMgr::PassMuTightID()
 {
     return IsGlobalMuon() &&
            IsPFMuon() &&
-           MuGlobalNormalizedChi2() < 10 &&
-           MuNMuonhits() > 0 &&
-           MuNMatchedStations() > 1 &&
-           AbsMuInnerTrackDxy_PV() < 0.2 &&
-           AbsMuInnerTrackDz() < 0.5 &&
-           MuNPixelLayers() > 0 &&
-           MuNTrackLayersWMeasurement() > 5
+           MuGlobalNormalizedChi2() < GetSubSingleData<double>( "Mu", "GlobalNormalizedChi2" ) &&
+           MuNMuonhits() > GetSubSingleData<double>( "Mu", "MuNMuonhits" ) &&
+           MuNMatchedStations() > GetSubSingleData<double>( "Mu", "MuNMatchedStations" ) &&
+           AbsMuInnerTrackDxy_PV() < GetSubSingleData<double>( "Mu", "AbsMuInnerTrackDxy_PV" ) &&
+           AbsMuInnerTrackDz() < GetSubSingleData<double>( "Mu", "AbsMuInnerTrackDz" ) &&
+           MuNPixelLayers() > GetSubSingleData<double>( "Mu", "MuNPixelLayers" ) &&
+           MuNTrackLayersWMeasurement() > GetSubSingleData<double>( "Mu", "MuNTrackLayersWMeasurement" )
     ;
 }
 
 bool
 BaseLineMgr::PassMuTightKinematic()
 {
-    return LepPt() > 30 &&
-           LepAbsEta() < 2.4
+    return LepPt() > GetSubSingleData<double>( "Mu", "TightPt" ) &&
+           LepAbsEta() < GetSubSingleData<double>( "Mu", "TightAbsEta" )
     ;
 }
 
 bool
 BaseLineMgr::PassMuTightISO()
 {
-    return RelIsoR04() < 0.15;
+    return RelIsoR04() < GetSubSingleData<double>( "Mu", "TightISO" );
 }
 
 bool
@@ -421,12 +424,48 @@ BaseLineMgr::PassImpactParameter()
 
     return true;
 }
+    
+bool
+BaseLineMgr::ElIDCRTight()
+{
+    string tag = "Tight_";
+    string pos = LepAbsEta() <= 1.479 ? "Bar_" : "End_";
+
+    // removing PF isolation cut
+    return
+        ElsigmaIetaIeta() < GetSubSingleData<double>( "El", tag + pos + "ElsigmaIetaIeta" ) &&
+        fabs( EldEtaInSeed() ) <  GetSubSingleData<double>( "El", tag + pos + "EldEtaInSeed" ) &&
+        fabs( EldPhiIn() ) < GetSubSingleData<double>( "El", tag + pos + "EldPhiIn" ) &&
+        ElGsfEleHadronicOverEMCut() < GetSubSingleData<double>( "El", tag  + pos + "HE_c0" ) + GetSubSingleData<double>( "El", tag + pos + "HE_cE" ) / EnergySC() + GetSubSingleData<double>( "El", tag + pos + "HE_cR" ) * EvtRho() / EnergySC() &&
+        fabs( GsfEleEInverseMinusPInverseCut() ) < GetSubSingleData<double>( "El", tag + pos + "GsfEleEInverseMinusPInverseCut" ) &&
+        ElNumberOfExpectedInnerHits() <= GetSubSingleData<double>( "El", tag + pos + "ElNumberOfExpectedInnerHits" ) &&
+        !ElhasConv()
+    ;
+}
+    
+bool
+BaseLineMgr::ElIDCRLoose()
+{
+    string tag = "Loose_";
+    string pos = LepAbsEta() <= 1.479 ? "Bar_" : "End_";
+
+    // removing PF isolation cut
+    return
+        ElsigmaIetaIeta() < GetSubSingleData<double>( "El", tag + pos + "ElsigmaIetaIeta" ) &&
+        fabs( EldEtaInSeed() ) <  GetSubSingleData<double>( "El", tag + pos + "EldEtaInSeed" ) &&
+        fabs( EldPhiIn() ) < GetSubSingleData<double>( "El", tag + pos + "EldPhiIn" ) &&
+        ElGsfEleHadronicOverEMCut() < GetSubSingleData<double>( "El", tag  + pos + "HE_c0" ) + GetSubSingleData<double>( "El", tag + pos + "HE_cE" ) / EnergySC() + GetSubSingleData<double>( "El", tag + pos + "HE_cR" ) * EvtRho() / EnergySC() &&
+        fabs( GsfEleEInverseMinusPInverseCut() ) < GetSubSingleData<double>( "El", tag + pos + "GsfEleEInverseMinusPInverseCut" ) &&
+        ElNumberOfExpectedInnerHits() <= GetSubSingleData<double>( "El", tag + pos + "ElNumberOfExpectedInnerHits" ) &&
+        !ElhasConv()
+    ;
+}
 
 bool
 BaseLineMgr::PassElLooseKinematic()
 {
-    return LepPt() > 15 &&
-           LepAbsEta() < 2.4 &&
+    return LepPt() > GetSubSingleData<double>( "El", "LoosePt" ) &&
+           LepAbsEta() < GetSubSingleData<double>( "El", "LooseAbsEta" ) &&
            !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
     ;
 }
@@ -468,8 +507,8 @@ BaseLineMgr::PassElTightID()
 bool
 BaseLineMgr::PassElTightKinematic()
 {
-    return LepPt() > 38 &&
-           LepAbsEta() < 2.1 &&
+    return LepPt() > GetSubSingleData<double>( "El", "TightPt" ) &&
+           LepAbsEta() < GetSubSingleData<double>( "El", "TightAbsEta" ) &&
            !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
     ;
 }
@@ -505,10 +544,8 @@ BaseLineMgr::IsPreTightEl()
 bool 
 BaseLineMgr::PassElTightISO()
 {
-    if( LepAbsEta() <= 1.479 ){
-        return ElPFISO() < 0.0287 + 0.506 / LepPt();
-    }
-    else{  //absEta > 1.479
-        return ElPFISO() < 0.0445 + 0.963 / LepPt();
-    }
+    string tag = "Tight_";
+    string pos = LepAbsEta() <= 1.479 ? "Bar_" : "End_";
+
+    return ElPFISO() < GetSubSingleData<double>( "El", tag + pos + "ISOc0") + GetSubSingleData<double>( "El", tag + pos + "ISOcpt" ) / LepPt();
 }

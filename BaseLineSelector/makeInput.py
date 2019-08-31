@@ -148,8 +148,12 @@ def main(args):
 
     ###
     info_path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/"
-    content[ "mu_HLT" ] = [1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344] #HLT_IsoMu27_v
-    content[ "el_HLT" ] = [938, 939, 940, 941, 942, 943, 944]                                #HLT_Ele35_WPTight
+    content[ "2016_mu_HLT" ] = [1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324] #HLT_IsoMu24_v* 
+    content[ "2016_el_HLT" ] = [917, 918, 919, 920, 921, 922, 923]                          #HLT_Ele32_eta2p1_WPTight
+    content[ "2017_mu_HLT" ] = [1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344] #HLT_IsoMu27_v
+    content[ "2017_el_HLT" ] = [938, 939, 940, 941, 942, 943, 944]                                #HLT_Ele35_WPTight
+    content[ "2018_mu_HLT" ] = [200, 201, 202]   #HLT_IsoMu24_v
+    content[ "2018_el_HLT" ] = [116, 117, 118]   #HLT_Ele32_WPTight
     content[ "BtagWeight" ] = info_path + "DeepCSV_94XSF_V4_B_F.csv"
     
     content[ "SR_b_eff" ] = {

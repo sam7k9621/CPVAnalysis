@@ -123,62 +123,6 @@ namespace mgr{
         return _lep.EgammaCutBasedEleIdTIGHT[ _idx ];
     }
 
-    bool
-    SampleMgr::ElIDCRTight()
-    {
-        // removing PF isolation cut
-        if( LepAbsEta() <= 1.479 ){
-            return
-                ElsigmaIetaIeta() < 0.0104 &&
-                fabs( EldEtaInSeed() ) < 0.00255 &&
-                fabs( EldPhiIn() ) < 0.022 &&
-                ElGsfEleHadronicOverEMCut() < 0.026 + 1.15 / EnergySC() + 0.0324 * EvtRho() / EnergySC() &&
-                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.159 &&
-                ElNumberOfExpectedInnerHits() <= 1 &&
-                !ElhasConv()
-            ;
-        }
-        else{// absEta > 1.479
-            return
-                ElsigmaIetaIeta() < 0.0353 &&
-                fabs( EldEtaInSeed() ) < 0.00501 &&
-                fabs( EldPhiIn() ) < 0.0236 &&
-                ElGsfEleHadronicOverEMCut() < 0.0188 + 2.06 / EnergySC() + 0.183 * EvtRho() / EnergySC() &&
-                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.0197 &&
-                ElNumberOfExpectedInnerHits() <= 1 &&
-                !ElhasConv()
-            ;
-        }
-    }
-
-    bool
-    SampleMgr::ElIDCRLoose()
-    {
-        // removing PF isolation cut
-        if( LepAbsEta() <= 1.479 ){
-            return
-                ElsigmaIetaIeta() < 0.0112 &&
-                fabs( EldEtaInSeed() ) < 0.00377 &&
-                fabs( EldPhiIn() ) < 0.0884 &&
-                ElGsfEleHadronicOverEMCut() < 0.005 + 1.16 / EnergySC() + 0.0324 * EvtRho() / EnergySC() &&
-                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.193 &&
-                ElNumberOfExpectedInnerHits() <= 1 &&
-                !ElhasConv()
-            ;
-        }
-        else{// absEta > 1.479
-            return
-                ElsigmaIetaIeta() < 0.0425 &&
-                fabs( EldEtaInSeed() ) < 0.00674 &&
-                fabs( EldPhiIn() ) < 0.169 &&
-                ElGsfEleHadronicOverEMCut() < 0.0441 + 2.54 / EnergySC() + 0.183 * EvtRho() / EnergySC() &&
-                fabs( GsfEleEInverseMinusPInverseCut() ) < 0.111 &&
-                ElNumberOfExpectedInnerHits() <= 1 &&
-                !ElhasConv()
-            ;
-        }
-    }
-
     float
     SampleMgr::ElAbsTrackDz()
     {

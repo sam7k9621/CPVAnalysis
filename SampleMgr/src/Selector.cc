@@ -27,7 +27,7 @@ Selector::~Selector()
 void
 Selector::AddSample( TChain* ch )
 {
-    _sample = new BaseLineMgr();
+    _sample = new BaseLineMgr( GetOption<string>( "year" ) + "SelectCut.json" );
     _sample->Register( ch );
 }
 

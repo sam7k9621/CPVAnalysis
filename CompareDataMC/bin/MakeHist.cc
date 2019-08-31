@@ -10,6 +10,7 @@ main( int argc, char* argv[] )
         
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
+        ( "year,y", opt::value<string>()->required(), "which year" )
         ( "input,i", opt::value<vector<string> >()->multitoken(), "CEDM sample" )
         ( "chi2,u", opt::value<double>(), "chi2 upper cut" )
         ( "invChi2", opt::value<double>(), "inverse chi2 upper cut" )
@@ -36,7 +37,7 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    CompMgr().SetFileName( { "lepton", "sample" } );
+    CompMgr().SetFileName( { "year", "lepton", "sample" } );
     CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "0bjet", "SIM", "TLV" } );
 
     if( CompMgr().CheckOption( "SIM" ) ){

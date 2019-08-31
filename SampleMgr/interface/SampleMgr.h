@@ -94,10 +94,8 @@ namespace mgr{
             /*******************************************************************************
             * Electron info
             *******************************************************************************/
-            bool  ElIDLoose();
             bool  ElIDTight();
-            bool  ElIDCRLoose();
-            bool  ElIDCRTight();
+            bool  ElIDLoose();
             float ElAbsTrackDz();
             float ElAbsTrackDxy_PV();
 

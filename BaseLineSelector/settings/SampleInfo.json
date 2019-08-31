@@ -1,5 +1,26 @@
 {
-    "mu_HLT": [
+    "2016_mu_HLT": [
+        1315, 
+        1316, 
+        1317, 
+        1318, 
+        1319, 
+        1320, 
+        1321, 
+        1322, 
+        1323, 
+        1324
+    ], 
+    "2016_el_HLT": [
+        917, 
+        918, 
+        919, 
+        920, 
+        921, 
+        922, 
+        923
+    ], 
+    "2017_mu_HLT": [
         1334, 
         1335, 
         1336, 
@@ -12,7 +33,7 @@
         1343, 
         1344
     ], 
-    "el_HLT": [
+    "2017_el_HLT": [
         938, 
         939, 
         940, 
@@ -21,6 +42,16 @@
         943, 
         944
     ], 
+    "2018_mu_HLT": [
+        200, 
+        201, 
+        202
+    ], 
+    "2018_el_HLT": [
+        116, 
+        117, 
+        118
+    ],
     "BtagWeight": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_94XSF_V4_B_F.csv", 
     "SR_b_eff": {
         "file": "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root", 
