@@ -35,16 +35,16 @@ mclst = [
         ]
 
 datalst = [
-        (5, "el_Run2017B"),
-        (5, "el_Run2017C"),
-        (5, "el_Run2017D"),
-        (5, "el_Run2017E"),
-        (5, "el_Run2017F"),
-        (5, "mu_Run2017B"),
-        (5, "mu_Run2017C"),
-        (5, "mu_Run2017D"),
-        (10, "mu_Run2017E"),
-        (15, "mu_Run2017F"),
-        (1, "mu_Run2017F_ext1"),
-        (1, "mu_Run2017F_ext2")
+        (5, "SingleElectron_Run2017B"),
+        (5, "SingleElectron_Run2017C"),
+        (5, "SingleElectron_Run2017D"),
+        (5, "SingleElectron_Run2017E"),
+        (5, "SingleElectron_Run2017F"),
+        (5, "SingleMuon_Run2017B"),
+        (5, "SingleMuon_Run2017C"),
+        (5, "SingleMuon_Run2017D"),
+        (10,"SingleMuon_Run2017E"),
+        (15,"SingleMuon_Run2017F"),
+        (1, "SingleMuon_Run2017F_ext1"),
+        (1, "SingleMuon_Run2017F_ext2")
         ]

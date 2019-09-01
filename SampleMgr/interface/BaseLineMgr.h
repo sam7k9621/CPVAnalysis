@@ -22,6 +22,7 @@
 #include "TTree.h"
 
 #include <string>
+#include <map>
 #include <tuple>
 #include <vector>
 #include <random>
@@ -41,7 +42,9 @@ class BaseLineMgr : public mgr::Pathmgr,
 
         BaseLineMgr( const BaseLineMgr& )            = delete;
         BaseLineMgr& operator=( const BaseLineMgr& ) = delete;
-
+        void ReadConfig();
+        void AddVal( const std::string&, const std::string& );
+        double GetVal( const std::string&, const std::string& );
         /*******************************************************************************
         *   bbSeparation
         *******************************************************************************/
@@ -159,6 +162,7 @@ class BaseLineMgr : public mgr::Pathmgr,
         BTagCalibration* _calib;
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
         std::default_random_engine _generator;
+        std::map<std::string, double > _valmap;
 };
 
 

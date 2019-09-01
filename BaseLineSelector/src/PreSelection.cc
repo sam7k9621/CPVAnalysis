@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <algorithm>
 
@@ -26,7 +27,8 @@ extern void
 MakePreCut()
 {
     // Build new file
-    PreMgr().InitRoot( "sample" + PreMgr().GetOption<string>( "year" ) );
+    string year = PreMgr().GetOption<string>( "year" );
+    PreMgr().InitRoot( "sample" + year );
     TFile* newfile = TFile::Open( ( PreMgr().GetResultsName( "root", "PreCut" ) ).c_str(), "recreate" );
 
     string sample = PreMgr().GetOption<string>( "sample" );
@@ -117,8 +119,8 @@ MakePreCut()
                 continue;
             }
         }
-
-        if( !is_data ){
+        
+        if( !is_data && year != "18" ){
             PreMgr().LeptonECorr();
         }
 
@@ -126,18 +128,17 @@ MakePreCut()
         if( !PreMgr().PassVertex() ){
             continue;
         }
-
+        
         // Preselection :
         // Jet : at least four jets
         // Lep : at least one lepton
         if( !PreMgr().PreJet() ){
             continue;
         }
-
+        
         if( !PreMgr().PreLep() ){
             continue;
         }
-
         newtree->Fill();
     }
 
