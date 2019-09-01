@@ -50,6 +50,13 @@ def main(args):
             type=str,
             required=True
             )
+    
+    parser.add_argument(
+            '-Y', '--Year',
+            help='Which year',
+            type=str,
+            required=True
+            )
 
     parser.add_argument(
             '-T', '--Trailer',
@@ -88,11 +95,11 @@ def main(args):
     elif opt.Command in ("MakeHist") :
         subdir = "CPVAnalysis.CompareDataMC."
 
-    samplelst = importlib.import_module( subdir + opt.Command )
+    samplelst = importlib.import_module( subdir + opt.Command + opt.Year )
 
     if opt.test:
         for sample in getattr( samplelst, opt.Samplelst ):
-            trailer = "{} -s {}".format( opt.Trailer, sample )
+            trailer = "{} -y {} -s {}".format( opt.Trailer, opt.Year, sample )
             os.system("{} {}".format( opt.Command, trailer ) )
         return
    

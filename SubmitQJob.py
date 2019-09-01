@@ -33,6 +33,13 @@ def main(args):
             type=str,
             required=True
             )
+    
+    parser.add_argument(
+            '-Y', '--Year',
+            help='Which year',
+            type=str,
+            required=True
+            )
 
     parser.add_argument(
             '-T', '--Trailer',
@@ -51,7 +58,7 @@ def main(args):
             '-R', '--maxRunJobs',
             help='max number of run jobs',
             type=int,
-            default=20
+            default=5
             )
 
     parser.add_argument(
@@ -71,7 +78,7 @@ def main(args):
     elif opt.Command in ("MakeHist") :
         subdir = "CPVAnalysis.CompareDataMC."
 
-    samplemod = importlib.import_module( subdir + opt.Command )
+    samplemod = importlib.import_module( subdir + opt.Command + opt.Year )
 
     cmd = opt.Command
     if opt.Trailer :
@@ -83,7 +90,7 @@ def main(args):
 
     outputfilelst = []
     for sample in samplelst:
-        command = "{} -s {}".format(opt.Command, sample)
+        command = "{} -y {} -s {}".format(opt.Command, opt.Year, sample)
         
         outputfilename = ".{}.sh".format( command.replace(" ", "") )
         outputfilelst.append( outputfilename )
