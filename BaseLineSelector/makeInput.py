@@ -130,7 +130,7 @@ def MakeSampleInfo( outputfile, year, content ):
         outputfile.write( text3.format( year, 
             "1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324",
             "917, 918, 919, 920, 921, 922, 923",
-            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data//src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt",
+            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_69200.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_72400.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_66000.csv"
@@ -171,10 +171,10 @@ def MakeSampleInfo( outputfile, year, content ):
             ) )
 
 def main(args):
-    # sample16 = MakeContent( 
-            # "/wk_cms2/youying/public/bprimekit_2016_Legacy/",
-            # s16.mclst, s16.datalst 
-            # )
+    sample16 = MakeContent( 
+            "/wk_cms2/youying/public/bprimekit_2016_Legacy/",
+            s16.mclst, s16.datalst 
+            )
     
     sample17 = MakeContent( 
             "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/",
@@ -188,7 +188,7 @@ def main(args):
     
     outputfile = open( "python/SampleInfo.py", "w+")
     outputfile.write( "import FWCore.ParameterSet.Config as cms\n" )
-    # MakeSampleInfo( outputfile, "16", sample16 )
+    MakeSampleInfo( outputfile, "16", sample16 )
     MakeSampleInfo( outputfile, "17", sample17 )
     MakeSampleInfo( outputfile, "18", sample18 )
     outputfile.close()
