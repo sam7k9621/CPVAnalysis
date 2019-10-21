@@ -2,6 +2,7 @@
 #define COMPAREDATAMC_H
 
 #include "CPVAnalysis/SampleMgr/interface/Histor.h"
+#include <boost/python.hpp>
 #include <deque>
 #include <map>
 
@@ -27,10 +28,10 @@ extern void CheckAcp();
 /*******************************************************************************
 *  MakeHist
 *******************************************************************************/
+extern std::string MakeFileName( const std::string&, const std::string&, const std::string&, const std::string& ="" ); 
 extern Histor& CompMgr( const std::string& = "", const std::string& = "" );
 extern void FillObservable( const std::string&, const double&, const double& );
 extern void    MakeHist();
-extern void    CheckHist();
 
 /*******************************************************************************
 *  AddHist
@@ -45,5 +46,4 @@ extern double Obs13( TVector3, TVector3, TVector3, TVector3, float );
 extern double Obs6( TVector3, TVector3, TVector3, TVector3, float );
 extern double Obs3( TVector3, TVector3, TVector3, TVector3, float );
 extern double Obs12( TVector3, TVector3 );
-
 #endif

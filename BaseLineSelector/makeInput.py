@@ -120,15 +120,15 @@ def MakeSampleInfo( outputfile, year, content ):
     ###########################################################################################################################
     CMSSW_BASE =  os.environ['CMSSW_BASE']
     if year == "16":
-        outputfile.write( text1.format( year, "BtagWeight", CMSSW_BASE + "DeepCSV_16XSF_V4_B_F.csv" ) )
-        outputfile.write( text2.format( year, "SR_eff_b",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b" ) )
-        outputfile.write( text2.format( year, "SR_eff_c",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b" ) )
-        outputfile.write( text2.format( year, "SR_eff_l",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b" ) )
-        outputfile.write( text2.format( year, "CR_eff_b",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b" ) )
-        outputfile.write( text2.format( year, "CR_eff_c",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b" ) )
-        outputfile.write( text2.format( year, "CR_eff_l",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b" ) )
+        outputfile.write( text1.format( year, "BtagWeight", CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_2016LegacySF_V1.csv" ) )
+        outputfile.write( text2.format( year, "SR_eff_b",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt6321.root", "eff_b" ) )
+        outputfile.write( text2.format( year, "SR_eff_c",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt6321.root", "eff_c" ) )
+        outputfile.write( text2.format( year, "SR_eff_l",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt6321.root", "eff_l" ) )
+        outputfile.write( text2.format( year, "CR_eff_b",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt2217.root", "eff_b" ) )
+        outputfile.write( text2.format( year, "CR_eff_c",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt2217.root", "eff_c" ) )
+        outputfile.write( text2.format( year, "CR_eff_l",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt2217.root", "eff_l" ) )
         outputfile.write( text3.format( year, 
-            "1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324",
+            "1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324, 2412, 2413, 2414, 2415",
             "917, 918, 919, 920, 921, 922, 923",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_69200.csv",
@@ -137,13 +137,13 @@ def MakeSampleInfo( outputfile, year, content ):
             ) )
 
     elif year == "17":
-        outputfile.write( text1.format( year, "BtagWeight", CMSSW_BASE + "DeepCSV_17XSF_V4_B_F.csv" ) )
-        outputfile.write( text2.format( year, "SR_eff_b",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "SR_eff_c",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "SR_eff_l",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "CR_eff_b",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "CR_eff_c",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "CR_eff_l",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
+        outputfile.write( text1.format( year, "BtagWeight", CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_94XSF_V4_B_F.csv" ) )
+        outputfile.write( text2.format( year, "SR_eff_b",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
+        outputfile.write( text2.format( year, "SR_eff_c",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_c"  ) )
+        outputfile.write( text2.format( year, "SR_eff_l",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_l"  ) )
+        outputfile.write( text2.format( year, "CR_eff_b",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root", "eff_b"  ) )
+        outputfile.write( text2.format( year, "CR_eff_c",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root", "eff_c"  ) )
+        outputfile.write( text2.format( year, "CR_eff_l",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root", "eff_l"  ) )
         outputfile.write( text3.format( year,
             "1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344", 
             "938, 939, 940, 941, 942, 943, 944",
@@ -154,13 +154,13 @@ def MakeSampleInfo( outputfile, year, content ):
             ) )
 
     elif year == "18":
-        outputfile.write( text1.format( year, "BtagWeight", CMSSW_BASE + "DeepCSV_18XSF_V4_B_F.csv" ) )
-        outputfile.write( text2.format( year, "SR_eff_b",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "SR_eff_c",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "SR_eff_l",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "CR_eff_b",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "CR_eff_c",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
-        outputfile.write( text2.format( year, "CR_eff_l",   CMSSW_BASE + "beffPlot_TTToSemiLeptonic_0pt4941.root", "eff_b"  ) )
+        outputfile.write( text1.format( year, "BtagWeight", CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_102XSF_V1.csv" ) )
+        outputfile.write( text2.format( year, "SR_eff_b",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4184.root", "eff_b"  ) )
+        outputfile.write( text2.format( year, "SR_eff_c",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4184.root", "eff_c"  ) )
+        outputfile.write( text2.format( year, "SR_eff_l",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4184.root", "eff_l"  ) )
+        outputfile.write( text2.format( year, "CR_eff_b",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1241.root", "eff_b"  ) )
+        outputfile.write( text2.format( year, "CR_eff_c",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1241.root", "eff_c"  ) )
+        outputfile.write( text2.format( year, "CR_eff_l",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1241.root", "eff_l"  ) )
         outputfile.write( text3.format( year,
             "200, 201, 202",
             "116, 117, 118",

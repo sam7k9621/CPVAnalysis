@@ -41,29 +41,30 @@ dataset = [
         "ZZ"
     ]
 
-path = "/eos/cms/store/user/youying/public/2017/datacard/"
+path = "/eos/cms/store/user/pusheng/public/PreCut/"
 
 def main(args):
 
-    with open( os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/Datacard.txt", "w") as outputfile:
-        for d in dataset :
-            version = [name for name in os.listdir( path ) if re.search( d + "_[0-9]+.txt", name ) ]
-            number = 0.0
-            
-            for ver in version :
-                filename = path + ver 
-                with open(filename) as f :
-                    content = f.readlines()
-                content = [ x.strip() for x in content ]
-                number += float(content[4].split("=")[1])
-                print ver, float(content[4].split("=")[1])
-                f.close()
+    for i in [ "16", "17", "18" ]:
+        with open( os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/{}_Datacard.txt".format( i ), "w") as outputfile:
+            for d in dataset :
+                version = [name for name in os.listdir( path ) if re.search( "{}_{}_[0-9]+.txt".format( i, d ), name ) ]
+                number = 0.0
+                
+                for ver in version :
+                    filename = path + ver 
+                    with open(filename) as f :
+                        content = f.readlines()
+                    content = [ x.strip() for x in content ]
+                    number += float(content[4].split("=")[1])
+                    print ver, float(content[4].split("=")[1])
+                    f.close()
 
-            outputfile.write( d + "\n" )
-            outputfile.write("Effective events : {}\n ".format( number ))
+                outputfile.write( d + "\n" )
+                outputfile.write("Effective events : {}\n ".format( number ))
 
 
-    outputfile.close()
+        outputfile.close()
 
 if __name__ == '__main__':
     main(sys.argv)

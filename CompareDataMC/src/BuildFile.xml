@@ -8,4 +8,5 @@
 
 <use name="CPVAnalysis/SampleMgr"/>
 
+<flags CXXFLAGS="-g" />
 <export><lib name="1"/></export>

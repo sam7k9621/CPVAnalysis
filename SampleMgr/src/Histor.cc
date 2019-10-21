@@ -192,9 +192,9 @@ Histor::muFmuRWeight( const int& idx )
 void
 Histor::WeightMC( const string& sample )
 {
-    double lumi    = GetParam<double>( "Data", GetOption<string>( "lepton" ) + "lumi" );
-    double xs      = GetParam<double>( sample, "cross_section" );
-    double gen_num = GetParam<double>( sample, "gen_num" );
+    double lumi    = GetParam<double>( "Info", "lumi" );
+    double gen_num = GetParam<double>( sample, "evt" );
+    double xs      = GetParam<double>( sample, "xsec" );
 
     Scale( ( lumi * xs ) / gen_num );
 }

@@ -53,17 +53,17 @@ def main() :
     histmgr.SetObjlst( filename, objlst, "Data" ) 
     
     # Add data-driven orthogonal shape
-    print "-" * 90
-    print ">> Adding orthogonal CS data"
-    filename = filename.replace( "chi2", "invChi2" )
-    histmgr.SetObjlst( filename, objlst, "invData" ) 
+#     print "-" * 90
+    # print ">> Adding orthogonal CS data"
+    # filename = filename.replace( "chi2", "invChi2" )
+    # histmgr.SetObjlst( filename, objlst, "invData" ) 
    
     # Loop objlst
     for idx, obj in enumerate( objlst ):
         
         # Retrieve hist
         data = histmgr.GetObj( "Data" )
-        data_inv = histmgr.GetObj( "invData" )
+        # data_inv = histmgr.GetObj( "invData" )
         histlst = []
         mclst = [ "DYJets", "SingleTop", "VV", "WJets", "QCD" ]
         if template == "SR":
@@ -83,28 +83,28 @@ def main() :
         
         bg_sum.Draw( "hist e" )
         data    .Draw( "ep same" )
-        data_inv.Draw( "ep same" )
+        # data_inv.Draw( "ep same" )
         leg.Draw()
         
         bg_sum  .SetLineColor( 1 )
         data    .SetLineColor( ROOT.kAzure - 3 )
-        data_inv.SetLineColor( ROOT.kGreen - 6 )
+        # data_inv.SetLineColor( ROOT.kGreen - 6 )
         bg_sum  .SetLineWidth( 2 )
         data    .SetLineWidth( 2 )
-        data_inv.SetLineWidth( 2 )
+        # data_inv.SetLineWidth( 2 )
 
         leg.SetHeader( opt.LeptonType() + "-channel" ) 
         leg.AddEntry( data,     ( "CS data ( #chi^{2} < 20 )" ), "lep" )
-        leg.AddEntry( data_inv, ( "CS data ( #chi^{2} > 20 )" ), "lep" )
+        # leg.AddEntry( data_inv, ( "CS data ( #chi^{2} > 20 )" ), "lep" )
         leg.AddEntry( bg_sum,   ( template + " bkg. MC" ), "lep" )
 
         pltmgr.SetNormToUnity( bg_sum   )
         pltmgr.SetNormToUnity( data     )
-        pltmgr.SetNormToUnity( data_inv )
+        # pltmgr.SetNormToUnity( data_inv )
         pltmgr.SetSinglePad( c )
         pltmgr.SetAxis( bg_sum )
         pltmgr.DrawCMSLabelOuter( pltmgr.PRELIMINARY )
-        pltmgr.DrawLuminosity( 41540 )
+        pltmgr.DrawLuminosity( opt.Lumi() )
         
         bg_sum.GetYaxis().SetTitle( "PDF" ) 
         bg_sum.SetMaximum( pltmgr.GetHistYmax( bg_sum ) * 1.5 );

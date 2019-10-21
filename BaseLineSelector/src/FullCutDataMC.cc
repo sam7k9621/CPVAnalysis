@@ -13,20 +13,27 @@ FullMgr( const string& subdir, const string& json )
 extern string
 MakeFileName( bool is_data )
 {
-    string pos      = "/eos/cms/store/user/youying/public" / FullMgr().GetOption<string>( "year" );
-    
-    string filename = "";
+    string pos      = "/eos/cms/store/user/pusheng/public/PreCut";
+    string year     = FullMgr().GetOption<string>( "year" ); 
 
     if( is_data ){
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "lepton" ) + "_" +  FullMgr().GetOption<string>( "sample" ) + ".root" );
-    }
-    // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
-    else{
-        filename = pos / ( "PreCut_" + FullMgr().GetOption<string>( "sample" ) + ".root" );
-    }
-    // /eos/cms/store/user/pusheng/files/PreCut_TTbar_7.root
+        string lepton = FullMgr().GetOption<string>( "lepton" );
 
-    return filename;
+        if( lepton == "el" ){
+            return pos / ( "PreCut_" + year + "_*E*_" +  FullMgr().GetOption<string>( "sample" ) + ".root" );
+            // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
+        }
+        else if( lepton == "mu" ){
+            return pos / ( "PreCut_" + year + "_*M*_" +  FullMgr().GetOption<string>( "sample" ) + ".root" );
+            // /eos/cms/store/user/pusheng/files/PreCut_mu_runG_2.root
+        }
+        else{
+            return "Lepton type " + lepton + "cannot be found";
+        }
+    }
+    else{
+        return pos / ( "PreCut_" + year + "_" + FullMgr().GetOption<string>( "sample" ) + ".root" );
+    }
 }
 
 extern void
@@ -34,7 +41,7 @@ MakeFullCut()
 {
     // Build new file
     FullMgr().InitRoot( "sample" + FullMgr().GetOption<string>( "year" ) );
-    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut_test" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
     bool is_data      = found != std::string::npos ? true : false;
@@ -50,9 +57,9 @@ MakeFullCut()
     string lepton   = FullMgr().GetOption<string>( "lepton" );
     vector<int> hlt = FullMgr().GetVParam<int>( "Info", lepton + "_HLT" );
     string region = FullMgr().CheckOption( "region" ) ? "CR" : "SR";
-    TH2D* beff = FullMgr().GetSFHist( region + "_b_eff" );
-    TH2D* ceff = FullMgr().GetSFHist( region + "_c_eff" );
-    TH2D* leff = FullMgr().GetSFHist( region + "_l_eff" );
+    TH2D* beff = FullMgr().GetSFHist( region + "_eff_b" );
+    TH2D* ceff = FullMgr().GetSFHist( region + "_eff_c" );
+    TH2D* leff = FullMgr().GetSFHist( region + "_eff_l" );
     FullMgr().InitBtagWeight( "bcheck", FullMgr().GetParam<string>( "BtagWeight", "path" ) );
     FullMgr().InitBtagEffPlot( beff, ceff, leff );
    
@@ -113,7 +120,7 @@ MakeFullCut()
                 FullMgr().JECCorrDn();
             }
         }
-
+        
         /*******************************************************************************
         *  Baseline selection
         *******************************************************************************/
@@ -139,7 +146,6 @@ MakeFullCut()
                 continue;
             }
         }
-
         /*******************************************************************************
         *  Jet selection
         *******************************************************************************/
@@ -159,7 +165,6 @@ MakeFullCut()
                 continue;
             }
         }
-        
         /*******************************************************************************
         *  b-tagging probability
         *******************************************************************************/
@@ -200,6 +205,7 @@ MakeFullCut()
     }
 
     cout << endl;
+    
     newtree->AutoSave();
     delete ch;
     delete newfile;

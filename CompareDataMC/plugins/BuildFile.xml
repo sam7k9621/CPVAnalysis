@@ -1,0 +1,5 @@
+<use name="boost_python"/>
+<use name="root" />
+<use name="CPVAnalysis/CompareDataMC"/>
+
+<library name="Observable"    file="Observable_Boost.cc"/>

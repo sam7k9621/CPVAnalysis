@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 import importlib
+import datetime
 
 # espresso	20min	
 # microcentury	1h	
@@ -18,15 +19,15 @@ CMSSW_BASE =  os.environ['CMSSW_BASE']
 sub ="""
 executable = {0}/src/CPVAnalysis/SentJob.sh
 
-arguments  = $(cmd) $(opt) $(ClusterID) $(ProcId)
-output     = /afs/cern.ch/user/p/pusheng/condor/output/{1}.$(ClusterID).$(ProcId).out 
-error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}.$(ClusterID).$(ProcId).err 
-log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}.$(ClusterID).$(ProcId).log 
+arguments  = $(base) $(cmd) $(opt) $(ClusterID) $(ProcId)
+output     = /afs/cern.ch/user/p/pusheng/condor/output/{1}-{2}.$(ClusterID).$(ProcId).out 
+error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}-{2}.$(ClusterID).$(ProcId).err 
+log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}-{2}.$(ClusterID).$(ProcId).log 
 
 requirements = (OpSysAndVer =?= "CentOS7")
 +JobFlavour = "longlunch"
 
-queue cmd,opt from job.dat
+queue base,cmd,opt from job.dat
 """
 
 def MakeName( cmd, trailer ):
@@ -97,9 +98,10 @@ def main(args):
 
     samplelst = importlib.import_module( subdir + opt.Command + opt.Year )
 
+    opt.Trailer = opt.Trailer + " -y {}".format( opt.Year )
     if opt.test:
         for sample in getattr( samplelst, opt.Samplelst ):
-            trailer = "{} -y {} -s {}".format( opt.Trailer, opt.Year, sample )
+            trailer = "{} -s {}".format( opt.Trailer, sample )
             os.system("{} {}".format( opt.Command, trailer ) )
         return
    
@@ -107,11 +109,11 @@ def main(args):
     output_dat = open( "job.dat", 'w' )
     for sample in getattr( samplelst, opt.Samplelst ):
         trailer = "{} {}{}".format( opt.Trailer, opt.InputOption, sample )
-        output_dat.write( '{0}, {1}\n'.format( opt.Command, trailer ) )
+        output_dat.write( '{0}, {1}, {2}\n'.format( CMSSW_BASE, opt.Command, trailer ) )
     output_dat.close()
 
     output_sub = open( "job.sub", 'w' )
-    output_sub.write( sub.format( CMSSW_BASE, MakeName( opt.Command, opt.Trailer ) ) )
+    output_sub.write( sub.format( CMSSW_BASE, datetime.datetime.now().strftime("%m-%d-%H:%M"), MakeName( opt.Command, opt.Trailer ) ) )
     output_sub.close()
    
     os.system( "condor_submit {}".format( "job.sub" ) )

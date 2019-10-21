@@ -1,7 +1,7 @@
 #include "CPVAnalysis/CompareDataMC/interface/CompareDataMC.h"
 #include "ManagerUtils/PlotUtils/interface/Common.hpp"
 #include "THStack.h"
-
+#include <boost/format.hpp>
 
 using namespace std;
 
@@ -19,27 +19,34 @@ FillObservable( const string& obs, const double& acp, const double& weight )
     CompMgr().Hist( obs )->Fill( val, weight );
 }
 
+extern string 
+MakeFileName( const string& sample, const string& lepton, const string& year, const string& region )
+{
+    string reg     = region.empty() ? "" : "_region_" + region;
+
+    boost::format filename( CompMgr().GetParam<string>( sample, "path" ) );
+    filename % year % lepton % "_[0-9]+" % reg;
+    return filename.str();
+}
+
 extern void
 MakeHist()
 {
     // Initialize file
-    string lepton = CompMgr().GetOption<string>( "lepton" );
-    string sample = CompMgr().GetOption<string>( "sample" );
-    string sample_path = lepton + "path";
-    if( CompMgr().CheckOption( "region" ) ){
-        sample_path += "_" + CompMgr().GetOption<string>( "region" );
-    }
-
-    vector<string> samplelst = CompMgr().GetVParam<string>( sample, sample_path );
+    string sample   = CompMgr().GetOption<string>( "sample" );
+    string lepton   = CompMgr().GetOption<string>( "lepton" );
+    string region   = CompMgr().GetOption<string>( "region" ); 
+    string year     = CompMgr().GetOption<string>( "year" ); 
+    bool is_data    = ( sample == "Data" ) ? 1 : 0;
+    CompMgr().InitRoot( "sample" + year );
+    
+    string filename = MakeFileName( sample, lepton, year, region );
+    cout << ">> Processing " << filename << endl;
+    
     TChain* ch = new TChain( "root" );
-    for( const auto& s : samplelst ){
-        cout << s << endl;
-        ch->Add( s.c_str() );
-    }
-
+    ch->Add( filename.c_str() );
     CompMgr().AddSample( sample, ch );
     AddHist();
-
     CompMgr().RegisterWeight( ch );
 
     // Register reco sample
@@ -73,7 +80,6 @@ MakeHist()
 
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
-    bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
@@ -243,69 +249,5 @@ MakeHist()
     }
     StoreCompare();
 
-    delete ch;
-}
-
-extern void
-CheckHist()
-{
-    // Initialize file
-    string lepton            = CompMgr().GetOption<string>( "lepton" );
-    string sample            = CompMgr().GetOption<string>( "sample" );
-    vector<string> samplelst = CompMgr().GetVParam<string>( sample, lepton + "path" );
-    TChain* ch               = new TChain( "root" );
-
-    Float_t LJetPt1;
-    Float_t LJetPt2;
-    Float_t LJetPt3;
-    Float_t LJetPt4;
-    Float_t LLepPt1;
-    Float_t LLepPt2;
-    Float_t LLepPt3;
-    Float_t LLepPt4;
-
-    ch->SetBranchAddress( "LJetPt1", &LJetPt1 );
-    ch->SetBranchAddress( "LJetPt2", &LJetPt2 );
-    ch->SetBranchAddress( "LJetPt3", &LJetPt3 );
-    ch->SetBranchAddress( "LJetPt4", &LJetPt4 );
-    ch->SetBranchAddress( "LLepPt1", &LLepPt1 );
-    ch->SetBranchAddress( "LLepPt2", &LLepPt2 );
-    ch->SetBranchAddress( "LLepPt3", &LLepPt3 );
-    ch->SetBranchAddress( "LLepPt4", &LLepPt4 );
-
-    for( const auto& s : samplelst ){
-        ch->Add( s.c_str() );
-    }
-
-    CompMgr().AddSample( sample, ch );
-    AddHist();
-
-    // Looping events
-    int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
-    bool is_data = ( sample == "Data" ) ? 1 : 0;
-
-    for( int i = 0; i < events; i++ ){
-        ch->GetEntry( i );
-        CompMgr().process( events, i );
-
-        float weight = is_data ? 1 : CompMgr().GenWeight();
-        weight = weight < 0 ? -1 : 1;
-
-        CompMgr().Hist( "LJetPt1" )->Fill( LJetPt1, weight );
-        CompMgr().Hist( "LJetPt2" )->Fill( LJetPt2, weight );
-        CompMgr().Hist( "LJetPt3" )->Fill( LJetPt3, weight );
-        CompMgr().Hist( "LJetPt4" )->Fill( LJetPt4, weight );
-        CompMgr().Hist( "LLepPt1" )->Fill( LLepPt1, weight );
-        CompMgr().Hist( "LLepPt2" )->Fill( LLepPt2, weight );
-        CompMgr().Hist( "LLepPt3" )->Fill( LLepPt3, weight );
-        CompMgr().Hist( "LLepPt4" )->Fill( LLepPt4, weight );
-    }
-
-    if( !is_data ){
-        CompMgr().WeightMC( sample );
-        cout << ">>Weighting " << sample << endl;
-    }
-
-    StoreCompare();
     delete ch;
 }

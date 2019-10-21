@@ -69,10 +69,10 @@ Selector::GetEOSName( const string& type, const string& prefix, const string& di
     }
 
     if( type == "" ){
-        return "/eos/cms/store/user/youying/public" /  dir / ( prefix + ans );
+        return "/eos/cms/store/user/pusheng/public" /  dir / ( prefix + ans );
     }
     else{
-        return "/eos/cms/store/user/youying/public" / dir / ( prefix + ans + "." + type );
+        return "/eos/cms/store/user/pusheng/public" / dir / ( prefix + ans + "." + type );
     }
 }
 
