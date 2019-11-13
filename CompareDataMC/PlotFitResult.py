@@ -42,7 +42,7 @@ def main() :
     # Initialize parsing manager
     global opt
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput( "r", "region" ).AddInput( "u", "uncertainty" ).AddInput("p", "pull" )
+    opt.AddInput("c", "chi2").AddInput( "t", "template" ).AddInput( "u", "uncertainty" ).AddInput("p", "pull" )
     opt.SetName( "chi2" )
     opt.Parsing() 
     
@@ -72,8 +72,8 @@ def main() :
     # Add background template 
     print "-"*90
     print ">> Adding background template"
-    if opt.GetOption( "region" ):
-        filename = opt.GetFileName( "Data" ).replace( ".root", opt.GetOption( "region", True ) + ".root" )
+    if opt.GetOption( "template" ):
+        filename = opt.GetFileName( "Data" ).replace( ".root", opt.GetOption( "template", True ) + ".root" ).replace( "template", "region" )
         histmgr.SetObjlst( filename, objlst, "BT" )
     else:
         for sample in input.samplelst:
@@ -86,8 +86,8 @@ def main() :
     bg = RooHistPdf( "bg", "bg", RooArgSet(x), d3 ) 
 
     # Construct composite pdf
-    nsg   = RooRealVar( "nsg", "nsg", 300000, 100000, 500000 )
-    nbg   = RooRealVar( "nbg", "nbg", 40000, 0, 80000 )
+    nsg   = RooRealVar( "nsg", "nsg", 300000, 100000, 1000000 )
+    nbg   = RooRealVar( "nbg", "nbg", 40000, 0, 100000 )
     model = RooAddPdf( "model", "model", RooArgList( sg, bg ), RooArgList( nsg, nbg ) )  
 
     # Fitting
@@ -177,10 +177,11 @@ def main() :
     
     c.cd()
     
-    pltmgr.DrawCMSLabelOuter( pltmgr.PRELIMINARY )
-    pltmgr.DrawLuminosity( 41540 )
+    pltmgr.DrawCMSLabel( pltmgr.PRELIMINARY )
+    pltmgr.DrawEntryLeft( opt.Entry() )
+    pltmgr.DrawLuminosity( opt.Lumi() )
 
-    tag = "lep_tmass" + opt.GetOption( "region", True ) + opt.GetOption( "uncertainty", True )
+    tag = "lep_tmass" + opt.GetOption( "template", True ) + opt.GetOption( "uncertainty", True )
     c.SaveAs( opt.GetResultName( tag, "FitResult" ) )
 
     #-------------------------------------------------------------------------------------------------- 
@@ -206,7 +207,9 @@ def main() :
             nsg_val + nbg_val, sum_err, \
             nsg_val / ( nsg_val + nbg_val ) * 100, fra_err * 100
             )
-    print info
+    with open( opt.GetResultName( tag, "FitResult", "txt" ), "w" ) as outputfile:
+        outputfile.write( info )
+
 
   #-------------------------------------------------------------------------------------------------- 
     if not opt.GetOption( "pull" ):

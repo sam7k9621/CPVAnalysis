@@ -8,15 +8,15 @@ def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "opt").AddInput("r", "region")
-    opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "i", "ISO" )
+    opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "i", "ISO" ).AddFlag( "p", "wopileup" )
     
-    opt.SetName( "chi2", "uncertainty", "opt", "region", "0bjet", "ISO" )
+    opt.SetName( "chi2", "uncertainty", "opt", "region", "0bjet", "ISO", "wopileup" )
     opt.Parsing() 
     
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
-    # objlst=[ "had_tmass", "lep_tmass" ]
-    objlst=[ "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho" ]
+    objlst=[ "had_tmass", "lep_tmass", "nVtx" ]
+    # objlst=[ "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho" ]
     mclst = ["QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
     region = opt.GetOption( "region" )
     if not region:
@@ -43,6 +43,7 @@ def main() :
         bg = ROOT.THStack()
         # Initiailze hist
         data = histmgr.GetObj( "Data" )
+        print "Data", data.Integral()
         histlst = []
         total = 0.
         for i, mc in enumerate( mclst ):
@@ -111,12 +112,12 @@ def main() :
         c.cd()
     
         pltmgr.DrawCMSLabel( pltmgr.PRELIMINARY )
-        pltmgr.DrawLuminosity( 41540 )
+        pltmgr.DrawLuminosity( opt.Lumi() )
         pltmgr.DrawEntryLeft( opt.Entry() )
         c.SaveAs( opt.GetResultName( obj ) )
         
-        top.SetLogy( True )
-        c.SaveAs( opt.GetResultName( obj + "_logy" ) )
+        # top.SetLogy( True )
+        # c.SaveAs( opt.GetResultName( obj + "_logy" ) )
 
 
 if __name__ == '__main__':

@@ -164,19 +164,21 @@ FillWeighObservable( const string& obs, const double& acp, const bool& flag )
 extern void
 StoreTLV()
 {
-    string filename = CompMgr().GetResultsName( "root", "Hist" );
-    TFile* myfile = TFile::Open( filename.c_str(), "RECREATE" );
+    string output = CompMgr().GetResultsName( "root", "Hist" );
+    TFile* myfile = TFile::Open( output.c_str(), "RECREATE" );
     TTree *tree = new TTree( "root", "root" );
     
     // Initialize file
     string lepton            = CompMgr().GetOption<string>( "lepton" );
     string sample            = CompMgr().GetOption<string>( "sample" );
-    vector<string> samplelst = CompMgr().GetVParam<string>( sample, lepton + "path" );
-    TChain* ch               = new TChain( "root" );
-    for( const auto& s : samplelst ){
-        ch->Add( s.c_str() );
-        cout<<"> Processing " + s <<endl;
-    }
+    string year              = CompMgr().GetOption<string>( "year"   );
+    CompMgr().InitRoot( "sample" + year );
+    
+    string filename          = MakeFileName( sample, lepton, year ); 
+    cout<<">> Processing "<< filename <<endl;
+    
+    TChain* ch = new TChain( "root" );
+    ch->Add( filename.c_str() );
     CompMgr().AddSample( sample, ch );
     
     // Register reco sample

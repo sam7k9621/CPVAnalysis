@@ -194,13 +194,10 @@ namespace mgr{
     void
     SampleMgr::ElEnergyCorr()
     {
-        for( int i = 0; i < Lsize(); i++ ){
-            if( _lep.LeptonType[ _idx ] == 11 ){
-                SetIndex( i );
-                TLorentzVector lepp4 = GetLepP4( i );
-                lepp4 *= _lep.ElEnergyCorrFactor[ _idx ]; 
-                SetLepP4( lepp4 );
-            }
+        if( _lep.LeptonType[ _idx ] == 11 ){
+            TLorentzVector lepp4 = GetLepP4( _idx );
+            lepp4 *= _lep.ElEnergyCorrFactor[ _idx ]; 
+            SetLepP4( lepp4 );
         }
     }
 

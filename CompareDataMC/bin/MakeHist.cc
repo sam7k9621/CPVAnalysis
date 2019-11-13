@@ -26,7 +26,7 @@ main( int argc, char* argv[] )
         ( "TLV,L", "Get Acp TLorentzVector list" )
         ( "SIM,S", "check gen-level simulation Acp" )
     ;
-    CompMgr( "CompareDataMC", "WeightInfo.json" ).AddOptions( de );
+    CompMgr( "CompareDataMC", "WeightInfo.py" ).AddOptions( de );
     const int run = CompMgr().ParseOptions( argc, argv );
 
     if( run == mgr::Parsermgr::HELP_PARSER ){

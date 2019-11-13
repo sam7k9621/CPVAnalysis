@@ -5,6 +5,7 @@ class Parsemgr:
     def __init__( self ):
         self.parser = argparse.ArgumentParser("Plotmgr")
         self.parser.add_argument('-l', '--lepton',type=str,required=True)
+        self.parser.add_argument('-y', '--year',type=str,required=True)
         self.parser.add_argument('-s', '--sample',type=str)
         self.optionlst = []
     
@@ -31,7 +32,7 @@ class Parsemgr:
             self.parser.print_help()
             raise
         
-        self.inputname  = "{}_{}".format( input, self.opt.lepton  ) + "_{}"
+        self.inputname  = "{}_{}_{}".format( input, self.opt.year, self.opt.lepton ) + "_{}"
         for option in self.optionlst :
             arg = getattr( self.opt, option )
             if arg:
@@ -65,7 +66,7 @@ class Parsemgr:
         return self.GetFileName( sample ).replace( s1, s2 )
 
     def GetResultName( self, output, topic="Stack", type="pdf", dir="results"):
-        self.outputname = "{}_{}".format( topic, self.opt.lepton ) + "_{}"
+        self.outputname = "{}_{}_{}".format( topic, self.opt.year, self.opt.lepton ) + "_{}"
         for option in self.optionlst :
             arg = getattr( self.opt, option )
             if arg:
@@ -80,6 +81,9 @@ class Parsemgr:
     # /*******************************************************************************
     # *   Default settings for lumi and entry
     # /*******************************************************************************
+    def Year( self ):
+        return self.opt.year 
+
     def LeptonType( self ):
         return self.opt.lepton
 
@@ -103,7 +107,13 @@ class Parsemgr:
         return "1 {}, #geq 4 jets ( {} b jets )".format( lep, bjet )
 
     def Lumi( self ):
-        lumi = 35700. if self.opt.lepton == "el" else 35900.
-        return lumi
+        if self.opt.year == "16":
+            return 35900
+        elif self.opt.year == "17":
+            return 41540
+        elif self.opt.year == "18":
+            return 58880
+        else:
+            return 0
 
     

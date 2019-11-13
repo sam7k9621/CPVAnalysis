@@ -36,8 +36,23 @@ mclst =[
      [ "WJets_HT-2500ToInf",           "WJets_HT-2500ToInf",         1.21 * 0.03216   ]
 ]
 
-def GetGennumber() :
-    with open( os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/Datacard.txt" ) as file:  
+# CEDM_ntuple
+CEDM_dict = {
+    "0_0": 19.86648916,
+    "0_5": 20.13314039,
+    "1_0": 20.9547713 ,
+    "1_5": 22.33671701,
+    "2_0": 24.1848818 ,
+    "2_5": 26.7946347 ,
+    "3_0": 30.0738536 ,
+    "3_5": 33.6303685 ,
+    "4_0": 38.4841983 ,
+    "4_5": 43.9452341 ,
+    "5_0": 50.1732107 ,
+}
+
+def GetGennumber( year ) :
+    with open( os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/data/{}_Datacard.txt".format( year ) ) as file:  
         content = file.readlines()
     
     content = filter( None, [x.strip() for x in content] )

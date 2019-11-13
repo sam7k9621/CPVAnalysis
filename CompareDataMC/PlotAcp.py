@@ -2,7 +2,6 @@ from __future__ import division
 import ROOT
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
-import CPVAnalysis.CompareDataMC.PlotInfo as info
 import math
 import numpy as np 
 
@@ -30,7 +29,7 @@ def main() :
     # Loop objlst
     toys = 1000 if opt.GetOption( "mixed" ) else 1
     for i in [ x for x in range(1, toys + 1) ]:
-        inputfile = opt.GetFileName( opt.SampleInfo(), dir="results/ReweightSample" )
+        inputfile = opt.GetFileName( opt.SampleInfo(), dir="results" )
         if opt.GetOption( "mixed" ):
             idx = inputfile.index(".")
             inputfile = inputfile[:idx] + "_" + str(i) + inputfile[idx:]
