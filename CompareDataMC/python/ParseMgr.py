@@ -112,7 +112,7 @@ class Parsemgr:
         elif self.opt.year == "17":
             return 41540
         elif self.opt.year == "18":
-            return 58880
+            return 59690
         else:
             return 0
 

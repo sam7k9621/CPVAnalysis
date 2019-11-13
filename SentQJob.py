@@ -73,9 +73,8 @@ def main(args):
                 break
             time.sleep(300)
         
-        sample = file.split("-s")[1].replace(".sh", "")
+        sample = file.split("-s")[-1].replace(".sh", "")
         cmd = "qsub {} -N {}".format( file, sample)
-        print cmd
         print ">>Sending {}".format(sample)
         sys.stdout.flush()
         os.system(cmd)
