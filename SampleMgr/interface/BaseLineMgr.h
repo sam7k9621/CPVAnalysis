@@ -45,6 +45,7 @@ class BaseLineMgr : public mgr::Pathmgr,
         void ReadConfig();
         void AddVal( const std::string&, const std::string& );
         double GetVal( const std::string&, const std::string& );
+
         /*******************************************************************************
         *   bbSeparation
         *******************************************************************************/

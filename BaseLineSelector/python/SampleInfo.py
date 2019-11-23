@@ -315,7 +315,7 @@ setattr( sample16, "CR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/
 
 sample16.Info = cms.PSet(
         mu_HLT = cms.vint32( 1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324, 2412, 2413, 2414, 2415 ),
-        el_HLT = cms.vint32( 917, 918, 919, 920, 921, 922, 923 ),
+        el_HLT = cms.vint32( 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808 ),
         lumimask = cms.string   ( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/lumimask_16.txt" ),
         puweight = cms.string   ( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_69200.csv" ),
         puweight_up = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_72400.csv" ),

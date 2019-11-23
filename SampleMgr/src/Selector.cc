@@ -42,37 +42,33 @@ Selector::InitBtagEffPlot( TH2D* b, TH2D* c, TH2D* l )
 /*******************************************************************************
 *   Common
 *******************************************************************************/
-string
-Selector::GetResultsName( const string& type, const string& prefix )
+bool
+Selector::IsGrid5()
 {
-    string ans = OptName();
-
-    if( prefix == "" ){
-        ans.erase( ans.begin() );
-    }
-
-    if( type == "" ){
-        return ResultsDir() / ( prefix + ans );
-    }
-    else{
-        return ResultsDir() / ( prefix + ans + "." + type );
-    }
+    return HostName().find( "ntugrid5" ) != std::string::npos;
 }
 
+bool
+Selector::IsLxplus()
+{
+    return HostName().find( "lxplus" ) != std::string::npos;
+}
+    
 string
-Selector::GetEOSName( const string& type, const string& prefix, const string& dir )
+Selector::GetResultsName( const string& type, const string& prefix, string dir )
 {
     string ans = OptName();
-
+    dir = IsLxplus() ? "/eos/cms/store/user/pusheng/public" / dir : ResultsDir();
+    
     if( prefix == "" ){
         ans.erase( ans.begin() );
     }
 
     if( type == "" ){
-        return "/eos/cms/store/user/pusheng/public" /  dir / ( prefix + ans );
+        return  dir / ( prefix + ans );
     }
     else{
-        return "/eos/cms/store/user/pusheng/public" / dir / ( prefix + ans + "." + type );
+        return dir / ( prefix + ans + "." + type );
     }
 }
 

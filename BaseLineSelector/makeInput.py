@@ -129,7 +129,7 @@ def MakeSampleInfo( outputfile, year, content ):
         outputfile.write( text2.format( year, "CR_eff_l",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt2217.root", "eff_l" ) )
         outputfile.write( text3.format( year, 
             "1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324, 2412, 2413, 2414, 2415",
-            "917, 918, 919, 920, 921, 922, 923",
+            "795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/lumimask_16.txt",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_69200.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_72400.csv",

@@ -30,8 +30,9 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Common
         *******************************************************************************/
-        std::string GetResultsName( const std::string&, const std::string& );
-        std::string GetEOSName( const std::string&, const std::string&, const std::string& );
+        bool IsGrid5();
+        bool IsLxplus();
+        std::string GetResultsName( const std::string&, const std::string&, std::string="FullCut" );
         std::string Discript( TH1* );
         bool        OptionContent( const std::string&, const std::string& );
 
