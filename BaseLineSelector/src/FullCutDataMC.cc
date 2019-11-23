@@ -13,7 +13,8 @@ FullMgr( const string& subdir, const string& json )
 extern string
 MakeFileName( bool is_data )
 {
-    string pos      = "/eos/cms/store/user/pusheng/public/PreCut";
+    //string pos      = "/eos/cms/store/user/pusheng/public/PreCut";
+    string pos      = FullMgr().ResultsDir();
     string year     = FullMgr().GetOption<string>( "year" ); 
 
     if( is_data ){
@@ -41,7 +42,8 @@ MakeFullCut()
 {
     // Build new file
     FullMgr().InitRoot( "sample" + FullMgr().GetOption<string>( "year" ) );
-    TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut" ) ).c_str(), "recreate" );
+    //TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut" ) ).c_str(), "recreate" );
+    TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
     bool is_data      = found != std::string::npos ? true : false;

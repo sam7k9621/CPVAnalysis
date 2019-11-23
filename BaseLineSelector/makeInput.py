@@ -130,7 +130,7 @@ def MakeSampleInfo( outputfile, year, content ):
         outputfile.write( text3.format( year, 
             "1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324, 2412, 2413, 2414, 2415",
             "917, 918, 919, 920, 921, 922, 923",
-            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt",
+            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/lumimask_16.txt",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_69200.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_72400.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_16_66000.csv"
@@ -147,7 +147,7 @@ def MakeSampleInfo( outputfile, year, content ):
         outputfile.write( text3.format( year,
             "1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344", 
             "938, 939, 940, 941, 942, 943, 944",
-            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt",
+            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/lumimask_17.txt",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_17_69200.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_17_72400.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_17_66000.csv"
@@ -164,7 +164,7 @@ def MakeSampleInfo( outputfile, year, content ):
         outputfile.write( text3.format( year,
             "200, 201, 202",
             "116, 117, 118",
-            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt",
+            CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/lumimask_18.txt",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_18_69200.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_18_72400.csv",
             CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/pileupweights_18_66000.csv"
