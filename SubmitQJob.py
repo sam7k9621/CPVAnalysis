@@ -55,10 +55,17 @@ def main(args):
             )
     
     parser.add_argument(
+            '-I', '--InputOption',
+            help='Input argument',
+            type=str,
+            default=""
+            )
+
+    parser.add_argument(
             '-R', '--maxRunJobs',
             help='max number of run jobs',
             type=int,
-            default=5
+            default=15
             )
 
     parser.add_argument(
@@ -90,7 +97,7 @@ def main(args):
 
     outputfilelst = []
     for sample in samplelst:
-        command = "{} -y {} -s {}".format(opt.Command, opt.Year, sample)
+        command = "{} -y {} {}{}".format(opt.Command, opt.Year, opt.InputOption, sample)
         
         outputfilename = ".{}.sh".format( command.replace(" ", "") )
         outputfilelst.append( outputfilename )

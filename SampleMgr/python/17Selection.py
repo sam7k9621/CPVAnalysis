@@ -49,7 +49,7 @@ process.El = cms.PSet(
         LoosePt = cms.double( 15 ),
         LooseAbsEta = cms.double( 2.4 ),
         TightPt = cms.double( 38 ),
-        TightAbsEta = cms.double( 2.1 ),
+        TightAbsEta = cms.double( 2.4 ),
         
         Tight_Bar_ISOc0 = cms.double( 0.0287 ),
         Tight_Bar_ISOcpt = cms.double( 0.506 ),
