@@ -41,7 +41,7 @@ dataset = [
         "ZZ"
     ]
 
-path = "/eos/cms/store/user/pusheng/public/PreCut/"
+path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/results/" if "ntugrid5" in os.environ["HOSTNAME"] else "/eos/cms/store/user/pusheng/public/PreCut/"
 
 def main(args):
 
