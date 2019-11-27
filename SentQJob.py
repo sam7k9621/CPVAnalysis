@@ -16,7 +16,7 @@ def isQsubOk( maxRunJobs, username='sam7k9621' ) :
     if sout <= maxRunJobs :
         return True
     else :
-        print "Queue is full, halt for 5 minutes..."
+        print "Queue is full, halt for 1 minute..."
         sys.stdout.flush()
         return False
 
@@ -71,7 +71,7 @@ def main(args):
         while( not isQstatOk( opt.maxRunJobs, opt.maxQueJobs ) ):
             if isQsubOk( opt.maxRunJobs ) :
                 break
-            time.sleep(300)
+            time.sleep(60)
         
         sample = file.split("-s")[-1].replace(".sh", "")
         cmd = "qsub {} -N {}".format( file, sample)

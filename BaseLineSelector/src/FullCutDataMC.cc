@@ -43,7 +43,6 @@ MakeFullCut()
     FullMgr().IsGrid5();
     
     FullMgr().InitRoot( "sample" + FullMgr().GetOption<string>( "year" ) );
-    //TFile* newfile = TFile::Open( ( FullMgr().GetEOSName( "root", "FullCut", "FullCut" ) ).c_str(), "recreate" );
     TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut", "FullCut" ) ).c_str(), "recreate" );
 
     std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
