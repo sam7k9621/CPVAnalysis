@@ -1,7 +1,7 @@
 import ROOT
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
-import CPVAnalysis.CompareDataMC.MakeHist as input
+import importlib
 from decimal import Decimal
 
 def main() :
@@ -26,6 +26,7 @@ def main() :
         mclst.append( region ) # Dominant sample should be added last
     
     # objlst=[ "Obs3", "Obs6", "Obs12", "Obs13", "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho" ]
+    input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
     
     for sample in input.samplelst:
         histmgr.SetObjlst( opt.GetFileName( sample ), objlst, sample )

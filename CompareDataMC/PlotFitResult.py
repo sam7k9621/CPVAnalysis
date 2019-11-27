@@ -1,7 +1,6 @@
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
-import CPVAnalysis.CompareDataMC.MakeHist as input
-import math
+import math, importlib
 from ROOT import RooRealVar, RooArgList, RooAddPdf, RooDataHist, RooFit, RooHistPdf, RooArgSet, THStack, kRed, kGreen, TLine, RooRandom, RooGaussian, RooDataSet, RooPlot
 
 def GaussFit( pull ):
@@ -42,13 +41,14 @@ def main() :
     # Initialize parsing manager
     global opt
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput( "t", "template" ).AddInput( "u", "uncertainty" ).AddInput("p", "pull" )
+    opt.AddInput("c", "chi2").AddInput( "r", "region" ).AddInput( "u", "uncertainty" ).AddInput("p", "pull" )
     opt.SetName( "chi2" )
     opt.Parsing() 
-    
+     
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst=[ "lep_tmass" ]
+    input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
     
     # Declare variable
     x = RooRealVar( "x", "x", 0, 500 )
@@ -72,8 +72,8 @@ def main() :
     # Add background template 
     print "-"*90
     print ">> Adding background template"
-    if opt.GetOption( "template" ):
-        filename = opt.GetFileName( "Data" ).replace( ".root", opt.GetOption( "template", True ) + ".root" ).replace( "template", "region" )
+    if opt.GetOption( "region" ):
+        filename = opt.GetFileName( "Data" ).replace( ".root", opt.GetOption( "region", True ) + ".root" )
         histmgr.SetObjlst( filename, objlst, "BT" )
     else:
         for sample in input.samplelst:
@@ -181,7 +181,7 @@ def main() :
     pltmgr.DrawEntryLeft( opt.Entry() )
     pltmgr.DrawLuminosity( opt.Lumi() )
 
-    tag = "lep_tmass" + opt.GetOption( "template", True ) + opt.GetOption( "uncertainty", True )
+    tag = "lep_tmass" + opt.GetOption( "region", True ) + opt.GetOption( "uncertainty", True )
     c.SaveAs( opt.GetResultName( tag, "FitResult" ) )
 
     #-------------------------------------------------------------------------------------------------- 

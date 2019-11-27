@@ -1,7 +1,6 @@
-import ROOT
+import ROOT, importlib
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
-import CPVAnalysis.CompareDataMC.MakeHist as input
 
 def main() :
     # Initialize parsing manager
@@ -14,6 +13,7 @@ def main() :
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst=[ "lep_tmass" ]
+    input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
     
     # Add SR background MC
     template = opt.GetOption( "template" )
@@ -25,30 +25,30 @@ def main() :
                 continue 
             filename = opt.GetCustomFileName( opt.GetOption( "region", True ), "",sample )
             histmgr.SetObjlst( filename, objlst, "SR" + sample ) 
-    elif template == "CS":
-        # Add CS background MC
+    elif template == "CR":
+        # Add CR background MC
         print "-" * 90
-        print ">> Adding CS bkg. MC"
+        print ">> Adding CR bkg. MC"
         for sample in input.samplelst:
             if any( x in sample for x in [ "ttbar", "Data" ] ):
                 continue 
             filename = opt.GetFileName( sample )
-            histmgr.SetObjlst( filename, objlst, "CS" + sample ) 
+            histmgr.SetObjlst( filename, objlst, "CR" + sample ) 
 
         # Change into data-driven CR QCD sample
         print "-" * 90
-        print ">> Adding data-driven CS QCD"
-        qcd_histlst = [ histmgr.GetMergedObj( "CSQCD" ) for o in objlst ]
-        histmgr.RemoveObj( "CSQCD" )
+        print ">> Adding data-driven CR QCD"
+        qcd_histlst = [ histmgr.GetMergedObj( "CRQCD" ) for o in objlst ]
+        histmgr.RemoveObj( "CRQCD" )
         filename = opt.GetCustomFileName( "region_WJets", "region_QCD_0bjet", "Data" )
-        histmgr.SetObjlst( filename, objlst, "CSQCD" ) 
+        histmgr.SetObjlst( filename, objlst, "CRQCD" ) 
     else:
         print "Please specify the template"
         return
     
     # Add data-driven shape
     print "-" * 90
-    print ">> Adding CS data"
+    print ">> Adding CR data"
     filename = opt.GetFileName( "Data" )
     histmgr.SetObjlst( filename, objlst, "Data" ) 
     
@@ -94,7 +94,7 @@ def main() :
         # data_inv.SetLineWidth( 2 )
 
         leg.SetHeader( opt.LeptonType() + "-channel" ) 
-        leg.AddEntry( data,     ( "CS data ( #chi^{2} < 20 )" ), "lep" )
+        leg.AddEntry( data,     ( "CR data ( #chi^{2} < 20 )" ), "lep" )
         # leg.AddEntry( data_inv, ( "CS data ( #chi^{2} > 20 )" ), "lep" )
         leg.AddEntry( bg_sum,   ( template + " bkg. MC" ), "lep" )
 
