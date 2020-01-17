@@ -11,8 +11,9 @@ def main() :
     opt.AddInput("A", "Acp")
     opt.AddFlag("t","test").AddFlag("x", "mixed")
     
-    opt.SetName( "Acp", "mixed" )
     opt.Parsing() 
+    opt.AddInputName ( "Acp", "mixed" )
+    opt.AddOutputName( "Acp", "mixed" )
 
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
@@ -22,8 +23,8 @@ def main() :
     hstlst = [ ROOT.TH1D( "hst_{}".format(str(i)), "", 50, -0.5, 0.5 ) for i in range(4) ]
 
     for i in [x for x in range(1, 1001) ]:
-        idx = opt.GetFileName( opt.SampleInfo(), dir="results/ReweightSample" ).index(".")
-        inputfile = opt.GetFileName( opt.SampleInfo(), dir="results/ReweightSample" )[:idx] + "_" + str(i) + opt.GetFileName( opt.SampleInfo(), dir="results/ReweightSample" )[idx:]
+        idx = opt.GetInputName( opt.SampleInfo(), dir="results/ReweightSample" ).index(".")
+        inputfile = opt.GetInputName( opt.SampleInfo(), dir="results/ReweightSample" )[:idx] + "_" + str(i) + opt.GetInputName( opt.SampleInfo(), dir="results/ReweightSample" )[idx:]
         histmgr.SetObjlst( inputfile, objlst, "Acp" )
 
         # Loop objlst
@@ -66,7 +67,7 @@ def main() :
         pltmgr.SetSinglePad( c )
         pltmgr.SetAxis( hist )
         pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
-        c.SaveAs( opt.GetResultName( opt.SampleInfo() + "_" + objlst[idx], "SimAcpPull" ) )
+        c.SaveAs( opt.GetOutputName( opt.SampleInfo() + "_" + objlst[idx], "SimAcpPull" ) )
 
 
 if __name__ == '__main__':

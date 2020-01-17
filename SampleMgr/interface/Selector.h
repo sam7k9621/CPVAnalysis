@@ -8,6 +8,7 @@
 
 #include "CPVAnalysis/SampleMgr/interface/BaseLineMgr.h"
 
+#include "TEfficiency.h"
 #include "TH1D.h"
 
 class Selector : public mgr::Pathmgr,
@@ -51,6 +52,8 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Weight
         *******************************************************************************/
+        void   GetSelJet( std::vector<int>& );
+        void   FillBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
         double GetJetSF( TH2D*, const int& );
         double GetJetSFUp( TH2D*, const int& );
         double GetJetSFDn( TH2D*, const int& );
@@ -87,9 +90,9 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Full-selection
         *******************************************************************************/
-        bool PassFullLepton( std::vector<int>&, const std::string& );
-        bool PassFullLepton_CRQCD( std::vector<int>&, const std::string& );
-        bool PassFullLepton_CRWJets( std::vector<int>&, const std::string& );
+        bool PassFullLepton         ( std::vector<int>&, const std::string& );
+        bool PassFullLepton_CRQCD   ( std::vector<int>&, const std::string& );
+        bool PassFullLepton_CRWJets ( std::vector<int>&, const std::string& );
 
         bool                                      PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
         bool                                      PassFullJet_CRQCD( std::vector<int>&, std::vector<int>&, const int& );

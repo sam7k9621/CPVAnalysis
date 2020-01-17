@@ -30,7 +30,7 @@ def Plot2D( hist ):
     pltmgr.SetSinglePadWithPalette( c )
     pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
     pltmgr.DrawEntryLeft( opt.Entry() )
-    c.SaveAs( opt.GetResultName( "2D_chi2_tmass", "bbSep" ) )
+    c.SaveAs( opt.GetOutputName( "2D_chi2_tmass", "bbSep" ) )
 
 def PlotIntegral( correct, misid, mistag ):
     
@@ -96,7 +96,7 @@ def PlotIntegral( correct, misid, mistag ):
     c.SetGrid()
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
     pltmgr.DrawEntryRight( opt.Entry() )
-    c.SaveAs( opt.GetResultName( "Chi2_uppercut", "bbSep" ) )
+    c.SaveAs( opt.GetOutputName( "Chi2_uppercut", "bbSep" ) )
 
 def OptLeptmass( cor, misid, mistag ):
     
@@ -128,7 +128,7 @@ def OptLeptmass( cor, misid, mistag ):
     cor.GetXaxis().SetTitle( "M_{lb} [GeV]" )
 
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
-    c.SaveAs( opt.GetResultName( "Optimisation", "bbSep" ) )
+    c.SaveAs( opt.GetOutputName( "Optimisation", "bbSep" ) )
 
     mistag.Add( misid )
     eff_cor = EffHist( cor, mistag )
@@ -155,7 +155,7 @@ def OptLeptmass( cor, misid, mistag ):
     pltmgr.SetSinglePad( c )
     pltmgr.SetAxis( eff_cor )
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
-    c.SaveAs( opt.GetResultName( "Correct_eff", "bbSep" ) )
+    c.SaveAs( opt.GetOutputName( "Correct_eff", "bbSep" ) )
 
 def PlotOptIntegral( correct, misid, mistag ):
     cor_eff = ROOT.TH1D( "cor_eff", "", 50, 0, 500 )
@@ -222,20 +222,21 @@ def PlotOptIntegral( correct, misid, mistag ):
     c.SetGrid()
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
     pltmgr.DrawEntryRight( opt.Entry() )
-    c.SaveAs( opt.GetResultName( "OptCut", "bbSep" ) )
+    c.SaveAs( opt.GetOutputName( "OptCut", "bbSep" ) )
 
 def main() :
     # Initialize parsing manager
     global opt 
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddFlag("B", "bbSep")
-    opt.SetName( "chi2", "bbSep" )
     opt.Parsing() 
+    opt.AddInputName( "chi2", "bbSep" )
+    opt.AddOutputName( "chi2", "bbSep" )
 
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst = [ "chi2_tmass", "chi2_Correct", "chi2_Misid", "chi2_Mistag", "Cor_leptmass", "Misid_leptmass", "Mistag_leptmass" ]
-    histmgr.SetObjlst( opt.GetFileName( "ttbar" ), objlst, "ttbar" )
+    histmgr.SetObjlst( opt.GetInputName( "ttbar" ), objlst, "ttbar" )
     
     # Plot 2D_chi2_tmass
     Plot2D( histmgr.GetObj("ttbar") )
@@ -286,7 +287,7 @@ def main() :
     c.SetLogy( True )
     pltmgr.DrawEntryRight( opt.Entry() )
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
-    c.SaveAs( opt.GetResultName( "Rate_PDF", "bbSep" ) )
+    c.SaveAs( opt.GetOutputName( "Rate_PDF", "bbSep" ) )
 
 if __name__ == '__main__':
     main()

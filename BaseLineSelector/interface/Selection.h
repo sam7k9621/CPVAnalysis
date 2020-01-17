@@ -15,6 +15,7 @@ extern Selector& FullMgr( const std::string& = "", const string& = "" );
 extern void Discard( TChain* );
 extern void MakePreCut();
 extern void MakeDataCard();
+extern void MakeBtagEff();
 
 /*******************************************************************************
 *   PreCut

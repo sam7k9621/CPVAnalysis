@@ -10,11 +10,12 @@ extern void
 ReweighAcp()
 {
     // Initialize file
-    boost::format fmt( "/afs/cern.ch/work/p/pusheng/CMSSW_9_4_13/src/CPVAnalysis/CompareDataMC/results/Hist_%1%_%2%_chi2_20_opt_150_TLV.root" );
+    boost::format fmt( CompMgr().ResultsDir() + "/Hist_%1%_%2%_%3%_chi2_20_opt_150_TLV.root" );
+    string year    = CompMgr().GetOption<string>( "year" );
     string lepton  = CompMgr().GetOption<string>( "lepton" );
     string sample  = CompMgr().GetOption<string>( "sample" );
     bool   is_data = ( sample == "Data" ) ? 1 : 0;
-    fmt % lepton % sample;
+    fmt % year % lepton % sample;
     srand( 100 );
     
     TChain* ch  = new TChain( "root" ); 
@@ -85,15 +86,21 @@ ReweighAcp()
 
             double mco3 = Obs3( mcisolep->Vect(), mchardjet->Vect(), mcb->Vect(), mcbbar->Vect(), mccharge );
 
-            FillWeighObservable( "GenObs13", mco13 );
-            FillWeighObservable( "GenObs6",  mco6  );
-            FillWeighObservable( "GenObs12", mco12 );
-            FillWeighObservable( "GenObs3",  mco3  );
+            FillObservable( "GenObs13", mco13 );
+            FillObservable( "GenObs6",  mco6  );
+            FillObservable( "GenObs12", mco12 );
+            FillObservable( "GenObs3",  mco3  );
             
             acp13 = mco13 > 0;
             acp6  = mco6 > 0;
             acp12 = mco12 > 0;
             acp3  = mco3 > 0;
+            
+            FillWeighObservable( "weighted_GenObs13", mco13, acp13);
+            FillWeighObservable( "weighted_GenObs6",  mco6 , acp6 );
+            FillWeighObservable( "weighted_GenObs12", mco12, acp12);
+            FillWeighObservable( "weighted_GenObs3",  mco3 , acp3 );
+            
         }
         /*******************************************************************************
         *  Reco Acp
@@ -125,6 +132,11 @@ ReweighAcp()
         FillMoreObservable( "Obs6",     o6,    acp6 );
         FillMoreObservable( "Obs12",    o12,   acp12 );
         FillMoreObservable( "Obs3",     o3,    acp3 );
+        
+        FillWeighObservable( "weighted_Obs13", o13, acp13 );
+        FillWeighObservable( "weighted_Obs6",  o6 , acp6 ); 
+        FillWeighObservable( "weighted_Obs12", o12, acp12 );
+        FillWeighObservable( "weighted_Obs3",  o3 , acp3 ); 
     }
     cout<<endl;
     StoreCompare();
@@ -164,22 +176,20 @@ FillWeighObservable( const string& obs, const double& acp, const bool& flag )
 extern void
 StoreTLV()
 {
-    string output = CompMgr().GetResultsName( "root", "Hist" );
-    TFile* myfile = TFile::Open( output.c_str(), "RECREATE" );
-    TTree *tree = new TTree( "root", "root" );
-    
     // Initialize file
     string lepton            = CompMgr().GetOption<string>( "lepton" );
     string sample            = CompMgr().GetOption<string>( "sample" );
     string year              = CompMgr().GetOption<string>( "year"   );
     CompMgr().InitRoot( "sample" + year );
-    
+    TFile* myfile = TFile::Open( CompMgr().GetResultsName( "root", "Hist" ).c_str(), "RECREATE" );
+    TTree *tree = new TTree( "root", "root" );
     string filename          = MakeFileName( sample, lepton, year ); 
     cout<<">> Processing "<< filename <<endl;
     
     TChain* ch = new TChain( "root" );
     ch->Add( filename.c_str() );
     CompMgr().AddSample( sample, ch );
+    CompMgr().RegisterWeight( ch );
     
     // Register reco sample
     Int_t jet1;
@@ -209,7 +219,7 @@ StoreTLV()
     TLorentzVector* mcbbar    = new TLorentzVector(0.,0.,0.,0.); 
     TLorentzVector* mcisolep  = new TLorentzVector(0.,0.,0.,0.); 
     TLorentzVector* mchardjet = new TLorentzVector(0.,0.,0.,0.);
-  
+
     tree->Branch( "charge", &charge, "charge/F" );
     tree->Branch( "b",          "TLorentzVector", &b );
     tree->Branch( "bbar",       "TLorentzVector", &bbar );
@@ -220,9 +230,10 @@ StoreTLV()
     tree->Branch( "mcbbar",     "TLorentzVector", &mcbbar );
     tree->Branch( "mcisolep",   "TLorentzVector", &mcisolep );
     tree->Branch( "mchardjet",  "TLorentzVector", &mchardjet );
-
+    
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    string tag   = CompMgr().GetOption<string>( "uncertainty" );
     bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
@@ -247,9 +258,9 @@ StoreTLV()
             }
         }
 
-        /*******************************************************************************
-        *  Gen-level Acp
-        *******************************************************************************/
+        /******************************************************************************
+        * Gen-level Acp
+        ******************************************************************************/
         if( !is_data ){
             int genbidx    = CompMgr().GetGenJet( 5 );
             int genbbaridx = CompMgr().GetGenJet( -5 );
@@ -267,6 +278,7 @@ StoreTLV()
             SetTLV( mcisolep,   CompMgr().GetGenP4( genlepidx ) );
             SetTLV( mchardjet,  CompMgr().GetGenP4( genjetidx ) );
         }
+        
         /*******************************************************************************
         *  Reco Acp
         *******************************************************************************/
@@ -275,8 +287,6 @@ StoreTLV()
         SetTLV( hardjet, CompMgr().GetJetP4( jet1 ) );
         charge < 0 ? SetTLV( b, CompMgr().GetJetP4( had_b ) ) : SetTLV( b, CompMgr().GetJetP4( lep_b ) );
         charge < 0 ? SetTLV( bbar, CompMgr().GetJetP4( lep_b ) ) : SetTLV( bbar, CompMgr().GetJetP4( had_b ) );
-        //blst.push_back( b );
-        //jlst.push_back( hardjet );
 
         tree->Fill();
     }

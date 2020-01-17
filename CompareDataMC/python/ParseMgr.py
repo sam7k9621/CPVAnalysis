@@ -1,4 +1,5 @@
 import sys
+import os
 import argparse
 
 class Parsemgr:
@@ -7,7 +8,8 @@ class Parsemgr:
         self.parser.add_argument('-l', '--lepton',type=str,required=True)
         self.parser.add_argument('-y', '--year',type=str,required=True)
         self.parser.add_argument('-s', '--sample',type=str)
-        self.optionlst = []
+        self.inputoptionlst  = []
+        self.outputoptionlst = []
     
     # /*******************************************************************************
     # *   Initialize parsing
@@ -20,10 +22,22 @@ class Parsemgr:
         self.parser.add_argument( "-" + abbr, "--" + full, action='store_true' )
         return self
 
-    def SetName( self, *args ):
+    def AddInputName( self, *args ):
         for arg in args:
-            self.optionlst.append( arg )
+            self.inputoptionlst.append( arg )
 
+    def RemoveInputName( self, *args ):
+        for arg in args:
+            self.inputoptionlst.remove( arg )
+
+    def AddOutputName( self, *args ):
+        for arg in args:
+            self.outputoptionlst.append( arg )
+
+    def RemoveOutputName( self, *args ):
+        for arg in args:
+            self.outputoptionlst.remove( arg )
+    
     def Parsing( self, input="Hist" ):
         try:
             self.opt = self.parser.parse_args(sys.argv[1:])
@@ -31,15 +45,6 @@ class Parsemgr:
             print "Error processing arguments!"
             self.parser.print_help()
             raise
-        
-        self.inputname  = "{}_{}_{}".format( input, self.opt.year, self.opt.lepton ) + "_{}"
-        for option in self.optionlst :
-            arg = getattr( self.opt, option )
-            if arg:
-                if isinstance( arg, bool ):
-                    self.inputname  += "_" + option 
-                else:
-                    self.inputname  += "_" + option + "_" + arg 
     
     def GetOption( self, option, add=False ):
         try:
@@ -57,17 +62,28 @@ class Parsemgr:
     # /*******************************************************************************
     # *   Get file name
     # *******************************************************************************/
-    def GetFileName( self, sample, type="root", dir="results" ):
-        file = self.inputname.format( sample )
-        file = "{}/{}.{}".format(dir, file, type)
+    def GetInputName( self, sample, prefix="Hist", type="root", dir="results" ):
+        
+        self.inputname  = "{}_{}_{}_{}".format( prefix, self.opt.year, self.opt.lepton, sample )
+        for option in self.inputoptionlst :
+            arg = getattr( self.opt, option )
+            if arg:
+                if isinstance( arg, bool ):
+                    self.inputname  += "_" + option 
+                else:
+                    self.inputname  += "_" + option + "_" + arg 
+        
+        file = "{}/{}.{}".format(dir, self.inputname, type)
+        
+        if self.opt.lepton == "co":
+            haddfile = file.replace( self.opt.lepton, "*" )
+            os.system( "hadd -f {} {}".format( file, haddfile ) )
+        
         return file
 
-    def GetCustomFileName( self, s1, s2, sample ):
-        return self.GetFileName( sample ).replace( s1, s2 )
-
-    def GetResultName( self, output, topic="Stack", type="pdf", dir="results"):
-        self.outputname = "{}_{}_{}".format( topic, self.opt.year, self.opt.lepton ) + "_{}"
-        for option in self.optionlst :
+    def GetOutputName( self, output, prefix="Stack", type="pdf", dir="results"):
+        self.outputname = "{}_{}_{}_{}".format( prefix, self.opt.year, self.opt.lepton, output ) 
+        for option in self.outputoptionlst :
             arg = getattr( self.opt, option )
             if arg:
                 if isinstance( arg, bool ):
@@ -75,8 +91,7 @@ class Parsemgr:
                 else:
                     self.outputname += "_" + option + "_" + arg
         
-        file = self.outputname.format( output )
-        return "{}/{}.{}".format( dir, file, type )
+        return "{}/{}.{}".format( dir, self.outputname, type )
 
     # /*******************************************************************************
     # *   Default settings for lumi and entry

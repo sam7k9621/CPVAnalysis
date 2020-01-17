@@ -5,7 +5,7 @@ import sys
 import re
 
 dataset = [
-        # "WJets_HT-70To100",
+        "WJets_HT-70To100",
         "WJets_HT-100To200",
         "WJets_HT-200To400",
         "WJets_HT-400To600",

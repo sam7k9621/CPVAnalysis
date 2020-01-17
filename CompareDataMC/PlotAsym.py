@@ -1,7 +1,8 @@
 from array import array
-from decimal import Decimal
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
+import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
 import ROOT
+import math
 def GetGraph( histmgr ) :
     
     ACP = [-20, -15, -10, -5, 0, 5, 10, 15, 20]
@@ -10,13 +11,14 @@ def GetGraph( histmgr ) :
     for a in ACP :
         hist = histmgr.GetObj( "Acp_{}".format( str(a) ) )
         
-        nm  = Decimal( hist.Integral( 0, hist.FindBin(0) - 1 ) )
-        np  = Decimal( hist.Integral( hist.FindBin(0), 201 ) )
-        acp = 100 * ( np - nm ) / ( np + nm )
+        nm  = hist.GetBinContent( 1 )
+        np  = hist.GetBinContent( 2 )
+        nm_err = hist.GetBinError( 1 )
+        np_err = hist.GetBinError( 2 )
         
-        err_sq = Decimal(4.) * np * nm 
-        err_sq = err_sq / ( (np + nm )**3 )
-        err    = 100 * err_sq.sqrt()
+        acp = 100 * ( np - nm ) / ( np + nm )
+        err_sq = 4 * ( ( nm * np_err )**2 + ( np * nm_err )**2 ) / ( ( np + nm  )**4 )
+        err    = 100 * math.sqrt( err_sq )
         
         x.append( a )
         y.append( acp )
@@ -28,25 +30,24 @@ def GetGraph( histmgr ) :
 
 def main() :
     
+    # Initialize parsing manager
+    opt = parmgr.Parsemgr()
+    opt.AddInput("c", "chi2").AddInput("o", "opt")
+    opt.AddFlag("a", "Acp" )
+    opt.Parsing()
+    opt.AddInputName ( "chi2", "Acp", "opt" )
+    opt.AddOutputName( "chi2", "Acp", "opt" )
+  
     # Initiailze plot manager
     histmgr = pltmgr.Plotmgr()
-    objlst = [ "GenObs2", "Obs2", "GenObs3", "Obs3", "GenObs4", "Obs4", "GenObs7", "Obs7" ]
-    filelst = [
-            "results/Hist_co_TTbar_chi2_20_Acp_-20_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_-15_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_-10_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_-5_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_0_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_5_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_10_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_15_Opt_150.root",
-            "results/Hist_co_TTbar_chi2_20_Acp_20_Opt_150.root"
-            ]
+    filelst = [ opt.GetInputName( "ttbar" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in [-20, -15, -10, -5, 0, 5, 10, 15, 20] ]
+    objlst = [ "weighted_GenObs3", "weighted_Obs3", "weighted_GenObs6", "weighted_Obs6", "weighted_GenObs12", "weighted_Obs12", "weighted_GenObs13", "weighted_Obs13" ]
+    
     for file in filelst:
-        histmgr.SetObjlst( file, objlst )
+        histmgr.SetObjlst( file, objlst, file )
    
     # Loop object list
-    for obj in [ "Observable13", "Observable6", "Observable3", "Observable12" ] :
+    for obj in [ "Observable3", "Observable6", "Observable12", "Observable13" ] :
         gr1 = GetGraph( histmgr )
         gr2 = GetGraph( histmgr )
         
@@ -87,7 +88,7 @@ def main() :
         leg.AddEntry( fit_x2, "Fit to A'_{CP}", "L" )
         leg.Draw()
 
-        c.SaveAs( "results/Hist_{}.pdf".format( obj ) )
+        c.SaveAs( opt.GetOutputName( obj, "Sim" ) )
 
 if __name__ == '__main__':
     main()

@@ -29,6 +29,9 @@ class Histor : public mgr::Pathmgr,
         /*******************************************************************************
         *   Common
         *******************************************************************************/
+        void   InitBtagWeight( const std::string&, const std::string& );
+        BTagEntry::JetFlavor GetBtagFlavor( const int& );
+        double GetBtagSF( const int& );
         bool PassHLT( const std::vector<int>& );
         bool PassISOLepton( const int&, const int& );
         bool HasLooseB( const std::initializer_list<int>& );
@@ -60,7 +63,6 @@ class Histor : public mgr::Pathmgr,
             const double
             );
 
-
         float GetLepPt( const int& i )
         {
             _sample->SetIndex( i );
@@ -73,16 +75,28 @@ class Histor : public mgr::Pathmgr,
             return _sample->LepEta();
         }
 
-        float LeadingJetEta( const int& i )
+        float GetJetEta( const int& i )
         {
             _sample->SetIndex( i );
             return _sample->JetEta();
         }
 
-        float LeadingJetPt( const int& i )
+        float GetJetPt( const int& i )
         {
             _sample->SetIndex( i );
             return _sample->JetPt();
+        }
+
+        float GetJetCSV( const int& i )
+        {
+            _sample->SetIndex( i );
+            return _sample->JetDeepCSV();
+        }
+
+        float GetJetFlavor( const int& i )
+        {
+            _sample->SetIndex( i );
+            return _sample->GenJetFlavor();
         }
 
         float GetMuISO( const int& );

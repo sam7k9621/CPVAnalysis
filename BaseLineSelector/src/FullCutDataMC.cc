@@ -13,7 +13,7 @@ FullMgr( const string& subdir, const string& json )
 extern string
 MakeFileName( bool is_data )
 {
-    string pos      = FullMgr().IsGrid5() ? FullMgr().ResultsDir() : "/eos/cms/store/user/pusheng/public/PreCut";
+    string pos      = FullMgr().IsLxplus() ? "/eos/cms/store/user/pusheng/public/PreCut" : FullMgr().ResultsDir();
     string year     = FullMgr().GetOption<string>( "year" ); 
 
     if( is_data ){
@@ -40,8 +40,6 @@ extern void
 MakeFullCut()
 {
     // Build new file
-    FullMgr().IsGrid5();
-    
     FullMgr().InitRoot( "sample" + FullMgr().GetOption<string>( "year" ) );
     TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut", "FullCut" ) ).c_str(), "recreate" );
 
@@ -71,34 +69,41 @@ MakeFullCut()
     Int_t lep;
     Int_t jet1;
     Int_t jet2;
+    Int_t Njets;
     Float_t chi2mass;
     Float_t had_tmass;
     Float_t lep_tmass;
     Float_t b_weight;
     Float_t b_weight_up;
     Float_t b_weight_dn;
+    vector<int> lepidx;// store one tight lepton
+    vector<int> jetidx;// store every jets
+    vector<int> bjetidx;// store two bjets
 
     newtree->Branch( "had_b",       &had_b,       "had_b/I" );
     newtree->Branch( "lep_b",       &lep_b,       "lep_b/I" );
+    newtree->Branch( "lep",         &lep,         "lep/I" );
     newtree->Branch( "jet1",        &jet1,        "jet1/I" );
     newtree->Branch( "jet2",        &jet2,        "jet2/I" );
-    newtree->Branch( "lep",         &lep,         "lep/I" );
+    newtree->Branch( "Njets",       &Njets,       "Njets/I" );
     newtree->Branch( "chi2mass",    &chi2mass,    "chimass/F" );
     newtree->Branch( "had_tmass",   &had_tmass,   "had_tmass/F" );
     newtree->Branch( "lep_tmass",   &lep_tmass,   "lep_tmass/F" );
     newtree->Branch( "b_weight",    &b_weight,    "b_weight/F" );
     newtree->Branch( "b_weight_up", &b_weight_up, "b_weight_up/F" );
     newtree->Branch( "b_weight_dn", &b_weight_dn, "b_weight_dn/F" );
-
+    newtree->Branch( "jetidx",      &jetidx );
+    
     // Looping events
     string tag = FullMgr().GetOption<string>( "uncertainty" );
-    int events = FullMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    int events = FullMgr().CheckOption( "test" ) ? 100 : ch->GetEntries();
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         FullMgr().process( events, i );
-        vector<int> lepidx;// store one tight lepton
-        vector<int> jetidx;// store every jets
-        vector<int> bjetidx;// store two bjets
+
+        lepidx.clear();
+        jetidx.clear();
+        bjetidx.clear();
 
         // JERCorr
         if( !is_data ){
@@ -180,6 +185,7 @@ MakeFullCut()
                 b_weight_dn = FullMgr().GetBtagWeight( bjetidx, jetidx, "down" );
             }
         }
+        
         /*******************************************************************************
         *  Chi2 sorting
         *******************************************************************************/
@@ -200,6 +206,7 @@ MakeFullCut()
         jet1  = jetidx [ jet1 ];
         jet2  = jetidx [ jet2 ];
         lep   = lepidx[ 0 ]; // choose leading lepton
+        Njets = jetidx.size() + bjetidx.size();
 
         lep_tmass = FullMgr().GetLeptonicM( lep, lep_b );
 

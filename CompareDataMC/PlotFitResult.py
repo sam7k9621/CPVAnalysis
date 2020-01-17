@@ -35,16 +35,17 @@ def GaussFit( pull ):
     pltmgr.SetAxis( frame )
     pltmgr.SetSinglePad( c )
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
-    c.SaveAs( opt.GetResultName( "Pull", "FitResult" ) )
+    c.SaveAs( opt.GetOutputName( "Pull", "FitResult" ) )
 
 def main() :
     # Initialize parsing manager
     global opt
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput( "r", "region" ).AddInput( "u", "uncertainty" ).AddInput("p", "pull" )
-    opt.SetName( "chi2" )
+    opt.AddInput("c", "chi2").AddInput("o", "opt").AddInput( "u", "uncertainty" ).AddInput("p", "pull" )
     opt.Parsing() 
-     
+    opt.AddInputName ( "chi2" )
+    opt.AddOutputName( "chi2", "opt", "uncertainty" )
+   
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst=[ "lep_tmass" ]
@@ -57,33 +58,34 @@ def main() :
     # Add Constraint template
     print "-"*90
     print ">> Adding constraint template"
-    histmgr.SetObjlst( opt.GetFileName( "Data" ), objlst, "CT" )
+    histmgr.SetObjlst( opt.GetInputName( "Data" ), objlst, "CT" )
     h1 = histmgr.GetObj( "CT" )
     data = RooDataHist( "d1", "d1", l, h1 )
-
-    # Add signal template
-    print "-"*90
-    print ">> Adding signal template"
-    histmgr.SetObjlst( opt.GetFileName( "ttbar" ), objlst, "ST" )
-    h2 = histmgr.GetObj( "ST" )
-    d2 = RooDataHist( "d2", "d2", l, h2 )
-    sg = RooHistPdf( "sg", "sg", RooArgSet(x), d2 ) 
 
     # Add background template 
     print "-"*90
     print ">> Adding background template"
-    if opt.GetOption( "region" ):
-        filename = opt.GetFileName( "Data" ).replace( ".root", opt.GetOption( "region", True ) + ".root" )
-        histmgr.SetObjlst( filename, objlst, "BT" )
-    else:
+    if opt.GetOption( "uncertainty" ) == "background" :
         for sample in input.samplelst:
             if any( x in sample for x in [ "ttbar", "Data", "QCD" ] ):
                 continue 
-            histmgr.SetObjlst( opt.GetFileName( sample ), objlst, "BT_" + sample )
+            histmgr.SetObjlst( opt.GetInputName( sample ), objlst, "BT_" + sample )
+    else:
+        filename = opt.GetInputName( "Data" ).replace( ".root", "_region_WJets.root" )
+        histmgr.SetObjlst( filename, objlst, "BT" )
+        opt.AddInputName( "uncertainty" )
      
     h3 = histmgr.GetMergedObj( "BT" )
     d3 = RooDataHist( "d3", "d3", l, h3 )
     bg = RooHistPdf( "bg", "bg", RooArgSet(x), d3 ) 
+    
+    # Add signal template
+    print "-"*90
+    print ">> Adding signal template"
+    histmgr.SetObjlst( opt.GetInputName( "ttbar" ), objlst, "ST" )
+    h2 = histmgr.GetObj( "ST" )
+    d2 = RooDataHist( "d2", "d2", l, h2 )
+    sg = RooHistPdf( "sg", "sg", RooArgSet(x), d2 ) 
 
     # Construct composite pdf
     nsg   = RooRealVar( "nsg", "nsg", 300000, 100000, 1000000 )
@@ -181,15 +183,17 @@ def main() :
     pltmgr.DrawEntryLeft( opt.Entry() )
     pltmgr.DrawLuminosity( opt.Lumi() )
 
-    tag = "lep_tmass" + opt.GetOption( "region", True ) + opt.GetOption( "uncertainty", True )
-    c.SaveAs( opt.GetResultName( tag, "FitResult" ) )
+    tag = "lep_tmass"
+    c.SaveAs( opt.GetOutputName( tag, "FitResult" ) )
 
     #-------------------------------------------------------------------------------------------------- 
-    dat_val = h1.Integral( 1, h1.FindBin( 150 ) - 1 ) 
-    nsg_val = h2.Integral( 1, h2.FindBin( 150 ) - 1 )
-    nbg_val = h3.Integral( 1, h3.FindBin( 150 ) - 1 )
-    nsg_err = h2_err.Integral( 1, h2_err.FindBin( 150 ) - 1 ) - nsg_val
-    nbg_err = h3_err.Integral( 1, h3_err.FindBin( 150 ) - 1 ) - nbg_val
+    mass = int( opt.GetOption( "opt" ) )
+    
+    dat_val = h1.Integral( 1, h1.FindBin( mass ) - 1 ) 
+    nsg_val = h2.Integral( 1, h2.FindBin( mass ) - 1 )
+    nbg_val = h3.Integral( 1, h3.FindBin( mass ) - 1 )
+    nsg_err = h2_err.Integral( 1, h2_err.FindBin( mass ) - 1 ) - nsg_val
+    nbg_err = h3_err.Integral( 1, h3_err.FindBin( mass ) - 1 ) - nbg_val
     cov_err = result.correlation( "nsg", "nbg" ) * nsg_err * nbg_err
     sum_err = math.sqrt( nsg_err**2 + nbg_err**2 + 2 * cov_err )
     fra_err = math.sqrt( nsg_val**2 * nbg_err**2 + nbg_val**2 * nsg_err**2 - 2 * nsg_val * nbg_val * cov_err ) / ( nsg_val + nbg_val )**2
@@ -198,16 +202,14 @@ def main() :
     Data events: {:0.1f}
     Fitted sg events after cut: {:0.1f} {:0.1f}
     Fitted bg events after cut: {:0.1f} {:0.1f}
-    Fitted MC events after cut: {:0.1f} {:0.1f}
     Signal fraction after cut : {:0.1f}% {:0.1f}
     """.format( 
             dat_val, \
             nsg_val, nsg_err, \
             nbg_val, nbg_err, \
-            nsg_val + nbg_val, sum_err, \
             nsg_val / ( nsg_val + nbg_val ) * 100, fra_err * 100
             )
-    with open( opt.GetResultName( tag, "FitResult", "txt" ), "w" ) as outputfile:
+    with open( opt.GetOutputName( tag, "FitResult", "txt" ), "w" ) as outputfile:
         outputfile.write( info )
 
 

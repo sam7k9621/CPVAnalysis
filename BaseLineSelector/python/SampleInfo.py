@@ -306,12 +306,12 @@ setattr( sample16, "SingleMuon_Run2016H_13", cms.PSet( path = cms.string( "/wk_c
 setattr( sample16, "SingleMuon_Run2016H_14", cms.PSet( path = cms.string( "/wk_cms2/youying/public/bprimekit_2016_Legacy/SingleMuon/Run2016H/*[7-9][8-9].root" ) ) )
 setattr( sample16, "SingleMuon_Run2016H_15", cms.PSet( path = cms.string( "/wk_cms2/youying/public/bprimekit_2016_Legacy/SingleMuon/Run2016H/*_[0-9].root" ) ) )
 setattr( sample16, "BtagWeight", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_2016LegacySF_V1.csv" ) ) )
-setattr( sample16, "SR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt6321.root" ), title = cms.string( "eff_b" ) ) )
-setattr( sample16, "SR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt6321.root" ), title = cms.string( "eff_c" ) ) )
-setattr( sample16, "SR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt6321.root" ), title = cms.string( "eff_l" ) ) )
-setattr( sample16, "CR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt2217.root" ), title = cms.string( "eff_b" ) ) )
-setattr( sample16, "CR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt2217.root" ), title = cms.string( "eff_c" ) ) )
-setattr( sample16, "CR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt2217.root" ), title = cms.string( "eff_l" ) ) )
+setattr( sample16, "SR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_16_TTToSemiLeptonic.root" ), title = cms.string( "eff_b" ) ) )
+setattr( sample16, "SR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_16_TTToSemiLeptonic.root" ), title = cms.string( "eff_c" ) ) )
+setattr( sample16, "SR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_16_TTToSemiLeptonic.root" ), title = cms.string( "eff_l" ) ) )
+setattr( sample16, "CR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_16_WJets.root" ), title = cms.string( "eff_b" ) ) )
+setattr( sample16, "CR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_16_WJets.root" ), title = cms.string( "eff_c" ) ) )
+setattr( sample16, "CR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_16_WJets.root" ), title = cms.string( "eff_l" ) ) )
 
 sample16.Info = cms.PSet(
         mu_HLT = cms.vint32( 1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324, 2412, 2413, 2414, 2415 ),
@@ -528,12 +528,12 @@ setattr( sample17, "SingleMuon_Run2017F_15", cms.PSet( path = cms.string( "/wk_c
 setattr( sample17, "SingleMuon_Run2017F_ext1_0", cms.PSet( path = cms.string( "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F_ext1/*.root" ) ) )
 setattr( sample17, "SingleMuon_Run2017F_ext2_0", cms.PSet( path = cms.string( "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/SingleMuon/Run2017F_ext2/*.root" ) ) )
 setattr( sample17, "BtagWeight", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_94XSF_V4_B_F.csv" ) ) )
-setattr( sample17, "SR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root" ), title = cms.string( "eff_b" ) ) )
-setattr( sample17, "SR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root" ), title = cms.string( "eff_c" ) ) )
-setattr( sample17, "SR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4941.root" ), title = cms.string( "eff_l" ) ) )
-setattr( sample17, "CR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root" ), title = cms.string( "eff_b" ) ) )
-setattr( sample17, "CR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root" ), title = cms.string( "eff_c" ) ) )
-setattr( sample17, "CR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1522.root" ), title = cms.string( "eff_l" ) ) )
+setattr( sample17, "SR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_17_TTToSemiLeptonic.root" ), title = cms.string( "eff_b" ) ) )
+setattr( sample17, "SR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_17_TTToSemiLeptonic.root" ), title = cms.string( "eff_c" ) ) )
+setattr( sample17, "SR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_17_TTToSemiLeptonic.root" ), title = cms.string( "eff_l" ) ) )
+setattr( sample17, "CR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_17_WJets.root" ), title = cms.string( "eff_b" ) ) )
+setattr( sample17, "CR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_17_WJets.root" ), title = cms.string( "eff_c" ) ) )
+setattr( sample17, "CR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_17_WJets.root" ), title = cms.string( "eff_l" ) ) )
 
 sample17.Info = cms.PSet(
         mu_HLT = cms.vint32( 1334, 1335, 1336, 1337, 1338, 1339, 1340, 1341, 1342, 1343, 1344 ),
@@ -809,12 +809,12 @@ setattr( sample18, "SingleMuon_Run2018D_13", cms.PSet( path = cms.string( "/wk_c
 setattr( sample18, "SingleMuon_Run2018D_14", cms.PSet( path = cms.string( "/wk_cms2/youying/public/bprimekit_2018_ReReco/SingleMuon/Run2018D/*[7-9][8-9].root" ) ) )
 setattr( sample18, "SingleMuon_Run2018D_15", cms.PSet( path = cms.string( "/wk_cms2/youying/public/bprimekit_2018_ReReco/SingleMuon/Run2018D/*_[0-9].root" ) ) )
 setattr( sample18, "BtagWeight", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_102XSF_V1.csv" ) ) )
-setattr( sample18, "SR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4184.root" ), title = cms.string( "eff_b" ) ) )
-setattr( sample18, "SR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4184.root" ), title = cms.string( "eff_c" ) ) )
-setattr( sample18, "SR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_TTToSemiLeptonic_0pt4184.root" ), title = cms.string( "eff_l" ) ) )
-setattr( sample18, "CR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1241.root" ), title = cms.string( "eff_b" ) ) )
-setattr( sample18, "CR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1241.root" ), title = cms.string( "eff_c" ) ) )
-setattr( sample18, "CR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/beffPlot_WJets_0pt1241.root" ), title = cms.string( "eff_l" ) ) )
+setattr( sample18, "SR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_18_TTToSemiLeptonic.root" ), title = cms.string( "eff_b" ) ) )
+setattr( sample18, "SR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_18_TTToSemiLeptonic.root" ), title = cms.string( "eff_c" ) ) )
+setattr( sample18, "SR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_18_TTToSemiLeptonic.root" ), title = cms.string( "eff_l" ) ) )
+setattr( sample18, "CR_eff_b", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_18_WJets.root" ), title = cms.string( "eff_b" ) ) )
+setattr( sample18, "CR_eff_c", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_18_WJets.root" ), title = cms.string( "eff_c" ) ) )
+setattr( sample18, "CR_eff_l", cms.PSet( path = cms.string( "/wk_cms2/sam7k9621/CMSSW_10_2_17/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_18_WJets.root" ), title = cms.string( "eff_l" ) ) )
 
 sample18.Info = cms.PSet(
         mu_HLT = cms.vint32( 200, 201, 202 ),

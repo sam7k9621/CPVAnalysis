@@ -32,7 +32,6 @@ def main(args):
         for lhe in myLHERunInfoProduct:
             output.write( lhe )
 
-    return
     events = Events( 'data/ttbar.root' )
     handle = Handle('LHEEventProduct')
     label  = ("externalLHEProducer")
@@ -47,7 +46,7 @@ def main(args):
         for i in range( lhesize ):
             id = lhehandle.weights().at( i ).id
             if 2000 <= int(id) < 2101:
-                print id, lhehandle.weights().at( i ).wgt
+                print id, lhehandle.weights().at( i ).wgt, lhehandle.originalXWGTUP()
                 # lst1.append( lhehandle.weights().at( i ).wgt /  lhehandle.originalXWGTUP() )        
                 # lst2.append( lhehandle.weights().at( i ).wgt /  lhehandle.originalXWGTUP() - 1 )        
             if int(id) == 2101:

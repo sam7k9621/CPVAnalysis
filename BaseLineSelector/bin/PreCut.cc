@@ -9,6 +9,7 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "year,y", opt::value<string>()->required(), "which year" )
+        ( "CSV", opt::value<double>(), "discriminator" )
         ( "count,c", "count events" )
         ( "datacard,d", "only produce datacard" )
         ( "test,t", "run testing events number" )
@@ -25,9 +26,12 @@ main( int argc, char* argv[] )
     }
 
     PreMgr().SetFileName( { "year", "sample" } );
-    PreMgr().AddCutName( { "test" } );
+    PreMgr().AddCutName( { "test", "CSV" } );
     if( PreMgr().CheckOption( "datacard" ) ){
         MakeDataCard();
+    }
+    else if( PreMgr().CheckOption( "CSV" ) ){
+        MakeBtagEff();
     }
     else{
         MakePreCut();

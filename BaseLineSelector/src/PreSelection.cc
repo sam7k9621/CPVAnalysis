@@ -1,6 +1,8 @@
 #include "CPVAnalysis/BaseLineSelector/interface/Selection.h"
 #include "ManagerUtils/SysUtils/interface/PathUtils/CommonPath.hpp"
+#include "ManagerUtils/PlotUtils/interface/Common.hpp"
 #include "TFile.h"
+#include "TEfficiency.h"
 
 #include <fstream>
 #include <iostream>
@@ -18,6 +20,53 @@ PreMgr( const string& subdir, const string& json )
 {
     static Selector mgr( subdir, json );
     return mgr;
+}
+
+/*******************************************************************************
+*   B-tag efficiency
+*******************************************************************************/
+extern void 
+MakeBtagEff()
+{
+    // Build new file
+    string year = PreMgr().GetOption<string>( "year" );
+    double csv  = PreMgr().GetOption<double>( "CSV"  );
+    PreMgr().InitRoot( "sample" + year );
+    
+    TChain* ch = new TChain( "bprimeKit/root" );
+    string sample = PreMgr().GetOption<string>( "sample" );
+    string source = PreMgr().GetParam<string>( sample, "path" );
+    ch->Add( source.c_str() );
+    PreMgr().AddSample( ch );
+    
+    // Looping events
+    int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    vector<double> xlst = {0., 20., 30., 50., 70., 100., 140., 200., 300., 600., 1000.};
+    vector<double> ylst = {-2.4, -2.0, -1.6, -1.2, -0.8, -0.4, 0., 0.4, 0.8, 1.2, 1.6, 2.0, 2.4};
+
+    TEfficiency* eff_b = new TEfficiency( "eff_b", "eff_b", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff_c = new TEfficiency( "eff_c", "eff_c", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff_l = new TEfficiency( "eff_l", "eff_l", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+
+    vector<int> jetlst;
+    for( int i = 0; i < events; i++ ){
+        ch->GetEntry( i );
+        jetlst.clear();
+        PreMgr().process( events, i );
+           
+        PreMgr().GetSelJet( jetlst );
+
+        if( jetlst.empty() ){
+            continue;
+        }
+
+        PreMgr().FillBtagEff( eff_b, eff_c, eff_l, jetlst, csv );
+    }
+
+    string filename = PreMgr().GetResultsName( "root", "BtagEff" );
+    mgr::SaveToROOT( eff_b, filename, "eff_b" ); 
+    mgr::SaveToROOT( eff_c, filename, "eff_c" ); 
+    mgr::SaveToROOT( eff_l, filename, "eff_l" ); 
 }
 
 /*******************************************************************************

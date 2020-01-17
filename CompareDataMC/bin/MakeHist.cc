@@ -21,6 +21,7 @@ main( int argc, char* argv[] )
         ( "mixed,m", opt::value<int>(), "shuffle with nearby events" )
         ( "0bjet", "0bjet" )
         ( "wopileup,p", "without pileup running" )
+        ( "wobtag,w", "withoutn btag" )
         ( "bbSep,B", "bbSeparation method" )
         
         ( "TLV,L", "Get Acp TLorentzVector list" )
@@ -38,7 +39,7 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "year", "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "0bjet", "SIM", "TLV" } );
+    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "wobtag","0bjet", "SIM", "TLV" } );
 
     if( CompMgr().CheckOption( "SIM" ) ){
         CompMgr().InitRoot( "CheckAcp.json" );

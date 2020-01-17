@@ -7,46 +7,58 @@
 #
 #*************************************************************************
 import argparse
-
+import os
 import ROOT
-
-import ManagerUtils.SysUtils.pluginPathUtils as mypath
 
 mergelist = {
     'muid': [
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/IDSF_BtoF.root',
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/IDSF_BtoF.root',
             'fileobj': 'MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio',
             'lumi': 20.1
         },
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/IDSF_GH.root',
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/IDSF_GH.root',
             'fileobj': 'MC_NUM_TightID_DEN_genTracks_PAR_pt_eta/abseta_pt_ratio',
             'lumi': 16.3
         }
     ],
     'muiso': [
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/ISOSF_BtoF.root',
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/ISOSF_BtoF.root',
             'fileobj': 'TightISO_TightID_pt_eta/abseta_pt_ratio',
             'lumi': 20.1
         },
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/ISOSF_GH.root',
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/ISOSF_GH.root',
             'fileobj': 'TightISO_TightID_pt_eta/abseta_pt_ratio',
             'lumi': 16.3
         }
     ],
-    'mutrig':[
+    'mutrig16':[
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/TrgSF_BtoF.root',
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/EfficienciesAndSF_RunBtoF.root',
             'fileobj': 'IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio',
-            'lumi': 20.1
+            'lumi': 35.9
+        }
+    ],
+    'mutrig17':[
+        {
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root',
+            'fileobj': 'IsoMu27_PtEtaBins/abseta_pt_ratio',
+            'lumi': 41.5
+        }
+    ],
+    'mutrig18':[
+        {
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/EfficienciesAndSF_2018Data_BeforeMuonHLTUpdate.root',
+            'fileobj': 'IsoMu24_PtEtaBins/abseta_pt_ratio',
+            'lumi': 8.95
         },
         {
-            'filename': 'CPVAnalysis/CompareDataMC/data/TrgSF_GH.root',
-            'fileobj': 'IsoMu24_OR_IsoTkMu24_PtEtaBins/abseta_pt_ratio',
-            'lumi': 16.3
+            'filename': '/src/CPVAnalysis/CompareDataMC/data/EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root',
+            'fileobj': 'IsoMu24_PtEtaBins/abseta_pt_ratio',
+            'lumi': 50.79
         }
     ]
 }
@@ -56,7 +68,7 @@ mergelist = {
 ROOT.TH1.AddDirectory(False);
 
 def GetHist(arg):
-  tfile = ROOT.TFile.Open(mypath.CMSSWSrc() + '/' + arg['filename'])
+  tfile = ROOT.TFile.Open( os.environ["CMSSW_BASE"] + arg['filename'])
   obj   = tfile.Get(arg['fileobj']).Clone()
   return obj
 

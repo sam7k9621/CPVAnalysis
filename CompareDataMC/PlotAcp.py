@@ -8,11 +8,12 @@ import numpy as np
 def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput("A", "Acp").AddInput("o", "opt")
+    opt.AddInput("c", "chi2").AddInput("A", "Acp").AddInput("o", "opt").AddInput("r", "region")
     opt.AddFlag("t","test").AddFlag("u","uncertainty").AddFlag("x","mixed")
     
-    opt.SetName( "chi2", "Acp", "opt", "mixed" )
     opt.Parsing() 
+    opt.AddInputName ( "chi2", "region", "Acp", "opt", "mixed" )
+    opt.AddOutputName( "chi2", "region", "Acp", "opt", "mixed" )
 
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
@@ -29,7 +30,8 @@ def main() :
     # Loop objlst
     toys = 1000 if opt.GetOption( "mixed" ) else 1
     for i in [ x for x in range(1, toys + 1) ]:
-        inputfile = opt.GetFileName( opt.SampleInfo(), dir="results" )
+        inputfile = opt.GetInputName( opt.SampleInfo(), dir="results" )
+        print inputfile
         if opt.GetOption( "mixed" ):
             idx = inputfile.index(".")
             inputfile = inputfile[:idx] + "_" + str(i) + inputfile[idx:]
@@ -39,9 +41,9 @@ def main() :
         for idx, obj in enumerate( objlst ):
             # Initiailze hist
             h   = histmgr.GetObj( "Acp" )
+            
             nm  = h.GetBinContent( 1 )
             np  = h.GetBinContent( 2 )
-
             nm_err = h.GetBinError( 1 )
             np_err = h.GetBinError( 2 )
            
@@ -60,8 +62,10 @@ def main() :
 
     acplst = [ x / toys for x in acplst ]
     errlst = [ x / toys for x in errlst ]
+    chilst = [x**2 / y**2 for x, y in zip(acplst, errlst)]
     print "Acp", acplst
     print "Err", errlst
+    print "Chi", chilst
     
     for idx, obj in enumerate( objlst ):
         hist.SetBinContent( idx + 1, acplst[ idx ] * 100 )
@@ -101,7 +105,7 @@ def main() :
     pltmgr.SetSinglePad( c )
     pltmgr.SetAxis( hist )
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
-    c.SaveAs( opt.GetResultName( opt.SampleInfo(), "SimAcp" ) )
+    c.SaveAs( opt.GetOutputName( opt.SampleInfo(), "SimAcp" ) )
 
 
 if __name__ == '__main__':

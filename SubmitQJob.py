@@ -62,10 +62,17 @@ def main(args):
             )
 
     parser.add_argument(
+            '-E', '--extract',
+            help='extract specific sample',
+            type=str,
+            default=""
+            )
+
+    parser.add_argument(
             '-R', '--maxRunJobs',
             help='max number of run jobs',
             type=int,
-            default=15
+            default=6
             )
 
     parser.add_argument(
@@ -94,6 +101,7 @@ def main(args):
     samplelst = []
     for s in opt.Samplelst:
         samplelst += getattr( samplemod, s )
+    samplelst = [ x for x in samplelst if opt.extract in x ]
 
     outputfilelst = []
     for sample in samplelst:

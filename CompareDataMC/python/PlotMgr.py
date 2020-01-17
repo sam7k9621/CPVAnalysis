@@ -13,7 +13,7 @@ class Plotmgr:
     def SetObjlst( self, filename, objnamelst, sample, dir="" ):
         objlst=deque()
         file = TFile.Open( filename, 'read' )
-        print ">> Processing file: \033[0;31m{}\033[0m".format( filename )
+        print ">> Adding file: \033[0;31m{}\033[0m as {}".format( filename, sample )
         for objname in objnamelst:
             temp = dir + "/" + objname if dir else objname
             obj = file.Get( temp )
@@ -35,6 +35,7 @@ class Plotmgr:
     def RemoveObj( self, sample ):
         samplelst = [ x for x in self.sampledict if sample == x.split("_")[0] ]
         for s in samplelst:
+            print ">> Removing sample: \033[0;31m{}\033[0m".format( s )
             del self.sampledict[ s ]
 
     def GetMergedObj( self, sample, func=eq ):        

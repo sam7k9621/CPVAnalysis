@@ -48,7 +48,6 @@ void
 BaseLineMgr::InitBtagWeight( const string& tagger, const string& filename )
 {
     _calib = new BTagCalibration( tagger, filename );
-
     for( int i = BTagEntry::OP_LOOSE; i != BTagEntry::OP_RESHAPING; ++i ){
         _reader_map[ BTagEntry::OperatingPoint( i ) ] = BTagCalibrationReader(
             BTagEntry::OperatingPoint( i ),// operating point
@@ -80,7 +79,7 @@ BaseLineMgr::BtagScaleFactor( const int& idx, const BTagEntry::OperatingPoint& o
     return _reader_map.at( op ).eval_auto_bounds(
         unc,
         jf,
-        JetEta(),
+        JetAbsEta(),
         JetPt()
         );
 }
@@ -110,17 +109,14 @@ BaseLineMgr::TopPtWeight()
 float 
 BaseLineMgr::PDFWeight( const int& idx )
 {
-    float nominal = _gen.LHEOriginalWeight;  
-    float weight  = _gen.LHESystematicWeights[ idx ] / nominal - 1;
-    float scale   = weight > 0 ? 1.0 : -1.0;
-    int   alpid   = weight > 0 ? 111 : 110;
-    float alpha   = _gen.LHESystematicWeights[ alpid ] / nominal - 1; 
-
-    return 1 + scale * sqrt( weight * weight + alpha * alpha );
+    // pdf100 10-109 as117 110 as119 111
+    return _gen.LHESystematicWeights[ idx ] / _gen.LHEOriginalWeight;
 }
 
 float  
 BaseLineMgr::muFmuRWeight( const int& idx )
 {
+    // anti-correlated variation are dropped
+    // drop nomina, 1006 and 1008
     return _gen.LHESystematicWeights[ idx ] / _gen.LHEOriginalWeight;
 }

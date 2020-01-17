@@ -95,6 +95,45 @@ Selector::OptionContent( const string& opt, const string& content )
 /*******************************************************************************
 *   Weight
 *******************************************************************************/
+void 
+Selector::GetSelJet( vector<int>& jetlst )
+{
+    for( int i = 0; i< _sample->Jsize(); i++ ){
+        _sample->SetIndex( i );
+
+        if( _sample->IsSelJet() ){
+            jetlst.push_back( i );
+        }
+    }
+}
+   
+void
+Selector::FillBtagEff( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
+{
+    for( auto j : jetlst ){
+        _sample->SetIndex( j );
+        
+        if( fabs( _sample->GenJetFlavor() ) == 5 ){
+            eff_b->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetPt(), _sample->JetEta()
+                    );
+        }
+        else if( fabs( _sample->GenJetFlavor() ) == 4 ){
+            eff_c->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetPt(), _sample->JetEta()
+                    );
+        }
+        else{
+            eff_l->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetPt(), _sample->JetEta()
+                    );
+        }
+    }
+}
+
 double
 Selector::GetJetSF( TH2D* hist, const int& idx )
 {
@@ -167,6 +206,7 @@ Selector::GetBtagFlavor( const int& idx )
         return BTagEntry::FLAV_UDSG;
     }
 }
+
 extern double 
 Selector::GetTaggedEff( const int& jidx, const bool& mc, const string& unc, const BTagEntry::OperatingPoint& wp )
 {
@@ -437,7 +477,7 @@ Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const 
             continue;
         }
         
-        // Rejecting events containing any loose b-tagged jet
+        // Rejecting events with selected jets loose b-tagged
         if( _sample->PassDeepCSVL() ){
             return false;
         }

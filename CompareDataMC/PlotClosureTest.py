@@ -7,23 +7,31 @@ def main() :
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddInput("r", "region").AddInput( "t", "template" )
     
-    opt.SetName( "chi2", "region" )
     opt.Parsing() 
+    opt.AddInputName ( "chi2", "region" )
+    opt.AddOutputName( "chi2", "region" )
     
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst=[ "lep_tmass" ]
     input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
     
-    # Add SR background MC
+    # Add data-driven shape
+    print "-" * 90
+    print ">> Adding CR data"
+    filename = opt.GetInputName( "Data" )
+    histmgr.SetObjlst( filename, objlst, "Data" ) 
+    
     template = opt.GetOption( "template" )
     if template == "SR":
+        # Add SR background MC
         print "-" * 90
         print ">> Adding SR bkg. MC"
         for sample in input.samplelst:
             if any( x in sample for x in [ "ttbar", "Data", "QCD" ] ):
-                continue 
-            filename = opt.GetCustomFileName( opt.GetOption( "region", True ), "",sample )
+                continue
+            filename = opt.GetInputName( sample )
+            filename = opt.GetInputName( sample ).replace( opt.GetOption( "region", True ), "" )
             histmgr.SetObjlst( filename, objlst, "SR" + sample ) 
     elif template == "CR":
         # Add CR background MC
@@ -32,7 +40,7 @@ def main() :
         for sample in input.samplelst:
             if any( x in sample for x in [ "ttbar", "Data" ] ):
                 continue 
-            filename = opt.GetFileName( sample )
+            filename = opt.GetInputName( sample )
             histmgr.SetObjlst( filename, objlst, "CR" + sample ) 
 
         # Change into data-driven CR QCD sample
@@ -40,17 +48,11 @@ def main() :
         print ">> Adding data-driven CR QCD"
         qcd_histlst = [ histmgr.GetMergedObj( "CRQCD" ) for o in objlst ]
         histmgr.RemoveObj( "CRQCD" )
-        filename = opt.GetCustomFileName( "region_WJets", "region_QCD_0bjet", "Data" )
+        filename = opt.GetInputName( "Data" ).replace( "region_WJets", "region_QCD_0bjet" )
         histmgr.SetObjlst( filename, objlst, "CRQCD" ) 
     else:
         print "Please specify the template"
         return
-    
-    # Add data-driven shape
-    print "-" * 90
-    print ">> Adding CR data"
-    filename = opt.GetFileName( "Data" )
-    histmgr.SetObjlst( filename, objlst, "Data" ) 
     
     # Add data-driven orthogonal shape
 #     print "-" * 90
@@ -108,7 +110,7 @@ def main() :
         
         bg_sum.GetYaxis().SetTitle( "PDF" ) 
         bg_sum.SetMaximum( pltmgr.GetHistYmax( bg_sum ) * 1.5 );
-        c.SaveAs( opt.GetResultName( template, "BGClosureTest" ) )
+        c.SaveAs( opt.GetOutputName( template, "BGClosureTest" ) )
 
 if __name__ == '__main__':
     main()

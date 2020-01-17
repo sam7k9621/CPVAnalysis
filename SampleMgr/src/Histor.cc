@@ -29,6 +29,34 @@ Histor::AddSample( const string& sample, TChain* ch )
 /*******************************************************************************
 *   Common
 *******************************************************************************/
+void
+Histor::InitBtagWeight( const string& wp, const string& type )
+{
+    _sample->InitBtagWeight( wp, type );
+}
+
+BTagEntry::JetFlavor
+Histor::GetBtagFlavor( const int& idx )
+{
+    _sample->SetIndex( idx );
+    
+    if( fabs( _sample->GenJetFlavor() ) == 5 ){
+        return BTagEntry::FLAV_B;
+    }
+    else if( fabs( _sample->GenJetFlavor() ) == 4 ){
+        return BTagEntry::FLAV_C;
+    }
+    else{
+        return BTagEntry::FLAV_UDSG;
+    }
+}
+
+double 
+Histor::GetBtagSF( const int& jidx )
+{
+    return _sample->BtagScaleFactor( jidx, BTagEntry::OP_LOOSE, GetBtagFlavor( jidx ), "central" );
+}
+
 bool 
 Histor::PassHLT( const vector<int>& hlt )
 {

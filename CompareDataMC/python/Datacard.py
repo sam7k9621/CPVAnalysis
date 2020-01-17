@@ -27,6 +27,7 @@ mclst =[
      [ "VV_WW",                        "WW",                         118.7            ],
      [ "VV_WZ",                        "WZ",                         47.13            ],
      [ "VV_ZZ",                        "ZZ",                         16.52            ],
+     [ "WJets_HT-70To100",             "WJets_HT-70To100",           1.21 * 1292      ],
      [ "WJets_HT-100To200",            "WJets_HT-100To200",          1.21 * 1345.7    ],
      [ "WJets_HT-200To400",            "WJets_HT-200To400",          1.21 * 359.7     ],
      [ "WJets_HT-400To600",            "WJets_HT-400To600",          1.21 * 48.91     ],
