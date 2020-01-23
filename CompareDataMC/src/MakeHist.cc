@@ -283,6 +283,9 @@ MakeHist()
             CompMgr().Hist( "bweight" )->Fill( b_weight );
         }
         sort( jetidx->begin(), jetidx->end() );
+        CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( had_b ), weight );
+        CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( lep_b ), weight );
+
         for( size_t i = 0; i < jetidx->size(); i++ ){
             CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( jetidx->at( i ) ), weight );
             if( !is_data ){
