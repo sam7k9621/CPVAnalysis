@@ -10,12 +10,22 @@ process.PV = cms.PSet(
         )
 
 process.Jet = cms.PSet(
-        NHF = cms.double( 0.9 ),
-        NEF = cms.double( 0.9 ),
-        NConstituents = cms.double( 1 ),
-        CHF = cms.double( 0 ),
-        NCH = cms.double( 0 ),
-        CEF = cms.double( sys.maxint ),
+        jetid      = cms.string( "tight" ),
+        jetid_test = cms.string( "loose" ),
+
+        loose_NHF = cms.double( 0.99 ),
+        loose_NEF = cms.double( 0.99 ),
+        loose_NConstituents = cms.double( 1 ),
+        loose_CHF = cms.double( 0 ),
+        loose_NCH = cms.double( 0 ),
+        loose_CEF = cms.double( 0.99 ),
+        
+        tight_NHF = cms.double( 0.9 ),
+        tight_NEF = cms.double( 0.9 ),
+        tight_NConstituents = cms.double( 1 ),
+        tight_CHF = cms.double( 0 ),
+        tight_NCH = cms.double( 0 ),
+        tight_CEF = cms.double( sys.maxint ),
         
         AbsEta = cms.double( 2.4 ),
         Pt = cms.double( 30 ),

@@ -32,7 +32,7 @@ MakeBtagEff()
     string year = PreMgr().GetOption<string>( "year" );
     double csv  = PreMgr().GetOption<double>( "CSV"  );
     PreMgr().InitRoot( "sample" + year );
-    
+   
     TChain* ch = new TChain( "bprimeKit/root" );
     string sample = PreMgr().GetOption<string>( "sample" );
     string source = PreMgr().GetParam<string>( sample, "path" );
@@ -47,26 +47,39 @@ MakeBtagEff()
     TEfficiency* eff_b = new TEfficiency( "eff_b", "eff_b", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
     TEfficiency* eff_c = new TEfficiency( "eff_c", "eff_c", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
     TEfficiency* eff_l = new TEfficiency( "eff_l", "eff_l", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    
+    TEfficiency* eff_b_test = new TEfficiency( "eff_b_test", "eff_b_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff_c_test = new TEfficiency( "eff_c_test", "eff_c_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff_l_test = new TEfficiency( "eff_l_test", "eff_l_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
 
     vector<int> jetlst;
+    vector<int> jetlst_test;
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         jetlst.clear();
+        jetlst_test.clear();
+
         PreMgr().process( events, i );
            
-        PreMgr().GetSelJet( jetlst );
+        PreMgr().GetSelJet( jetlst, jetlst_test );
 
-        if( jetlst.empty() ){
+        cout<<jetlst.size()<<"   "<<jetlst_test.size()<<endl;
+
+        if( jetlst.empty() && jetlst_test.empty() ){
             continue;
         }
 
         PreMgr().FillBtagEff( eff_b, eff_c, eff_l, jetlst, csv );
+        PreMgr().FillBtagEff( eff_b_test, eff_c_test, eff_l_test, jetlst_test, csv );
     }
 
     string filename = PreMgr().GetResultsName( "root", "BtagEff" );
     mgr::SaveToROOT( eff_b, filename, "eff_b" ); 
     mgr::SaveToROOT( eff_c, filename, "eff_c" ); 
     mgr::SaveToROOT( eff_l, filename, "eff_l" ); 
+    mgr::SaveToROOT( eff_b_test, filename, "eff_b_test" ); 
+    mgr::SaveToROOT( eff_c_test, filename, "eff_c_test" ); 
+    mgr::SaveToROOT( eff_l_test, filename, "eff_l_test" ); 
 }
 
 /*******************************************************************************

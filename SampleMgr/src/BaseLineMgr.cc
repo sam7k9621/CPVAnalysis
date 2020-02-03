@@ -26,6 +26,13 @@ BaseLineMgr::~BaseLineMgr()
 }
 
 void 
+BaseLineMgr::AddStr( const string& PSet, const string& obj )
+{
+    _strmap.erase( PSet + "_" + obj );// deleting existing instance if already exist
+    _strmap[ PSet + "_" + obj ] = GetParam<string>( PSet, obj );
+}
+
+void 
 BaseLineMgr::AddVal( const string& PSet, const string& obj )
 {
     _valmap.erase( PSet + "_" + obj );// deleting existing instance if already exist
@@ -41,6 +48,18 @@ BaseLineMgr::GetVal( const string& PSet, const std::string& obj )
     catch( const std::out_of_range& oor ) {
         std::cerr << "Out of Range error: " << oor.what() << endl;
         return INT_MIN;
+    } 
+}
+
+string
+BaseLineMgr::GetStr( const string& PSet, const std::string& obj )
+{
+    try{
+        return _strmap.at( PSet + "_" + obj );
+    }
+    catch( const std::out_of_range& oor ) {
+        std::cerr << "Out of Range error: " << oor.what() << endl;
+        return "";
     } 
 }
 
@@ -257,18 +276,18 @@ BaseLineMgr::JERCorrUp()
 }
 
 bool
-BaseLineMgr::PassJetLooseID()
+BaseLineMgr::PassJetID( const string& jetid )
 {
     return
         // Loose ID
-        JetNHF() <           GetVal( "Jet", "NHF" ) &&
-        JetNEF() <           GetVal( "Jet", "NEF" ) &&
-        JetNConstituents() > GetVal( "Jet", "NConstituents" ) &&
+        JetNHF() <           GetVal( "Jet", jetid + "_NHF" ) &&
+        JetNEF() <           GetVal( "Jet", jetid + "_NEF" ) &&
+        JetNConstituents() > GetVal( "Jet", jetid + "_NConstituents" ) &&
 
         JetAbsEta() <=       GetVal( "Jet", "AbsEta" ) &&
-        JetCHF() >           GetVal( "Jet", "CHF" ) &&
-        JetNCH() >           GetVal( "Jet", "NCH" ) && 
-        JetCEF() <           GetVal( "Jet", "CEF" )
+        JetCHF() >           GetVal( "Jet", jetid + "_CHF" ) &&
+        JetNCH() >           GetVal( "Jet", jetid + "_NCH" ) && 
+        JetCEF() <           GetVal( "Jet", jetid + "_CEF" )
     ;
 }
 
@@ -283,7 +302,17 @@ BaseLineMgr::PassJetKinematic()
 bool
 BaseLineMgr::IsSelJet()
 {
-    return PassJetLooseID() &&
+    return PassJetID( GetStr( "Jet", "jetid" ) ) &&
+           PassJetKinematic()
+    ;
+}
+
+
+bool 
+BaseLineMgr::IsSelJet_test()
+{
+    // For BTV group check 
+    return PassJetID( GetStr( "Jet", "jetid_test" ) ) &&
            PassJetKinematic()
     ;
 }
@@ -291,7 +320,7 @@ BaseLineMgr::IsSelJet()
 bool
 BaseLineMgr::IsPreSelJet()
 {
-    return PassJetLooseID() &&
+    return PassJetID( GetStr( "Jet", "jetid" ) ) &&
            JetPt() >     GetVal( "Jet", "Pre_Pt" ) &&
            JetAbsEta() < GetVal( "Jet", "Pre_AbsEta" )
     ;

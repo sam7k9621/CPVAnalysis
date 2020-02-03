@@ -45,6 +45,8 @@ class BaseLineMgr : public mgr::Pathmgr,
         void ReadConfig();
         void AddVal( const std::string&, const std::string& );
         double GetVal( const std::string&, const std::string& );
+        void AddStr( const std::string&, const std::string& );
+        std::string  GetStr( const std::string&, const std::string& );
 
         /*******************************************************************************
         *   bbSeparation
@@ -86,9 +88,10 @@ class BaseLineMgr : public mgr::Pathmgr,
         void     JERCorrUp();
         void     JERCorrDn();
 
-        bool PassJetLooseID();
+        bool PassJetID( const std::string& );
         bool PassJetKinematic();
         bool IsSelJet();
+        bool IsSelJet_test();
         bool IsPreSelJet();
         bool PassCSVM();
         bool PassCSVL();
@@ -164,6 +167,7 @@ class BaseLineMgr : public mgr::Pathmgr,
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
         std::default_random_engine _generator;
         std::map<std::string, double > _valmap;
+        std::map<std::string, std::string > _strmap;
 };
 
 

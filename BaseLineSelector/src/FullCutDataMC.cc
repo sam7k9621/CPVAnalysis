@@ -201,6 +201,7 @@ MakeFullCut()
         jet2      = get<4>( tup );
         lep_b     = had_b ? 0 : 1;
 
+
         had_b = bjetidx[ had_b ];
         lep_b = bjetidx[ lep_b ];
         jet1  = jetidx [ jet1 ];

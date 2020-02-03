@@ -45,13 +45,13 @@ Selector::InitBtagEffPlot( TH2D* b, TH2D* c, TH2D* l )
 bool
 Selector::IsGrid5()
 {
-    return HostName().find( "ntugrid5" ) != std::string::npos;
+    return ( HostName().find( "ntugrid5" ) != string::npos ) || ( HostName().find( "node" ) != string::npos );
 }
 
 bool
 Selector::IsLxplus()
 {
-    return HostName().find( "lxplus" ) != std::string::npos;
+    return HostName().find( "cern" ) != string::npos;
 }
     
 string
@@ -96,13 +96,17 @@ Selector::OptionContent( const string& opt, const string& content )
 *   Weight
 *******************************************************************************/
 void 
-Selector::GetSelJet( vector<int>& jetlst )
+Selector::GetSelJet( vector<int>& jetlst, vector<int>& jetlst_test )
 {
     for( int i = 0; i< _sample->Jsize(); i++ ){
         _sample->SetIndex( i );
 
         if( _sample->IsSelJet() ){
             jetlst.push_back( i );
+        }
+
+        if( _sample->IsSelJet_test() ){
+            jetlst_test.push_back( i );
         }
     }
 }
@@ -507,6 +511,8 @@ Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const 
     for( const auto& j : jetlst ){
         jetidx.push_back( get<0>( j ) );
     }
+    
+    sort(jetidx.begin(), jetidx.end()); 
 
     return true;
 }
@@ -559,6 +565,8 @@ Selector::PassFullJet_CRQCD( vector<int>& jetidx, vector<int>& bjetidx, const in
     for( const auto& j : jetlst ){
         jetidx.push_back( get<0>( j ) );
     }
+
+    sort(jetidx.begin(), jetidx.end()); 
 
     return true;
 }

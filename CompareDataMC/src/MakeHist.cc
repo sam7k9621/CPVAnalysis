@@ -194,10 +194,9 @@ MakeHist()
         /*******************************************************************************
         *  Reco Acp
         *******************************************************************************/
-        int l1jet = jet1 < jet2 ? jet1 : jet2;
         float charge           = CompMgr().GetIsoLepCharge( lep );
         TLorentzVector isolep  = CompMgr().GetLepP4( lep );
-        TLorentzVector hardjet = CompMgr().GetJetP4( l1jet );
+        TLorentzVector hardjet = CompMgr().GetJetP4( jet1 );
         TLorentzVector b       = charge < 0 ? CompMgr().GetJetP4( had_b ) : CompMgr().GetJetP4( lep_b );
         TLorentzVector bbar    = charge < 0 ? CompMgr().GetJetP4( lep_b ) : CompMgr().GetJetP4( had_b );
 
@@ -256,8 +255,8 @@ MakeHist()
         CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
         CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
 
-        CompMgr().Hist( "LJetPt" )->Fill( CompMgr()  .GetJetPt( l1jet ), weight );
-        CompMgr().Hist( "LJetEta" )->Fill( CompMgr() .GetJetEta( l1jet ), weight );
+        CompMgr().Hist( "LJetPt" )->Fill( CompMgr()  .GetJetPt( jet1 ), weight );
+        CompMgr().Hist( "LJetEta" )->Fill( CompMgr() .GetJetEta( jet1 ), weight );
         CompMgr().Hist( "HBJetPt" )->Fill( CompMgr() .GetJetPt( had_b ), weight );
         CompMgr().Hist( "HBJetEta" )->Fill( CompMgr().GetJetEta( had_b ), weight );
         CompMgr().Hist( "LBJetPt" )->Fill( CompMgr() .GetJetPt( lep_b ), weight );

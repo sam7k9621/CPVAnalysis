@@ -14,13 +14,23 @@ BaseLineMgr::ReadConfig()
     AddVal( "PV", "Ndof" );
     AddVal( "PV", "AbsZ" );
     AddVal( "PV", "VtxRho" );
+   
+    AddStr( "Jet", "jetid" );
+    AddStr( "Jet", "jetid_test" );
+
+    AddVal( "Jet", "loose_NHF" );
+    AddVal( "Jet", "loose_NEF" );
+    AddVal( "Jet", "loose_NConstituents" );
+    AddVal( "Jet", "loose_CHF" );
+    AddVal( "Jet", "loose_NCH" );
+    AddVal( "Jet", "loose_CEF" );
     
-    AddVal( "Jet", "NHF" );
-    AddVal( "Jet", "NEF" );
-    AddVal( "Jet", "NConstituents" );
-    AddVal( "Jet", "CHF" );
-    AddVal( "Jet", "NCH" );
-    AddVal( "Jet", "CEF" );
+    AddVal( "Jet", "tight_NHF" );
+    AddVal( "Jet", "tight_NEF" );
+    AddVal( "Jet", "tight_NConstituents" );
+    AddVal( "Jet", "tight_CHF" );
+    AddVal( "Jet", "tight_NCH" );
+    AddVal( "Jet", "tight_CEF" );
     
     AddVal( "Jet", "AbsEta" );
     AddVal( "Jet", "Pt" );
