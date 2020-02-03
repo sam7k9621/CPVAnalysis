@@ -63,8 +63,6 @@ MakeBtagEff()
            
         PreMgr().GetSelJet( jetlst, jetlst_test );
 
-        cout<<jetlst.size()<<"   "<<jetlst_test.size()<<endl;
-
         if( jetlst.empty() && jetlst_test.empty() ){
             continue;
         }
