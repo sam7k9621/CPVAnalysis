@@ -53,7 +53,9 @@ class Selector : public mgr::Pathmgr,
         *   Weight
         *******************************************************************************/
         void   GetSelJet( std::vector<int>&, std::vector<int>& );
-        void   FillBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        void   Fill2DBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        void   Fill1DBtagEff_Pt( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        void   Fill1DBtagEff_Eta( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
         double GetJetSF( TH2D*, const int& );
         double GetJetSFUp( TH2D*, const int& );
         double GetJetSFDn( TH2D*, const int& );

@@ -64,7 +64,7 @@ def QJob( opt, samplelst ):
     for sample in samplelst:
         command = "{} --{} {}".format(opt.Command, opt.InputOption, sample)
         
-        outputfilename = ".{}.sh".format( opt.Command.replace(" ", "") )
+        outputfilename = ".{}.sh".format( command.replace(" ", "") )
         outputfilelst.append( outputfilename )
         output = open( outputfilename, 'w' )
         output.write( qsub.format( CMSSW_BASE, command ) )
@@ -74,8 +74,7 @@ def QJob( opt, samplelst ):
         sys.stdout.flush()
 
     filelst = " ".join( outputfilelst )
-    log = command.split("-s")[0].rstrip().replace(" ", "_")
-    cmd = "nohup ./SentQJob.py -r {} -q {} -i {} > {}.out &".format( opt.maxRunJobs, opt.maxQueJobs, filelst, log )
+    cmd = "nohup ./SentQJob.py -r {} -q {} -i {} > {}.out &".format( opt.maxRunJobs, opt.maxQueJobs, filelst, MakeName( opt.Command.split(" ", 1 ) ))
     os.system( cmd )
     print "DONE"
 
@@ -124,7 +123,7 @@ def main(args):
         CondorJob( opt, samplelst )
 
     elif "ntugrid5" in HOSTNAME:
-        QJob( samplelst )
+        QJob( opt, samplelst )
     
 if __name__ == '__main__':
     main(sys.argv)

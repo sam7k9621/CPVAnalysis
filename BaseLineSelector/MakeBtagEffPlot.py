@@ -23,6 +23,12 @@ def main(args):
             required=True
             )
     parser.add_argument(
+            '-c', '--csv',
+            help='testing command',
+            type=str,
+            required=True
+            )
+    parser.add_argument(
             '-y', '--year',
             help='testing command',
             type=str,
@@ -40,12 +46,12 @@ def main(args):
         raise
 
       
-    dir =  os.environ['CMSSW_BASE'] + "/src/CPVAnalysis/BaseLineSelector/results/BtagEff*{}*{}*root"
-    s = subprocess.Popen( 'ls ' + dir.format( opt.year, opt.sample ), shell=True, stdout=subprocess.PIPE )
+    dir =  os.environ['CMSSW_BASE'] + "/src/CPVAnalysis/BaseLineSelector/results/BtagEff*{}*{}*{}*root"
+    s = subprocess.Popen( 'ls ' + dir.format( opt.year, opt.sample, opt.csv ), shell=True, stdout=subprocess.PIPE )
     outputlst, err = s.communicate()
     outputlst = filter(None, outputlst.split('\n') )
-    
-    objdict = { "eff_b" : [], "eff_c" : [], "eff_l" : [] }
+   
+    objdict = { "eff_b" : [], "eff_c" : [], "eff_l" : [], "eff_b_test" : [], "eff_c_test" : [], "eff_l_test" : [] }
     for output in outputlst:
         file = TFile.Open( output, 'read' )
         print ">> Processing file: \033[0;31m{}\033[0m".format( output )
@@ -56,26 +62,35 @@ def main(args):
             value.append( obj )
         file.Close()
 
-    newfile = TFile( "data/BtagEffPlot_{}_{}.root".format( opt.year, opt.sample ), 'RECREATE' )
+    # newfile = TFile( "data/BtagEffPlot_{}_{}.root".format( opt.year, opt.sample ), 'RECREATE' )
 
     c = pltmgr.NewCanvas()
     for key, value in objdict.items():
+        
+        if opt.year == "16":
+            title = key.split("test")[0] + "tightJetID" if "test" in key else key + "_looseJetID"
+        else:
+            title = key.split("test")[0] + "looseJetID" if "test" in key else key + "_tightJetID"
+
+
         obj  = MergeObj( value )
         plot = obj.CreateHistogram()
 
         plot.Draw( "COLZ" )
+        plot.SetTitle( "" )
 
         pltmgr.SetAxis( plot )
         pltmgr.SetSinglePadWithPalette( c )
-        pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
+        pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
+        pltmgr.DrawEntryLeft( title )
         pltmgr.DrawEntryRight( "{}_{}".format( opt.year, opt.sample ) )
-        c.SaveAs( "results/BtagEffPlot_{}_{}_{}.pdf".format( opt.year, opt.sample, key ) )
+        c.SaveAs( "results/BtagEffPlot_{}_{}_{}.pdf".format( opt.year, opt.sample, title ) )
 
         plot.SetOption( "COLZ" )
-        plot.SetName( key )
-        plot.Write() 
+        # plot.SetName( key )
+        # plot.Write() 
 
-    newfile.Close()
+    # newfile.Close()
 
 if __name__ == '__main__':
     main(sys.argv)

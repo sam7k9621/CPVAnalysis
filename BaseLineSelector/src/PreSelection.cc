@@ -44,13 +44,27 @@ MakeBtagEff()
     vector<double> xlst = {0., 20., 30., 50., 70., 100., 140., 200., 300., 600., 1000.};
     vector<double> ylst = {-2.4, -2.0, -1.6, -1.2, -0.8, -0.4, 0., 0.4, 0.8, 1.2, 1.6, 2.0, 2.4};
 
-    TEfficiency* eff_b = new TEfficiency( "eff_b", "eff_b", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
-    TEfficiency* eff_c = new TEfficiency( "eff_c", "eff_c", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
-    TEfficiency* eff_l = new TEfficiency( "eff_l", "eff_l", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff2D_b        = new TEfficiency( "eff2D_b",       "eff2D_b",      xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff2D_c        = new TEfficiency( "eff2D_c",       "eff2D_c",      xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff2D_l        = new TEfficiency( "eff2D_l",       "eff2D_l",      xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff2D_b_test   = new TEfficiency( "eff2D_b_test",  "eff2D_b_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff2D_c_test   = new TEfficiency( "eff2D_c_test",  "eff2D_c_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* eff2D_l_test   = new TEfficiency( "eff2D_l_test",  "eff2D_l_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
     
-    TEfficiency* eff_b_test = new TEfficiency( "eff_b_test", "eff_b_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
-    TEfficiency* eff_c_test = new TEfficiency( "eff_c_test", "eff_c_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
-    TEfficiency* eff_l_test = new TEfficiency( "eff_l_test", "eff_l_test", xlst.size()-1, &(xlst[0]), ylst.size()-1, &(ylst[0]) );
+    TEfficiency* effPt_b        = new TEfficiency( "effPt_b",       "effPt_b",      xlst.size()-1, &(xlst[0]));
+    TEfficiency* effPt_c        = new TEfficiency( "effPt_c",       "effPt_c",      xlst.size()-1, &(xlst[0]));
+    TEfficiency* effPt_l        = new TEfficiency( "effPt_l",       "effPt_l",      xlst.size()-1, &(xlst[0]));
+    TEfficiency* effPt_b_test   = new TEfficiency( "effPt_b_test",  "effPt_b_test", xlst.size()-1, &(xlst[0]));
+    TEfficiency* effPt_c_test   = new TEfficiency( "effPt_c_test",  "effPt_c_test", xlst.size()-1, &(xlst[0]));
+    TEfficiency* effPt_l_test   = new TEfficiency( "effPt_l_test",  "effPt_l_test", xlst.size()-1, &(xlst[0]));
+    
+    TEfficiency* effEta_b        = new TEfficiency( "effEta_b",       "effEta_b",      ylst.size()-1, &(ylst[0]) );
+    TEfficiency* effEta_c        = new TEfficiency( "effEta_c",       "effEta_c",      ylst.size()-1, &(ylst[0]) );
+    TEfficiency* effEta_l        = new TEfficiency( "effEta_l",       "effEta_l",      ylst.size()-1, &(ylst[0]) );
+    TEfficiency* effEta_b_test   = new TEfficiency( "effEta_b_test",  "effEta_b_test", ylst.size()-1, &(ylst[0]) );
+    TEfficiency* effEta_c_test   = new TEfficiency( "effEta_c_test",  "effEta_c_test", ylst.size()-1, &(ylst[0]) );
+    TEfficiency* effEta_l_test   = new TEfficiency( "effEta_l_test",  "effEta_l_test", ylst.size()-1, &(ylst[0]) );
+    
 
     vector<int> jetlst;
     vector<int> jetlst_test;
@@ -67,17 +81,35 @@ MakeBtagEff()
             continue;
         }
 
-        PreMgr().FillBtagEff( eff_b, eff_c, eff_l, jetlst, csv );
-        PreMgr().FillBtagEff( eff_b_test, eff_c_test, eff_l_test, jetlst_test, csv );
+        PreMgr().Fill2DBtagEff    ( eff2D_b,       eff2D_c,       eff2D_l,       jetlst,      csv );
+        PreMgr().Fill2DBtagEff    ( eff2D_b_test,  eff2D_c_test,  eff2D_l_test,  jetlst_test, csv );
+        PreMgr().Fill1DBtagEff_Pt ( effPt_b,       effPt_c,       effPt_l,       jetlst,      csv );
+        PreMgr().Fill1DBtagEff_Pt ( effPt_b_test,  effPt_c_test,  effPt_l_test,  jetlst_test, csv );
+        PreMgr().Fill1DBtagEff_Eta( effEta_b,      effEta_c,      effEta_l,      jetlst,      csv );
+        PreMgr().Fill1DBtagEff_Eta( effEta_b_test, effEta_c_test, effEta_l_test, jetlst_test, csv );
     }
 
     string filename = PreMgr().GetResultsName( "root", "BtagEff" );
-    mgr::SaveToROOT( eff_b, filename, "eff_b" ); 
-    mgr::SaveToROOT( eff_c, filename, "eff_c" ); 
-    mgr::SaveToROOT( eff_l, filename, "eff_l" ); 
-    mgr::SaveToROOT( eff_b_test, filename, "eff_b_test" ); 
-    mgr::SaveToROOT( eff_c_test, filename, "eff_c_test" ); 
-    mgr::SaveToROOT( eff_l_test, filename, "eff_l_test" ); 
+    mgr::SaveToROOT( eff2D_b,       filename,   "eff2D_b" ); 
+    mgr::SaveToROOT( eff2D_c,       filename,   "eff2D_c" ); 
+    mgr::SaveToROOT( eff2D_l,       filename,   "eff2D_l" ); 
+    mgr::SaveToROOT( eff2D_b_test, filename,    "eff2D_b_test" ); 
+    mgr::SaveToROOT( eff2D_c_test, filename,    "eff2D_c_test" ); 
+    mgr::SaveToROOT( eff2D_l_test, filename,    "eff2D_l_test" ); 
+    
+    mgr::SaveToROOT( effPt_b,       filename,   "effPt_b" ); 
+    mgr::SaveToROOT( effPt_c,       filename,   "effPt_c" ); 
+    mgr::SaveToROOT( effPt_l,       filename,   "effPt_l" ); 
+    mgr::SaveToROOT( effPt_b_test, filename,    "effPt_b_test" ); 
+    mgr::SaveToROOT( effPt_c_test, filename,    "effPt_c_test" ); 
+    mgr::SaveToROOT( effPt_l_test, filename,    "effPt_l_test" ); 
+    
+    mgr::SaveToROOT( effEta_b,       filename,   "effEta_b" ); 
+    mgr::SaveToROOT( effEta_c,       filename,   "effEta_c" ); 
+    mgr::SaveToROOT( effEta_l,       filename,   "effEta_l" ); 
+    mgr::SaveToROOT( effEta_b_test, filename,    "effEta_b_test" ); 
+    mgr::SaveToROOT( effEta_c_test, filename,    "effEta_c_test" ); 
+    mgr::SaveToROOT( effEta_l_test, filename,    "effEta_l_test" ); 
 }
 
 /*******************************************************************************

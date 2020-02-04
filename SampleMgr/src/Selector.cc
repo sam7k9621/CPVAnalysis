@@ -112,7 +112,7 @@ Selector::GetSelJet( vector<int>& jetlst, vector<int>& jetlst_test )
 }
    
 void
-Selector::FillBtagEff( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
+Selector::Fill2DBtagEff( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
 {
     for( auto j : jetlst ){
         _sample->SetIndex( j );
@@ -133,6 +133,60 @@ Selector::FillBtagEff( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_
             eff_l->Fill( 
                     _sample->JetDeepCSV() >= csv,
                     _sample->JetPt(), _sample->JetEta()
+                    );
+        }
+    }
+}
+
+void
+Selector::Fill1DBtagEff_Pt( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
+{
+    for( auto j : jetlst ){
+        _sample->SetIndex( j );
+        
+        if( fabs( _sample->GenJetFlavor() ) == 5 ){
+            eff_b->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetPt()
+                    );
+        }
+        else if( fabs( _sample->GenJetFlavor() ) == 4 ){
+            eff_c->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetPt()
+                    );
+        }
+        else{
+            eff_l->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetPt()
+                    );
+        }
+    }
+}
+
+void
+Selector::Fill1DBtagEff_Eta( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
+{
+    for( auto j : jetlst ){
+        _sample->SetIndex( j );
+        
+        if( fabs( _sample->GenJetFlavor() ) == 5 ){
+            eff_b->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetEta()
+                    );
+        }
+        else if( fabs( _sample->GenJetFlavor() ) == 4 ){
+            eff_c->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetEta()
+                    );
+        }
+        else{
+            eff_l->Fill( 
+                    _sample->JetDeepCSV() >= csv,
+                    _sample->JetEta()
                     );
         }
     }
