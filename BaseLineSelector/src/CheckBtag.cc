@@ -17,20 +17,19 @@ extern void
 CheckBtag()
 {
     // Build new file
-    string year     = FullMgr().GetOption<string>( "year" );
-    string sample   = FullMgr().GetOption<string>( "sample" );
-    string lepton   = FullMgr().GetOption<string>( "lepton" );
+    string year     = PreMgr().GetOption<string>( "year" );
+    string sample   = PreMgr().GetOption<string>( "sample" );
+    string lepton   = PreMgr().GetOption<string>( "lepton" );
     bool is_data    = sample.find( "Run" ) != string::npos;
     CompMgr( "CompareDataMC", "WeightInfo.py" );
     CompMgr().InitRoot( "sample" + year );
-    FullMgr().InitRoot( "sample" + year );
+    PreMgr().InitRoot( "sample" + year );
     
-    string filename = FullMgr().GetParam<string>( sample, "path" );
+    string filename = PreMgr().GetParam<string>( sample, "path" );
     cout << ">> Processing " << filename << endl;
     TChain* ch = new TChain( "bprimeKit/root" );
     ch->Add( ( filename ).c_str() );
-    FullMgr().AddSample( ch );
-    FullMgr().RegisterWeight( ch );
+    PreMgr().AddSample( ch );
     CompMgr().AddSample( sample );
     AddHist();
     
@@ -45,12 +44,12 @@ CheckBtag()
     // Initialize data
     string line;
     vector<double> puweight;
-    std::ifstream fin( FullMgr().GetParam<string>( "Info", "puweight" ) );
+    std::ifstream fin( PreMgr().GetParam<string>( "Info", "puweight" ) );
     while( std::getline( fin, line ) ){
         puweight.push_back( stod( line ) );
     }
 
-    vector<int> hlt = FullMgr().GetVParam<int>( "Info", lepton + "_HLT" );
+    vector<int> hlt = PreMgr().GetVParam<int>( "Info", lepton + "_HLT" );
     vector<int> lepidx;// store two tight lepton
     vector<int> jetidx;
     
@@ -62,47 +61,47 @@ CheckBtag()
     }
 
     // Looping events
-    string tag = FullMgr().GetOption<string>( "uncertainty" );
-    int events = FullMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    string tag = PreMgr().GetOption<string>( "uncertainty" );
+    int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
-        FullMgr().process( events, i );
+        PreMgr().process( events, i );
         lepidx.clear();
         jetidx.clear();
 
         /*******************************************************************************
         *  Baseline selection
         *******************************************************************************/
-        if( !FullMgr().PassHLT( hlt ) ){
+        if( !PreMgr().PassHLT( hlt ) ){
             continue;
         }
         
         // Pass vertex
-        if( !FullMgr().PassVertex() ){
+        if( !PreMgr().PassVertex() ){
             continue;
         }
 
         // Lumimask
         if( is_data ){
-            if( !FullMgr().IsGoodEvt( checkEvt ) ){
+            if( !PreMgr().IsGoodEvt( checkEvt ) ){
                 continue;
             }
         }
         /*******************************************************************************
         *  Jet selection
         *******************************************************************************/
-        if( !FullMgr().PassFullJet_CRDYJets( jetidx ) ){
+        if( !PreMgr().PassFullJet_CRDYJets( jetidx ) ){
             continue;
         }
 
         /*******************************************************************************
         *  Lepton selection
         *******************************************************************************/
-        if( !FullMgr().PassFullLepton_CRDYJets( lepidx, lepton ) ){
+        if( !PreMgr().PassFullLepton_CRDYJets( lepidx, lepton ) ){
             continue;
         }
 
-        double zmass = FullMgr().GetZmass( lepidx );
+        double zmass = PreMgr().GetZmass( lepidx );
         if( zmass > 120 || zmass < 60 ){
             continue;
         }
@@ -118,18 +117,18 @@ CheckBtag()
             }
         
             weight *= puweight[ pv ];
-            weight *= FullMgr().GenWeight();
+            weight *= PreMgr().GenWeight();
         }
 
         /*******************************************************************************
         * Selected jet info filling
         *******************************************************************************/
         CompMgr().Hist( "Zmass" )             ->Fill( zmass, weight ); 
-        CompMgr().Hist( "LeadingLepPt" )      ->Fill( FullMgr().GetLepPt ( jetidx.front() ), weight ); 
-        CompMgr().Hist( "LeadingLepEta" )     ->Fill( FullMgr().GetLepEta( jetidx.front() ), weight ); 
-        CompMgr().Hist( "LeadingJetDeepCSV" ) ->Fill( FullMgr().GetJetCSV( jetidx.front() ), weight ); 
-        CompMgr().Hist( "LeadingJetPt" )      ->Fill( FullMgr().GetJetPt ( jetidx.front() ), weight ); 
-        CompMgr().Hist( "LeadingJetEta" )     ->Fill( FullMgr().GetJetEta( jetidx.front() ), weight ); 
+        CompMgr().Hist( "LeadingLepPt" )      ->Fill( PreMgr().GetLepPt ( jetidx.front() ), weight ); 
+        CompMgr().Hist( "LeadingLepEta" )     ->Fill( PreMgr().GetLepEta( jetidx.front() ), weight ); 
+        CompMgr().Hist( "LeadingJetDeepCSV" ) ->Fill( PreMgr().GetJetCSV( jetidx.front() ), weight ); 
+        CompMgr().Hist( "LeadingJetPt" )      ->Fill( PreMgr().GetJetPt ( jetidx.front() ), weight ); 
+        CompMgr().Hist( "LeadingJetEta" )     ->Fill( PreMgr().GetJetEta( jetidx.front() ), weight ); 
     }
     cout << endl;
     if( !is_data ){
@@ -154,7 +153,7 @@ AddHist()
 extern void 
 StoreCompare()
 {
-    string filename = FullMgr().GetResultsName( "root", "CheckBWeight" );
+    string filename = PreMgr().GetResultsName( "root", "CheckBWeight" );
     mgr::SaveToROOT( CompMgr().Hist( "Zmass"              ),   filename, "Zmass"            );
     mgr::SaveToROOT( CompMgr().Hist( "LeadingLepPt"       ),   filename, "LeadingLepPt"       );
     mgr::SaveToROOT( CompMgr().Hist( "LeadingLepEta"      ),   filename, "LeadingLepEta"      );

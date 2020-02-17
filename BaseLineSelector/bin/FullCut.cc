@@ -14,7 +14,6 @@ main( int argc, char* argv[] )
         ( "region,r", opt::value<string>(), "which region" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
-        ( "BWEIGHT,W", "check b-tag weight" )
     ;
     FullMgr( "BaseLineSelector", "SampleInfo.py" ).AddOptions( de );
     const int run = FullMgr().ParseOptions( argc, argv );

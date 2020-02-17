@@ -13,6 +13,7 @@ main( int argc, char* argv[] )
         ( "count,c", "count events" )
         ( "datacard,d", "only produce datacard" )
         ( "test,t", "run testing events number" )
+        ( "BWEIGHT,W", "check b-tag weight" )
     ;
     PreMgr( "BaseLineSelector", "SampleInfo.py" ).AddOptions( de );
     const int run = PreMgr().ParseOptions( argc, argv );
@@ -32,6 +33,9 @@ main( int argc, char* argv[] )
     }
     else if( PreMgr().CheckOption( "CSV" ) ){
         MakeBtagEff();
+    }
+    else if( PreMgr().CheckOption( "BWEIGHT" ) ){
+            CheckBtag();
     }
     else{
         MakePreCut();
