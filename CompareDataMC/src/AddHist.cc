@@ -26,6 +26,7 @@ AddHist()
 
     CompMgr().AddHist( "LJetPt", "Leading Jet P_{T}", "Events", 50, 0, 500 );
     CompMgr().AddHist( "LJetEta", "Leading Jet Eta", "Events", 40, -3, 5 );
+    CompMgr().AddHist( "LJetCSV", "LJetCSV", "Events", 50, 0, 1 );
     CompMgr().AddHist( "HBJetPt", "Hadronic b-jet P_{T}", "Events", 50, 0, 500 );
     CompMgr().AddHist( "LBJetPt", "Leptonic b-jet P_{T}", "Events", 50, 0, 500 );
     CompMgr().AddHist( "HBJetEta", "Hadronic b-jet Eta", "Events", 40, -3, 5 );
@@ -138,6 +139,7 @@ StoreCompare()
 
     mgr::SaveToROOT( CompMgr().Hist( "LJetPt" ),          filename, "LJetPt" );
     mgr::SaveToROOT( CompMgr().Hist( "LJetEta" ),         filename, "LJetEta" );
+    mgr::SaveToROOT( CompMgr().Hist( "LJetCSV" ),         filename, "LJetCSV" );
     mgr::SaveToROOT( CompMgr().Hist( "LBJetPt" ),         filename, "LBJetPt" );
     mgr::SaveToROOT( CompMgr().Hist( "LBJetEta" ),        filename, "LBJetEta" );
     mgr::SaveToROOT( CompMgr().Hist( "HBJetPt" ),         filename, "HBJetPt" );

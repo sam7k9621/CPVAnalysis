@@ -1,0 +1,9 @@
+./MakeBtagEffPlot.py -y 16 -s TTToSemiLeptonic -c 0.2217 -w LooseDeepCSV
+./MakeBtagEffPlot.py -y 16 -s TTToSemiLeptonic -c 0.6321 -w MediumDeepCSV
+./MakeBtagEffPlot.py -y 16 -s TTToSemiLeptonic -c 0.8953 -w TightDeepCSV
+./MakeBtagEffPlot.py -y 17 -s TTToSemiLeptonic -c 0.1522 -w LooseDeepCSV
+./MakeBtagEffPlot.py -y 17 -s TTToSemiLeptonic -c 0.4941 -w MediumDeepCSV
+./MakeBtagEffPlot.py -y 17 -s TTToSemiLeptonic -c 0.8001 -w TightDeepCSV
+./MakeBtagEffPlot.py -y 18 -s TTToSemiLeptonic -c 0.1241 -w LooseDeepCSV
+./MakeBtagEffPlot.py -y 18 -s TTToSemiLeptonic -c 0.4184 -w MediumDeepCSV
+./MakeBtagEffPlot.py -y 18 -s TTToSemiLeptonic -c 0.7527 -w TightDeepCSV

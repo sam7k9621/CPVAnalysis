@@ -25,7 +25,7 @@ class Selector : public mgr::Pathmgr,
         Selector( const Selector& )            = delete;
         Selector& operator=( const Selector& ) = delete;
 
-        void AddSample( TChain* );
+        void AddSample( TChain*, const std::string& = "" );
         void InitBtagEffPlot( TH2D*, TH2D*, TH2D* );
 
         /*******************************************************************************
@@ -36,19 +36,54 @@ class Selector : public mgr::Pathmgr,
         std::string GetResultsName( const std::string&, const std::string&, std::string="FullCut" );
         std::string Discript( TH1* );
         bool        OptionContent( const std::string&, const std::string& );
+        double GetZmass( const std::vector<int>& );
 
-        float LJetPt()
+        float GetJetPt( const int& i )
         {
-            _sample->SetIndex( 0 );
+            _sample->SetIndex( i );
             return _sample->JetPt();
         }
 
-        float LLepPt()
+        float GetJetEta( const int& i )
         {
-            _sample->SetIndex( 0 );
+            _sample->SetIndex( i );
+            return _sample->JetEta();
+        }
+
+        float GetJetCSV( const int& i )
+        {
+            _sample->SetIndex( i );
+            return _sample->JetDeepCSV();
+        }
+
+        bool IsSelJet( const int& i )
+        {
+            _sample->SetIndex( i );
+            return _sample->IsSelJet();
+        }
+
+        bool PassDeepCSVM( const int& i )
+        {
+            _sample->SetIndex( i );
+            return _sample->PassDeepCSVM();
+        }
+
+        int Jsize()
+        {
+            return _sample->Jsize();
+        }
+
+        float GetLepPt( const int& i )
+        {
+            _sample->SetIndex( i );
             return _sample->LepPt();
         }
 
+        float GetLepEta( const int& i )
+        {
+            _sample->SetIndex( i );
+            return _sample->LepEta();
+        }
         /*******************************************************************************
         *   Weight
         *******************************************************************************/
@@ -56,6 +91,9 @@ class Selector : public mgr::Pathmgr,
         void   Fill2DBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
         void   Fill1DBtagEff_Pt( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
         void   Fill1DBtagEff_Eta( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        double GetLepSF( TH2D*, const int& );
+        double GetLepSFUp( TH2D*, const int& );
+        double GetLepSFDn( TH2D*, const int& );
         double GetJetSF( TH2D*, const int& );
         double GetJetSFUp( TH2D*, const int& );
         double GetJetSFDn( TH2D*, const int& );
@@ -93,10 +131,12 @@ class Selector : public mgr::Pathmgr,
         *   Full-selection
         *******************************************************************************/
         bool PassFullLepton         ( std::vector<int>&, const std::string& );
+        bool PassFullLepton_CRDYJets( std::vector<int>&, const std::string& );
         bool PassFullLepton_CRQCD   ( std::vector<int>&, const std::string& );
         bool PassFullLepton_CRWJets ( std::vector<int>&, const std::string& );
 
         bool                                      PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullJet_CRDYJets( std::vector<int>& );
         bool                                      PassFullJet_CRQCD( std::vector<int>&, std::vector<int>&, const int& );
         bool                                      PassFullJet_CRWJets( std::vector<int>&, std::vector<int>&, const int& );
         std::tuple<double, double, int, int, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );

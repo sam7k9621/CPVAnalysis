@@ -7,13 +7,14 @@ main( int argc, char* argv[] )
 {
     opt::options_description de( "Command for SelectionCut" );
     de.add_options()
-        ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "year,y", opt::value<string>()->required(), "which sample" )
+        ( "lepton,l", opt::value<string>(), "which lepton" )
         ( "uncertainty,e", opt::value<string>(), "uncertainty" )
         ( "region,r", opt::value<string>(), "which region" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
+        ( "BWEIGHT,W", "check b-tag weight" )
     ;
     FullMgr( "BaseLineSelector", "SampleInfo.py" ).AddOptions( de );
     const int run = FullMgr().ParseOptions( argc, argv );
@@ -29,5 +30,10 @@ main( int argc, char* argv[] )
     FullMgr().SetFileName( { "year", "lepton", "sample", "uncertainty" } );
     FullMgr().AddCutName( { "test", "region" } );
 
-    MakeFullCut();
+    if( FullMgr().CheckOption( "BWEIGHT" ) ){
+        CheckBtag();
+    }
+    else{
+        MakeFullCut();
+    }
 }

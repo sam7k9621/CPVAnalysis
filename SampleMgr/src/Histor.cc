@@ -20,6 +20,12 @@ Histor::~Histor()
 }
 
 void
+Histor::AddSample( const string& sample )
+{
+    _sample = new BaseLineMgr( sample );
+}
+
+void
 Histor::AddSample( const string& sample, TChain* ch )
 {
     _sample = new BaseLineMgr( GetOption<string>( "year") + "Selection.py", sample );

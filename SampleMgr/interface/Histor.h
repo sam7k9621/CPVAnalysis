@@ -1,5 +1,5 @@
-#ifndef SELECTOR_H
-#define SELECTOR_H
+#ifndef HISTOR_H
+#define HISTOR_H
 
 #include "ManagerUtils/ArgHelper/interface/Common.hpp"
 #include "ManagerUtils/ArgHelper/interface/Parsermgr.hpp"
@@ -24,7 +24,8 @@ class Histor : public mgr::Pathmgr,
         Histor( const Histor& )            = delete;
         Histor& operator=( const Histor& ) = delete;
 
-        void AddSample( const string&, TChain* );
+        void AddSample( const std::string&, TChain* );
+        void AddSample( const std::string& );
 
         /*******************************************************************************
         *   Common

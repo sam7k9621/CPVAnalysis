@@ -28,10 +28,11 @@ extern void CheckAcp();
 /*******************************************************************************
 *  MakeHist
 *******************************************************************************/
-extern std::string MakeFileName( const std::string&, const std::string&, const std::string&, const std::string& ="", const std::string& =""); 
 extern Histor& CompMgr( const std::string& = "", const std::string& = "" );
+extern std::string MakeFileName( const std::string&, const std::string&, const std::string&, const std::string& ="", const std::string& =""); 
 extern void FillObservable( const std::string&, const double&, const double& =1. );
 extern void    MakeHist();
+
 
 /*******************************************************************************
 *  AddHist

@@ -257,6 +257,7 @@ MakeHist()
 
         CompMgr().Hist( "LJetPt" )->Fill( CompMgr()  .GetJetPt( jet1 ), weight );
         CompMgr().Hist( "LJetEta" )->Fill( CompMgr() .GetJetEta( jet1 ), weight );
+        CompMgr().Hist( "LJetCSV" )->Fill( CompMgr() .GetJetCSV( jet1 ), weight );
         CompMgr().Hist( "HBJetPt" )->Fill( CompMgr() .GetJetPt( had_b ), weight );
         CompMgr().Hist( "HBJetEta" )->Fill( CompMgr().GetJetEta( had_b ), weight );
         CompMgr().Hist( "LBJetPt" )->Fill( CompMgr() .GetJetPt( lep_b ), weight );

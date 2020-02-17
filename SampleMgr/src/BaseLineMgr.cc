@@ -20,6 +20,15 @@ BaseLineMgr::BaseLineMgr( const string& py, const string& sample ) :
     _calib  = NULL;
 }
 
+BaseLineMgr::BaseLineMgr( const string& sample ) :
+    Pathmgr( "CPVAnalysis", "SampleMgr" ),
+    Readmgr(),
+    Hist2DMgr( sample ),
+    HistMgr( sample )
+{
+    _calib = NULL; 
+}
+
 BaseLineMgr::~BaseLineMgr()
 {
     delete _calib;

@@ -37,7 +37,8 @@ class BaseLineMgr : public mgr::Pathmgr,
         /*******************************************************************************
         *   Class initialization
         *******************************************************************************/
-        BaseLineMgr( const std::string&, const std::string& = "" );
+        BaseLineMgr( const std::string&, const std::string& );
+        BaseLineMgr( const std::string& );
         ~BaseLineMgr();
 
         BaseLineMgr( const BaseLineMgr& )            = delete;

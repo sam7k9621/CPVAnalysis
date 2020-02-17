@@ -26,7 +26,8 @@ def main() :
     # objlst=[ "lep_tmass" ]
     # objlst=[ "had_tmass", "lep_tmass", "nVtx" ]
     # objlst=[ "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LJetEta", "LepPt", "LepEta", "LepIso", "nVtx", "Rho", "Njets" ]
-    mclst = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
+    # mclst = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
+    mclst = [ "WJets" ]
     region = opt.GetOption( "region" )
     if not region:
         mclst.remove( "QCD" )
@@ -57,6 +58,12 @@ def main() :
             histlst.append( histmgr.GetMergedObj( mc ) )
             histlst[i].SetLineColor( pltmgr.colorlst[i] )
             histlst[i].SetFillColor( pltmgr.colorlst[i] )
+            
+            ###
+            pltmgr.SetNormToUnity( histlst[ i ] )
+            histlst[i].Scale( data.Integral() )
+            ###
+
             bg.Add( histlst[i] )
 
             leg.AddEntry( histlst[i], mc, "F" )

@@ -25,9 +25,9 @@ Selector::~Selector()
 }
 
 void
-Selector::AddSample( TChain* ch )
+Selector::AddSample( TChain* ch, const string& sample )
 {
-    _sample = new BaseLineMgr( GetOption<string>( "year" ) + "Selection.py" );
+    _sample = new BaseLineMgr( GetOption<string>( "year" ) + "Selection.py", sample );
     _sample->Register( ch );
 }
 
@@ -90,6 +90,12 @@ Selector::OptionContent( const string& opt, const string& content )
     }
 
     return false;
+}
+
+double 
+Selector::GetZmass( const vector<int>& lepidx )
+{
+    return ( _sample->GetLepP4( lepidx[0] ) + _sample->GetLepP4( lepidx[1] ) ).M();
 }
 
 /*******************************************************************************
@@ -192,6 +198,26 @@ Selector::Fill1DBtagEff_Eta( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency
     }
 }
 
+double
+Selector::GetLepSF( TH2D* hist, const int& idx )
+{
+    _sample->SetIndex( idx );
+    return _sample->GetSFTH2( hist, _sample->LepEta(), _sample->LepPt() );
+}
+
+double
+Selector::GetLepSFUp( TH2D* hist, const int& idx )
+{
+    _sample->SetIndex( idx );
+    return _sample->GetSFTH2( hist, _sample->LepEta(), _sample->LepPt(), 1 );
+}
+
+double
+Selector::GetLepSFDn( TH2D* hist, const int& idx )
+{
+    _sample->SetIndex( idx );
+    return _sample->GetSFTH2( hist, _sample->LepEta(), _sample->LepPt(), -1 );
+}
 double
 Selector::GetJetSF( TH2D* hist, const int& idx )
 {
@@ -484,6 +510,24 @@ Selector::PassFullLepton_CRQCD( vector<int>& lepidx, const string& lepton )
     return lepidx.size() == 1;
 }
 
+bool 
+Selector::PassFullLepton_CRDYJets( vector<int>& lepidx, const string& lepton )
+{
+    for( int i = 0; i < _sample->Lsize(); i++ ){
+        _sample->SetIndex( i );
+
+        if( lepton == "el" && _sample->IsTightEl() ){
+            lepidx.push_back( i );
+            continue;
+        }
+        else if( lepton == "mu" && _sample->IsTightMu() ){
+            lepidx.push_back( i );
+            continue;
+        }
+    }
+
+    return lepidx.size() == 2;
+}
 
 bool
 Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
@@ -496,25 +540,31 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
             continue;
         }
 
-        int mask = 0x01;
-
         if( _sample->IsSelJet() ){
-            mask <<= 1;
-        }
-
-        if( _sample->PassDeepCSVM() ){
-            mask <<= 2;
-        }
-
-        if( mask & 0x02 ){
-            jetidx.push_back( j );
-        }
-        else if( mask & 0x08 ){
-            bjetidx.push_back( j );
+            if( _sample->PassDeepCSVM() ){
+                bjetidx.push_back( j );
+            }
+            else{
+                jetidx.push_back( j );
+            }
         }
     }
 
-    return jetidx.size() >= 2 && bjetidx.size() == 2;
+    return ( jetidx.size() >= 2 ) && ( bjetidx.size() == 2 );
+}
+
+bool 
+Selector::PassFullJet_CRDYJets( vector<int>& jetidx )
+{
+    for( int i = 0; i < _sample->Jsize(); i++ ){
+        _sample->SetIndex( i );
+
+        if( _sample->IsSelJet() ){
+            jetidx.push_back( i );
+        }
+    }
+
+    return jetidx.size() == 1;
 }
 
 bool
