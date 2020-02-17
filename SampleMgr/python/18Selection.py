@@ -29,6 +29,7 @@ process.Jet = cms.PSet(
         
         AbsEta = cms.double( 2.4 ),
         Pt = cms.double( 30 ),
+        Pt_CRDYJets = cms.double( 60 ),
         Pre_AbsEta = cms.double( 2.4  ),
         Pre_Pt = cms.double( 20 ),
         

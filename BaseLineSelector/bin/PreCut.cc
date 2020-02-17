@@ -9,6 +9,7 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "year,y", opt::value<string>()->required(), "which year" )
+        ( "lepton,l", opt::value<string>(), "which lepton" )
         ( "CSV", opt::value<double>(), "discriminator" )
         ( "count,c", "count events" )
         ( "datacard,d", "only produce datacard" )
@@ -26,7 +27,7 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    PreMgr().SetFileName( { "year", "sample" } );
+    PreMgr().SetFileName( { "year", "lepton", "sample" } );
     PreMgr().AddCutName( { "test", "CSV" } );
     if( PreMgr().CheckOption( "datacard" ) ){
         MakeDataCard();

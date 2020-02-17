@@ -559,7 +559,7 @@ Selector::PassFullJet_CRDYJets( vector<int>& jetidx )
     for( int i = 0; i < _sample->Jsize(); i++ ){
         _sample->SetIndex( i );
 
-        if( _sample->IsSelJet() ){
+        if( _sample->IsSelJet_CRDYJets() ){
             jetidx.push_back( i );
         }
     }

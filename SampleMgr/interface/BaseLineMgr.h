@@ -91,7 +91,9 @@ class BaseLineMgr : public mgr::Pathmgr,
 
         bool PassJetID( const std::string& );
         bool PassJetKinematic();
+        bool PassJetKinematic_CRDYJets();
         bool IsSelJet();
+        bool IsSelJet_CRDYJets();
         bool IsSelJet_test();
         bool IsPreSelJet();
         bool PassCSVM();

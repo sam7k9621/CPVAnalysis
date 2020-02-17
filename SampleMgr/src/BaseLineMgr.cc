@@ -309,6 +309,14 @@ BaseLineMgr::PassJetKinematic()
 }
 
 bool
+BaseLineMgr::PassJetKinematic_CRDYJets()
+{
+    return JetPt() >     GetVal( "Jet", "Pt_CRDYJets" ) &&
+           JetAbsEta() < GetVal( "Jet", "AbsEta" )
+    ;
+}
+
+bool
 BaseLineMgr::IsSelJet()
 {
     return PassJetID( GetStr( "Jet", "jetid" ) ) &&
@@ -316,6 +324,13 @@ BaseLineMgr::IsSelJet()
     ;
 }
 
+bool 
+BaseLineMgr::IsSelJet_CRDYJets()
+{
+    return PassJetID( GetStr( "Jet", "jetid" ) ) &&
+           PassJetKinematic_CRDYJets()
+    ;
+}
 
 bool 
 BaseLineMgr::IsSelJet_test()
