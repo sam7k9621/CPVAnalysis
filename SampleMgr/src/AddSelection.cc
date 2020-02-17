@@ -34,6 +34,7 @@ BaseLineMgr::ReadConfig()
     
     AddVal( "Jet", "AbsEta" );
     AddVal( "Jet", "Pt" );
+    AddVal( "Jet", "Pt_CRDYJets" );
     AddVal( "Jet", "Pre_AbsEta" );
     AddVal( "Jet", "Pre_Pt" );
     
