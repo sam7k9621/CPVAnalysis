@@ -94,10 +94,11 @@ def main(args):
     parser = argparse.ArgumentParser( "Submit jobs for commands" )
     parser.add_argument( '-C', '--Command',     type=str,   required=True )
     parser.add_argument( '-I', '--InputOption', type=str,   default="sample" )
-    parser.add_argument( '-E', '--extract',     type=str,   default="" )
+    parser.add_argument( '-E', '--Extract',     type=str,   nargs='+' )
     parser.add_argument( '-S', '--Samplelst',   type=str,   nargs='+' )
-    parser.add_argument( '-R', '--maxRunJobs',  type=int,   default=6 )
-    parser.add_argument( '-Q', '--maxQueJobs',  type=int,   default=5 )
+    parser.add_argument( '-R', '--MaxRunJobs',  type=int,   default=6 )
+    parser.add_argument( '-Q', '--MaxQueJobs',  type=int,   default=5 )
+    parser.add_argument( '-T', '--Test',        action='store_true' )
     
     try:
         opt = parser.parse_args(args[1:])
@@ -117,7 +118,11 @@ def main(args):
     samplelst = []
     for s in opt.Samplelst:
         samplelst += getattr( samplemod, s )
-    samplelst = [ x for x in samplelst if opt.extract in x ]
+    samplelst = [ x for x in samplelst if any( y in x for y in opt.Extract )]
+
+    if opt.Test:
+        print samplelst 
+        return 
 
     if "lxplus" in HOSTNAME:
         CondorJob( opt, samplelst )

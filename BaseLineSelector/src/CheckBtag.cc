@@ -75,7 +75,7 @@ CheckBtag()
         if( !PreMgr().PassHLT( hlt ) ){
             continue;
         }
-        
+       
         // Pass vertex
         if( !PreMgr().PassVertex() ){
             continue;
@@ -131,10 +131,10 @@ CheckBtag()
         CompMgr().Hist( "LeadingJetEta" )     ->Fill( PreMgr().GetJetEta( jetidx.front() ), weight ); 
     }
     cout << endl;
-    if( !is_data ){
-        CompMgr().WeightMC( sample );
-        cout<<">>Weighting "<<sample<<endl;
-    }
+  /*  if( !is_data ){*/
+        //CompMgr().WeightMC( sample );
+        //cout<<">>Weighting "<<sample<<endl;
+    /*}*/
     StoreCompare();
     delete ch;
 }

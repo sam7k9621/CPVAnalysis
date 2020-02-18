@@ -525,7 +525,6 @@ Selector::PassFullLepton_CRDYJets( vector<int>& lepidx, const string& lepton )
             continue;
         }
     }
-
     return lepidx.size() == 2;
 }
 
