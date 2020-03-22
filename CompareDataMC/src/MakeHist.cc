@@ -12,19 +12,19 @@ CompMgr( const string& subdir, const string& json )
     return mgr;
 }
 
-extern void 
+extern void
 FillObservable( const string& obs, const double& acp, const double& weight )
 {
     double val = acp > 0 ? 0.5 : -0.5;
     CompMgr().Hist( obs )->Fill( val, weight );
 }
 
-extern string 
+extern string
 MakeFileName( const string& sample, const string& lepton, const string& year, const string& region, const string& unc )
 {
-    string reg = region.empty() ? "" : "_region_" + region;
-    if( unc.find( "JE" ) != string::npos ){
-        reg += ("_" + unc);
+    string reg = unc.find( "JE" ) != string::npos ? "_" + unc : "";
+    if( !region.empty() ){
+        reg += "_region_" + region;
     }
 
     boost::format filename( CompMgr().GetParam<string>( sample, "path" ) );
@@ -36,23 +36,23 @@ extern void
 MakeHist()
 {
     // Initialize file
-    string sample   = CompMgr().GetOption<string>( "sample" );
-    string lepton   = CompMgr().GetOption<string>( "lepton" );
-    string region   = CompMgr().GetOption<string>( "region" ); 
-    string unc      = CompMgr().GetOption<string>( "uncertainty" );
-    string year     = CompMgr().GetOption<string>( "year" ); 
-    bool is_data    = ( sample == "Data" ) ? 1 : 0;
+    string sample = CompMgr().GetOption<string>( "sample" );
+    string lepton = CompMgr().GetOption<string>( "lepton" );
+    string region = CompMgr().GetOption<string>( "region" );
+    string unc    = CompMgr().GetOption<string>( "uncertainty" );
+    string year   = CompMgr().GetOption<string>( "year" );
+    bool is_data  = ( sample == "Data" ) ? 1 : 0;
     CompMgr().InitRoot( "sample" + year );
-    
+
     string filename = MakeFileName( sample, lepton, year, region, unc );
-    cout << ">> Processing " << filename << endl;
-    
+    cout << ">> Adding " << filename << endl;
+
     TChain* ch = new TChain( "root" );
     ch->Add( filename.c_str() );
     CompMgr().AddSample( sample, ch );
     AddHist();
     CompMgr().RegisterWeight( ch );
-    CompMgr().InitBtagWeight( "bcheck", CompMgr().GetParam<string>( "BtagWeight", "path" ) );
+    
     // Register reco sample
     Int_t jet1;
     Int_t jet2;
@@ -68,33 +68,30 @@ MakeHist()
     Float_t b_weight_dn;
     vector<int>* jetidx = 0;
 
-    ch->SetBranchAddress( "jet1",      &jet1 );
-    ch->SetBranchAddress( "jet2",      &jet2 );
-    ch->SetBranchAddress( "lep",       &lep );
-    ch->SetBranchAddress( "had_b",     &had_b );
-    ch->SetBranchAddress( "lep_b",     &lep_b );
-    ch->SetBranchAddress( "Njets",     &Njets );
-    ch->SetBranchAddress( "chi2mass",  &chi2mass );
-    ch->SetBranchAddress( "had_tmass", &had_tmass );
-    ch->SetBranchAddress( "lep_tmass", &lep_tmass );
+    ch->SetBranchAddress( "jet1",        &jet1 );
+    ch->SetBranchAddress( "jet2",        &jet2 );
+    ch->SetBranchAddress( "lep",         &lep );
+    ch->SetBranchAddress( "had_b",       &had_b );
+    ch->SetBranchAddress( "lep_b",       &lep_b );
+    ch->SetBranchAddress( "Njets",       &Njets );
+    ch->SetBranchAddress( "chi2mass",    &chi2mass );
+    ch->SetBranchAddress( "had_tmass",   &had_tmass );
+    ch->SetBranchAddress( "lep_tmass",   &lep_tmass );
     ch->SetBranchAddress( "b_weight",    &b_weight );
     ch->SetBranchAddress( "b_weight_up", &b_weight_up );
     ch->SetBranchAddress( "b_weight_dn", &b_weight_dn );
-    ch->SetBranchAddress( "jetidx"     , &jetidx );
+    ch->SetBranchAddress( "jetidx",      &jetidx );
 
     TH2D* LepID   = CompMgr().GetSFHist( lepton + "ID" );
     TH2D* LepRECO = CompMgr().GetSFHist( lepton + "RECO" );
     TH2D* LepHLT  = CompMgr().GetSFHist( lepton + "HLT" );
 
     // Looping events
-    int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    cout << ">> Processing " << filename << endl;
+    int events = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         CompMgr().process( events, i );
-      
-        if( CompMgr().CheckOption( "0bjet" ) && CompMgr().HasLooseB( { had_b, lep_b } ) ){
-            continue;
-        }
 
         /*******************************************************************************
         * Chi2 minimum upper limit
@@ -109,7 +106,7 @@ MakeHist()
                 continue;
             }
         }
-        
+
         /*******************************************************************************
         * Leptonic tmass optimization cut
         *******************************************************************************/
@@ -140,9 +137,9 @@ MakeHist()
                     weight *= CompMgr().GetPUWeight();
                 }
             }
-
-            // b-tagging 
-            if ( !CompMgr().CheckOption( "wobtag" ) ){
+            
+            // b-tagging
+            if( !CompMgr().CheckOption( "wobtag" ) ){
                 if( tag.find( "btag" ) != string::npos ){
                     if( tag.find( "up" ) != string::npos ){
                         weight *= b_weight_up;
@@ -155,7 +152,7 @@ MakeHist()
                     weight *= b_weight;
                 }
             }
-            
+
             // lepton ID, RECO and ISO re-weighting
             if( tag.find( "lepton" ) != string::npos ){
                 if( tag.find( "up" ) != string::npos ){
@@ -175,22 +172,56 @@ MakeHist()
                 weight *= CompMgr().GetLepSF( LepHLT, lep );
             }
 
-            // PDF unc 
+            // PDF unc
             if( tag.find( "PDF" ) != string::npos ){
-                int pdfidx = std::stoi( tag.substr( tag.find( "_" ) + 1 ) );
-                weight *= CompMgr().PDFWeight( pdfidx );
+                float pdf_weight_up = 1; 
+                float pdf_weight_dn = 1; 
+                for( int i = 10; i < 112; i++ ){
+                    
+                    if( CompMgr().PDFWeight( i ) > pdf_weight_up ){
+                        pdf_weight_up = CompMgr().PDFWeight( i );
+                    }
+                    if( CompMgr().PDFWeight( i ) < pdf_weight_dn ){
+                        pdf_weight_dn = CompMgr().PDFWeight( i );
+                    }
+                }
+             
+                if( tag.find( "up" ) != string::npos ){
+                    weight *= pdf_weight_up;
+                }
+                else if( tag.find( "dn" ) != string::npos ){
+                    weight *= pdf_weight_dn;
+                }
             }
-            
-            // muFmuR unc 
+
+            // muFmuR unc
             if( tag.find( "muFmuR" ) != string::npos ){
-                int pdfidx = std::stoi( tag.substr( tag.find( "_" ) + 1 ) );
-                weight *= CompMgr().muFmuRWeight( pdfidx );
+                float mu_weight_up = 1;
+                float mu_weight_dn = 1;
+                for( int i = 1; i < 9; i++ ){
+                    if( i == 5 || i == 7 ){
+                        continue;
+                    }
+                    
+                    if( CompMgr().PDFWeight( i ) > mu_weight_up ){
+                        mu_weight_up = CompMgr().muFmuRWeight( i );
+                    }
+                    if( CompMgr().PDFWeight( i ) < mu_weight_dn ){
+                        mu_weight_dn = CompMgr().muFmuRWeight( i );
+                    }
+                }
+                if( tag.find( "up" ) != string::npos ){
+                    weight *= mu_weight_up;
+                }
+                else if( tag.find( "dn" ) != string::npos ){
+                    weight *= mu_weight_dn;
+                }
             }
 
             // gen-level re-weighting
             weight *= CompMgr().GenWeight();
         }
-      
+
         /*******************************************************************************
         *  Reco Acp
         *******************************************************************************/
@@ -252,19 +283,20 @@ MakeHist()
         CompMgr().Hist( "lep_tmass" )->Fill( lep_tmass, weight );
         CompMgr().Hist( "Njets" )->Fill( Njets, weight );
         CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
-        CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
-        CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
+        //CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
+        //CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
 
-        CompMgr().Hist( "LJetPt" )->Fill( CompMgr()  .GetJetPt( jet1 ), weight );
-        CompMgr().Hist( "LJetEta" )->Fill( CompMgr() .GetJetEta( jet1 ), weight );
-        CompMgr().Hist( "LJetCSV" )->Fill( CompMgr() .GetJetCSV( jet1 ), weight );
-        CompMgr().Hist( "HBJetPt" )->Fill( CompMgr() .GetJetPt( had_b ), weight );
+        int ljet = std::min( std::min( lep_b, had_b ), jet1 );
+        CompMgr().Hist( "LJetPt" )  ->Fill( CompMgr().GetJetPt ( ljet ),  weight );
+        CompMgr().Hist( "LJetEta" ) ->Fill( CompMgr().GetJetEta( ljet ),  weight );
+        CompMgr().Hist( "LJetCSV" ) ->Fill( CompMgr().GetJetCSV( ljet ),  weight );
+        CompMgr().Hist( "HBJetPt" ) ->Fill( CompMgr().GetJetPt ( had_b ), weight );
         CompMgr().Hist( "HBJetEta" )->Fill( CompMgr().GetJetEta( had_b ), weight );
-        CompMgr().Hist( "LBJetPt" )->Fill( CompMgr() .GetJetPt( lep_b ), weight );
+        CompMgr().Hist( "LBJetPt" ) ->Fill( CompMgr().GetJetPt ( lep_b ), weight );
         CompMgr().Hist( "LBJetEta" )->Fill( CompMgr().GetJetEta( lep_b ), weight );
-        CompMgr().Hist( "LepPt" )->Fill( CompMgr().GetLepPt( lep ), weight );
-        CompMgr().Hist( "LepEta" )->Fill( CompMgr().GetLepEta( lep ), weight );
-        
+        CompMgr().Hist( "LepPt" )   ->Fill( CompMgr().GetLepPt ( lep ),   weight );
+        CompMgr().Hist( "LepEta" )  ->Fill( CompMgr().GetLepEta( lep ),   weight );
+
         if( lepton == "el" ){
             CompMgr().Hist( "LepIso" )->Fill( CompMgr().GetElISO( lep ), weight );
         }
@@ -279,30 +311,29 @@ MakeHist()
         /*******************************************************************************
         * Selected jet info filling
         *******************************************************************************/
-        if( !is_data ){
-            CompMgr().Hist( "bweight" )->Fill( b_weight );
-        }
-        sort( jetidx->begin(), jetidx->end() );
-        CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( had_b ), weight );
-        CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( lep_b ), weight );
+       /* if( !is_data ){*/
+            //CompMgr().Hist( "bweight" )->Fill( b_weight );
+        //}
+        //sort( jetidx->begin(), jetidx->end() );
+        //CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( had_b ), weight );
+        //CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( lep_b ), weight );
 
-        for( size_t i = 0; i < jetidx->size(); i++ ){
-            CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( jetidx->at( i ) ), weight );
-            if( !is_data ){
-                CompMgr().Hist( "JetFlavor" )->Fill( CompMgr().GetJetFlavor( fabs( jetidx->at( i ) ) ), weight );
-                CompMgr().Hist( "bsf" )->Fill( CompMgr().GetBtagSF( jetidx->at( i ) ) );
-            }
-            if( i >= 7 ){
-                continue;
-            }
-            string jid = to_string( i );
-            CompMgr().Hist( "LJetPt"  + jid )->Fill( CompMgr().GetJetPt(  jetidx->at( i ) ), weight );
-            CompMgr().Hist( "LJetEta" + jid )->Fill( CompMgr().GetJetEta( jetidx->at( i ) ), weight );
-        }
-
+        //for( size_t i = 0; i < jetidx->size(); i++ ){
+            //CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( jetidx->at( i ) ), weight );
+            //if( !is_data ){
+                //CompMgr().Hist( "JetFlavor" )->Fill( CompMgr().GetJetFlavor( fabs( jetidx->at( i ) ) ), weight );
+            //}
+            //if( i >= 7 ){
+                //continue;
+            //}
+            //string jid = to_string( i );
+            //CompMgr().Hist( "LJetPt" + jid )->Fill( CompMgr().GetJetPt( jetidx->at( i ) ), weight );
+            //CompMgr().Hist( "LJetEta" + jid )->Fill( CompMgr().GetJetEta( jetidx->at( i ) ), weight );
+        /*}*/
     }
-    cout<<endl;
-    
+
+    cout << endl;
+
     if( !is_data ){
         CompMgr().WeightMC( sample );
         cout << ">>Weighting " << sample << endl;

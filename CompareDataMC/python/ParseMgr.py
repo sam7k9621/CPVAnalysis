@@ -53,7 +53,10 @@ class Parsemgr:
             print "Error processing arguments!"
             raise
         if arg and add:
-            return "_" + option + "_" + arg
+            if type( arg ) == bool:
+                return "_" + option
+            else:
+                return "_" + option + "_" + arg
         elif arg and not add:
             return arg 
         else:

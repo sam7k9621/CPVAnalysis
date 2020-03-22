@@ -1,8 +1,8 @@
 #ifndef SELECTION_H
 #define SELECTION_H
 
-#include "CPVAnalysis/SampleMgr/interface/Selector.h"
 #include "CPVAnalysis/SampleMgr/interface/Histor.h"
+#include "CPVAnalysis/SampleMgr/interface/Selector.h"
 
 /*******************************************************************************
 *   Global function
@@ -21,6 +21,7 @@ extern void MakeBtagEff();
 /*******************************************************************************
 *   FullCut
 *******************************************************************************/
+extern void Discard_FullCut( TTree* );
 extern std::string MakeFileName( bool );
 extern void        MakeFullCut();
 
@@ -28,9 +29,9 @@ extern void        MakeFullCut();
 *  CheckBtag
 *******************************************************************************/
 extern std::string MakeFileName( bool );
-extern void CheckBtag();
-extern Histor& CompMgr( const std::string& = "", const std::string& = "" );
-extern void AddHist();
-extern void StoreCompare();
+extern void        CheckBtag();
+extern Histor&     CompMgr( const std::string& = "", const std::string& = "" );
+extern void        AddHist();
+extern void        StoreCompare();
 
 #endif

@@ -5,21 +5,22 @@ import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
 def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput("r", "region").AddInput( "t", "template" )
-    
+    opt.AddInput("c", "chi2").AddInput( "t", "template" )
+    opt.AddFlag("x","worelax").AddFlag("b","wobtag")
+
     opt.Parsing() 
-    opt.AddInputName ( "chi2", "region" )
-    opt.AddOutputName( "chi2", "region" )
+    opt.AddInputName ( "chi2" )
+    opt.AddOutputName( "chi2", "worelax", "wobtag" )
     
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst=[ "lep_tmass" ]
     input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
-    
+  
     # Add data-driven shape
     print "-" * 90
     print ">> Adding CR data"
-    filename = opt.GetInputName( "Data" )
+    filename = opt.GetInputName( "Data" ).replace( ".", "_region_WJets_0b" + opt.GetOption( "worelax", True ) + opt.GetOption( "wobtag", True ) + "." )
     histmgr.SetObjlst( filename, objlst, "Data" ) 
     
     template = opt.GetOption( "template" )
@@ -31,7 +32,6 @@ def main() :
             if any( x in sample for x in [ "ttbar", "Data", "QCD" ] ):
                 continue
             filename = opt.GetInputName( sample )
-            filename = opt.GetInputName( sample ).replace( opt.GetOption( "region", True ), "" )
             histmgr.SetObjlst( filename, objlst, "SR" + sample ) 
     elif template == "CR":
         # Add CR background MC
@@ -40,7 +40,7 @@ def main() :
         for sample in input.samplelst:
             if any( x in sample for x in [ "ttbar", "Data" ] ):
                 continue 
-            filename = opt.GetInputName( sample )
+            filename = opt.GetInputName( sample ).replace( ".", "_region_WJets_0b" + opt.GetOption( "worelax", True ) + opt.GetOption( "wobtag", True ) + "." )
             histmgr.SetObjlst( filename, objlst, "CR" + sample ) 
 
         # Change into data-driven CR QCD sample
@@ -84,7 +84,7 @@ def main() :
         leg = pltmgr.NewLegend( 0.67, 0.51, 0.8, 0.81)
         
         bg_sum.Draw( "hist e" )
-        data    .Draw( "ep same" )
+        data  .Draw( "ep same" )
         # data_inv.Draw( "ep same" )
         leg.Draw()
         
@@ -109,7 +109,7 @@ def main() :
         pltmgr.DrawLuminosity( opt.Lumi() )
         
         bg_sum.GetYaxis().SetTitle( "PDF" ) 
-        bg_sum.SetMaximum( pltmgr.GetHistYmax( bg_sum ) * 1.5 );
+        bg_sum.SetMaximum( pltmgr.GetHistYmax( bg_sum ) * 1.5 )
         c.SaveAs( opt.GetOutputName( template, "BGClosureTest" ) )
 
 if __name__ == '__main__':

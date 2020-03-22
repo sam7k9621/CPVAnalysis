@@ -36,7 +36,7 @@ main( int argc, char* argv[] )
         MakeBtagEff();
     }
     else if( PreMgr().CheckOption( "BWEIGHT" ) ){
-            CheckBtag();
+        CheckBtag();
     }
     else{
         MakePreCut();

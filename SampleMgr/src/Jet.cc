@@ -7,12 +7,12 @@ namespace mgr{
     /*******************************************************************************
     * Jet info
     *******************************************************************************/
-    float 
+    float
     SampleMgr::JesUnc()
     {
-        return _jet.JesUnc[ _idx ];  
+        return _jet.JesUnc[ _idx ];
     }
-    
+
     float
     SampleMgr::JERPt()
     {
@@ -37,7 +37,8 @@ namespace mgr{
         return _jet.JERScaleDown[ _idx ];
     }
 
-    float SampleMgr::JetPt()
+    float
+    SampleMgr::JetPt()
     {
         return _jet.Pt[ _idx ];
     }
@@ -78,7 +79,7 @@ namespace mgr{
         return _jet.GenJetPhi[ _idx ];
     }
 
-    int 
+    int
     SampleMgr::GenJetFlavor()
     {
         return _jet.GenFlavor[ _idx ];
@@ -131,10 +132,10 @@ namespace mgr{
     SampleMgr::SetJetP4( const TLorentzVector& tl )
     {
         _jet.Energy[ _idx ] = tl.Energy();
-        _jet.Pt[ _idx ] = tl.Pt();
-        _jet.Px[ _idx ] = tl.Px();
-        _jet.Py[ _idx ] = tl.Py();
-        _jet.Pz[ _idx ] = tl.Pz();
+        _jet.Pt[ _idx ]     = tl.Pt();
+        _jet.Px[ _idx ]     = tl.Px();
+        _jet.Py[ _idx ]     = tl.Py();
+        _jet.Pz[ _idx ]     = tl.Pz();
     }
 
     // b-tagging
@@ -144,7 +145,7 @@ namespace mgr{
         return _jet.pfCombinedInclusiveSecondaryVertexV2BJetTags[ _idx ];
     }
 
-    float 
+    float
     SampleMgr::JetDeepCSV()
     {
         return _jet.pfDeepCSVJetTags_probb[ _idx ] + _jet.pfDeepCSVJetTags_probbb[ _idx ];

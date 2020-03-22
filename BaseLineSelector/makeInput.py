@@ -91,6 +91,8 @@ def MakeContent( dir, mclst, datalst ):
 def MakeSampleInfo( outputfile, year, content ):
 
     ###########################################################################################################################
+    CMSSW_BASE =  os.environ['CMSSW_BASE']
+    path = CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/results/" if "lxplus" not in os.environ["HOSTNAME"] else "/eos/cms/store/user/pusheng/public/"
     el, mu, mc = [], [], []
     for c in content:
         if "Run" in c:
@@ -111,8 +113,14 @@ def MakeSampleInfo( outputfile, year, content ):
             ',\n'.join( mc ) 
             ) )
 
-    el = [  x.replace("EGamma_", "").replace("SingleElectron_", "") for x in el ]
-    mu = [  x.replace("SingleMuon_", "") for x in mu ]
+    s = subprocess.Popen( "ls {}{}".format( path, "PreCut" ), shell=True, stdout=subprocess.PIPE )
+    outputlst, err = s.communicate()
+    outputlst = filter( lambda o: "PreCut_" + year in o, outputlst.split('\n') )
+
+    el = [ "'" + "_".join( x.split( "_" )[3:] ).replace(".root", "") + "'" for x in outputlst if "EGamma" in x or "SingleElectron" in x ]
+    mu = [ "'" + "_".join( x.split( "_" )[3:] ).replace(".root", "") + "'" for x in outputlst if "SingleMuon" in x ]
+    mc = [ "'" + "_".join( x.split( "_" )[2:] ).replace(".root", "") + "'" for x in outputlst if "Run" not in x ]
+
     with open('python/FullCut{}.py'.format( year ), 'w+' ) as  fp:
         fp.write( context.format( 
             ',\n    '.join( el ), 
@@ -126,7 +134,6 @@ def MakeSampleInfo( outputfile, year, content ):
         outputfile.write( text1.format( year, key, value ))
 
     ###########################################################################################################################
-    CMSSW_BASE =  os.environ['CMSSW_BASE']
     if year == "16":
         outputfile.write( text1.format( year, "BtagWeight", CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/DeepCSV_2016LegacySF_V1.csv" ) )
         outputfile.write( text2.format( year, "SR_eff_b",   CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/data/BtagEffPlot_16_TTToSemiLeptonic.root", "eff_b" ) )

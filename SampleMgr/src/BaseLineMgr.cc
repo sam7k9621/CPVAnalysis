@@ -17,7 +17,7 @@ BaseLineMgr::BaseLineMgr( const string& py, const string& sample ) :
 {
     InitRoot( "process" );
     ReadConfig();
-    _calib  = NULL;
+    _calib = NULL;
 }
 
 BaseLineMgr::BaseLineMgr( const string& sample ) :
@@ -26,7 +26,7 @@ BaseLineMgr::BaseLineMgr( const string& sample ) :
     Hist2DMgr( sample ),
     HistMgr( sample )
 {
-    _calib = NULL; 
+    _calib = NULL;
 }
 
 BaseLineMgr::~BaseLineMgr()
@@ -34,14 +34,14 @@ BaseLineMgr::~BaseLineMgr()
     delete _calib;
 }
 
-void 
+void
 BaseLineMgr::AddStr( const string& PSet, const string& obj )
 {
     _strmap.erase( PSet + "_" + obj );// deleting existing instance if already exist
     _strmap[ PSet + "_" + obj ] = GetParam<string>( PSet, obj );
 }
 
-void 
+void
 BaseLineMgr::AddVal( const string& PSet, const string& obj )
 {
     _valmap.erase( PSet + "_" + obj );// deleting existing instance if already exist
@@ -51,25 +51,25 @@ BaseLineMgr::AddVal( const string& PSet, const string& obj )
 double
 BaseLineMgr::GetVal( const string& PSet, const std::string& obj )
 {
-    try{
+    try {
         return _valmap.at( PSet + "_" + obj );
     }
-    catch( const std::out_of_range& oor ) {
+    catch( const std::out_of_range& oor ){
         std::cerr << "Out of Range error: " << oor.what() << endl;
         return INT_MIN;
-    } 
+    }
 }
 
 string
 BaseLineMgr::GetStr( const string& PSet, const std::string& obj )
 {
-    try{
+    try {
         return _strmap.at( PSet + "_" + obj );
     }
-    catch( const std::out_of_range& oor ) {
+    catch( const std::out_of_range& oor ){
         std::cerr << "Out of Range error: " << oor.what() << endl;
         return "";
-    } 
+    }
 }
 
 /*******************************************************************************
@@ -130,8 +130,8 @@ bool
 BaseLineMgr::IsGoodPVtx()
 {
     return !( IsFake() ) &&
-           Ndof() >   GetVal( "PV", "Ndof" ) &&
-           AbsZ() <   GetVal( "PV", "AbsZ" ) &&
+           Ndof() > GetVal( "PV", "Ndof" ) &&
+           AbsZ() < GetVal( "PV", "AbsZ" ) &&
            VtxRho() < GetVal( "PV", "VtxRho" )
     ;
 }
@@ -200,7 +200,7 @@ BaseLineMgr::JECDn()
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
         TLorentzVector jetp4 = GetJetP4( i );
-        double unc = JesUnc();
+        double unc           = JesUnc();
         jetp4 *= ( 1 - unc );
         SetJetP4( jetp4 );
     }
@@ -214,7 +214,7 @@ BaseLineMgr::JECUp()
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
         TLorentzVector jetp4 = GetJetP4( i );
-        double unc = JesUnc();
+        double unc           = JesUnc();
         jetp4 *= ( 1 + unc );
         SetJetP4( jetp4 );
     }
@@ -289,21 +289,21 @@ BaseLineMgr::PassJetID( const string& jetid )
 {
     return
         // Loose ID
-        JetNHF() <           GetVal( "Jet", jetid + "_NHF" ) &&
-        JetNEF() <           GetVal( "Jet", jetid + "_NEF" ) &&
+        JetNHF() < GetVal( "Jet", jetid + "_NHF" ) &&
+        JetNEF() < GetVal( "Jet", jetid + "_NEF" ) &&
         JetNConstituents() > GetVal( "Jet", jetid + "_NConstituents" ) &&
 
-        JetAbsEta() <=       GetVal( "Jet", "AbsEta" ) &&
-        JetCHF() >           GetVal( "Jet", jetid + "_CHF" ) &&
-        JetNCH() >           GetVal( "Jet", jetid + "_NCH" ) && 
-        JetCEF() <           GetVal( "Jet", jetid + "_CEF" )
+        JetAbsEta() <= GetVal( "Jet", "AbsEta" ) &&
+        JetCHF() > GetVal( "Jet", jetid + "_CHF" ) &&
+        JetNCH() > GetVal( "Jet", jetid + "_NCH" ) &&
+        JetCEF() < GetVal( "Jet", jetid + "_CEF" )
     ;
 }
 
 bool
 BaseLineMgr::PassJetKinematic()
 {
-    return JetPt() >     GetVal( "Jet", "Pt" ) &&
+    return JetPt() > GetVal( "Jet", "Pt" ) &&
            JetAbsEta() < GetVal( "Jet", "AbsEta" )
     ;
 }
@@ -311,7 +311,7 @@ BaseLineMgr::PassJetKinematic()
 bool
 BaseLineMgr::PassJetKinematic_CRDYJets()
 {
-    return JetPt() >     GetVal( "Jet", "Pt_CRDYJets" ) &&
+    return JetPt() > GetVal( "Jet", "Pt_CRDYJets" ) &&
            JetAbsEta() < GetVal( "Jet", "AbsEta" )
     ;
 }
@@ -324,7 +324,7 @@ BaseLineMgr::IsSelJet()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::IsSelJet_CRDYJets()
 {
     return PassJetID( GetStr( "Jet", "jetid" ) ) &&
@@ -332,10 +332,10 @@ BaseLineMgr::IsSelJet_CRDYJets()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::IsSelJet_test()
 {
-    // For BTV group check 
+    // For BTV group check
     return PassJetID( GetStr( "Jet", "jetid_test" ) ) &&
            PassJetKinematic()
     ;
@@ -345,7 +345,7 @@ bool
 BaseLineMgr::IsPreSelJet()
 {
     return PassJetID( GetStr( "Jet", "jetid" ) ) &&
-           JetPt() >     GetVal( "Jet", "Pre_Pt" ) &&
+           JetPt() > GetVal( "Jet", "Pre_Pt" ) &&
            JetAbsEta() < GetVal( "Jet", "Pre_AbsEta" )
     ;
 }
@@ -356,19 +356,19 @@ BaseLineMgr::PassCSVM()
     return JetCSV() > GetVal( "Jet", "CSVM" );
 }
 
-bool 
+bool
 BaseLineMgr::PassCSVL()
 {
     return JetCSV() > GetVal( "Jet", "CSVL" );
 }
 
-bool 
+bool
 BaseLineMgr::PassDeepCSVM()
 {
     return JetDeepCSV() > GetVal( "Jet", "DeepCSVM" );
 }
 
-bool 
+bool
 BaseLineMgr::PassDeepCSVL()
 {
     return JetDeepCSV() > GetVal( "Jet", "DeepCSVL" );
@@ -389,7 +389,7 @@ BaseLineMgr::PassMuLooseID()
 bool
 BaseLineMgr::PassMuLooseKinematic()
 {
-    return LepPt() >     GetVal( "Mu", "LoosePt" ) &&
+    return LepPt() > GetVal( "Mu", "LoosePt" ) &&
            LepAbsEta() < GetVal( "Mu", "LooseAbsEta" )
     ;
 }
@@ -423,12 +423,12 @@ BaseLineMgr::PassMuTightID()
 {
     return IsGlobalMuon() &&
            IsPFMuon() &&
-           MuGlobalNormalizedChi2() <     GetVal( "Mu", "GlobalNormalizedChi2" ) &&
-           MuNMuonhits() >                GetVal( "Mu", "MuNMuonhits" ) &&
-           MuNMatchedStations() >         GetVal( "Mu", "MuNMatchedStations" ) &&
-           AbsMuInnerTrackDxy_PV() <      GetVal( "Mu", "AbsMuInnerTrackDxy_PV" ) &&
-           AbsMuInnerTrackDz() <          GetVal( "Mu", "AbsMuInnerTrackDz" ) &&
-           MuNPixelLayers() >             GetVal( "Mu", "MuNPixelLayers" ) &&
+           MuGlobalNormalizedChi2() < GetVal( "Mu", "GlobalNormalizedChi2" ) &&
+           MuNMuonhits() > GetVal( "Mu", "MuNMuonhits" ) &&
+           MuNMatchedStations() > GetVal( "Mu", "MuNMatchedStations" ) &&
+           AbsMuInnerTrackDxy_PV() < GetVal( "Mu", "AbsMuInnerTrackDxy_PV" ) &&
+           AbsMuInnerTrackDz() < GetVal( "Mu", "AbsMuInnerTrackDz" ) &&
+           MuNPixelLayers() > GetVal( "Mu", "MuNPixelLayers" ) &&
            MuNTrackLayersWMeasurement() > GetVal( "Mu", "MuNTrackLayersWMeasurement" )
     ;
 }
@@ -436,7 +436,7 @@ BaseLineMgr::PassMuTightID()
 bool
 BaseLineMgr::PassMuTightKinematic()
 {
-    return LepPt() >     GetVal( "Mu", "TightPt" ) &&
+    return LepPt() > GetVal( "Mu", "TightPt" ) &&
            LepAbsEta() < GetVal( "Mu", "TightAbsEta" )
     ;
 }
@@ -456,7 +456,7 @@ BaseLineMgr::IsTightMu()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::IsInvTightMu()
 {
     return PassMuTightID() &&
@@ -498,7 +498,7 @@ BaseLineMgr::PassImpactParameter()
 
     return true;
 }
-    
+
 bool
 BaseLineMgr::ElIDCRTight()
 {
@@ -506,17 +506,16 @@ BaseLineMgr::ElIDCRTight()
     string pos = LepAbsEta() <= 1.479 ? "Bar_" : "End_";
 
     // removing PF isolation cut
-    return
-        ElsigmaIetaIeta() <           GetVal( "El", tag + pos + "ElsigmaIetaIeta" ) &&
-        fabs( EldEtaInSeed() ) <      GetVal( "El", tag + pos + "EldEtaInSeed" ) &&
-        fabs( EldPhiIn() ) <          GetVal( "El", tag + pos + "EldPhiIn" ) &&
-        ElGsfEleHadronicOverEMCut() < GetVal( "El", tag  + pos + "HE_c0" ) + GetVal( "El", tag + pos + "HE_cE" ) / EnergySC() + GetVal( "El", tag + pos + "HE_cR" ) * EvtRho() / EnergySC() &&
-        fabs( GsfEleEInverseMinusPInverseCut() ) < GetVal( "El", tag + pos + "GsfEleEInverseMinusPInverseCut" ) &&
-        ElNumberOfExpectedInnerHits() <=           GetVal( "El", tag + pos + "ElNumberOfExpectedInnerHits" ) &&
-        !ElhasConv()
+    return ElsigmaIetaIeta() < GetVal( "El", tag + pos + "ElsigmaIetaIeta" ) &&
+           fabs( EldEtaInSeed() ) < GetVal( "El", tag + pos + "EldEtaInSeed" ) &&
+           fabs( EldPhiIn() ) < GetVal( "El", tag + pos + "EldPhiIn" ) &&
+           ElGsfEleHadronicOverEMCut() < GetVal( "El", tag + pos + "HE_c0" ) + GetVal( "El", tag + pos + "HE_cE" ) / EnergySC() + GetVal( "El", tag + pos + "HE_cR" ) * EvtRho() / EnergySC() &&
+           fabs( GsfEleEInverseMinusPInverseCut() ) < GetVal( "El", tag + pos + "GsfEleEInverseMinusPInverseCut" ) &&
+           ElNumberOfExpectedInnerHits() <= GetVal( "El", tag + pos + "ElNumberOfExpectedInnerHits" ) &&
+           !ElhasConv()
     ;
 }
-    
+
 bool
 BaseLineMgr::ElIDCRLoose()
 {
@@ -524,21 +523,20 @@ BaseLineMgr::ElIDCRLoose()
     string pos = LepAbsEta() <= 1.479 ? "Bar_" : "End_";
 
     // removing PF isolation cut
-    return
-        ElsigmaIetaIeta() <           GetVal( "El", tag + pos + "ElsigmaIetaIeta" ) &&
-        fabs( EldEtaInSeed() ) <      GetVal( "El", tag + pos + "EldEtaInSeed" ) &&
-        fabs( EldPhiIn() ) <          GetVal( "El", tag + pos + "EldPhiIn" ) &&
-        ElGsfEleHadronicOverEMCut() < GetVal( "El", tag  + pos + "HE_c0" ) + GetVal( "El", tag + pos + "HE_cE" ) / EnergySC() + GetVal( "El", tag + pos + "HE_cR" ) * EvtRho() / EnergySC() &&
-        fabs( GsfEleEInverseMinusPInverseCut() ) < GetVal( "El", tag + pos + "GsfEleEInverseMinusPInverseCut" ) &&
-        ElNumberOfExpectedInnerHits() <=           GetVal( "El", tag + pos + "ElNumberOfExpectedInnerHits" ) &&
-        !ElhasConv()
+    return ElsigmaIetaIeta() < GetVal( "El", tag + pos + "ElsigmaIetaIeta" ) &&
+           fabs( EldEtaInSeed() ) < GetVal( "El", tag + pos + "EldEtaInSeed" ) &&
+           fabs( EldPhiIn() ) < GetVal( "El", tag + pos + "EldPhiIn" ) &&
+           ElGsfEleHadronicOverEMCut() < GetVal( "El", tag + pos + "HE_c0" ) + GetVal( "El", tag + pos + "HE_cE" ) / EnergySC() + GetVal( "El", tag + pos + "HE_cR" ) * EvtRho() / EnergySC() &&
+           fabs( GsfEleEInverseMinusPInverseCut() ) < GetVal( "El", tag + pos + "GsfEleEInverseMinusPInverseCut" ) &&
+           ElNumberOfExpectedInnerHits() <= GetVal( "El", tag + pos + "ElNumberOfExpectedInnerHits" ) &&
+           !ElhasConv()
     ;
 }
 
 bool
 BaseLineMgr::PassElLooseKinematic()
 {
-    return LepPt() >     GetVal( "El", "LoosePt" ) &&
+    return LepPt() > GetVal( "El", "LoosePt" ) &&
            LepAbsEta() < GetVal( "El", "LooseAbsEta" ) &&
            !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
     ;
@@ -559,7 +557,8 @@ BaseLineMgr::PassElCRLooseID()
 bool
 BaseLineMgr::IsLooseEl()
 {
-    return PassElLooseID() &&
+    return PassImpactParameter() &&
+           PassElLooseID() &&
            PassElLooseKinematic()
     ;
 }
@@ -567,7 +566,8 @@ BaseLineMgr::IsLooseEl()
 bool
 BaseLineMgr::IsCRLooseEl()
 {
-    return PassElCRLooseID() &&
+    return PassImpactParameter() &&
+           PassElCRLooseID() &&
            PassElLooseKinematic()
     ;
 }
@@ -581,7 +581,7 @@ BaseLineMgr::PassElTightID()
 bool
 BaseLineMgr::PassElTightKinematic()
 {
-    return LepPt() >     GetVal( "El", "TightPt" ) &&
+    return LepPt() > GetVal( "El", "TightPt" ) &&
            LepAbsEta() < GetVal( "El", "TightAbsEta" ) &&
            !( LepAbsEta() > 1.44 && LepAbsEta() < 1.57 )
     ;
@@ -615,11 +615,11 @@ BaseLineMgr::IsPreTightEl()
     ;
 }
 
-bool 
+bool
 BaseLineMgr::PassElTightISO()
 {
     string tag = "Tight_";
     string pos = LepAbsEta() <= 1.479 ? "Bar_" : "End_";
 
-    return ElPFISO() < GetVal( "El", tag + pos + "ISOc0") + GetVal( "El", tag + pos + "ISOcpt" ) / LepPt();
+    return ElPFISO() < GetVal( "El", tag + pos + "ISOc0" ) + GetVal( "El", tag + pos + "ISOcpt" ) / LepPt();
 }

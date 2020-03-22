@@ -18,18 +18,16 @@ BaseLineMgr::GetSFTH2( TH2D* hist, double eta, double pt, const int& stat )
 {
     // Pt-Eta plot
     if( hist->GetXaxis()->GetXmax() > 3 ){
-        
         // absEta Plot
         if( hist->GetYaxis()->GetXmin() >= 0 ){
             eta = fabs( eta );
         }
         eta = min( eta, hist->GetYaxis()->GetXmax() - 0.01 );
         eta = max( eta, hist->GetYaxis()->GetXmin() + 0.01 );
-        pt  = min( pt,  hist->GetXaxis()->GetXmax() - 0.01 );
+        pt  = min( pt, hist->GetXaxis()->GetXmax() - 0.01 );
 
         return hist->GetBinContent( hist->FindFixBin( pt, eta ) ) + stat * hist->GetBinError( hist->FindFixBin( pt, eta ) );
     }
-    
     // Eta-Pt plot
     else{
         // absEta Plot
@@ -38,7 +36,7 @@ BaseLineMgr::GetSFTH2( TH2D* hist, double eta, double pt, const int& stat )
         }
         eta = min( eta, hist->GetXaxis()->GetXmax() - 0.01 );
         eta = max( eta, hist->GetXaxis()->GetXmin() + 0.01 );
-        pt  = min( pt,  hist->GetYaxis()->GetXmax() - 0.01 );
+        pt  = min( pt, hist->GetYaxis()->GetXmax() - 0.01 );
 
         return hist->GetBinContent( hist->FindFixBin( eta, pt ) ) + stat * hist->GetBinError( hist->FindFixBin( eta, pt ) );
     }
@@ -48,6 +46,7 @@ void
 BaseLineMgr::InitBtagWeight( const string& tagger, const string& filename )
 {
     _calib = new BTagCalibration( tagger, filename );
+
     for( int i = BTagEntry::OP_LOOSE; i != BTagEntry::OP_RESHAPING; ++i ){
         _reader_map[ BTagEntry::OperatingPoint( i ) ] = BTagCalibrationReader(
             BTagEntry::OperatingPoint( i ),// operating point
@@ -106,14 +105,14 @@ BaseLineMgr::TopPtWeight()
     return sqrt( topweight * antitopweight );
 }
 
-float 
+float
 BaseLineMgr::PDFWeight( const int& idx )
 {
     // pdf100 10-109 as117 110 as119 111
     return _gen.LHESystematicWeights[ idx ] / _gen.LHEOriginalWeight;
 }
 
-float  
+float
 BaseLineMgr::muFmuRWeight( const int& idx )
 {
     // anti-correlated variation are dropped

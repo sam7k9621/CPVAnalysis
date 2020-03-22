@@ -8,9 +8,9 @@
 #define __BPRIMEKIT_FORMAT_H__
 
 // ------------------------------  Required libraries  -------------------------------
+#include <string>
 #include <TTree.h>
 #include <vector>
-#include <string>
 // -------------------------------  Size limitations  --------------------------------
 #define MAX_LEPTONS        256
 #define MAX_TRACKS         256
@@ -23,7 +23,7 @@
 #define MAX_TRGOBJS        64
 #define N_TRIGGER_BOOKINGS 3000
 
-template <class T> 
+template<class T>
 inline void
 SetBranchAddress( TTree* root, const std::string& bname, T** add )
 {
@@ -32,16 +32,14 @@ SetBranchAddress( TTree* root, const std::string& bname, T** add )
     }
 }
 
-template <class T> 
+template<class T>
 inline void
 SetBranchAddress( TTree* root, const std::string& bname, T* add )
 {
-    
     if( root->GetBranchStatus( bname.c_str() ) ){
         root->SetBranchAddress( bname.c_str(), add );
     }
 }
-
 
 class EvtInfoBranches {
     public:
@@ -739,58 +737,58 @@ class JetInfoBranches {
             SetBranchAddress( root, ( name + ".topJetMass" ).c_str(),                                topJetMass );
             SetBranchAddress( root, ( name + ".ca8TopMass" ).c_str(),                                ca8TopMass );
             SetBranchAddress( root, ( name + ".ca8MinMass" ).c_str(),                                ca8MinMass );
-            SubjetMass = 0;
-            SubjetPt = 0;
-            SubjetEt = 0;
-            SubjetEta = 0;
-            SubjetPhi = 0;
-            SubjetArea = 0;
-            SubjetPtUncorr = 0;
-            SubjetCombinedSVBJetTags = 0;
-            SubjetDeepCSVJetTags_probb = 0;
-            SubjetDeepCSVJetTags_probbb = 0;
-            SubjetDeepCSVJetTags_probc = 0;
-            SubjetDeepCSVJetTags_probudsg = 0;
+            SubjetMass                         = 0;
+            SubjetPt                           = 0;
+            SubjetEt                           = 0;
+            SubjetEta                          = 0;
+            SubjetPhi                          = 0;
+            SubjetArea                         = 0;
+            SubjetPtUncorr                     = 0;
+            SubjetCombinedSVBJetTags           = 0;
+            SubjetDeepCSVJetTags_probb         = 0;
+            SubjetDeepCSVJetTags_probbb        = 0;
+            SubjetDeepCSVJetTags_probc         = 0;
+            SubjetDeepCSVJetTags_probudsg      = 0;
             SubjetsummaryDeepCSVJetTags_BvsAll = 0;
-            SubjetsummaryDeepCSVJetTags_CvsB = 0;
-            SubjetsummaryDeepCSVJetTags_CvsL = 0;
-            PuppiSoftDrop_SubjetECFb1N2 = 0;
-            PuppiSoftDrop_SubjetECFb1N3 = 0;
-            SubjetGenPdgId = 0;
-            SubjetGenFlavour = 0;
-            SubjetHadronFlavour = 0;
-            SetBranchAddress( root, ( name + ".SubjetMass" ).c_str(),                                &SubjetMass );
-            SetBranchAddress( root, ( name + ".SubjetPt" ).c_str(),                                  &SubjetPt );
-            SetBranchAddress( root, ( name + ".SubjetEt" ).c_str(),                                  &SubjetEt );
-            SetBranchAddress( root, ( name + ".SubjetEta" ).c_str(),                                 &SubjetEta );
-            SetBranchAddress( root, ( name + ".SubjetPhi" ).c_str(),                                 &SubjetPhi );
-            SetBranchAddress( root, ( name + ".SubjetArea" ).c_str(),                                &SubjetArea );
-            SetBranchAddress( root, ( name + ".SubjetPtUncorr" ).c_str(),                            &SubjetPtUncorr );
-            SetBranchAddress( root, ( name + ".SubjetCombinedSVBJetTags" ).c_str(),                  &SubjetCombinedSVBJetTags );
-            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probb" ).c_str(),                &SubjetDeepCSVJetTags_probb );
-            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probbb" ).c_str(),               &SubjetDeepCSVJetTags_probbb );
-            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probc" ).c_str(),                &SubjetDeepCSVJetTags_probc );
-            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probudsg" ).c_str(),             &SubjetDeepCSVJetTags_probudsg );
-            SetBranchAddress( root, ( name + ".SubjetsummaryDeepCSVJetTags_BvsAll" ).c_str(),        &SubjetsummaryDeepCSVJetTags_BvsAll );
-            SetBranchAddress( root, ( name + ".SubjetsummaryDeepCSVJetTags_CvsB" ).c_str(),          &SubjetsummaryDeepCSVJetTags_CvsB );
-            SetBranchAddress( root, ( name + ".SubjetsummaryDeepCSVJetTags_CvsL" ).c_str(),          &SubjetsummaryDeepCSVJetTags_CvsL );
-            SetBranchAddress( root, ( name + ".PuppiSoftDrop_SubjetECFb1N2" ).c_str(),               &PuppiSoftDrop_SubjetECFb1N2 );
-            SetBranchAddress( root, ( name + ".PuppiSoftDrop_SubjetECFb1N3" ).c_str(),               &PuppiSoftDrop_SubjetECFb1N3 );
-            SetBranchAddress( root, ( name + ".SubjetGenPdgId" ).c_str(),                            &SubjetGenPdgId );
-            SetBranchAddress( root, ( name + ".SubjetGenFlavour" ).c_str(),                          &SubjetGenFlavour );
-            SetBranchAddress( root, ( name + ".SubjetHadronFlavour" ).c_str(),                       &SubjetHadronFlavour );
-            SetBranchAddress( root, ( name + ".TempPt1" ).c_str(),                                   TempPt1 );
-            SetBranchAddress( root, ( name + ".TempEta1" ).c_str(),                                  TempEta1 );
-            SetBranchAddress( root, ( name + ".TempPhi1" ).c_str(),                                  TempPhi1 );
-            SetBranchAddress( root, ( name + ".TempEnergy1" ).c_str(),                               TempEnergy1 );
-            SetBranchAddress( root, ( name + ".TempPt2" ).c_str(),                                   TempPt2 );
-            SetBranchAddress( root, ( name + ".TempEta2" ).c_str(),                                  TempEta2 );
-            SetBranchAddress( root, ( name + ".TempPhi2" ).c_str(),                                  TempPhi2 );
-            SetBranchAddress( root, ( name + ".TempEnergy2" ).c_str(),                               TempEnergy2 );
-            SetBranchAddress( root, ( name + ".TempFloat1" ).c_str(),                                TempFloat1 );
-            SetBranchAddress( root, ( name + ".TempFloat2" ).c_str(),                                TempFloat2 );
-            SetBranchAddress( root, ( name + ".TempFloat3" ).c_str(),                                TempFloat3 );
-            SetBranchAddress( root, ( name + ".TempFloat4" ).c_str(),                                TempFloat4 );
+            SubjetsummaryDeepCSVJetTags_CvsB   = 0;
+            SubjetsummaryDeepCSVJetTags_CvsL   = 0;
+            PuppiSoftDrop_SubjetECFb1N2        = 0;
+            PuppiSoftDrop_SubjetECFb1N3        = 0;
+            SubjetGenPdgId                     = 0;
+            SubjetGenFlavour                   = 0;
+            SubjetHadronFlavour                = 0;
+            SetBranchAddress( root, ( name + ".SubjetMass" ).c_str(),                         &SubjetMass );
+            SetBranchAddress( root, ( name + ".SubjetPt" ).c_str(),                           &SubjetPt );
+            SetBranchAddress( root, ( name + ".SubjetEt" ).c_str(),                           &SubjetEt );
+            SetBranchAddress( root, ( name + ".SubjetEta" ).c_str(),                          &SubjetEta );
+            SetBranchAddress( root, ( name + ".SubjetPhi" ).c_str(),                          &SubjetPhi );
+            SetBranchAddress( root, ( name + ".SubjetArea" ).c_str(),                         &SubjetArea );
+            SetBranchAddress( root, ( name + ".SubjetPtUncorr" ).c_str(),                     &SubjetPtUncorr );
+            SetBranchAddress( root, ( name + ".SubjetCombinedSVBJetTags" ).c_str(),           &SubjetCombinedSVBJetTags );
+            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probb" ).c_str(),         &SubjetDeepCSVJetTags_probb );
+            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probbb" ).c_str(),        &SubjetDeepCSVJetTags_probbb );
+            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probc" ).c_str(),         &SubjetDeepCSVJetTags_probc );
+            SetBranchAddress( root, ( name + ".SubjetDeepCSVJetTags_probudsg" ).c_str(),      &SubjetDeepCSVJetTags_probudsg );
+            SetBranchAddress( root, ( name + ".SubjetsummaryDeepCSVJetTags_BvsAll" ).c_str(), &SubjetsummaryDeepCSVJetTags_BvsAll );
+            SetBranchAddress( root, ( name + ".SubjetsummaryDeepCSVJetTags_CvsB" ).c_str(),   &SubjetsummaryDeepCSVJetTags_CvsB );
+            SetBranchAddress( root, ( name + ".SubjetsummaryDeepCSVJetTags_CvsL" ).c_str(),   &SubjetsummaryDeepCSVJetTags_CvsL );
+            SetBranchAddress( root, ( name + ".PuppiSoftDrop_SubjetECFb1N2" ).c_str(),        &PuppiSoftDrop_SubjetECFb1N2 );
+            SetBranchAddress( root, ( name + ".PuppiSoftDrop_SubjetECFb1N3" ).c_str(),        &PuppiSoftDrop_SubjetECFb1N3 );
+            SetBranchAddress( root, ( name + ".SubjetGenPdgId" ).c_str(),                     &SubjetGenPdgId );
+            SetBranchAddress( root, ( name + ".SubjetGenFlavour" ).c_str(),                   &SubjetGenFlavour );
+            SetBranchAddress( root, ( name + ".SubjetHadronFlavour" ).c_str(),                &SubjetHadronFlavour );
+            SetBranchAddress( root, ( name + ".TempPt1" ).c_str(),                            TempPt1 );
+            SetBranchAddress( root, ( name + ".TempEta1" ).c_str(),                           TempEta1 );
+            SetBranchAddress( root, ( name + ".TempPhi1" ).c_str(),                           TempPhi1 );
+            SetBranchAddress( root, ( name + ".TempEnergy1" ).c_str(),                        TempEnergy1 );
+            SetBranchAddress( root, ( name + ".TempPt2" ).c_str(),                            TempPt2 );
+            SetBranchAddress( root, ( name + ".TempEta2" ).c_str(),                           TempEta2 );
+            SetBranchAddress( root, ( name + ".TempPhi2" ).c_str(),                           TempPhi2 );
+            SetBranchAddress( root, ( name + ".TempEnergy2" ).c_str(),                        TempEnergy2 );
+            SetBranchAddress( root, ( name + ".TempFloat1" ).c_str(),                         TempFloat1 );
+            SetBranchAddress( root, ( name + ".TempFloat2" ).c_str(),                         TempFloat2 );
+            SetBranchAddress( root, ( name + ".TempFloat3" ).c_str(),                         TempFloat3 );
+            SetBranchAddress( root, ( name + ".TempFloat4" ).c_str(),                         TempFloat4 );
         }
 };
 
@@ -1431,67 +1429,67 @@ class PhotonInfoBranches {
 
         void Register( TTree* root, const std::string& name = "PhotonInfo" )
         {
-            SetBranchAddress( root, ( name + ".Size" ),                       &Size );
-            SetBranchAddress( root, ( name + ".Pt" ),                         Pt );
-            SetBranchAddress( root, ( name + ".Eta" ),                        Eta );
-            SetBranchAddress( root, ( name + ".Phi" ),                        Phi );
-            SetBranchAddress( root, ( name + ".Px" ),                         Px );
-            SetBranchAddress( root, ( name + ".Py" ),                         Py );
-            SetBranchAddress( root, ( name + ".Pz" ),                         Pz );
-            SetBranchAddress( root, ( name + ".Energy" ),                     Energy );
-            SetBranchAddress( root, ( name + ".isPFPhoton" ),                 isPFPhoton );
-            SetBranchAddress( root, ( name + ".PhoEnergyCorrFactor" ),        PhoEnergyCorrFactor );
-            SetBranchAddress( root, ( name + ".PhoEnergyPreCorrErr" ),        PhoEnergyPreCorrErr );
-            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrErr" ),       PhoEnergyPostCorrErr );
-            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrScaleUp" ),   PhoEnergyPostCorrScaleUp );
-            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrScaleDown" ), PhoEnergyPostCorrScaleDown );
-            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrSmearUp" ),   PhoEnergyPostCorrSmearUp );
-            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrSmearDown" ), PhoEnergyPostCorrSmearDown );
-            SetBranchAddress( root, ( name + ".EgammaCutBasedPhoIdLOOSE" ),   EgammaCutBasedPhoIdLOOSE );
-            SetBranchAddress( root, ( name + ".EgammaCutBasedPhoIdMEDIUM" ),  EgammaCutBasedPhoIdMEDIUM );
-            SetBranchAddress( root, ( name + ".EgammaCutBasedPhoIdTIGHT" ),   EgammaCutBasedPhoIdTIGHT );
-            SetBranchAddress( root, ( name + ".EgammaPhoIdMVA" ).c_str(),             EgammaPhoIdMVA );
-            SetBranchAddress( root, ( name + ".ChargedHadronIsoR03" ).c_str(),        ChargedHadronIsoR03 );
-            SetBranchAddress( root, ( name + ".NeutralHadronIsoR03" ).c_str(),        NeutralHadronIsoR03 );
-            SetBranchAddress( root, ( name + ".PhotonIsoR03" ).c_str(),               PhotonIsoR03 );
-            SetBranchAddress( root, ( name + ".WorstChargedIsolationR03" ).c_str(),   WorstChargedIsolationR03 );
-            SetBranchAddress( root, ( name + ".PFChIsoRhoCorr" ).c_str(),             PFChIsoRhoCorr );
-            SetBranchAddress( root, ( name + ".PFNeuIsoRhoCorr" ).c_str(),            PFNeuIsoRhoCorr );
-            SetBranchAddress( root, ( name + ".PFPhoIsoRhoCorr" ).c_str(),            PFPhoIsoRhoCorr );
-            SetBranchAddress( root, ( name + ".passelectronveto" ).c_str(),           passelectronveto );
-            SetBranchAddress( root, ( name + ".hasPixelSeed" ).c_str(),               hasPixelSeed );
-            SetBranchAddress( root, ( name + ".EtaSC" ).c_str(),                      EtaSC );
-            SetBranchAddress( root, ( name + ".PhiSC" ).c_str(),                      PhiSC );
-            SetBranchAddress( root, ( name + ".rawEnergySC" ).c_str(),                rawEnergySC );
-            SetBranchAddress( root, ( name + ".ESEnergySC" ).c_str(),                 ESEnergySC );
-            SetBranchAddress( root, ( name + ".EnergySC" ).c_str(),                   EnergySC );
-            SetBranchAddress( root, ( name + ".E5x5" ).c_str(),                       E5x5 );
-            SetBranchAddress( root, ( name + ".R9" ).c_str(),                         R9 );
-            SetBranchAddress( root, ( name + ".SigmaIetaIeta" ).c_str(),              SigmaIetaIeta );
-            SetBranchAddress( root, ( name + ".SigmaIetaIphi" ).c_str(),              SigmaIetaIphi );
-            SetBranchAddress( root, ( name + ".SigmaIphiIphi" ).c_str(),              SigmaIphiIphi );
-            SetBranchAddress( root, ( name + ".S4" ).c_str(),                         S4 );
-            SetBranchAddress( root, ( name + ".ESEffSigmaRR" ).c_str(),               ESEffSigmaRR );
-            SetBranchAddress( root, ( name + ".EtaWidth" ).c_str(),                   EtaWidth );
-            SetBranchAddress( root, ( name + ".PhiWidth" ).c_str(),                   PhiWidth );
-            SetBranchAddress( root, ( name + ".HoverE" ).c_str(),                     HoverE );
-            SetBranchAddress( root, ( name + ".hadTowOverEm" ).c_str(),               hadTowOverEm );
-            SetBranchAddress( root, ( name + ".GenPt" ).c_str(),                      GenPt );
-            SetBranchAddress( root, ( name + ".GenEta" ).c_str(),                     GenEta );
-            SetBranchAddress( root, ( name + ".GenPhi" ).c_str(),                     GenPhi );
-            SetBranchAddress( root, ( name + ".GenPdgID" ).c_str(),                   GenPdgID );
-            SetBranchAddress( root, ( name + ".TempPt1" ).c_str(),                    TempPt1 );
-            SetBranchAddress( root, ( name + ".TempEta1" ).c_str(),                   TempEta1 );
-            SetBranchAddress( root, ( name + ".TempPhi1" ).c_str(),                   TempPhi1 );
-            SetBranchAddress( root, ( name + ".TempEnergy1" ).c_str(),                TempEnergy1 );
-            SetBranchAddress( root, ( name + ".TempPt2" ).c_str(),                    TempPt2 );
-            SetBranchAddress( root, ( name + ".TempEta2" ).c_str(),                   TempEta2 );
-            SetBranchAddress( root, ( name + ".TempPhi2" ).c_str(),                   TempPhi2 );
-            SetBranchAddress( root, ( name + ".TempEnergy2" ).c_str(),                TempEnergy2 );
-            SetBranchAddress( root, ( name + ".TempFloat1" ).c_str(),                 TempFloat1 );
-            SetBranchAddress( root, ( name + ".TempFloat2" ).c_str(),                 TempFloat2 );
-            SetBranchAddress( root, ( name + ".TempFloat3" ).c_str(),                 TempFloat3 );
-            SetBranchAddress( root, ( name + ".TempFloat4" ).c_str(),                 TempFloat4 );
+            SetBranchAddress( root, ( name + ".Size" ),                             &Size );
+            SetBranchAddress( root, ( name + ".Pt" ),                               Pt );
+            SetBranchAddress( root, ( name + ".Eta" ),                              Eta );
+            SetBranchAddress( root, ( name + ".Phi" ),                              Phi );
+            SetBranchAddress( root, ( name + ".Px" ),                               Px );
+            SetBranchAddress( root, ( name + ".Py" ),                               Py );
+            SetBranchAddress( root, ( name + ".Pz" ),                               Pz );
+            SetBranchAddress( root, ( name + ".Energy" ),                           Energy );
+            SetBranchAddress( root, ( name + ".isPFPhoton" ),                       isPFPhoton );
+            SetBranchAddress( root, ( name + ".PhoEnergyCorrFactor" ),              PhoEnergyCorrFactor );
+            SetBranchAddress( root, ( name + ".PhoEnergyPreCorrErr" ),              PhoEnergyPreCorrErr );
+            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrErr" ),             PhoEnergyPostCorrErr );
+            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrScaleUp" ),         PhoEnergyPostCorrScaleUp );
+            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrScaleDown" ),       PhoEnergyPostCorrScaleDown );
+            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrSmearUp" ),         PhoEnergyPostCorrSmearUp );
+            SetBranchAddress( root, ( name + ".PhoEnergyPostCorrSmearDown" ),       PhoEnergyPostCorrSmearDown );
+            SetBranchAddress( root, ( name + ".EgammaCutBasedPhoIdLOOSE" ),         EgammaCutBasedPhoIdLOOSE );
+            SetBranchAddress( root, ( name + ".EgammaCutBasedPhoIdMEDIUM" ),        EgammaCutBasedPhoIdMEDIUM );
+            SetBranchAddress( root, ( name + ".EgammaCutBasedPhoIdTIGHT" ),         EgammaCutBasedPhoIdTIGHT );
+            SetBranchAddress( root, ( name + ".EgammaPhoIdMVA" ).c_str(),           EgammaPhoIdMVA );
+            SetBranchAddress( root, ( name + ".ChargedHadronIsoR03" ).c_str(),      ChargedHadronIsoR03 );
+            SetBranchAddress( root, ( name + ".NeutralHadronIsoR03" ).c_str(),      NeutralHadronIsoR03 );
+            SetBranchAddress( root, ( name + ".PhotonIsoR03" ).c_str(),             PhotonIsoR03 );
+            SetBranchAddress( root, ( name + ".WorstChargedIsolationR03" ).c_str(), WorstChargedIsolationR03 );
+            SetBranchAddress( root, ( name + ".PFChIsoRhoCorr" ).c_str(),           PFChIsoRhoCorr );
+            SetBranchAddress( root, ( name + ".PFNeuIsoRhoCorr" ).c_str(),          PFNeuIsoRhoCorr );
+            SetBranchAddress( root, ( name + ".PFPhoIsoRhoCorr" ).c_str(),          PFPhoIsoRhoCorr );
+            SetBranchAddress( root, ( name + ".passelectronveto" ).c_str(),         passelectronveto );
+            SetBranchAddress( root, ( name + ".hasPixelSeed" ).c_str(),             hasPixelSeed );
+            SetBranchAddress( root, ( name + ".EtaSC" ).c_str(),                    EtaSC );
+            SetBranchAddress( root, ( name + ".PhiSC" ).c_str(),                    PhiSC );
+            SetBranchAddress( root, ( name + ".rawEnergySC" ).c_str(),              rawEnergySC );
+            SetBranchAddress( root, ( name + ".ESEnergySC" ).c_str(),               ESEnergySC );
+            SetBranchAddress( root, ( name + ".EnergySC" ).c_str(),                 EnergySC );
+            SetBranchAddress( root, ( name + ".E5x5" ).c_str(),                     E5x5 );
+            SetBranchAddress( root, ( name + ".R9" ).c_str(),                       R9 );
+            SetBranchAddress( root, ( name + ".SigmaIetaIeta" ).c_str(),            SigmaIetaIeta );
+            SetBranchAddress( root, ( name + ".SigmaIetaIphi" ).c_str(),            SigmaIetaIphi );
+            SetBranchAddress( root, ( name + ".SigmaIphiIphi" ).c_str(),            SigmaIphiIphi );
+            SetBranchAddress( root, ( name + ".S4" ).c_str(),                       S4 );
+            SetBranchAddress( root, ( name + ".ESEffSigmaRR" ).c_str(),             ESEffSigmaRR );
+            SetBranchAddress( root, ( name + ".EtaWidth" ).c_str(),                 EtaWidth );
+            SetBranchAddress( root, ( name + ".PhiWidth" ).c_str(),                 PhiWidth );
+            SetBranchAddress( root, ( name + ".HoverE" ).c_str(),                   HoverE );
+            SetBranchAddress( root, ( name + ".hadTowOverEm" ).c_str(),             hadTowOverEm );
+            SetBranchAddress( root, ( name + ".GenPt" ).c_str(),                    GenPt );
+            SetBranchAddress( root, ( name + ".GenEta" ).c_str(),                   GenEta );
+            SetBranchAddress( root, ( name + ".GenPhi" ).c_str(),                   GenPhi );
+            SetBranchAddress( root, ( name + ".GenPdgID" ).c_str(),                 GenPdgID );
+            SetBranchAddress( root, ( name + ".TempPt1" ).c_str(),                  TempPt1 );
+            SetBranchAddress( root, ( name + ".TempEta1" ).c_str(),                 TempEta1 );
+            SetBranchAddress( root, ( name + ".TempPhi1" ).c_str(),                 TempPhi1 );
+            SetBranchAddress( root, ( name + ".TempEnergy1" ).c_str(),              TempEnergy1 );
+            SetBranchAddress( root, ( name + ".TempPt2" ).c_str(),                  TempPt2 );
+            SetBranchAddress( root, ( name + ".TempEta2" ).c_str(),                 TempEta2 );
+            SetBranchAddress( root, ( name + ".TempPhi2" ).c_str(),                 TempPhi2 );
+            SetBranchAddress( root, ( name + ".TempEnergy2" ).c_str(),              TempEnergy2 );
+            SetBranchAddress( root, ( name + ".TempFloat1" ).c_str(),               TempFloat1 );
+            SetBranchAddress( root, ( name + ".TempFloat2" ).c_str(),               TempFloat2 );
+            SetBranchAddress( root, ( name + ".TempFloat3" ).c_str(),               TempFloat3 );
+            SetBranchAddress( root, ( name + ".TempFloat4" ).c_str(),               TempFloat4 );
         }
 };
 
@@ -1541,8 +1539,8 @@ class TrgInfoBranches {
 
         void Register( TTree* root, const std::string& name = "TrgInfo" )
         {
-            SetBranchAddress( root, ( name + ".Size" ), &Size );
-            SetBranchAddress( root, ( name + ".TriggerBit" ), TriggerBit );
+            SetBranchAddress( root, ( name + ".Size" ),                       &Size );
+            SetBranchAddress( root, ( name + ".TriggerBit" ),                 TriggerBit );
             SetBranchAddress( root, ( name + ".FilterLabel" ).c_str(),        FilterLabel );
             SetBranchAddress( root, ( name + ".Pt" ).c_str(),                 Pt );
             SetBranchAddress( root, ( name + ".Eta" ).c_str(),                Eta );

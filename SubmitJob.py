@@ -21,12 +21,12 @@ sub ="""
 executable = {0}/src/CPVAnalysis/SentJob.sh
 
 arguments  = $(base) $(cmd) $(ClusterID) $(ProcId)
-output     = /afs/cern.ch/user/p/pusheng/condor/output/{1}-{2}.$(ClusterID).$(ProcId).out 
-error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}-{2}.$(ClusterID).$(ProcId).err 
-log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}-{2}.$(ClusterID).$(ProcId).log 
+output     = /afs/cern.ch/user/p/pusheng/condor/output/{1}_$(ClusterID)_$(ProcId).out 
+error      = /afs/cern.ch/user/p/pusheng/condor/error/{1}_$(ClusterID)_$(ProcId).err 
+log        = /afs/cern.ch/user/p/pusheng/condor/log/{1}_$(ClusterID)_$(ProcId).log
 
 requirements = (OpSysAndVer =?= "CentOS7")
-+JobFlavour = "longlunch"
++JobFlavour = "microcentury"
 
 queue base,cmd from job.dat
 """
@@ -48,13 +48,14 @@ def CondorJob( opt, samplelst ):
     output_dat = open( "job.dat", 'w' )
     for sample in samplelst:
         command = "{} --{} {}".format( opt.Command, opt.InputOption, sample )
+        command = ' '.join( command.split() )
         output_dat.write( '{0}, {1}\n'.format( CMSSW_BASE, command ) )
     output_dat.close()
 
     output_sub = open( "job.sub", 'w' )
-    output_sub.write( sub.format( CMSSW_BASE, datetime.datetime.now().strftime("%m-%d-%H:%M"), MakeName( opt.Command.split(" ", 1 ) ) ) )
+    output_sub.write( sub.format( CMSSW_BASE, datetime.datetime.now().strftime("%m_%d_%H:%M") ) )
     output_sub.close()
-   
+  
     os.system( "condor_submit {}".format( "job.sub" ) )
     os.system( "rm job.sub" ) 
     os.system( "rm job.dat" ) 
@@ -63,6 +64,7 @@ def QJob( opt, samplelst ):
     outputfilelst = []
     for sample in samplelst:
         command = "{} --{} {}".format(opt.Command, opt.InputOption, sample)
+        command = ' '.join( command.split() )
         
         outputfilename = ".{}.sh".format( command.replace(" ", "") )
         outputfilelst.append( outputfilename )
@@ -74,21 +76,9 @@ def QJob( opt, samplelst ):
         sys.stdout.flush()
 
     filelst = " ".join( outputfilelst )
-    cmd = "nohup ./SentQJob.py -r {} -q {} -i {} > {}.out &".format( opt.maxRunJobs, opt.maxQueJobs, filelst, MakeName( opt.Command.split(" ", 1 ) ))
+    cmd = "nohup ./SentQJob.py -r {} -q {} -i {} > {}.out &".format( opt.maxRunJobs, opt.maxQueJobs, filelst, command.replace( " ", "_" ) )
     os.system( cmd )
     print "DONE"
-
-def MakeName( command ):
-    cmd     = command[0]
-    trailer = command[1]
-    for t in trailer.split(' '):
-        if "--" in t:
-            cmd += "_" + t[2:]
-        elif "-" in t:
-            pass 
-        else:
-            cmd += "_" + t
-    return cmd
 
 def main(args):
     parser = argparse.ArgumentParser( "Submit jobs for commands" )
@@ -118,7 +108,9 @@ def main(args):
     samplelst = []
     for s in opt.Samplelst:
         samplelst += getattr( samplemod, s )
-    samplelst = [ x for x in samplelst if any( y in x for y in opt.Extract )]
+   
+    if opt.Extract:
+        samplelst = [ x for x in samplelst if any( y in x for y in opt.Extract )]
 
     if opt.Test:
         print samplelst 

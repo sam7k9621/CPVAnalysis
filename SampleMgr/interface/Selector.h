@@ -31,12 +31,12 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Common
         *******************************************************************************/
-        bool IsGrid5();
-        bool IsLxplus();
-        std::string GetResultsName( const std::string&, const std::string&, std::string="FullCut" );
+        bool        IsGrid5();
+        bool        IsLxplus();
+        std::string GetResultsName( const std::string&, const std::string&, const bool& = false );
         std::string Discript( TH1* );
         bool        OptionContent( const std::string&, const std::string& );
-        double GetZmass( const std::vector<int>& );
+        double      GetZmass( const std::vector<int>& );
 
         float GetJetPt( const int& i )
         {
@@ -84,33 +84,35 @@ class Selector : public mgr::Pathmgr,
             _sample->SetIndex( i );
             return _sample->LepEta();
         }
+
         /*******************************************************************************
         *   Weight
         *******************************************************************************/
-        void   GetSelJet( std::vector<int>&, std::vector<int>& );
-        void   Fill2DBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
-        void   Fill1DBtagEff_Pt( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
-        void   Fill1DBtagEff_Eta( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
-        double GetLepSF( TH2D*, const int& );
-        double GetLepSFUp( TH2D*, const int& );
-        double GetLepSFDn( TH2D*, const int& );
-        double GetJetSF( TH2D*, const int& );
-        double GetJetSFUp( TH2D*, const int& );
-        double GetJetSFDn( TH2D*, const int& );
-        float GenWeight()                 { return _sample->GenWeight(); }
-        float GetPUWeight()               { return _sample->GetPUWeight(); }
-        float GetPUWeightUp()             { return _sample->GetPUWeightUp(); }
-        float GetPUWeightDn()             { return _sample->GetPUWeightDn(); }
-        void  RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
-        TH2D*  GetSFHist( const std::string& );
-        void   InitBtagWeight( const std::string&, const std::string& );
-        TH2D*  GetBtagEffPlot( const int& );
+        void                 GetSelJet( std::vector<int>&, std::vector<int>& );
+        void                 Fill2DBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        void                 Fill1DBtagEff_Pt( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        void                 Fill1DBtagEff_Eta( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        double               GetLepSF( TH2D*, const int& );
+        double               GetLepSFUp( TH2D*, const int& );
+        double               GetLepSFDn( TH2D*, const int& );
+        double               GetJetSF( TH2D*, const int& );
+        double               GetJetSFUp( TH2D*, const int& );
+        double               GetJetSFDn( TH2D*, const int& );
+        float                GenWeight()                 { return _sample->GenWeight(); }
+        float                GetPUWeight()               { return _sample->GetPUWeight(); }
+        float                GetPUWeightUp()             { return _sample->GetPUWeightUp(); }
+        float                GetPUWeightDn()             { return _sample->GetPUWeightDn(); }
+        void                 RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
+        TH2D*                GetSFHist( const std::string& );
+        void                 InitBtagWeight( const std::string&, const std::string& );
+        TH2D*                GetBtagEffPlot( const int& );
         BTagEntry::JetFlavor GetBtagFlavor( const int& );
-        double  GetTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint& =BTagEntry::OP_MEDIUM);
-        double  GetNonTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint& =BTagEntry::OP_MEDIUM );
-        double GetBtagWeight( const std::vector<int>&, const std::vector<int>&, const std::string& ="central" );
-        double GetBtagWeight_CR( const std::vector<int>&, const std::vector<int>& );
-       
+        double               GetTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint&    = BTagEntry::OP_MEDIUM );
+        double               GetNonTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint& = BTagEntry::OP_MEDIUM );
+        double               GetBtagWeight( const std::vector<int>&, const std::vector<int>&, const std::string&            = "central" );
+        double               GetBtagWeight_CR_0b( const std::vector<int>&, const std::vector<int>& );
+        double               GetBtagWeight_CR_1b( const std::vector<int>&, const std::vector<int>& );
+
         /*******************************************************************************
         *   Pre-selection
         *******************************************************************************/
@@ -130,30 +132,30 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Full-selection
         *******************************************************************************/
-        bool PassFullLepton         ( std::vector<int>&, const std::string& );
+        bool PassFullLepton( std::vector<int>&, const std::string& );
         bool PassFullLepton_CRDYJets( std::vector<int>&, const std::string& );
-        bool PassFullLepton_CRQCD   ( std::vector<int>&, const std::string& );
-        bool PassFullLepton_CRWJets ( std::vector<int>&, const std::string& );
+        bool PassFullLepton_CRQCD( std::vector<int>&, const std::string& );
+        bool PassFullLepton_CRWJets( std::vector<int>&, const std::string& );
 
         bool                                      PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullJet_CR_1b( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullJet_CR_0b( std::vector<int>&, std::vector<int>&, const int& );
         bool                                      PassFullJet_CRDYJets( std::vector<int>& );
-        bool                                      PassFullJet_CRQCD( std::vector<int>&, std::vector<int>&, const int& );
-        bool                                      PassFullJet_CRWJets( std::vector<int>&, std::vector<int>&, const int& );
         std::tuple<double, double, int, int, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
         double                                    GetLeptonicM( const int&, const int& );
 
         /*******************************************************************************
         *   Looping event
         *******************************************************************************/
-        void process( const int&, const int& );
+        void         process( const int&, const int& );
         BaseLineMgr* GetSample(){ return _sample; }
 
     private:
 
         BaseLineMgr* _sample;
-        TH2D*        _eff_b;
-        TH2D*        _eff_c;
-        TH2D*        _eff_l;
+        TH2D* _eff_b;
+        TH2D* _eff_c;
+        TH2D* _eff_l;
 };
 
 #endif

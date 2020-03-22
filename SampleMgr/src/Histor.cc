@@ -28,7 +28,7 @@ Histor::AddSample( const string& sample )
 void
 Histor::AddSample( const string& sample, TChain* ch )
 {
-    _sample = new BaseLineMgr( GetOption<string>( "year") + "Selection.py", sample );
+    _sample = new BaseLineMgr( GetOption<string>( "year" ) + "Selection.py", sample );
     _sample->Register( ch );
 }
 
@@ -45,7 +45,7 @@ BTagEntry::JetFlavor
 Histor::GetBtagFlavor( const int& idx )
 {
     _sample->SetIndex( idx );
-    
+
     if( fabs( _sample->GenJetFlavor() ) == 5 ){
         return BTagEntry::FLAV_B;
     }
@@ -57,35 +57,44 @@ Histor::GetBtagFlavor( const int& idx )
     }
 }
 
-double 
+double
 Histor::GetBtagSF( const int& jidx )
 {
     return _sample->BtagScaleFactor( jidx, BTagEntry::OP_LOOSE, GetBtagFlavor( jidx ), "central" );
 }
 
-bool 
+bool
 Histor::PassHLT( const vector<int>& hlt )
 {
     return _sample->PassHLT( hlt );
 }
-   
-bool 
+
+bool
 Histor::PassISOLepton( const int& jid, const int& lid )
 {
     return _sample->IsIsoLepton( lid, jid );
 }
 
 bool 
-Histor::HasLooseB( const initializer_list<int>& list )
+Histor::PassFullLepton_CRWJets( const string& lepton )
 {
-    for( const auto& l : list ){
-        _sample->SetIndex( l );
-        if( _sample->PassDeepCSVL() ){
-            return true;
+    for( int i = 0; i < _sample->Lsize(); i++ ){
+        _sample->SetIndex( i );
+
+        // assign Tight lepton
+        if( lepton == "el" && _sample->IsTightEl() ){
+            continue;
+        }
+        else if( lepton == "mu" && _sample->IsTightMu() ){
+            continue;
+        }
+        
+        // veto Loose lepton
+        if( _sample->IsCRLooseMu() || _sample->IsCRLooseEl() ){
+            return false;
         }
     }
-
-    return false;
+    return true;
 }
 
 string
@@ -142,14 +151,14 @@ Histor::AddHist2D(
     _sample->AddHist2D( label, xtitle, ytitle, xbin, xmin, xmax, ybin, ymin, ymax );
 }
 
-float 
+float
 Histor::GetMuISO( const int& i )
 {
     _sample->SetIndex( i );
     return _sample->RelIsoR04();
 }
 
-float 
+float
 Histor::GetElISO( const int& i )
 {
     _sample->SetIndex( i );
@@ -211,13 +220,13 @@ Histor::TopPtWeight()
     return _sample->TopPtWeight();
 }
 
-float 
+float
 Histor::PDFWeight( const int& idx )
 {
     return _sample->PDFWeight( idx );
 }
 
-float 
+float
 Histor::muFmuRWeight( const int& idx )
 {
     return _sample->muFmuRWeight( idx );

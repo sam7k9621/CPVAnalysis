@@ -1,8 +1,8 @@
 #include "CPVAnalysis/SampleMgr/interface/Selector.h"
 #include "ManagerUtils/Common/interface/ProgressBar.hpp"
+#include "TFile.h"
 #include <algorithm>
 #include <math.h>
-#include "TFile.h"
 using namespace std;
 
 /*******************************************************************************
@@ -14,9 +14,9 @@ Selector::Selector( const string& subdir, const string& py ) :
     Parsermgr()
 {
     _sample = NULL;
-    _eff_b = NULL;
-    _eff_c = NULL;
-    _eff_l = NULL;
+    _eff_b  = NULL;
+    _eff_c  = NULL;
+    _eff_l  = NULL;
 }
 
 Selector::~Selector()
@@ -31,7 +31,7 @@ Selector::AddSample( TChain* ch, const string& sample )
     _sample->Register( ch );
 }
 
-void 
+void
 Selector::InitBtagEffPlot( TH2D* b, TH2D* c, TH2D* l )
 {
     _eff_b = b;
@@ -53,19 +53,19 @@ Selector::IsLxplus()
 {
     return HostName().find( "cern" ) != string::npos;
 }
-    
+
 string
-Selector::GetResultsName( const string& type, const string& prefix, string dir )
+Selector::GetResultsName( const string& type, const string& prefix, const bool& eos )
 {
     string ans = OptName();
-    dir = IsLxplus() ? "/eos/cms/store/user/pusheng/public" / dir : ResultsDir();
-    
+    string dir = IsLxplus() ? "/eos/cms/store/user/pusheng/public" / prefix : ResultsDir();
+
     if( prefix == "" ){
         ans.erase( ans.begin() );
     }
 
     if( type == "" ){
-        return  dir / ( prefix + ans );
+        return dir / ( prefix + ans );
     }
     else{
         return dir / ( prefix + ans + "." + type );
@@ -84,27 +84,25 @@ bool
 Selector::OptionContent( const string& opt, const string& content )
 {
     if( CheckOption( opt ) ){
-        if( GetOption<string>( opt ) == content ){
-            return true;
-        }
+        return GetOption<string>( opt ).find( content ) != std::string::npos;
     }
 
     return false;
 }
 
-double 
+double
 Selector::GetZmass( const vector<int>& lepidx )
 {
-    return ( _sample->GetLepP4( lepidx[0] ) + _sample->GetLepP4( lepidx[1] ) ).M();
+    return ( _sample->GetLepP4( lepidx[ 0 ] ) + _sample->GetLepP4( lepidx[ 1 ] ) ).M();
 }
 
 /*******************************************************************************
 *   Weight
 *******************************************************************************/
-void 
+void
 Selector::GetSelJet( vector<int>& jetlst, vector<int>& jetlst_test )
 {
-    for( int i = 0; i< _sample->Jsize(); i++ ){
+    for( int i = 0; i < _sample->Jsize(); i++ ){
         _sample->SetIndex( i );
 
         if( _sample->IsSelJet() ){
@@ -116,30 +114,30 @@ Selector::GetSelJet( vector<int>& jetlst, vector<int>& jetlst_test )
         }
     }
 }
-   
+
 void
 Selector::Fill2DBtagEff( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
 {
     for( auto j : jetlst ){
         _sample->SetIndex( j );
-        
+
         if( fabs( _sample->GenJetFlavor() ) == 5 ){
-            eff_b->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetPt(), _sample->JetEta()
-                    );
+            eff_b->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetPt(), _sample->JetEta()
+                );
         }
         else if( fabs( _sample->GenJetFlavor() ) == 4 ){
-            eff_c->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetPt(), _sample->JetEta()
-                    );
+            eff_c->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetPt(), _sample->JetEta()
+                );
         }
         else{
-            eff_l->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetPt(), _sample->JetEta()
-                    );
+            eff_l->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetPt(), _sample->JetEta()
+                );
         }
     }
 }
@@ -149,24 +147,24 @@ Selector::Fill1DBtagEff_Pt( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency*
 {
     for( auto j : jetlst ){
         _sample->SetIndex( j );
-        
+
         if( fabs( _sample->GenJetFlavor() ) == 5 ){
-            eff_b->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetPt()
-                    );
+            eff_b->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetPt()
+                );
         }
         else if( fabs( _sample->GenJetFlavor() ) == 4 ){
-            eff_c->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetPt()
-                    );
+            eff_c->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetPt()
+                );
         }
         else{
-            eff_l->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetPt()
-                    );
+            eff_l->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetPt()
+                );
         }
     }
 }
@@ -176,24 +174,24 @@ Selector::Fill1DBtagEff_Eta( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency
 {
     for( auto j : jetlst ){
         _sample->SetIndex( j );
-        
+
         if( fabs( _sample->GenJetFlavor() ) == 5 ){
-            eff_b->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetEta()
-                    );
+            eff_b->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetEta()
+                );
         }
         else if( fabs( _sample->GenJetFlavor() ) == 4 ){
-            eff_c->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetEta()
-                    );
+            eff_c->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetEta()
+                );
         }
         else{
-            eff_l->Fill( 
-                    _sample->JetDeepCSV() >= csv,
-                    _sample->JetEta()
-                    );
+            eff_l->Fill(
+                _sample->JetDeepCSV() >= csv,
+                _sample->JetEta()
+                );
         }
     }
 }
@@ -218,6 +216,7 @@ Selector::GetLepSFDn( TH2D* hist, const int& idx )
     _sample->SetIndex( idx );
     return _sample->GetSFTH2( hist, _sample->LepEta(), _sample->LepPt(), -1 );
 }
+
 double
 Selector::GetJetSF( TH2D* hist, const int& idx )
 {
@@ -263,7 +262,7 @@ extern TH2D*
 Selector::GetBtagEffPlot( const int& idx )
 {
     _sample->SetIndex( idx );
-    
+
     if( fabs( _sample->GenJetFlavor() ) == 5 ){
         return _eff_b;
     }
@@ -279,7 +278,7 @@ extern BTagEntry::JetFlavor
 Selector::GetBtagFlavor( const int& idx )
 {
     _sample->SetIndex( idx );
-    
+
     if( fabs( _sample->GenJetFlavor() ) == 5 ){
         return BTagEntry::FLAV_B;
     }
@@ -291,7 +290,7 @@ Selector::GetBtagFlavor( const int& idx )
     }
 }
 
-extern double 
+extern double
 Selector::GetTaggedEff( const int& jidx, const bool& mc, const string& unc, const BTagEntry::OperatingPoint& wp )
 {
     double sf  = mc ? 1 : _sample->BtagScaleFactor( jidx, wp, GetBtagFlavor( jidx ), unc );
@@ -299,50 +298,70 @@ Selector::GetTaggedEff( const int& jidx, const bool& mc, const string& unc, cons
     return sf * eps;
 }
 
-extern double 
+extern double
 Selector::GetNonTaggedEff( const int& jidx, const bool& mc, const string& unc, const BTagEntry::OperatingPoint& wp )
 {
     double sf  = mc ? 1 : _sample->BtagScaleFactor( jidx, wp, GetBtagFlavor( jidx ), unc );
     double eps = GetJetSF( GetBtagEffPlot( jidx ), jidx );
-    return ( 1 - sf * eps );
+    return 1 - sf * eps;
 }
 
-double 
+double
 Selector::GetBtagWeight( const vector<int>& blst, const vector<int>& jlst, const string& unc )
 {
     double prob_m = 1.;
     double prob_d = 1.;
 
     for( const auto& b : blst ){
-        prob_m *= GetTaggedEff( b, true,  unc ); 
-        prob_d *= GetTaggedEff( b, false, unc ); 
+        prob_m *= GetTaggedEff( b, true, unc );
+        prob_d *= GetTaggedEff( b, false, unc );
     }
+
     for( const auto& j : jlst ){
-        prob_m *= GetNonTaggedEff( j, true,  unc ); 
-        prob_d *= GetNonTaggedEff( j, false, unc ); 
+        prob_m *= GetNonTaggedEff( j, true, unc );
+        prob_d *= GetNonTaggedEff( j, false, unc );
     }
-    
+
     return prob_d / prob_m;
 }
 
-double 
-Selector::GetBtagWeight_CR( const vector<int>& blst, const vector<int>& jlst )
+double
+Selector::GetBtagWeight_CR_0b( const vector<int>& blst, const vector<int>& jlst )
 {
     double prob_m = 1.;
     double prob_d = 1.;
 
     for( const auto& b : blst ){
-        prob_m *= GetNonTaggedEff( b, true,  "central", BTagEntry::OP_LOOSE ); 
-        prob_d *= GetNonTaggedEff( b, false, "central", BTagEntry::OP_LOOSE ); 
+        prob_m *= GetNonTaggedEff( b, true, "central", BTagEntry::OP_LOOSE );
+        prob_d *= GetNonTaggedEff( b, false, "central", BTagEntry::OP_LOOSE );
     }
+
     for( const auto& j : jlst ){
-        prob_m *= GetNonTaggedEff( j, true,  "central", BTagEntry::OP_LOOSE ); 
-        prob_d *= GetNonTaggedEff( j, false, "central", BTagEntry::OP_LOOSE ); 
+        prob_m *= GetNonTaggedEff( j, true, "central", BTagEntry::OP_LOOSE );
+        prob_d *= GetNonTaggedEff( j, false, "central", BTagEntry::OP_LOOSE );
     }
-    
+
     return prob_d / prob_m;
 }
 
+double
+Selector::GetBtagWeight_CR_1b( const vector<int>& blst, const vector<int>& jlst )
+{
+    double prob_m = 1.;
+    double prob_d = 1.;
+
+    prob_m *= GetTaggedEff( blst[0], true,  "central" );
+    prob_d *= GetTaggedEff( blst[0], false, "central" );
+    prob_m *= GetNonTaggedEff( blst[1], true,  "central" );
+    prob_d *= GetNonTaggedEff( blst[1], false, "central" );
+
+    for( const auto& j : jlst ){
+        prob_m *= GetNonTaggedEff( j, true,  "central" );
+        prob_d *= GetNonTaggedEff( j, false, "central" );
+    }
+
+    return prob_d / prob_m;
+}
 /*******************************************************************************
 *   Pre-selection
 *******************************************************************************/
@@ -462,7 +481,7 @@ Selector::PassFullLepton( vector<int>& lepidx, const string& lepton )
     return lepidx.size() == 1;
 }
 
-bool 
+bool
 Selector::PassFullLepton_CRWJets( vector<int>& lepidx, const string& lepton )
 {
     for( int i = 0; i < _sample->Lsize(); i++ ){
@@ -482,6 +501,7 @@ Selector::PassFullLepton_CRWJets( vector<int>& lepidx, const string& lepton )
             return false;
         }
     }
+
     return lepidx.size() == 1;
 }
 
@@ -510,7 +530,7 @@ Selector::PassFullLepton_CRQCD( vector<int>& lepidx, const string& lepton )
     return lepidx.size() == 1;
 }
 
-bool 
+bool
 Selector::PassFullLepton_CRDYJets( vector<int>& lepidx, const string& lepton )
 {
     for( int i = 0; i < _sample->Lsize(); i++ ){
@@ -525,6 +545,7 @@ Selector::PassFullLepton_CRDYJets( vector<int>& lepidx, const string& lepton )
             continue;
         }
     }
+
     return lepidx.size() == 2;
 }
 
@@ -552,22 +573,52 @@ Selector::PassFullJet( vector<int>& jetidx, vector<int>& bjetidx, const int& lep
     return ( jetidx.size() >= 2 ) && ( bjetidx.size() == 2 );
 }
 
-bool 
-Selector::PassFullJet_CRDYJets( vector<int>& jetidx )
+bool
+Selector::PassFullJet_CR_1b( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
-    for( int i = 0; i < _sample->Jsize(); i++ ){
-        _sample->SetIndex( i );
+    // list of index, csv value
+    vector<tuple<int, float> > jetlst;
+    
+    for( int j = 0; j < _sample->Jsize(); j++ ){
+        _sample->SetIndex( j );
 
-        if( _sample->IsSelJet_CRDYJets() ){
-            jetidx.push_back( i );
+        // Cleaning against leptons (isolated lepton)
+        if( !_sample->IsIsoLepton( lepidx, j ) ){
+            continue;
+        }
+
+        if( _sample->IsSelJet() ){
+            if( _sample->PassDeepCSVM() ){
+                bjetidx.push_back( j );
+            }
+            else{
+                jetlst.push_back( make_tuple( j, _sample->JetDeepCSV() ) );
+            }
         }
     }
 
-    return jetidx.size() == 1;
+    if( jetlst.size() < 3 || bjetidx.size() != 1 ){
+        return false;
+    }
+
+    std::sort( 
+            begin( jetlst ), end( jetlst ), [ ]( const auto& t1, const auto& t2 ){
+                return get<1>( t1 ) < get<1>( t2 );
+            }
+            );
+    bjetidx.push_back( get<0>( jetlst.back() ) );
+    jetlst.pop_back();
+
+    for( const auto& j : jetlst ){
+        jetidx.push_back( get<0>( j ) );
+    }
+
+    sort( jetidx.begin(), jetidx.end() );
+    return true;
 }
 
 bool
-Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
+Selector::PassFullJet_CR_0b( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
 {
     // list of index, csv value
     vector<tuple<int, float> > jetlst;
@@ -583,7 +634,7 @@ Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const 
         if( !_sample->IsSelJet() ){
             continue;
         }
-        
+
         // Rejecting events with selected jets loose b-tagged
         if( _sample->PassDeepCSVL() ){
             return false;
@@ -614,66 +665,26 @@ Selector::PassFullJet_CRWJets( vector<int>& jetidx, vector<int>& bjetidx, const 
     for( const auto& j : jetlst ){
         jetidx.push_back( get<0>( j ) );
     }
-    
-    sort(jetidx.begin(), jetidx.end()); 
+
+    sort( jetidx.begin(), jetidx.end() );
 
     return true;
 }
 
 bool
-Selector::PassFullJet_CRQCD( vector<int>& jetidx, vector<int>& bjetidx, const int& lepidx )
+Selector::PassFullJet_CRDYJets( vector<int>& jetidx )
 {
-    // list of index, csv value
-    vector<tuple<int, float> > jetlst;
+    for( int i = 0; i < _sample->Jsize(); i++ ){
+        _sample->SetIndex( i );
 
-    int bjet_count = 0;
-    for( int j = 0; j < _sample->Jsize(); j++ ){
-        _sample->SetIndex( j );
-        
-        // Cleaning against leptons (isolated lepton)
-        if( !_sample->IsIsoLepton( lepidx, j ) ){
-            continue;
+        if( _sample->IsSelJet_CRDYJets() ){
+            jetidx.push_back( i );
         }
-
-        if( !_sample->IsSelJet() ){
-            continue;
-        }
-       
-        // < 2 bjets in selected jets
-        if( _sample->PassDeepCSVL() ){
-            bjet_count++;
-        }
-        jetlst.push_back( make_tuple( j, _sample->JetDeepCSV() ) );
     }
 
-    if( jetlst.size() < 4 || bjet_count >= 2 ){
-        return false;
-    }
-
-    // https://stackoverflow.com/questions/23030267/custom-sorting-a-vector-of-tuples
-    std::sort(
-        begin( jetlst ),
-        end( jetlst ),
-        [ ]( const auto& t1, const auto& t2 ){
-        return get<1>( t1 ) < get<1>( t2 );
-    }
-        );
-
-    // define the 2 max CSV value index as bjet
-    bjetidx.push_back( get<0>( jetlst.back() ) );
-    jetlst.pop_back();
-    bjetidx.push_back( get<0>( jetlst.back() ) );
-    jetlst.pop_back();
-
-    for( const auto& j : jetlst ){
-        jetidx.push_back( get<0>( j ) );
-    }
-
-    sort(jetidx.begin(), jetidx.end()); 
-
-    return true;
+    return jetidx.size() == 1;
 }
-    
+
 std::tuple<double, double, int, int, int>
 Selector::GetChi2Info( const vector<int>& jetidx, const vector<int>& bjetidx )
 {

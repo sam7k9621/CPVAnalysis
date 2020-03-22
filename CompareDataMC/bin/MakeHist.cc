@@ -7,7 +7,7 @@ main( int argc, char* argv[] )
     de.add_options()
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
-        
+
         ( "lepton,l", opt::value<string>()->required(), "which lepton" )
         ( "sample,s", opt::value<string>()->required(), "which sample" )
         ( "year,y", opt::value<string>()->required(), "which year" )
@@ -18,11 +18,10 @@ main( int argc, char* argv[] )
         ( "uncertainty,e", opt::value<string>(), "uncertainty shift" )
         ( "opt,o", opt::value<double>(), "lep_tmass optimization cut" )
         ( "mixed,m", opt::value<int>(), "shuffle with nearby events" )
-        ( "0bjet", "0bjet" )
-        ( "wopileup,p", "without pileup running" )
-        ( "wobtag,w", "withoutn btag" )
+        ( "wopileup", "without pileup running" )
+        ( "wobtag", "withoutn btag" )
         ( "bbSep,B", "bbSeparation method" )
-        
+
         ( "Acp,a", opt::value<int>(), "intrinsic Acp(%)" )
         ( "TLV,L", "Get Acp TLorentzVector list" )
         ( "SIM,S", "check gen-level simulation Acp" )
@@ -39,7 +38,7 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "year", "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "wobtag","0bjet", "SIM", "TLV" } );
+    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "wobtag", "0bjet", "SIM", "TLV" } );
 
     if( CompMgr().CheckOption( "SIM" ) ){
         CompMgr().InitRoot( "CheckAcp.json" );

@@ -52,7 +52,7 @@ def main() :
     input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
     
     # Declare variable
-    x = RooRealVar( "x", "x", 0, 500 )
+    x = RooRealVar( "x", "x", 0, 300 )
     l = RooArgList(x)
 
     # Add Constraint template
@@ -71,7 +71,7 @@ def main() :
                 continue 
             histmgr.SetObjlst( opt.GetInputName( sample ), objlst, "BT_" + sample )
     else:
-        filename = opt.GetInputName( "Data" ).replace( ".root", "_region_WJets.root" )
+        filename = opt.GetInputName( "Data" ).replace( ".root", "_region_WJets_0b_wobtag.root" )
         histmgr.SetObjlst( filename, objlst, "BT" )
         opt.AddInputName( "uncertainty" )
      

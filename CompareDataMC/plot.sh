@@ -1,12 +1,31 @@
-python PlotCompare.py       -y $1 -l $2 -c 20 
-#python PlotCompare.py       -y $1 -l $2 -c 20 -o 150  
+#python PlotCompare.py       -y $1 -l $2 -c 20 
+#python PlotCompare.py       -y $1 -l el -c 20 -o 150 --wobtag 
+#python PlotCompare.py       -y $1 -l mu -c 20 -o 150 --wobtag 
+#python PlotCompare.py       -y $1 -l el -c 20 -o 150  
+#python PlotCompare.py       -y $1 -l mu -c 20 -o 150  
 #python PlotCompare.py       -y $1 -l $2 -c 20 -o 150 --wopileup  
-#python PlotCompare.py       -y $1 -l $2 -c 20 -r WJets -d
-#python PlotCompare.py       -y $1 -l $2 -c 20 -r QCD --0bjet 
-#python PlotSep.py           -y $1 -l $2 -B 
-#python PlotSep.py           -y $1 -l $2 -B -c 20
-#python PlotClosureTest.py   -y $1 -l $2 -c 20 -r WJets -t CR
-#python PlotClosureTest.py   -y $1 -l $2 -c 20 -r WJets -t SR
+#python PlotCompare.py       -y $1 -l el -c 20 -r WJets -d --wobtag
+#python PlotCompare.py       -y $1 -l mu -c 20 -r WJets -d --wobtag
+#python PlotCompare.py       -y $1 -l el -c 20 -r WJets -d --wobtag --relax 
+#python PlotCompare.py       -y $1 -l mu -c 20 -r WJets -d --wobtag --relax
+#python PlotCompare.py       -y $1 -l el -c 20 -r QCD --0bjet  
+#python PlotCompare.py       -y $1 -l mu -c 20 -r QCD --0bjet  
+#python PlotCompare.py       -y $1 -l el -c 20 -r QCD --0bjet --wobtag 
+#python PlotCompare.py       -y $1 -l mu -c 20 -r QCD --0bjet --wobtag 
+python PlotSys.py           -y $1 -l el -c 20 -o 150
+python PlotSys.py           -y $1 -l mu -c 20 -o 150
+python PlotSys.py           -y $1 -l el -c 20 -r WJets_0b --wobtag --driven
+python PlotSys.py           -y $1 -l mu -c 20 -r WJets_0b --wobtag --driven
+python PlotSep.py           -y $1 -l el -B 
+python PlotSep.py           -y $1 -l mu -B 
+python PlotSep.py           -y $1 -l el -B -c 20
+python PlotSep.py           -y $1 -l mu -B -c 20
+python PlotClosureTest.py   -y $1 -l el -c 20 -t CR --wobtag --worelax
+python PlotClosureTest.py   -y $1 -l mu -c 20 -t CR --wobtag --worelax
+python PlotClosureTest.py   -y $1 -l el -c 20 -t CR --wobtag 
+python PlotClosureTest.py   -y $1 -l mu -c 20 -t CR --wobtag
+python PlotClosureTest.py   -y $1 -l el -c 20 -t SR --wobtag 
+python PlotClosureTest.py   -y $1 -l mu -c 20 -t SR --wobtag 
 #python PlotAsym.py          -y $1 -l $2 -c 20 -o 150 -a
 #python PlotAcp.py           -y $1 -l $2 -s ttbar -A 10
 #python PlotAcp.py           -y $1 -l $2 -s ttbar -A 10 -x

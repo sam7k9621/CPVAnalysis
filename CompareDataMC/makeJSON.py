@@ -34,22 +34,24 @@ def MakeWeightInfo( outputfile, year ):
     ###########################################################################################################################
     gennumlst = DC.GetGennumber( year )
     content = OrderedDict()
-    sample_path = os.environ["CMSSW_BASE"] + "/src/CPVAnalysis/BaseLineSelector/results/" if "lxplus" not in os.environ["HOSTNAME"] else "/eos/cms/store/user/pusheng/public/FullCut/"
-
+    sample_path = CMSSW_BASE + "/src/CPVAnalysis/BaseLineSelector/results/" if "lxplus" not in os.environ["HOSTNAME"] else "/eos/cms/store/user/pusheng/public/FullCut/"
+    filename    = "FullCut_%1%_%2%_{}%3%%4%.root"
+    
     ###########################################################################################################################
     samplelst = []
     for mc in DC.mclst :
         # mc = [ "tag", "sample", cross_section ]
-        outputfile.write( text1.format( year, mc[0], gennumlst[ mc[1] ], mc[2], sample_path + "FullCut_%1%_%2%_{}%3%%4%.root".format( mc[1] ) ) )
+        outputfile.write( text1.format( year, mc[0], gennumlst[ mc[1] ], mc[2], sample_path + filename.format( mc[1] ) ) )
         samplelst.append( mc[0] )
-    outputfile.write( text2.format( year, "Data", sample_path + "FullCut_%1%_%2%_Run20{}*%3%%4%.root".format( year ) ) )
+    outputfile.write( text2.format( year, "Data", sample_path + filename.format( "Run*" ) ) )
    
     samplelst.append( "Data" )
     samplelst = ["'" + x  + "'" for x in samplelst]
     
-    uncertainty = [ "pileup_up", "pileup_dn", "btag_up", "btag_dn", "lepton_up", "lepton_dn", "JER_up", "JER_dn", "JEC_up", "JEC_dn" ]
-    uncertainty.extend( [ "PDF_{}".format(x) for x in range(10, 112) ] )
-    uncertainty.extend( [ "muFmuR_{}".format(x) for x in range(1, 9) if x not in [5, 7] ] )
+    uncertainty = [ "pileup_up", "pileup_dn", "btag_up", "btag_dn", "lepton_up", "lepton_dn", "JER_up", "JER_dn", "JEC_up", "JEC_dn", "PDF_up", "PDF_dn", "muFmuR_up", "muFmuR_dn" ]
+    # uncertainty = [ "pileup_up", "pileup_dn", "btag_up", "btag_dn", "lepton_up", "lepton_dn", "JER_up", "JER_dn", "JEC_up", "JEC_dn" ]
+    # uncertainty.extend( [ "PDF_{}".format(x) for x in range(10, 112) ] )
+    # uncertainty.extend( [ "muFmuR_{}".format(x) for x in range(1, 9) if x not in [5, 7] ] )
     uncertainty = ["'" + x  + "'" for x in uncertainty]
     
     with open( "python/MakeHist{}.py".format( year ), "w+" ) as fp:

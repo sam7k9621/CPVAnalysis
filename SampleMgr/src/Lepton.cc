@@ -196,18 +196,18 @@ namespace mgr{
     {
         if( _lep.LeptonType[ _idx ] == 11 ){
             TLorentzVector lepp4 = GetLepP4( _idx );
-            lepp4 *= _lep.ElEnergyCorrFactor[ _idx ]; 
+            lepp4 *= _lep.ElEnergyCorrFactor[ _idx ];
             SetLepP4( lepp4 );
         }
     }
 
-    void 
+    void
     SampleMgr::SetLepP4( const TLorentzVector& tl )
     {
         _lep.Energy[ _idx ] = tl.Energy();
-        _lep.Pt[ _idx ] = tl.Pt();
-        _lep.Px[ _idx ] = tl.Px();
-        _lep.Py[ _idx ] = tl.Py();
-        _lep.Pz[ _idx ] = tl.Pz();
+        _lep.Pt[ _idx ]     = tl.Pt();
+        _lep.Px[ _idx ]     = tl.Px();
+        _lep.Py[ _idx ]     = tl.Py();
+        _lep.Pz[ _idx ]     = tl.Pz();
     }
 }

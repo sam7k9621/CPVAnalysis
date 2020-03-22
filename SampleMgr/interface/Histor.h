@@ -30,18 +30,18 @@ class Histor : public mgr::Pathmgr,
         /*******************************************************************************
         *   Common
         *******************************************************************************/
-        void   InitBtagWeight( const std::string&, const std::string& );
+        void                 InitBtagWeight( const std::string&, const std::string& );
         BTagEntry::JetFlavor GetBtagFlavor( const int& );
-        double GetBtagSF( const int& );
-        bool PassHLT( const std::vector<int>& );
-        bool PassISOLepton( const int&, const int& );
-        bool HasLooseB( const std::initializer_list<int>& );
-        std::string GetResultsName( const std::string&, const std::string& );
-        std::string Discript( TH1* );
-        void        Scale( const double x )            { _sample->Scale( x ); };
-        TH1D*       Hist( const std::string& h )       { return _sample->Hist( h ); }
-        const TH1D* Hist( const std::string& h ) const { return _sample->Hist( h ); }
-        void        AddHist(
+        double               GetBtagSF( const int& );
+        bool                 PassHLT( const std::vector<int>& );
+        bool                 PassISOLepton( const int&, const int& );
+        bool                 PassFullLepton_CRWJets( const string& );
+        std::string          GetResultsName( const std::string&, const std::string& );
+        std::string          Discript( TH1* );
+        void                 Scale( const double x )            { _sample->Scale( x ); };
+        TH1D*                Hist( const std::string& h )       { return _sample->Hist( h ); }
+        const TH1D*          Hist( const std::string& h ) const { return _sample->Hist( h ); }
+        void                 AddHist(
             const std::string&,
             const std::string&,
             const std::string&,
@@ -102,21 +102,21 @@ class Histor : public mgr::Pathmgr,
 
         float GetMuISO( const int& );
         float GetElISO( const int& );
-        
+
         /*******************************************************************************
         *   Looping event
         *******************************************************************************/
-        void process( const int&, const int& );
+        void         process( const int&, const int& );
         BaseLineMgr* GetSample(){ return _sample; }
 
         /*******************************************************************************
         *   Weight
         *******************************************************************************/
         void   RegisterWeight( TChain* ch ){ _sample->RegisterWeight( ch ); }
-        float  GetPUWeight()  { return _sample->GetPUWeight(); }
-        float  GetPUWeightUp(){ return _sample->GetPUWeightUp(); }
-        float  GetPUWeightDn(){ return _sample->GetPUWeightDn(); }
-        float  GenWeight()    { return _sample->GenWeight(); }
+        float  GetPUWeight()               { return _sample->GetPUWeight(); }
+        float  GetPUWeightUp()             { return _sample->GetPUWeightUp(); }
+        float  GetPUWeightDn()             { return _sample->GetPUWeightDn(); }
+        float  GenWeight()                 { return _sample->GenWeight(); }
         double GetLepSF( TH2D*, const int& );
         double GetLepSFUp( TH2D*, const int& );
         double GetLepSFDn( TH2D*, const int& );
@@ -124,7 +124,8 @@ class Histor : public mgr::Pathmgr,
         double TopPtWeight();
         void   WeightMC( const std::string& );
         float  PDFWeight( const int& );
-        float  muFmuRWeight( const int& ); 
+        float  muFmuRWeight( const int& );
+
         /*******************************************************************************
         *   Basic RECO
         *******************************************************************************/

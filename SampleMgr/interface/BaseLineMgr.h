@@ -13,19 +13,19 @@
 #include "ManagerUtils/HistMgr/interface/HistMgr.h"
 
 #include "CPVAnalysis/SampleMgr/interface/checkEvtTool.h"
+#include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
 #include "ManagerUtils/ArgHelper/interface/Pathmgr.hpp"
 #include "ManagerUtils/ArgHelper/interface/Readmgr.hpp"
-#include "CPVAnalysis/SampleMgr/interface/SampleMgr.h"
 
 #include "TChain.h"
 #include "TH2.h"
 #include "TTree.h"
 
-#include <string>
 #include <map>
+#include <random>
+#include <string>
 #include <tuple>
 #include <vector>
-#include <random>
 
 class BaseLineMgr : public mgr::Pathmgr,
                     public mgr::Readmgr,
@@ -43,10 +43,10 @@ class BaseLineMgr : public mgr::Pathmgr,
 
         BaseLineMgr( const BaseLineMgr& )            = delete;
         BaseLineMgr& operator=( const BaseLineMgr& ) = delete;
-        void ReadConfig();
-        void AddVal( const std::string&, const std::string& );
-        double GetVal( const std::string&, const std::string& );
-        void AddStr( const std::string&, const std::string& );
+        void         ReadConfig();
+        void         AddVal( const std::string&, const std::string& );
+        double       GetVal( const std::string&, const std::string& );
+        void         AddStr( const std::string&, const std::string& );
         std::string  GetStr( const std::string&, const std::string& );
 
         /*******************************************************************************
@@ -136,6 +136,7 @@ class BaseLineMgr : public mgr::Pathmgr,
         bool IsPreTightEl();
         bool IsInvTightEl();
         bool PassElTightISO();
+
         /*******************************************************************************
         *   Event Weighting
         *******************************************************************************/
@@ -149,15 +150,15 @@ class BaseLineMgr : public mgr::Pathmgr,
 
         // B-tagging weight
         void   InitBtagWeight( const std::string&, const std::string& );
-        double BtagScaleFactor( const int&, const BTagEntry::OperatingPoint&, const BTagEntry::JetFlavor&, const std::string& ="" );
+        double BtagScaleFactor( const int&, const BTagEntry::OperatingPoint&, const BTagEntry::JetFlavor&, const std::string& = "" );
 
         // ID ISO Trg Btag weight
-        double GetSFTH2  ( TH2D*, double, double, const int& =0 );
+        double GetSFTH2( TH2D*, double, double, const int& = 0 );
 
         // Top Pt Weighting
         double TopPtWeight();
 
-        // PDF weight 
+        // PDF weight
         float PDFWeight( const int& );
         float muFmuRWeight( const int& );
 
@@ -169,8 +170,8 @@ class BaseLineMgr : public mgr::Pathmgr,
         BTagCalibration* _calib;
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
         std::default_random_engine _generator;
-        std::map<std::string, double > _valmap;
-        std::map<std::string, std::string > _strmap;
+        std::map<std::string, double> _valmap;
+        std::map<std::string, std::string> _strmap;
 };
 
 

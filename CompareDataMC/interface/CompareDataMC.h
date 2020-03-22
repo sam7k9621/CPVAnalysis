@@ -16,7 +16,7 @@ extern void bbSeparation();
 *******************************************************************************/
 extern void ReweighAcp();
 extern void FillWeighObservable( const string&, const double&, const bool& = false );
-extern void FillMoreObservable( const string&, const double&, const bool& = false );
+extern void FillMoreObservable( const string&, const double&, const bool&  = false );
 extern void SetTLV( TLorentzVector*, const TLorentzVector& );
 extern void StoreTLV();
 
@@ -28,10 +28,10 @@ extern void CheckAcp();
 /*******************************************************************************
 *  MakeHist
 *******************************************************************************/
-extern Histor& CompMgr( const std::string& = "", const std::string& = "" );
-extern std::string MakeFileName( const std::string&, const std::string&, const std::string&, const std::string& ="", const std::string& =""); 
-extern void FillObservable( const std::string&, const double&, const double& =1. );
-extern void    MakeHist();
+extern Histor&     CompMgr( const std::string&                                                                  = "", const std::string& = "" );
+extern std::string MakeFileName( const std::string&, const std::string&, const std::string&, const std::string& = "", const std::string& = "" );
+extern void        FillObservable( const std::string&, const double&, const double&                             = 1. );
+extern void        MakeHist();
 
 
 /*******************************************************************************
