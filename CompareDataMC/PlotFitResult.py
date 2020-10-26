@@ -1,6 +1,7 @@
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
 import math, importlib
+import ROOT
 from ROOT import RooRealVar, RooArgList, RooAddPdf, RooDataHist, RooFit, RooHistPdf, RooArgSet, THStack, kRed, kGreen, TLine, RooRandom, RooGaussian, RooDataSet, RooPlot
 
 def GaussFit( pull ):
@@ -41,7 +42,7 @@ def main() :
     # Initialize parsing manager
     global opt
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput("o", "opt").AddInput( "u", "uncertainty" ).AddInput("p", "pull" )
+    opt.AddInput("c", "chi2").AddInput("o", "opt").AddInput( "u", "uncertainty" ).AddInput("p", "pull" ).AddInput("x", "mixed" )
     opt.Parsing() 
     opt.AddInputName ( "chi2" )
     opt.AddOutputName( "chi2", "opt", "uncertainty" )
@@ -53,6 +54,7 @@ def main() :
     
     # Declare variable
     x = RooRealVar( "x", "x", 0, 300 )
+    x.setBins( 60 )
     l = RooArgList(x)
 
     # Add Constraint template
@@ -82,78 +84,122 @@ def main() :
     # Add signal template
     print "-"*90
     print ">> Adding signal template"
-    histmgr.SetObjlst( opt.GetInputName( "ttbar" ), objlst, "ST" )
-    h2 = histmgr.GetObj( "ST" )
-    d2 = RooDataHist( "d2", "d2", l, h2 )
-    sg = RooHistPdf( "sg", "sg", RooArgSet(x), d2 ) 
 
-    # Construct composite pdf
-    nsg   = RooRealVar( "nsg", "nsg", 300000, 100000, 1000000 )
-    nbg   = RooRealVar( "nbg", "nbg", 40000, 0, 100000 )
-    model = RooAddPdf( "model", "model", RooArgList( sg, bg ), RooArgList( nsg, nbg ) )  
+    inputfile  = opt.GetInputName( "ttbar" )
+   
+    ROOT.gErrorIgnoreLevel = 0
+    toys = 1
+    for i in range( 1, toys + 1 ):
+        histmgr.SetObjlst( inputfile.replace( "uncertainty", "mixed_{}_uncertainty".format( i ) ), objlst, "{}_ST".format( i ) ) 
 
-    # Fitting
-    model.fitTo( data, RooFit.Extended() )
-    result = model.fitTo( data, RooFit.Save(), RooFit.Extended() )
+    # Set yield range
+    nsg = RooRealVar( "nsg", "nsg", 300000, 100000, 1000000 )
+    nbg = RooRealVar( "nbg", "nbg", 40000, 0, 100000 )
+    for i in range( 1, toys + 1 ):
+        # Construct composite pdf
+        h2 = histmgr.GetObj( "{}_ST".format( i ) )
+        d2 = RooDataHist( "d2", "d2", l, h2 )
+        sg = RooHistPdf( "sg", "sg", RooArgSet(x), d2 ) 
+        model = RooAddPdf( "model", "model", RooArgList( sg, bg ), RooArgList( nsg, nbg ) )  
+        
+        # Fitting
+        # model.fitTo( data, RooFit.Extended() )
+        result = model.fitTo( data, RooFit.Save(), RooFit.Extended() )
+        chi2plot = x.frame()
+        data.plotOn( chi2plot, RooFit.Name("data") )
+        model.plotOn( chi2plot, RooFit.Name("pdf") )
+        freeparams = result.floatParsFinal().getSize() 
+        chioverdof = chi2plot.chiSquare("pdf", "data", freeparams )
+        print chioverdof
+        # Hist preparing 
+        h2_nsg = h2.Clone()
+        h2_err = h2.Clone()
+        h3_err = h3.Clone()
+        
+        pltmgr.SetNormToUnity( h2 )
+        pltmgr.SetNormToUnity( h3 )
+        pltmgr.SetNormToUnity( h2_err )
+        pltmgr.SetNormToUnity( h3_err )
+        
+        h2.Scale( nsg.getVal() )
+        h3.Scale( nbg.getVal() )
+        h2_err.Scale( nsg.getVal() + nsg.getError() )
+        h3_err.Scale( nbg.getVal() + nbg.getError() )
+        
+        mass = int( opt.GetOption( "opt" ) )
+        
+        dat_val = h1.Integral( 1, h1.FindBin( mass ) - 1 ) 
+        nsg_val = h2.Integral( 1, h2.FindBin( mass ) - 1 )
+        nbg_val = h3.Integral( 1, h3.FindBin( mass ) - 1 )
+        nsg_err = h2_err.Integral( 1, h2_err.FindBin( mass ) - 1 ) - nsg_val
+        nbg_err = h3_err.Integral( 1, h3_err.FindBin( mass ) - 1 ) - nbg_val
+        cov_err = result.correlation( "nsg", "nbg" ) * nsg_err * nbg_err
+        sum_err = math.sqrt( nsg_err**2 + nbg_err**2 + 2 * cov_err )
+        fra_err = math.sqrt( nsg_val**2 * nbg_err**2 + nbg_val**2 * nsg_err**2 - 2 * nsg_val * nbg_val * cov_err ) / ( nsg_val + nbg_val )**2
+        info = """
+        Data events: {:0.1f}
+        Fitted sg events after cut: {:0.1f} {:0.1f}
+        Fitted bg events after cut: {:0.1f} {:0.1f}
+        Signal fraction after cut : {:0.1f}% {:0.1f}
+        """.format( 
+                dat_val, \
+                nsg_val, nsg_err, \
+                nbg_val, nbg_err, \
+                nsg_val / ( nsg_val + nbg_val ) * 100, fra_err * 100
+                )
+        tag = "lep_tmass"
+        with open( opt.GetOutputName( tag, "FitResult", "txt" ).replace( "mixed", "mixed_{}".format( i  ) ), "w" ) as outputfile:
+            outputfile.write( info )
+    
+    #-------------------------------------------------------------------------------------------------- 
+    if opt.GetOption( "mixed" ):
+        return
 
-    # Hist preparing 
-    h2_nsg = h2.Clone()
-    h2_err = h2.Clone()
-    h3_err = h3.Clone()
-    
-    pltmgr.SetNormToUnity( h2 )
-    pltmgr.SetNormToUnity( h3 )
-    pltmgr.SetNormToUnity( h2_err )
-    pltmgr.SetNormToUnity( h3_err )
-    
-    h2.Scale( nsg.getVal() )
-    h3.Scale( nbg.getVal() )
-    h2_err.Scale( nsg.getVal() + nsg.getError() )
-    h3_err.Scale( nbg.getVal() + nbg.getError() )
-    
+    c = pltmgr.NewCanvas( "" )
     mc_sum = h2.Clone()
     mc_sum.Add( h3 )
-
+    
     # Plot setting
-    c = pltmgr.NewCanvas( "" )
     mc = THStack()
-    h2.SetLineColor( kRed - 7 )
-    h3.SetLineColor( kGreen - 6 )
-    h2.SetFillColor( kRed - 7 )
+    h2.SetLineColor( 1 )
+    h3.SetLineColor( 1 )
+    h2.SetLineWidth( 2 )
+    h3.SetLineWidth( 2 )
+    h2.SetFillColor( kRed - 3 )
     h3.SetFillColor( kGreen - 6 )
     mc.Add( h3 )
     mc.Add( h2 )
-
-    leg = pltmgr.NewLegend( 0.67, 0.51, 0.8, 0.81)
-    leg.AddEntry( h1, "Data", "LE" )
-    leg.AddEntry( h2, "Fitted t#bar{t}",   "F" )
-    leg.AddEntry( h3, "Fitted background", "F" )
     
     top = pltmgr.NewTopPad()
     top.Draw()
     top.cd()
-
-    mc.Draw( "HIST" )
+    
+    h1.Draw( "EP" )
+    mc.Draw( "HIST same" )
+    h1.Draw( "sameaxis" )
     h1.Draw( "EP same" )
+    
+    leg = pltmgr.NewLegend( 0.67, 0.51, 0.8, 0.81)
+    leg.AddEntry( h1, "Data", "LE" )
+    leg.AddEntry( h2, "Fitted t#bar{t}",   "F" )
+    leg.AddEntry( h3, "Fitted background", "F" )
     leg.Draw()
-
+    
     h1.SetLineColor( 1 )
     h1.SetLineWidth( 1 )
-    h1.SetMarkerSize( 0.5 )
+    h1.SetMarkerSize( 0.6 )
     h1.SetMarkerStyle( 20 )
+    h1.SetMaximum( pltmgr.GetHistYmax( h1 ) * 1.5 )
     
-    mc.SetMaximum( pltmgr.GetHistYmax( h1 ) * 1.5 )
-    mc.GetYaxis().SetTitle( "Events" );
-    mc.GetXaxis().SetTitle( "" );
+    top.Update()
+    pltmgr.SetTopPlotAxis( h1 )
     
-    pltmgr.SetTopPlotAxis( mc )
-
     c.cd()
     
     bot = pltmgr.NewBottomPad()
     bot.Draw()
     bot.cd()
-
+    
     xmin = h1.GetXaxis().GetXmin()
     xmax = h1.GetXaxis().GetXmax()
     
@@ -166,8 +212,12 @@ def main() :
     upper.Draw( "same" )
     lower.Draw( "same" )
     line.Draw ( "same" )
+    rel.Draw( "EP same" )
+    rel.Draw( "sameaxis" )
     
     line.SetLineColor( kRed )
+    line.SetLineStyle( 3 )
+    line.SetLineWidth( 2 )
     upper.SetLineStyle( 3 )
     lower.SetLineStyle( 3 )
     
@@ -175,6 +225,8 @@ def main() :
     rel.SetMinimum( 0.4 )
     rel.GetYaxis().SetTitle( "Data/MC" )
     rel.GetXaxis().SetTitle( h1.GetXaxis().GetTitle() )
+    
+    bot.Update()
     pltmgr.SetBottomPlotAxis( rel )
     
     c.cd()
@@ -182,44 +234,17 @@ def main() :
     pltmgr.DrawCMSLabel( pltmgr.PRELIMINARY )
     pltmgr.DrawEntryLeft( opt.Entry() )
     pltmgr.DrawLuminosity( opt.Lumi() )
-
-    tag = "lep_tmass"
-    c.SaveAs( opt.GetOutputName( tag, "FitResult" ) )
-
-    #-------------------------------------------------------------------------------------------------- 
-    mass = int( opt.GetOption( "opt" ) )
     
-    dat_val = h1.Integral( 1, h1.FindBin( mass ) - 1 ) 
-    nsg_val = h2.Integral( 1, h2.FindBin( mass ) - 1 )
-    nbg_val = h3.Integral( 1, h3.FindBin( mass ) - 1 )
-    nsg_err = h2_err.Integral( 1, h2_err.FindBin( mass ) - 1 ) - nsg_val
-    nbg_err = h3_err.Integral( 1, h3_err.FindBin( mass ) - 1 ) - nbg_val
-    cov_err = result.correlation( "nsg", "nbg" ) * nsg_err * nbg_err
-    sum_err = math.sqrt( nsg_err**2 + nbg_err**2 + 2 * cov_err )
-    fra_err = math.sqrt( nsg_val**2 * nbg_err**2 + nbg_val**2 * nsg_err**2 - 2 * nsg_val * nbg_val * cov_err ) / ( nsg_val + nbg_val )**2
-
-    info = """
-    Data events: {:0.1f}
-    Fitted sg events after cut: {:0.1f} {:0.1f}
-    Fitted bg events after cut: {:0.1f} {:0.1f}
-    Signal fraction after cut : {:0.1f}% {:0.1f}
-    """.format( 
-            dat_val, \
-            nsg_val, nsg_err, \
-            nbg_val, nbg_err, \
-            nsg_val / ( nsg_val + nbg_val ) * 100, fra_err * 100
-            )
-    with open( opt.GetOutputName( tag, "FitResult", "txt" ), "w" ) as outputfile:
-        outputfile.write( info )
-
-
-  #-------------------------------------------------------------------------------------------------- 
+    c.SaveAs( opt.GetOutputName( tag, "FitResult" ).replace( "mixed", "mixed_{}".format( i ) ) )
+    
+    # -------------------------------------------------------------------------------------------------- 
     if not opt.GetOption( "pull" ):
         return 
+
     Nevt = int( opt.GetOption( "pull" ) )
     pull = []
-    ns   = h2_nsg.Integral()  # MC prediction
-    nb   = h3.Integral()      # Fitted bkg events
+    ns   = h2_nsg.Integral()  #MC prediction
+    nb   = h3.Integral()      #Fitted bkg events
     
     # Method of Expected yield
     for i in range( Nevt ):
@@ -231,7 +256,7 @@ def main() :
         bgdata.append( sgdata )
         model.fitTo( bgdata, RooFit.Extended(), RooFit.NumCPU( 6 ) )
         pull.append( ( nsg.getVal() - ns ) / nsg.getError() ) 
-
+    
     GaussFit( pull )
 
 if __name__== '__main__':

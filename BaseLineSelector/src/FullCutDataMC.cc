@@ -40,22 +40,23 @@ extern void
 MakeFullCut()
 {
     // Build new file
-    FullMgr().InitRoot( "sample" + FullMgr().GetOption<string>( "year" ) );
+    string year = FullMgr().GetOption<string>( "year" );
+    FullMgr().InitRoot( "sample" + year );
     TFile* newfile = TFile::Open( ( FullMgr().GetResultsName( "root", "FullCut", FullMgr().CheckOption( "uncertainty" ) ) ).c_str(), "recreate" );
 
-    std::size_t found = FullMgr().GetOption<string>( "sample" ).find( "Run" );
-    bool is_data      = found != std::string::npos ? true : false;
+    string sample =  FullMgr().GetOption<string>( "sample" );
+    bool is_data  = sample.find( "Run" ) != std::string::npos ? 1 : 0;
     string filename   = MakeFileName( is_data );
     cout << ">> Adding " << filename << endl;
 
     TChain* ch = new TChain( "root" );
     ch->Add( ( filename ).c_str() );
-    FullMgr().AddSample( ch );
+    FullMgr().AddSample( ch, is_data, sample );
     
     // Discard useless branches
     TTree* newtree = ch->CloneTree( 0 );
     Discard_FullCut( newtree );
-    if( FullMgr().OptionContent( "sample", "TTT" ) && !FullMgr().CheckOption( "region" ) && !FullMgr().CheckOption( "uncertainty" ) ){
+    if( FullMgr().OptionContent( "sample", "TT" ) && !FullMgr().CheckOption( "region" ) ){
         newtree->SetBranchStatus( "GenInfo.*",    1 );
         newtree->SetBranchStatus( "GenInfo.PDF*", 0 );
     }
@@ -82,8 +83,10 @@ MakeFullCut()
     Float_t had_tmass;
     Float_t lep_tmass;
     Float_t b_weight;
-    Float_t b_weight_up;
-    Float_t b_weight_dn;
+    Float_t bc_weight_up;
+    Float_t bc_weight_dn;
+    Float_t light_weight_up;
+    Float_t light_weight_dn;
     vector<int> lepidx;// store one tight lepton
     vector<int> jetidx;// store every jets
     vector<int> bjetidx;// store two bjets
@@ -98,8 +101,10 @@ MakeFullCut()
     newtree->Branch( "had_tmass",   &had_tmass,   "had_tmass/F" );
     newtree->Branch( "lep_tmass",   &lep_tmass,   "lep_tmass/F" );
     newtree->Branch( "b_weight",    &b_weight,    "b_weight/F" );
-    newtree->Branch( "b_weight_up", &b_weight_up, "b_weight_up/F" );
-    newtree->Branch( "b_weight_dn", &b_weight_dn, "b_weight_dn/F" );
+    newtree->Branch( "bc_weight_up", &bc_weight_up, "bc_weight_up/F" );
+    newtree->Branch( "bc_weight_dn", &bc_weight_dn, "bc_weight_dn/F" );
+    newtree->Branch( "light_weight_up", &light_weight_up, "light_weight_up/F" );
+    newtree->Branch( "light_weight_dn", &light_weight_dn, "light_weight_dn/F" );
     newtree->Branch( "jetidx",      &jetidx );
 
     // Looping events
@@ -114,6 +119,16 @@ MakeFullCut()
         lepidx.clear();
         jetidx.clear();
         bjetidx.clear();
+
+        // JEC JER update JEC central value didn't change
+        if( is_data ){
+            FullMgr().JECUpdate();
+        }
+        else{
+            FullMgr().JECUncUpdate();
+            if( FullMgr().OptionContent( "uncertainty", "FR" ) ) FullMgr().JECUncSrcUpdate();
+        }
+        FullMgr().JERUpdate();
 
         // JERCorr
         if( !is_data ){
@@ -138,6 +153,14 @@ MakeFullCut()
             }
         }
 
+        if( !is_data ){
+            if( tag == "FR_up" ){
+                FullMgr().JECCorrUp();
+            }
+            else if( tag == "FR_dn" ){
+                FullMgr().JECCorrDn();
+            }
+        }
         /*******************************************************************************
         *  Baseline selection
         *******************************************************************************/
@@ -180,7 +203,7 @@ MakeFullCut()
             }
         } 
         else if( FullMgr().OptionContent( "region", "0b" ) ){
-            if( !FullMgr().PassFullJet_CR_0b( jetidx, bjetidx, lepidx[ 0 ] ) ){
+            if( !FullMgr().PassFullJet_CR_0b( jetidx, lepidx[ 0 ] ) ){
                 continue;
             }
         }
@@ -199,35 +222,39 @@ MakeFullCut()
                 b_weight = FullMgr().GetBtagWeight_CR_1b( bjetidx, jetidx );
             }
             else if( FullMgr().OptionContent( "region", "0b" ) ){
-                b_weight = FullMgr().GetBtagWeight_CR_0b( bjetidx, jetidx );
+                b_weight = FullMgr().GetBtagWeight_CR_0b( jetidx );
             }
             else{
-                b_weight    = FullMgr().GetBtagWeight( bjetidx, jetidx );
-                b_weight_up = FullMgr().GetBtagWeight( bjetidx, jetidx, "up" );
-                b_weight_dn = FullMgr().GetBtagWeight( bjetidx, jetidx, "down" );
+                b_weight        = FullMgr().GetBtagWeight( bjetidx, jetidx );
+                bc_weight_up    = FullMgr().GetBtagWeight( bjetidx, jetidx, "bc_up" );
+                bc_weight_dn    = FullMgr().GetBtagWeight( bjetidx, jetidx, "bc_down" );
+                light_weight_up = FullMgr().GetBtagWeight( bjetidx, jetidx, "light_up" );
+                light_weight_dn = FullMgr().GetBtagWeight( bjetidx, jetidx, "light_down" );
             }
         }
 
         /*******************************************************************************
         *  Chi2 sorting
         *******************************************************************************/
-        auto tup = FullMgr().GetChi2Info( jetidx, bjetidx );
+        std::tuple<double, double, int, int, int> tup;
+        if( FullMgr().OptionContent( "region", "0b" ) ){
+            tup = FullMgr().GetChi2Info_CR_0b( jetidx,  bjetidx, lepidx[0] );
+        }
+        else{
+            tup = FullMgr().GetChi2Info( jetidx, bjetidx );
+        }
 
         /*******************************************************************************
         *  Storing sample
         *******************************************************************************/
         chi2mass  = (Float_t)get<0>( tup );
         had_tmass = (Float_t)get<1>( tup );
-        had_b     = get<2>( tup );
+        had_b     = bjetidx[ get<2>( tup ) ];
+        lep_b     = bjetidx[ get<2>( tup ) ? 0 : 1 ];
         jet1      = get<3>( tup );
         jet2      = get<4>( tup );
-        lep_b     = had_b ? 0 : 1;
+        lep       = lepidx[ 0 ]; // choose leading lepton
 
-        had_b = bjetidx[ had_b ];
-        lep_b = bjetidx[ lep_b ];
-        jet1  = jetidx [ jet1 ];
-        jet2  = jetidx [ jet2 ];
-        lep   = lepidx[ 0 ]; // choose leading lepton
         Njets = jetidx.size() + bjetidx.size();
 
         lep_tmass = FullMgr().GetLeptonicM( lep, lep_b );

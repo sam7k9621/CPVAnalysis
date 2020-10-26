@@ -73,12 +73,18 @@ namespace mgr{
         return x;
     }
 
-    bool
-    SampleMgr::IsIsoLepton( const int& lepidx, const int& jetidx )
+    double
+    SampleMgr::Lep_Jet_DeltaR( const int& lepidx, const int& jetidx )
     {
         double deta   = (double)( _lep.Eta[ lepidx ] - _jet.Eta[ jetidx ] );
         double dphi   = Phi_mpi_pi( (double)( _lep.Phi[ lepidx ] - _jet.Phi[ jetidx ] ) );
         double deltaR = TMath::Sqrt( deta * deta + dphi * dphi );
-        return deltaR >= 0.4;
+        return deltaR;
+    }
+
+    bool
+    SampleMgr::IsIsoLepton( const int& lepidx, const int& jetidx )
+    {
+        return Lep_Jet_DeltaR( lepidx, jetidx ) >= 0.4;
     }
 }

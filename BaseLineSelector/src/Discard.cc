@@ -121,7 +121,6 @@ Discard( TChain* ch )
 
     ch->SetBranchStatus( "JetInfo.Index",                                      0 );
     ch->SetBranchStatus( "JetInfo.NTracks",                                    0 );
-    ch->SetBranchStatus( "JetInfo.Area",                                       0 );
     ch->SetBranchStatus( "JetInfo.JetCharge",                                  0 );
     ch->SetBranchStatus( "JetInfo.Pt_MuonCleaned",                             0 );
     ch->SetBranchStatus( "JetInfo.Eta_MuonCleaned",                            0 );
@@ -130,7 +129,6 @@ Discard( TChain* ch )
     ch->SetBranchStatus( "JetInfo.QGTagsLikelihood",                           0 );
     ch->SetBranchStatus( "JetInfo.PUJetIDfullDiscriminant",                    0 );
     ch->SetBranchStatus( "JetInfo.PUJetIDcutbased",                            0 );
-    ch->SetBranchStatus( "JetInfo.PtCorrRaw",                                  0 );
     ch->SetBranchStatus( "JetInfo.PtCorrL2",                                   0 );
     ch->SetBranchStatus( "JetInfo.PtCorrL3",                                   0 );
     ch->SetBranchStatus( "JetInfo.summaryDeepCSVJetTags_BvsAll",               0 );

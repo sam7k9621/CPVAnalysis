@@ -14,6 +14,20 @@ BaseLineMgr::ReadConfig()
     AddVal( "PV", "Ndof" );
     AddVal( "PV", "AbsZ" );
     AddVal( "PV", "VtxRho" );
+   
+    AddBool( "Jet", "JerUpdate" );
+    AddStr( "Jet", "Jesfile" );
+    AddStr( "Jet", "Jerfile" );
+
+    AddBool( "Jet", "JecUpdate" );
+    AddStr( "Jet", "Resfile" );
+    AddStr( "Jet", "L1file" );
+    AddStr( "Jet", "L2file" );
+    AddStr( "Jet", "L3file" );
+    AddStr( "Jet", "JecUncfile" );
+    
+    AddBool( "Jet", "JecSrcUpdate" );
+    AddStr( "Jet", "JecSrcfile" );
 
     AddStr( "Jet", "jetid" );
     AddStr( "Jet", "jetid_test" );

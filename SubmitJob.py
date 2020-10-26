@@ -1,10 +1,12 @@
 #!/bin/env python
-
+import re
 import os
-import sys
+import json
+import collections
 import argparse
 import importlib
 import datetime
+from termcolor import colored
 
 CMSSW_BASE =  os.environ['CMSSW_BASE']
 HOSTNAME   =  os.environ['HOSTNAME']
@@ -31,96 +33,88 @@ requirements = (OpSysAndVer =?= "CentOS7")
 queue base,cmd from job.dat
 """
 
-qsub ="""
-#!/usr/bin/env sh
-#PBS -V
-#PBS -j oe
-#PBS -q cms
-#PBS -d /wk_cms/sam7k9621/qsub/dMESSAGE
-#PBS -o /wk_cms/sam7k9621/qsub/oMESSAGE
-#PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
-cd {}/src && eval `scramv1 runtime -sh`
-{}
-"""
-
-def CondorJob( opt, samplelst ):
-    # writing dat file
-    output_dat = open( "job.dat", 'w' )
-    for sample in samplelst:
-        command = "{} --{} {}".format( opt.Command, opt.InputOption, sample )
-        command = ' '.join( command.split() )
-        output_dat.write( '{0}, {1}\n'.format( CMSSW_BASE, command ) )
-    output_dat.close()
-
+def CondorJob( job_detail ):
     output_sub = open( "job.sub", 'w' )
     output_sub.write( sub.format( CMSSW_BASE, datetime.datetime.now().strftime("%m_%d_%H:%M") ) )
     output_sub.close()
-  
-    os.system( "condor_submit {}".format( "job.sub" ) )
-    os.system( "rm job.sub" ) 
-    os.system( "rm job.dat" ) 
+    cmd = "nohup ./SentQJob.py -s {} > {}.out &".format( job_detail.split("_")[0], command.replace( " ", "_" ) ) 
 
-def QJob( opt, samplelst ):
-    outputfilelst = []
-    for sample in samplelst:
-        command = "{} --{} {}".format(opt.Command, opt.InputOption, sample)
-        command = ' '.join( command.split() )
-        
-        outputfilename = ".{}.sh".format( command.replace(" ", "") )
-        outputfilelst.append( outputfilename )
-        output = open( outputfilename, 'w' )
-        output.write( qsub.format( CMSSW_BASE, command ) )
-        output.close()
-        
-        print ">> Preparing {}".format(sample)
-        sys.stdout.flush()
-
-    filelst = " ".join( outputfilelst )
-    cmd = "nohup ./SentQJob.py -r {} -q {} -i {} > {}.out &".format( opt.maxRunJobs, opt.maxQueJobs, filelst, command.replace( " ", "_" ) )
+def QJob( job_detail ):
+    cmd = "nohup ./SentQJob.py -s %s -r %s -q %s -i {0}.dat > {0}.out &".format( job_detail ) % tuple( job_detail.split( "_" ) )
     os.system( cmd )
-    print "DONE"
 
-def main(args):
+def main():
     parser = argparse.ArgumentParser( "Submit jobs for commands" )
-    parser.add_argument( '-C', '--Command',     type=str,   required=True )
+    #-------------------------------------------------------------------------------------
+    parser.add_argument( '-F', '--InputFile',   type=str )
+    parser.add_argument( '-T', '--Test',        action='store_true' )
+    #-------------------------------------------------------------------------------------
+    parser.add_argument( '-C', '--Command',     type=str )
+    parser.add_argument( '-M', '--Module',      type=str )
     parser.add_argument( '-I', '--InputOption', type=str,   default="sample" )
     parser.add_argument( '-E', '--Extract',     type=str,   nargs='+' )
+    parser.add_argument( '-X', '--Exclude',     type=str,   nargs='+' )
     parser.add_argument( '-S', '--Samplelst',   type=str,   nargs='+' )
-    parser.add_argument( '-R', '--MaxRunJobs',  type=int,   default=6 )
-    parser.add_argument( '-Q', '--MaxQueJobs',  type=int,   default=5 )
-    parser.add_argument( '-T', '--Test',        action='store_true' )
-    
+    #-------------------------------------------------------------------------------------
+
     try:
-        opt = parser.parse_args(args[1:])
+        par = parser.parse_args()
     except:
         parser.print_help()
         raise
+
+    with open( par.InputFile, 'r' ) as inputfile:
+        data = json.loads( re.sub("//.*","", inputfile.read() ,flags=re.MULTILINE) ) 
+
+    for job_detail, arglst in data.iteritems(): 
+        commandlst = []
+        for arg in arglst: 
+            try:
+                opt = parser.parse_args( [ x.rstrip(" ").lstrip(" ") for x in arg.split(" @ ") ] ) 
+            except:
+                parser.print_help()
+                raise
+            
+            command = opt.Command.split(" ", 1)
+            module = opt.Module if opt.Module else command[0] + command[1].split(" ")[ command[1].split(" ").index("-y") + 1 ] 
+            if any( x in module for x in [ "PreCut", "FullCut" ] ):
+                subdir = "CPVAnalysis.BaseLineSelector."
+            else:
+                subdir = "CPVAnalysis.CompareDataMC."
+       
+            samplelst = []
+            samplemod = importlib.import_module( subdir + module )
+            for s in opt.Samplelst:
+                samplelst += getattr( samplemod, s )
    
-    command = opt.Command.split(" ", 1)
-    year    = command[1].split(" ")[ command[1].split(" ").index("-y") + 1 ]
+            if opt.Extract:
+                samplelst = [ x for x in samplelst if any( y in x for y in opt.Extract )]
+            if opt.Exclude:
+                samplelst = [ x for x in samplelst if not any( y in x for y in opt.Exclude )]
 
-    if command[0] in ("PreCut", "FullCut") :
-        subdir = "CPVAnalysis.BaseLineSelector."
-    elif command[0] in ("MakeHist") :
-        subdir = "CPVAnalysis.CompareDataMC."
+           
+            for sample in samplelst:
+                commandlst.append( "{} --{} {}".format(opt.Command, opt.InputOption, sample) )
+       
+        if par.Test:
+            print "\n".join( commandlst )
+            print "[ Total jobs: %s | Wait time: %s | Max jobs: %s | Max queue jobs: %s ] " % tuple(  [colored( len(commandlst), 'red')] + job_detail.split("_" ) )
+            continue 
+        
+        print "[ Total jobs: %s | Wait time: %s | Max jobs: %s | Max queue jobs: %s ] " % tuple(  [colored( len(commandlst), 'red')] + job_detail.split("_" ) )
 
-    samplemod = importlib.import_module( subdir + command[0] + year )
-    samplelst = []
-    for s in opt.Samplelst:
-        samplelst += getattr( samplemod, s )
-   
-    if opt.Extract:
-        samplelst = [ x for x in samplelst if any( y in x for y in opt.Extract )]
+        # writing dat file
+        if commandlst:
+            with open( "{}.dat".format( job_detail ), "w" ) as output_dat:
+                for command in commandlst:
+                    command = ' '.join( command.split() )
+                    output_dat.write(  '{0}, {1}\n'.format( CMSSW_BASE, command ) )
 
-    if opt.Test:
-        print samplelst 
-        return 
+            if "lxplus" in HOSTNAME:
+                CondorJob( job_detail )
 
-    if "lxplus" in HOSTNAME:
-        CondorJob( opt, samplelst )
-
-    elif "ntugrid5" in HOSTNAME:
-        QJob( opt, samplelst )
+            elif "ntugrid5" in HOSTNAME:
+                QJob( job_detail )
     
 if __name__ == '__main__':
-    main(sys.argv)
+    main()

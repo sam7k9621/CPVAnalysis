@@ -108,7 +108,7 @@ BaseLineMgr::TopPtWeight()
 float
 BaseLineMgr::PDFWeight( const int& idx )
 {
-    // pdf100 10-109 as117 110 as119 111
+    // pdf100 10-109 as116 110 as120 111
     return _gen.LHESystematicWeights[ idx ] / _gen.LHEOriginalWeight;
 }
 
@@ -116,6 +116,6 @@ float
 BaseLineMgr::muFmuRWeight( const int& idx )
 {
     // anti-correlated variation are dropped
-    // drop nomina, 1006 and 1008
+    // drop nominal, 1006 and 1008
     return _gen.LHESystematicWeights[ idx ] / _gen.LHEOriginalWeight;
 }

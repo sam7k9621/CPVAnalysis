@@ -4,6 +4,7 @@
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
+#include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
@@ -48,6 +49,8 @@ class BaseLineMgr : public mgr::Pathmgr,
         double       GetVal( const std::string&, const std::string& );
         void         AddStr( const std::string&, const std::string& );
         std::string  GetStr( const std::string&, const std::string& );
+        void         AddBool( const std::string&, const std::string& );
+        bool         GetBool( const std::string&, const std::string& );
 
         /*******************************************************************************
         *   bbSeparation
@@ -83,6 +86,11 @@ class BaseLineMgr : public mgr::Pathmgr,
         bool     IsWellMatched( const double& );
         double   MakeScaled( const double& );
         double   MakeSmeared( const double&, const double& );
+        void     JECUpdate();
+        void     JECUncUpdate();
+        void     JECUncSrcUpdate();
+        void     JERUpdate();
+        
         void     JECUp();
         void     JECDn();
         void     JERCorr();
@@ -167,11 +175,20 @@ class BaseLineMgr : public mgr::Pathmgr,
         float _puweight;
         float _puweight_up;
         float _puweight_dn;
+        
         BTagCalibration* _calib;
+        FactorizedJetCorrector* _JetCorrector;
+        JetCorrectionUncertainty* _jecUnc;
+        std::vector<JetCorrectionUncertainty*>* _jecSrc;
+ 
+        JME::JetResolution* _resolution;
+        JME::JetResolutionScaleFactor* _resolution_sf;
+
         std::map<BTagEntry::OperatingPoint, BTagCalibrationReader> _reader_map;
         std::default_random_engine _generator;
         std::map<std::string, double> _valmap;
         std::map<std::string, std::string> _strmap;
+        std::map<std::string, bool> _boolmap;
 };
 
 

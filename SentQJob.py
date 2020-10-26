@@ -1,23 +1,31 @@
 #!/bin/env python
-
 import os
 import sys
 import argparse
-import importlib
 import time
 import subprocess
-import random
-import random
+
+qsub ="""
+#!/usr/bin/env sh
+#PBS -V
+#PBS -j oe
+#PBS -q cms
+#PBS -d /wk_cms/sam7k9621/qsub/dMESSAGE
+#PBS -o /wk_cms/sam7k9621/qsub/oMESSAGE
+#PBS -e /wk_cms/sam7k9621/qsub/eMESSAGE
+cd {}/src && eval `scramv1 runtime -sh`
+{}
+"""
 
 def isQsubOk( maxRunJobs, username='sam7k9621' ) :
     s = subprocess.Popen( 'qstat | grep -c ' + username, shell=True, stdout=subprocess.PIPE ) 
     sout, serr = s.communicate()
     sout = int(sout)
+    return sout <= maxRunJobs
+    
     if sout <= maxRunJobs :
         return True
     else :
-        print "Queue is full, halt for 1 minute..."
-        sys.stdout.flush()
         return False
 
 def isQstatOk( maxRunJobs, maxQueJobs, queue='cms'):
@@ -42,23 +50,24 @@ def main(args):
 
     parser.add_argument(
             '-i', '--inputFile',
-            type=str,
-            nargs='+',
-            required=True
+            type=str
             )
     
     parser.add_argument(
-            '-r', '--maxRunJobs',
-            help='max number of run jobs',
+            '-s', '--sleepTime',
             type=int,
             required=True
+            )
+    parser.add_argument(
+            '-r', '--maxRunJobs',
+            help='max number of run jobs',
+            type=int
             )
 
     parser.add_argument(
             '-q', '--maxQueJobs',
             help='max number of queue jobs',
-            type=int,
-            required=True
+            type=int
             )
 
     try:
@@ -66,20 +75,46 @@ def main(args):
     except:
         parser.print_help()
         raise
+   
+    print "Hostname:     {}".format( os.environ['HOSTNAME'] )
+    print "Current time: {}".format( time.ctime() )
+    print "Start time:   {}".format( time.ctime( time.time() + opt.sleepTime ) )
+    sys.stdout.flush()
+    time.sleep( opt.sleepTime ) 
+
     
-    for file in opt.inputFile:
-        while( not isQstatOk( opt.maxRunJobs, opt.maxQueJobs ) ):
-            if isQsubOk( opt.maxRunJobs ) :
-                break
-            time.sleep(60)
-        
-        sample = file.split("-s")[-1].replace(".sh", "")
-        cmd = "qsub {} -N {}".format( file, sample)
-        print ">>Sending {}".format(sample)
-        sys.stdout.flush()
-        os.system(cmd)
-        os.system( "rm {}".format( file ) )
-    print "DONE"
+    print "*"*80
+    if opt.inputFile:
+        # ntugrid5 Qjob
+        with open( opt.inputFile ) as inputfile:
+            lines = inputfile.readlines()
+            for i, line in enumerate( lines ):
+                pos, cmd = tuple( line.rstrip("\n").split(", ") )
+                file =  ".{}.sh".format( cmd.replace( " ", "_" ).replace("/", "_") )
+                with open( file, "w" ) as outputfile:
+                    outputfile.write( qsub.format( pos, cmd ) )
+                
+                while( not isQstatOk( opt.maxRunJobs, opt.maxQueJobs ) ):
+                    if isQsubOk( opt.maxRunJobs ) :
+                        break
+                    print "[{}|{}] Queue is full, resubmit in 1 minute...".format( i+1 ,len( lines ) )
+                    sys.stdout.flush()
+                    time.sleep(60)
+                
+                print "[{}|{}] Sending script {}".format( i+1, len(lines), file )
+                sys.stdout.flush()
+                cmd = "qsub {} -N {}".format( file, file.split(".")[1] )
+                os.system(cmd)
+                os.system( "rm {}".format( file ) )
+    else:
+        # lxplus condor job
+        os.system( "condor_submit job.sub" )
+        os.system( "rm job.sub" )
+        os.system( "rm job.dat" )
+    print "*"*80
+    
+    print "Finish time:  {}".format( time.ctime() )
+    os.system( "rm {}".format( opt.inputFile ) )
 
 if __name__ == '__main__':
     main(sys.argv)

@@ -22,6 +22,7 @@
 #define MAX_BX             128
 #define MAX_TRGOBJS        64
 #define N_TRIGGER_BOOKINGS 3000
+#define MAX_MEPS           128
 
 template<class T>
 inline void
@@ -286,6 +287,8 @@ class GenInfoBranches {
         Bool_t McIsTHBW;
         Bool_t McIsBWBW;
         Float_t Weight;
+        Int_t   MEPSSize;
+        Float_t MEPSWeights[MAX_MEPS];
         Float_t ptHat;
         Int_t PDFid1;
         Int_t PDFid2;
@@ -333,6 +336,8 @@ class GenInfoBranches {
             root->Branch( ( name + ".McIsTHBW" ).c_str(),             &McIsTHBW,            ( name + "McIsTHBW/O" ).c_str() );
             root->Branch( ( name + ".McIsBWBW" ).c_str(),             &McIsBWBW,            ( name + "McIsBWBW/O" ).c_str() );
             root->Branch( ( name + ".Weight" ).c_str(),               &Weight,              ( name + "Weight/F" ).c_str() );
+            root->Branch( ( name + ".MEPSSize" ).c_str(),             &MEPSSize,            ( name + "MEPSSize/I" ).c_str() );
+            root->Branch( ( name + ".MEPSWeights" ).c_str(),          &MEPSWeights,         ( name + "MEPSWeights[" + name + ".MEPSSize]/F" ).c_str() );
             root->Branch( ( name + ".ptHat" ).c_str(),                &ptHat,               ( name + "ptHat/F" ).c_str() );
             root->Branch( ( name + ".PDFid1" ).c_str(),               &PDFid1,              ( name + "PDFid1/I" ).c_str() );
             root->Branch( ( name + ".PDFid2" ).c_str(),               &PDFid2,              ( name + "PDFid2/I" ).c_str() );
@@ -381,6 +386,8 @@ class GenInfoBranches {
             SetBranchAddress( root, ( name + ".McIsTHBW" ).c_str(),             &McIsTHBW );
             SetBranchAddress( root, ( name + ".McIsBWBW" ).c_str(),             &McIsBWBW );
             SetBranchAddress( root, ( name + ".Weight" ).c_str(),               &Weight );
+            SetBranchAddress( root, ( name + ".MEPSSize" ).c_str(),             &MEPSSize );
+            SetBranchAddress( root, ( name + ".MEPSWeights" ).c_str(),          MEPSWeights );
             SetBranchAddress( root, ( name + ".ptHat" ).c_str(),                &ptHat );
             SetBranchAddress( root, ( name + ".PDFid1" ).c_str(),               &PDFid1 );
             SetBranchAddress( root, ( name + ".PDFid2" ).c_str(),               &PDFid2 );

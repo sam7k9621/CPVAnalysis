@@ -5,8 +5,7 @@ import argparse
 import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.pluginObservable as OBS
 from CPVAnalysis.CompareDataMC.Datacard import CEDM_dict
-from ROOT import TChain, TLorentzVector, TVector3, TGraphErrors, TF1, kGreen
-from progressbar import *
+from ROOT import TChain, TLorentzVector, TVector3, TGraphErrors, TF1, kGreen, TH2D
 from array import array 
 from math import sqrt
 
@@ -38,7 +37,7 @@ def MakePlot( x, y, ex, ey, func, obs ):
     gr = TGraphErrors( len(x), x, y, ex, ey )
     c = pltmgr.NewCanvas( obs ) 
     f = TF1( "f", func, 0, 5 )
-    
+  
     gr.Draw( "AEP" )
     f .Draw( "same" )
 
@@ -49,6 +48,7 @@ def MakePlot( x, y, ex, ey, func, obs ):
     gr.GetXaxis().SetTitle( "d_{tG}" )
     gr.GetYaxis().SetTitle( "A_{CP}" )
 
+    # first set pad then set hist
     pltmgr.SetSinglePad( c )
     pltmgr.SetAxis( gr )
     c.SaveAs( "results/CEDM_Simulation_{}.pdf".format(obs) )
@@ -68,8 +68,9 @@ def main(args):
     y6, ex6, ey6    = array( 'f' ), array( 'f' ),array( 'f' )
     y12, ex12, ey12 = array( 'f' ), array( 'f' ),array( 'f' )
     y13, ex13, ey13 = array( 'f' ), array( 'f' ),array( 'f' )
+    
     for i, d in enumerate( opt.dirlst ):
-        pos  = "/eos/cms/store/user/pusheng/public/CEDM_ntuple/CEDM_dtg_{}/ntuple_*.root".format( d )
+        pos  = "/wk_cms2/sam7k9621/CEDM_ntuple/CEDM_dtg_{}/ntuple_*.root".format( d )
         ch   = TChain( "MC" )
         ch.Add( pos )
         print ">> Processing " + pos 
@@ -81,9 +82,8 @@ def main(args):
         NO13p, NO13n = 0., 0.
         total = 1000000
 
-        widgets = [ Percentage(), ' ', Bar(), ' ', Timer(), ' | ', AdaptiveETA() ]
-        pbar    = ProgressBar( widgets=widgets, maxval=10*total ).start()
         for idx, entry in enumerate( ch ):
+            
             Particle.pdgid  = getattr( entry, "pdgid" )
             Particle.px     = getattr( entry, "px" )
             Particle.py     = getattr( entry, "py" )
@@ -166,8 +166,10 @@ def main(args):
             else:
                 NO13n += 1
 
-            pbar.update( 10*(NO3p + NO3n) )
+            OBS.ProgressBar( int(NO3p + NO3n), total )
             if NO3p + NO3n == total:
+                print ""
+                print NO13p, NO13n, NO13p + NO13n
                 break
        
         xsec = CEDM_dict[ d ]
@@ -180,16 +182,16 @@ def main(args):
         ey6 .append( ( xsec / 19.86648916 ) / ( NO6p  + NO6n )  * Error( NO6p , NO6n ) )
         ey12.append( ( xsec / 19.86648916 ) / ( NO12p + NO12n ) * Error( NO12p, NO12n ) )
         ey13.append( ( xsec / 19.86648916 ) / ( NO13p + NO13n ) * Error( NO13p, NO13n ) )
-        
+       
         ex3 .append( 0 )
         ex6 .append( 0 )
         ex12.append( 0 )
         ex13.append( 0 )
 
-    MakePlot( x, y3, ex3, ey3, "-0.0148*x", "Obs_{3}" )
-    MakePlot( x, y6, ex6, ey6, "0.0095*x", "Obs_{6}" )
-    MakePlot( x, y12, ex12, ey12, "0.0018*x", "Obs_{12}" )
-    MakePlot( x, y13, ex13, ey13, "0.0*x" ,"Obs_{13}" )
+    # MakePlot( x, y3, ex3, ey3, "-0.0148*x", "Obs_{3}" )
+    # MakePlot( x, y6, ex6, ey6, "-0.0095*x", "Obs_{6}" )
+    # MakePlot( x, y12, ex12, ey12, "0.0018*x", "Obs_{12}" )
+    # MakePlot( x, y13, ex13, ey13, "0.0*x" ,"Obs_{13}" )
 
 if __name__ == '__main__':
     main(sys.argv)

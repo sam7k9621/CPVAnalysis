@@ -113,13 +113,9 @@ def MakeSampleInfo( outputfile, year, content ):
             ',\n'.join( mc ) 
             ) )
 
-    s = subprocess.Popen( "ls {}{}".format( path, "PreCut" ), shell=True, stdout=subprocess.PIPE )
-    outputlst, err = s.communicate()
-    outputlst = filter( lambda o: "PreCut_" + year in o, outputlst.split('\n') )
-
-    el = [ "'" + "_".join( x.split( "_" )[3:] ).replace(".root", "") + "'" for x in outputlst if "EGamma" in x or "SingleElectron" in x ]
-    mu = [ "'" + "_".join( x.split( "_" )[3:] ).replace(".root", "") + "'" for x in outputlst if "SingleMuon" in x ]
-    mc = [ "'" + "_".join( x.split( "_" )[2:] ).replace(".root", "") + "'" for x in outputlst if "Run" not in x ]
+    el = [ x.replace("EGamma_", "").replace("SingleElectron_", "") for x in el if "EGamma" in x or "SingleElectron" in x ]
+    mu = [ x.replace("SingleMuon_", "") for x in mu if "SingleMuon" in x ]
+    mc = [ x for x in mc ]
 
     with open('python/FullCut{}.py'.format( year ), 'w+' ) as  fp:
         fp.write( context.format( 

@@ -21,7 +21,7 @@ ReweighAcp()
     TChain* ch = new TChain( "root" );
     ch->Add( fmt.str().c_str() );
     cout<<">> Adding : "<<fmt.str()<<endl;
-    CompMgr().AddSample( sample, ch );
+    CompMgr().AddSample( ch, is_data, sample );
     AddHist();
 
     // Register TLV
@@ -61,7 +61,7 @@ ReweighAcp()
     }
 
     // Looping events
-    bool acp13 = false;
+    bool acp14 = false;
     bool acp6  = false;
     bool acp12 = false;
     bool acp3  = false;
@@ -70,12 +70,12 @@ ReweighAcp()
         ch->GetEntry( i );
         CompMgr().process( events, i );
 
-        /*******************************************************************************
-        *  Gen-level Acp
-        *******************************************************************************/
         if( !is_data ){
+            /*******************************************************************************
+            *  Gen-level Acp
+            *******************************************************************************/
             // In Lab frame
-            double mco13 = Obs13( mcisolep->Vect(), mchardjet->Vect(), mcb->Vect(), mcbbar->Vect(), mccharge );
+            double mco14 = Obs14( mcisolep->Vect(), mchardjet->Vect(), mcb->Vect(), mcbbar->Vect() );
             double mco6  = Obs6( mcisolep->Vect(), mchardjet->Vect(), mcb->Vect(), mcbbar->Vect(), mccharge );
             double mco12 = Obs12( mcb->Vect(), mcbbar->Vect() );
 
@@ -88,22 +88,22 @@ ReweighAcp()
 
             double mco3 = Obs3( mcisolep->Vect(), mchardjet->Vect(), mcb->Vect(), mcbbar->Vect(), mccharge );
 
-            FillObservable( "GenObs13", mco13 );
-            FillObservable(  "GenObs6", mco6 );
+            FillObservable( "GenObs14", mco14 );
+            FillObservable( "GenObs6", mco6 );
             FillObservable( "GenObs12", mco12 );
-            FillObservable(  "GenObs3", mco3 );
+            FillObservable( "GenObs3", mco3 );
 
-            acp13 = mco13 > 0;
+            acp14 = mco14 > 0;
             acp6  = mco6 > 0;
             acp12 = mco12 > 0;
             acp3  = mco3 > 0;
 
-            FillWeighObservable( "weighted_GenObs13", mco13, acp13 );
+            FillWeighObservable( "weighted_GenObs14", mco14, acp14 );
             FillWeighObservable(  "weighted_GenObs6", mco6,  acp6 );
             FillWeighObservable( "weighted_GenObs12", mco12, acp12 );
             FillWeighObservable(  "weighted_GenObs3", mco3,  acp3 );
         }
-
+        
         /*******************************************************************************
         *  Reco Acp
         *******************************************************************************/
@@ -114,7 +114,7 @@ ReweighAcp()
         }
 
         // In Lab frame
-        double o13 = Obs13( isolep->Vect(), jlst[ idx ].Vect(), blst[ idx ].Vect(), bbar->Vect(), charge );
+        double o14 = Obs14( isolep->Vect(), jlst[ idx ].Vect(), blst[ idx ].Vect(), bbar->Vect() );
         double o6  = Obs6( isolep->Vect(), jlst[ idx ].Vect(), blst[ idx ].Vect(), bbar->Vect(), charge );
         double o12 = Obs12( blst[ idx ].Vect(), bbar->Vect() );
 
@@ -126,19 +126,19 @@ ReweighAcp()
         jlst[ idx ].Boost( bbCM );
 
         double o3 = Obs3( isolep->Vect(), jlst[ idx ].Vect(), blst[ idx ].Vect(), bbar->Vect(), charge );
-
+        
         /*******************************************************************************
         *  Fake Acp
         *******************************************************************************/
-        FillMoreObservable( "Obs13", o13, acp13 );
-        FillMoreObservable(  "Obs6", o6,  acp6 );
+        FillMoreObservable( "Obs14", o14, acp14 );
+        FillMoreObservable( "Obs6",  o6,  acp6 );
         FillMoreObservable( "Obs12", o12, acp12 );
-        FillMoreObservable(  "Obs3", o3,  acp3 );
+        FillMoreObservable( "Obs3",  o3,  acp3 );
 
-        FillWeighObservable( "weighted_Obs13", o13, acp13 );
-        FillWeighObservable(  "weighted_Obs6", o6,  acp6 );
+        FillWeighObservable( "weighted_Obs14", o14, acp14 );
+        FillWeighObservable( "weighted_Obs6",  o6,  acp6 );
         FillWeighObservable( "weighted_Obs12", o12, acp12 );
-        FillWeighObservable(  "weighted_Obs3", o3,  acp3 );
+        FillWeighObservable( "weighted_Obs3",  o3,  acp3 );
     }
 
     cout << endl;
@@ -183,6 +183,7 @@ StoreTLV()
     string lepton = CompMgr().GetOption<string>( "lepton" );
     string sample = CompMgr().GetOption<string>( "sample" );
     string year   = CompMgr().GetOption<string>( "year" );
+    bool is_data  = ( sample == "Data" ) ? 1 : 0;
     CompMgr().InitRoot( "sample" + year );
     TFile* myfile   = TFile::Open( CompMgr().GetResultsName( "root", "Hist" ).c_str(), "RECREATE" );
     TTree* tree     = new TTree( "root", "root" );
@@ -191,7 +192,7 @@ StoreTLV()
 
     TChain* ch = new TChain( "root" );
     ch->Add( filename.c_str() );
-    CompMgr().AddSample( sample, ch );
+    CompMgr().AddSample( ch, is_data, sample );
     CompMgr().RegisterWeight( ch );
 
     // Register reco sample
@@ -237,7 +238,6 @@ StoreTLV()
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
     string tag   = CompMgr().GetOption<string>( "uncertainty" );
-    bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );

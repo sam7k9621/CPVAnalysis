@@ -16,8 +16,12 @@ class Plotmgr:
         for objname in objnamelst:
             temp = dir + "/" + objname if dir else objname
             obj = file.Get( temp )
-            obj.SetDirectory(0)
-            if obj.Integral(0, obj.GetNbinsX()+1 ) == 0:
+            try:
+                obj.SetDirectory(0)
+            except:
+                print "{} is not defined in {}".format( objname, filename )
+                raise
+            if obj.GetEntries() == 0:
                 print "{} in {} is empty".format( objname, filename )
             objlst.append( obj )
         file.Close()
@@ -33,8 +37,9 @@ class Plotmgr:
         for s in self.sampledict:
             print s
    
-    def RemoveObj( self, sample ):
-        samplelst = [ x for x in self.sampledict if sample == x.split("_")[0] ]
+    def RemoveObj( self, *sample ):
+        samplelst = [ x for x in self.sampledict if all( y in x for y in sample ) ]
+        
         for s in samplelst:
             print ">> Removing sample: \033[0;31m{}\033[0m".format( s )
             del self.sampledict[ s ]
@@ -44,7 +49,6 @@ class Plotmgr:
         for s, objlst in self.sampledict.iteritems():
             if all( sam in s for sam in sample ):
                 histlst.append( objlst.popleft() )
-
         hist = histlst.pop()
         for h in histlst:
             hist.Add(h)

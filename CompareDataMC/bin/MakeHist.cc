@@ -18,6 +18,7 @@ main( int argc, char* argv[] )
         ( "uncertainty,e", opt::value<string>(), "uncertainty shift" )
         ( "opt,o", opt::value<double>(), "lep_tmass optimization cut" )
         ( "mixed,m", opt::value<int>(), "shuffle with nearby events" )
+        ( "topmass,p", opt::value<string>(), "top mass in chi2" )
         ( "wopileup", "without pileup running" )
         ( "wobtag", "withoutn btag" )
         ( "bbSep,B", "bbSeparation method" )
@@ -38,7 +39,7 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "year", "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "uncertainty", "wopileup", "wobtag", "0bjet", "SIM", "TLV" } );
+    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "topmass", "uncertainty", "wopileup", "wobtag", "0bjet", "SIM", "TLV" } );
 
     if( CompMgr().CheckOption( "SIM" ) ){
         CompMgr().InitRoot( "CheckAcp.json" );

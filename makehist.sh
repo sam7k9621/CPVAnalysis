@@ -1,5 +1,6 @@
 #BigBird $3
 
+#./SubmitJob.py -C "MakeHist -y $1 -l $2"      -S samplelst  
 #./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20"      -S samplelst  
 #./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -o 150"      -S samplelst  
 #./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -r WJets_0b --wobtag"    -S samplelst  
@@ -9,10 +10,12 @@
 ##./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -r WJets_0b"    -S samplelst  
 ##./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -r WJets_0b --wobtag --relax"    -S samplelst  
 
+#./SubmitJob.py  -C "MakeHist -y $1 -l $2 -s ttbar -u 20 -o 150 -B" -S uncertainty -I uncertainty
 #return 
 
 #BigBird $4
 #./SubmitJob.py  -C "MakeHist -y $1 -l $2 -s ttbar -u 20 -o 150" -S uncertainty -I uncertainty
+#./SubmitJob.py  -C "MakeHist -y $1 -l $2 -s ttbar -u 20" -S uncertainty -I uncertainty
 #./SubmitJob.py  -C "MakeHist -y $1 -l $2 -s ttbar                -u 20 -r WJets_0b --wobtag" -S uncertainty -I uncertainty
 #./SubmitJob.py  -C "MakeHist -y $1 -l $2 -s DYJets_HT-70to100    -u 20 -r WJets_0b --wobtag" -S uncertainty -I uncertainty
 #./SubmitJob.py  -C "MakeHist -y $1 -l $2 -s DYJets_HT-100to200   -u 20 -r WJets_0b --wobtag" -S uncertainty -I uncertainty
@@ -47,6 +50,7 @@
 #MakeHist -y 18 -l el -u 20 -o 150 -s ttbar -c --TLV 
 #MakeHist -y 18 -l el -u 20 -o 150 -s Data  -c --TLV
 
+#MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -c --TLV 
 #MakeHist -y 16 -l mu -u 20 -o 150 -s ttbar -c --TLV 
 #MakeHist -y 16 -l mu -u 20 -o 150 -s Data  -c --TLV
 #MakeHist -y 17 -l mu -u 20 -o 150 -s ttbar -c --TLV 
@@ -56,9 +60,13 @@
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a -20
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a -15
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a -10
+#MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a -7
+#MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a -3
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a -5
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a 0
+#MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a 3
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a 5
+#MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a 7
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a 10
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a 15
 #MakeHist -y $1 -l $2 -u 20 -o 150 -s ttbar -a 20
@@ -69,13 +77,31 @@
 #MakeHist -y 18 -l el -s ttbar -c -B  
 #MakeHist -y 18 -l el -s ttbar -c -B -u 20 
 
+#MakeHist -y $1 -l $2 -s ttbar -c -B -u 20 -o 150
+#MakeHist -y $1 -l $2 -u 20 -o 150 -s Data -r WJets_0b --wobtag
+#MakeHist -y $1 -l $2 -u 20 -o 150 -s Data
+#MakeHist -y $1 -l $2 -s ttbar -c -B -u 20 
+#MakeHist -y $1 -l $2 -s ttbar -c -B
+#MakeHist -y 16 -l mu -s ttbar -c -B -u 20 
 #MakeHist -y 16 -l mu -s ttbar -c -B  
 #MakeHist -y 16 -l mu -s ttbar -c -B -u 20 
 #MakeHist -y 17 -l mu -s ttbar -c -B  
 #MakeHist -y 17 -l mu -s ttbar -c -B -u 20 
 #MakeHist -y 18 -l mu -s ttbar -c -B  
 #MakeHist -y 18 -l mu -s ttbar -c -B -u 20 
-./SubmitJob.py -C "MakeHist -y $1 -l $2 -s ttbar -a 0"  -S shuffle -I mixed
-./SubmitJob.py -C "MakeHist -y $1 -l $2 -s Data  -a 0"  -S shuffle -I mixed
-./SubmitJob.py -C "MakeHist -y $1 -l $2 -s ttbar -a 10" -S shuffle -I mixed
+./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e pileup_up"  -S pseudo -I mixed
+./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e pileup_dn"  -S pseudo -I mixed
+./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e btag_up"    -S pseudo -I mixed
+./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e btag_dn"    -S pseudo -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e lepton_up"  -S pseudo -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e lepton_dn"  -S pseudo -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e PDF_up"  -S pseudo -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e PDF_dn"  -S pseudo -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e muFmuR_up"  -S pseudo -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e muFmuR_dn"  -S pseudo -I mixed
+
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -u 20 -s ttbar -e btag"  -S shuffle -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -s ttbar -a 0"  -S shuffle -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -s Data  -a 0"  -S shuffle -I mixed
+#./SubmitJob.py -C "MakeHist -y $1 -l $2 -s ttbar -a 10" -S shuffle -I mixed
 #MakeHist -y $1 -l $2 -s ttbar -a 10

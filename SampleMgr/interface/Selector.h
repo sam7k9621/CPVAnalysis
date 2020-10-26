@@ -25,7 +25,7 @@ class Selector : public mgr::Pathmgr,
         Selector( const Selector& )            = delete;
         Selector& operator=( const Selector& ) = delete;
 
-        void AddSample( TChain*, const std::string& = "" );
+        void AddSample( TChain*, const bool&, const std::string& );
         void InitBtagEffPlot( TH2D*, TH2D*, TH2D* );
 
         /*******************************************************************************
@@ -110,13 +110,18 @@ class Selector : public mgr::Pathmgr,
         double               GetTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint&    = BTagEntry::OP_MEDIUM );
         double               GetNonTaggedEff( const int&, const bool&, const std::string&, const BTagEntry::OperatingPoint& = BTagEntry::OP_MEDIUM );
         double               GetBtagWeight( const std::vector<int>&, const std::vector<int>&, const std::string&            = "central" );
-        double               GetBtagWeight_CR_0b( const std::vector<int>&, const std::vector<int>& );
+        double               GetBtagWeight_CR_0b( const std::vector<int>& );
         double               GetBtagWeight_CR_1b( const std::vector<int>&, const std::vector<int>& );
 
         /*******************************************************************************
         *   Pre-selection
         *******************************************************************************/
         bool IsGoodEvt( checkEvtTool& );
+        void JECUpdate(); 
+        void JECUncUpdate(); 
+        void JECUncSrcUpdate(); 
+        void JERUpdate();
+
         void JECCorrUp();
         void JECCorrDn();
         void JERCorr();
@@ -139,9 +144,10 @@ class Selector : public mgr::Pathmgr,
 
         bool                                      PassFullJet( std::vector<int>&, std::vector<int>&, const int& );
         bool                                      PassFullJet_CR_1b( std::vector<int>&, std::vector<int>&, const int& );
-        bool                                      PassFullJet_CR_0b( std::vector<int>&, std::vector<int>&, const int& );
+        bool                                      PassFullJet_CR_0b( std::vector<int>&, const int& );
         bool                                      PassFullJet_CRDYJets( std::vector<int>& );
         std::tuple<double, double, int, int, int> GetChi2Info( const std::vector<int>&, const std::vector<int>& );
+        std::tuple<double, double, int, int, int> GetChi2Info_CR_0b( std::vector<int>&, std::vector<int>&, const int& );
         double                                    GetLeptonicM( const int&, const int& );
 
         /*******************************************************************************

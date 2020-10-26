@@ -26,10 +26,11 @@ def Plot2D( hist ):
     
     hist.Draw( "COLZ" )
 
-    pltmgr.SetAxis( hist )
     pltmgr.SetSinglePadWithPalette( c )
+    pltmgr.Set2DAxis( hist )
     pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
     pltmgr.DrawEntryLeft( opt.Entry() )
+    pltmgr.DrawLuminosity( opt.Lumi() )
     c.SaveAs( opt.GetOutputName( "2D_chi2_tmass", "bbSep" ) )
 
 def PlotIntegral( correct, misid, mistag ):
@@ -52,10 +53,25 @@ def PlotIntegral( correct, misid, mistag ):
         ide_eff.SetBinContent( i, float( ide / sum ) )
 
         eve_eff.SetBinContent( i, float( sum / total ) )
+   
+    
+    info = """
+    Eff    : {:0.3f}
+    Correct: {:0.3f}
+    Mistag : {:0.3f}
+    Misid  : {:0.3f}
+    """.format( 
+            eve_eff.GetBinContent( cor_eff.FindBin( 20 ) - 1 ), \
+            cor_eff.GetBinContent( cor_eff.FindBin( 20 ) - 1 ), \
+            tag_eff.GetBinContent( cor_eff.FindBin( 20 ) - 1 ), \
+            ide_eff.GetBinContent( cor_eff.FindBin( 20 ) - 1 )
+            ) 
+    
+    print info
 
     c   = pltmgr.NewCanvas()
-    leg = pltmgr.NewLegend( 0.7, 0.6, 0.92, 0.87 )
-    leg.SetTextSize( 16 )
+    leg = pltmgr.NewLegend( 0.7, 0.3, 0.9, 0.55 )
+    leg.SetTextSize( 14 )
     leg.SetFillColorAlpha( 0, 1 )
     cor_eff.Draw( "hist" )
     tag_eff.Draw( "hist same" )
@@ -68,9 +84,9 @@ def PlotIntegral( correct, misid, mistag ):
     cor_eff.GetYaxis().SetTitle( "Rate" )
 
     cor_eff.SetLineColor( pltmgr.Green)
-    tag_eff.SetLineColor( pltmgr.Magenta)
-    ide_eff.SetLineColor( pltmgr.Cyan)
-    eve_eff.SetLineColor( pltmgr.Blue)
+    tag_eff.SetLineColor( pltmgr.Orange)
+    ide_eff.SetLineColor( pltmgr.Magenta)
+    eve_eff.SetLineColor( pltmgr.Azure)
 
     cor_eff.SetLineWidth( 2 )
     tag_eff.SetLineWidth( 2 )
@@ -90,10 +106,10 @@ def PlotIntegral( correct, misid, mistag ):
 
     cor_eff.SetMaximum( 1. )
     cor_eff.SetMinimum( 0. )
-    pltmgr.SetSinglePad( c )
-    pltmgr.SetAxis( cor_eff )
 
     c.SetGrid()
+    pltmgr.SetSinglePad( c )
+    pltmgr.SetAxis( cor_eff )
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
     pltmgr.DrawEntryRight( opt.Entry() )
     c.SaveAs( opt.GetOutputName( "Chi2_uppercut", "bbSep" ) )
@@ -111,8 +127,8 @@ def OptLeptmass( cor, misid, mistag ):
     leg.Draw()
 
     cor   .SetLineColor( pltmgr.Green )
+    mistag.SetLineColor( pltmgr.Orange ) 
     misid .SetLineColor( pltmgr.Magenta )
-    mistag.SetLineColor( pltmgr.Cyan ) 
     cor   .SetLineWidth( 2 )
     misid .SetLineWidth( 2 )
     mistag.SetLineWidth( 2 )
@@ -124,20 +140,19 @@ def OptLeptmass( cor, misid, mistag ):
     pltmgr.SetSinglePad( c )
     pltmgr.SetAxis( cor )
     cor.SetMaximum( pltmgr.GetHistYmax( cor ) * 1.1 ) 
-    cor.GetYaxis().SetTitle( "Events x 10^{3}" )
-    cor.GetXaxis().SetTitle( "M_{lb} [GeV]" )
-
-    pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
+    
+    pltmgr.DrawEntryLeft( opt.Entry() )
+    pltmgr.DrawLuminosity( opt.Lumi() )
+    pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
     c.SaveAs( opt.GetOutputName( "Optimisation", "bbSep" ) )
 
     mistag.Add( misid )
     eff_cor = EffHist( cor, mistag )
 
     eff_cor.Draw( "hist e" )
-    eff_cor.SetLineColor( pltmgr.Cyan )
+    eff_cor.SetLineColor( pltmgr.Azure )
     eff_cor.SetLineWidth( 2 )
     eff_cor.GetYaxis().SetTitle( "Correct b-tagged rate" )
-    eff_cor.GetXaxis().SetTitle( "M_{lb} [GeV]" )
     eff_cor.SetMaximum( 1 )
     eff_cor.SetMinimum( 0 )
 
@@ -150,27 +165,30 @@ def OptLeptmass( cor, misid, mistag ):
     line = ROOT.TLine( 150, 0, 150, 1 )
     line.Draw()
     line.SetLineColor( ROOT.kRed )
+    line.SetLineStyle( 7 ) 
     line.SetLineWidth( 2 )
     
     pltmgr.SetSinglePad( c )
     pltmgr.SetAxis( eff_cor )
-    pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
+    pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
     c.SaveAs( opt.GetOutputName( "Correct_eff", "bbSep" ) )
 
 def PlotOptIntegral( correct, misid, mistag ):
-    cor_eff = ROOT.TH1D( "cor_eff", "", 50, 0, 500 )
-    tag_eff = ROOT.TH1D( "tag_eff", "", 50, 0, 500 )
-    ide_eff = ROOT.TH1D( "ide_eff", "", 50, 0, 500 )
-    eve_eff = ROOT.TH1D( "eve_eff", "", 50, 0, 500 )
+    cor_eff = ROOT.TH1D( "cor_eff", "", 60, 0, 300 )
+    tag_eff = ROOT.TH1D( "tag_eff", "", 60, 0, 300 )
+    ide_eff = ROOT.TH1D( "ide_eff", "", 60, 0, 300 )
+    eve_eff = ROOT.TH1D( "eve_eff", "", 60, 0, 300 )
+    rej_eff = ROOT.TH1D( "ref_eff", "", 60, 0, 300 )
 
-    total = correct.Integral( 0, 51 ) + misid.Integral( 0, 51 ) + mistag.Integral( 0, 51 )
-   
-    for i in range( 52 ):
+    total_cor = correct.Integral( 1, 61 )
+    total = correct.Integral( 1, 61 ) + misid.Integral( 1, 61 ) + mistag.Integral( 1, 61 )
+  
+    for i in range( 62 ):
         cor = correct.Integral( 1, i )
         ide = misid.Integral( 1, i )
         tag = mistag.Integral( 1, i )
         sum = cor + ide + tag
-       
+      
         if sum == 0:
             continue
 
@@ -179,15 +197,17 @@ def PlotOptIntegral( correct, misid, mistag ):
         ide_eff.SetBinContent( i, float( ide / sum ) )
 
         eve_eff.SetBinContent( i, float( sum / total ) )
+        rej_eff.SetBinContent( i, float( cor / total_cor ) )
 
     c   = pltmgr.NewCanvas()
-    leg = pltmgr.NewLegend( 0.7, 0.6, 0.92, 0.87 )
-    leg.SetTextSize( 16 )
+    leg = pltmgr.NewLegend( 0.7, 0.35, 0.9, 0.6 )
+    leg.SetTextSize( 14 )
     leg.SetFillColorAlpha( 0, 1 )
     cor_eff.Draw( "hist" )
     tag_eff.Draw( "hist same" )
     ide_eff.Draw( "hist same" )
     eve_eff.Draw( "hist same" )
+    rej_eff.Draw( "hist same" )
     leg.Draw()
 
     cor_eff.SetStats( 0 )
@@ -195,13 +215,15 @@ def PlotOptIntegral( correct, misid, mistag ):
     cor_eff.GetYaxis().SetTitle( "Rate" )
 
     cor_eff.SetLineColor( pltmgr.Green)
-    tag_eff.SetLineColor( pltmgr.Magenta)
-    ide_eff.SetLineColor( pltmgr.Cyan)
-    eve_eff.SetLineColor( pltmgr.Blue)
+    tag_eff.SetLineColor( pltmgr.Orange)
+    ide_eff.SetLineColor( pltmgr.Magenta)
+    eve_eff.SetLineColor( pltmgr.Azure)
+    rej_eff.SetLineColor( pltmgr.Red)
     cor_eff.SetLineWidth( 2 )
     tag_eff.SetLineWidth( 2 )
     ide_eff.SetLineWidth( 2 )
     eve_eff.SetLineWidth( 2 )
+    rej_eff.SetLineWidth( 2 )
 
     leg.AddEntry( cor_eff, "Correct",          "l" )
     leg.AddEntry( tag_eff, "Mistag",           "l" )
@@ -216,10 +238,10 @@ def PlotOptIntegral( correct, misid, mistag ):
 
     cor_eff.SetMaximum( 1. )
     cor_eff.SetMinimum( 0. )
-    pltmgr.SetSinglePad( c )
-    pltmgr.SetAxis( cor_eff )
 
     c.SetGrid()
+    pltmgr.SetSinglePad( c )
+    pltmgr.SetAxis( cor_eff )
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
     pltmgr.DrawEntryRight( opt.Entry() )
     c.SaveAs( opt.GetOutputName( "OptCut", "bbSep" ) )
@@ -228,7 +250,8 @@ def main() :
     # Initialize parsing manager
     global opt 
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddFlag("B", "bbSep")
+    opt.AddInput("c", "chi2")
+    opt.AddFlag("B", "bbSep")
     opt.Parsing() 
     opt.AddInputName( "chi2", "bbSep" )
     opt.AddOutputName( "chi2", "bbSep" )
@@ -236,23 +259,28 @@ def main() :
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst = [ "chi2_tmass", "chi2_Correct", "chi2_Misid", "chi2_Mistag", "Cor_leptmass", "Misid_leptmass", "Mistag_leptmass" ]
-    histmgr.SetObjlst( opt.GetInputName( "ttbar" ), objlst, "ttbar" )
+    
+    sample = "ttbar" 
+    
+    yearlst = [ "16", "17", "18" ] if opt.Year() == "RunII" else [ opt.Year() ] 
+    for year in yearlst:
+        histmgr.SetObjlst( opt.GetInputName( sample ).format( Y=year ), objlst, "{}_{}".format( sample, year ) )
     
     # Plot 2D_chi2_tmass
-    Plot2D( histmgr.GetObj("ttbar") )
+    Plot2D( histmgr.GetMergedObj( sample ) )
 
     # Plot objlst
-    correct = histmgr.GetObj( "ttbar" )
-    misid   = histmgr.GetObj( "ttbar" )
-    mistag  = histmgr.GetObj( "ttbar" )
+    correct = histmgr.GetMergedObj( sample )
+    misid   = histmgr.GetMergedObj( sample )
+    mistag  = histmgr.GetMergedObj( sample )
     
-    Cor_leptmas     = histmgr.GetObj( "ttbar" )
-    Misid_leptmass  = histmgr.GetObj( "ttbar" )
-    Mistag_leptmass = histmgr.GetObj( "ttbar" )
+    Cor_leptmas     = histmgr.GetMergedObj( sample )
+    Misid_leptmass  = histmgr.GetMergedObj( sample )
+    Mistag_leptmass = histmgr.GetMergedObj( sample )
 
     if opt.GetOption( "chi2" ):
-        OptLeptmass( Cor_leptmas, Misid_leptmass, Mistag_leptmass )
         PlotOptIntegral( Cor_leptmas, Misid_leptmass, Mistag_leptmass )
+        OptLeptmass( Cor_leptmas, Misid_leptmass, Mistag_leptmass )
 
     PlotIntegral( correct, misid, mistag )
     

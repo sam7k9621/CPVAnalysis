@@ -20,7 +20,15 @@ uncertainty = [
     {}
     ]
 
+pseudo = [
+    {}
+    ]
+
 shuffle = [
+    {}
+    ]
+
+acp = [
     {}
     ]
 """
@@ -46,19 +54,26 @@ def MakeWeightInfo( outputfile, year ):
     outputfile.write( text2.format( year, "Data", sample_path + filename.format( "Run*" ) ) )
    
     samplelst.append( "Data" )
-    samplelst = ["'" + x  + "'" for x in samplelst]
+    samplelst = ["'" + x  + "'" for x in samplelst if "CP5" not in x and "hdamp" not in x and "mtop" not in x and "dtg" not in x ]
     
-    uncertainty = [ "pileup_up", "pileup_dn", "btag_up", "btag_dn", "lepton_up", "lepton_dn", "JER_up", "JER_dn", "JEC_up", "JEC_dn", "PDF_up", "PDF_dn", "muFmuR_up", "muFmuR_dn" ]
-    # uncertainty = [ "pileup_up", "pileup_dn", "btag_up", "btag_dn", "lepton_up", "lepton_dn", "JER_up", "JER_dn", "JEC_up", "JEC_dn" ]
-    # uncertainty.extend( [ "PDF_{}".format(x) for x in range(10, 112) ] )
-    # uncertainty.extend( [ "muFmuR_{}".format(x) for x in range(1, 9) if x not in [5, 7] ] )
+    uncertainty = [ 
+            # "pileup_up", "pileup_dn", "bctag_up", "bctag_dn", "lighttag_up", "lighttag_dn", "lepton_up", "lepton_dn", 
+            # "JER_up", "JER_dn", "JEC_up", "JEC_dn",
+            # "PDF_up", "PDF_dn", "muFmuR_up", "muFmuR_dn", "FR_up", "FR_dn" ]
+            
+            "pileup_up", "pileup_dn", "bctag_up", "bctag_dn", "lighttag_up", "lighttag_dn", "lepton_up", "lepton_dn", 
+            "JER_up", "JER_dn", "JEC_up", "JEC_dn",
+            "CP5CR1", "CP5CR2", "CP5down", "CP5up", "hdampDOWN", "hdampUP", "ISR_up", "ISR_dn", "FSR_up", "FSR_dn",
+            "PDF_up", "PDF_dn", "muFmuR_up", "muFmuR_dn", "FR_up", "FR_dn", "mtop1695", "mtop1755" ]
     uncertainty = ["'" + x  + "'" for x in uncertainty]
     
     with open( "python/MakeHist{}.py".format( year ), "w+" ) as fp:
         fp.write( context.format( 
             ',\n    '.join( samplelst ), 
             ',\n    '.join( uncertainty ), 
-            ", ".join( [ str(x) for x in range(1,1001) ] ) 
+            ", ".join( [ str(x) for x in range(1,21) ] ), 
+            ", ".join( [ str(x) for x in range(1,1001) ] ),
+            ", ".join( [ str(x) for x in [ -15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ] ] )
             ) )
     
     ###########################################################################################################################

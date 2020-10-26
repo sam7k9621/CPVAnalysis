@@ -29,7 +29,7 @@ CheckBtag()
     cout << ">> Processing " << filename << endl;
     TChain* ch = new TChain( "bprimeKit/root" );
     ch->Add( ( filename ).c_str() );
-    PreMgr().AddSample( ch );
+    PreMgr().AddSample( ch, is_data, sample );
     CompMgr().AddSample( sample );
     AddHist();
 

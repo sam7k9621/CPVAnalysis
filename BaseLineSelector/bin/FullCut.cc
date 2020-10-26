@@ -12,6 +12,8 @@ main( int argc, char* argv[] )
         ( "lepton,l", opt::value<string>(), "which lepton" )
         ( "uncertainty,e", opt::value<string>(), "uncertainty" )
         ( "region,r", opt::value<string>(), "which region" )
+        ( "topmass,m", opt::value<double>(), "simulated top mass" )
+        ( "deviation,d", opt::value<double>(), "simulated width shift" )
         ( "count,c", "count events" )
         ( "test,t", "run testing events number" )
     ;
@@ -26,8 +28,8 @@ main( int argc, char* argv[] )
         return 1;
     }
 
-    FullMgr().SetFileName( { "year", "lepton", "sample", "uncertainty" } );
-    FullMgr().AddCutName( { "test", "region" } );
+    FullMgr().SetFileName( { "year", "lepton", "sample","uncertainty" } );
+    FullMgr().AddCutName( { "test", "region", "topmass", "deviation" } );
 
     if( FullMgr().CheckOption( "BWEIGHT" ) ){
         CheckBtag();

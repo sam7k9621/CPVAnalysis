@@ -20,7 +20,15 @@ mclst = [
         ( 1, "ST_t-channel_top"),
         ( 1, "ST_tW_antitop"),
         ( 1, "ST_tW_top"),
-        ( 15, "TTToSemiLeptonic"),
+        ( 15, "TTToSemiLeptonic_CP5Nom"),
+        ( 10, "TTToSemiLeptonic_hdampDOWN"),
+        ( 10, "TTToSemiLeptonic_hdampUP"),
+        ( 10, "TTToSemiLeptonic_CP5CR1"),
+        ( 10, "TTToSemiLeptonic_CP5CR2"),
+        ( 10, "TTToSemiLeptonic_CP5down"),
+        ( 10, "TTToSemiLeptonic_CP5up"),
+        ( 10, "TTToSemiLeptonic_CP5mtop1695"),
+        ( 10, "TTToSemiLeptonic_CP5mtop1755"),
         ( 5, "WJets_HT-100To200"),
         ( 10, "WJets_HT-1200To2500"),
         ( 5, "WJets_HT-200To400"),
@@ -31,7 +39,13 @@ mclst = [
         ( 10, "WJets_HT-800To1200"),
         ( 1, "WW"),
         ( 1, "WZ"),
-        ( 1, "ZZ")
+        ( 1, "ZZ"),
+        ( 5, "TT_CEDM_dtG0"),
+        ( 5, "TT_CEDM_dtG1"),
+        ( 5, "TT_CEDM_dtG2"),
+        ( 5, "TT_CEDM_dtG3"),
+        ( 5, "TT_CEDM_dtG4"),
+        ( 5, "TT_CEDM_dtG5")
         ]
 
 datalst = [

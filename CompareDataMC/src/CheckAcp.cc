@@ -8,6 +8,7 @@ CheckAcp()
 {
     // Initialize file
     string sample            = CompMgr().GetOption<string>( "sample" );
+    bool is_data = ( sample == "Data" ) ? 1 : 0;
     vector<string> samplelst = CompMgr().GetVParam<string>( sample, "path" );
     TChain* ch               = new TChain( "bprimeKit/root" );
 
@@ -15,12 +16,11 @@ CheckAcp()
         ch->Add( s.c_str() );
     }
 
-    CompMgr().AddSample( sample, ch );
+    CompMgr().AddSample( ch, is_data, sample );
     AddHist();
 
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
-    bool is_data = ( sample == "Data" ) ? 1 : 0;
 
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
@@ -47,7 +47,7 @@ CheckAcp()
             TLorentzVector mchardjet = CompMgr().GetGenP4( genjetidx );
 
             // In Lab frame
-            double mco13 = Obs13( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
+            double mco14 = Obs14( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect() );
             double mco6  = Obs6( mcisolep.Vect(), mchardjet.Vect(), mcbjet.Vect(), mcbbarjet.Vect(), mccharge );
             double mco12 = Obs12( mcbjet.Vect(), mcbbarjet.Vect() );
 
@@ -62,7 +62,7 @@ CheckAcp()
 
             CompMgr().Hist( "GenObs12" )->Fill( mco12 / 1000000. );
             CompMgr().Hist( "GenObs6" )->Fill( mco6 / 1000000. );
-            CompMgr().Hist( "GenObs13" )->Fill( mco13 / 1000000. );
+            CompMgr().Hist( "GenObs14" )->Fill( mco14 / 1000000. );
             CompMgr().Hist( "GenObs3" )->Fill( mco3 / 1000000. );
 
             // CompMgr().DumpEvtInfo();

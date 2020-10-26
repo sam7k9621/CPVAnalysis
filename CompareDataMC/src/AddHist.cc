@@ -10,16 +10,17 @@ AddHist()
     *  Reco TH1
     *******************************************************************************/
     string lepton = CompMgr().GetOption<string>( "lepton" );
+    CompMgr().AddHist( "Syst", "", "", 1, 0, 1 );
     if( lepton == "mu" ){
         CompMgr().AddHist( "lep_tmass", "M_{#mub} [GeV]", "Events", 60, 0, 300 );
+        CompMgr().AddHist( "leptmass", "M_{#mub} [GeV]", "Events", 50, 0, 500 );
     }
     else if( lepton == "el" ){
         CompMgr().AddHist( "lep_tmass", "M_{eb} [GeV]", "Events", 60, 0, 300 );
-    }
-    else{
-        CompMgr().AddHist( "lep_tmass", "M_{lb} [GeV]", "Events", 60, 0, 300 );
+        CompMgr().AddHist( "leptmass", "M_{eb} [GeV]", "Events", 50, 0, 500 );
     }
     CompMgr().AddHist( "had_tmass", "M_{jjb} [GeV]", "Events", 50, 50, 300 );
+    CompMgr().AddHist( "jj_tmass", "M_{jj} [GeV]", "Events", 60, 0, 300 );
     CompMgr().AddHist( "chi2", "#chi^{2}_{min}", "Events", 40, 0, 200 );
     CompMgr().AddHist( "nVtx", "Number of primary vertex", "Yield", 50, 0, 50 );
     CompMgr().AddHist( "Rho", "Rho", "Events", 100, 0, 100 );
@@ -36,7 +37,7 @@ AddHist()
     CompMgr().AddHist( "LepEta",   "Lepton Eta", "Events",         40, -3, 5 );
 
     CompMgr().AddHist( "Njets", "N_{jets}", "Events", 10, 0, 10 );
-    CompMgr().AddHist( "DeepCSV", "DeepCSV", "Events", 50, 0, 1 );
+    CompMgr().AddHist( "DeepCSV", "DeepCSV", "Events", 110, -2, 0.2 );
     CompMgr().AddHist( "bweight", "bweight", "Events", 50, 0.2, 1.2 );
     CompMgr().AddHist( "JetFlavor", "JetFlavor", "Events", 30, 0, 30 );
 
@@ -58,33 +59,53 @@ AddHist()
     /*******************************************************************************
     *  Reco TH2
     *******************************************************************************/
-    CompMgr().AddHist2D( "chi2_tmass", "M_{jjb} [GeV]", "#chi^{2}_{min}", 50, 50, 300, 40, 0, 200 );
-
+    CompMgr().AddHist2D( "chi2_tmass",   "M_{jjb} [GeV]", "#chi^{2}_{min}", 50, 50, 300, 40, 0, 200 );
+    CompMgr().AddHist2D( "chi2_jjmass",  "M_{jj} [GeV]", "#chi^{2}_{min}", 60, 0, 300, 40, 0, 200 );
+    CompMgr().AddHist2D( "Obs3_leptmass",  "M_{lb} [GeV]", "O3",  50, 0, 500, 50, -1, 1 );
+    CompMgr().AddHist2D( "Obs6_leptmass",  "M_{lb} [GeV]", "O6",  50, 0, 500, 50, -1, 1 );
+    CompMgr().AddHist2D( "Obs12_leptmass", "M_{lb} [GeV]", "O12", 50, 0, 500, 50, -1, 1 );
+    CompMgr().AddHist2D( "Obs14_leptmass", "M_{lb} [GeV]", "O14", 50, 0, 500, 50, -1, 1 );
+    
     /*******************************************************************************
     *  Observable
     *******************************************************************************/
+    CompMgr().AddHist( "Obs3_dist",  "O_{3}",  "Events", 50, -1, 1 );
+    CompMgr().AddHist( "Obs6_dist",  "O_{6}",  "Events", 50, -1, 1 );
+    CompMgr().AddHist( "Obs12_dist", "O_{12}", "Events", 50, -1, 1 );
+    CompMgr().AddHist( "Obs14_dist", "O_{14}", "Events", 50, -1, 1 );
+    
     CompMgr().AddHist( "Obs3", "O_{3}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "Obs6", "O_{6}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "Obs12", "O_{12}", "Events", 2, -1, 1 );
-    CompMgr().AddHist( "Obs13", "O_{13}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "Obs14", "O_{14}", "Events", 2, -1, 1 );
 
     CompMgr().AddHist( "weighted_Obs3", "O_{3}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "weighted_Obs6", "O_{6}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "weighted_Obs12", "O_{12}", "Events", 2, -1, 1 );
-    CompMgr().AddHist( "weighted_Obs13", "O_{13}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "weighted_Obs14", "O_{14}", "Events", 2, -1, 1 );
 
+    CompMgr().AddHist( "Ratio_Obs3", "O_{3}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "Ratio_Obs6", "O_{6}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "Ratio_Obs12", "O_{12}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "Ratio_Obs14", "O_{14}", "Events", 2, -1, 1 );
+    
     /*******************************************************************************
-    *  Intrinsci Acp
+    *  Intrinsic Acp
     *******************************************************************************/
     CompMgr().AddHist( "GenObs3", "O_{3}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "GenObs6", "O_{6}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "GenObs12", "O_{12}", "Events", 2, -1, 1 );
-    CompMgr().AddHist( "GenObs13", "O_{13}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "GenObs14", "O_{14}", "Events", 2, -1, 1 );
+    
+    CompMgr().AddHist( "GenObs3_dist",  "O_{3}",  "Events", 50, -1, 1 );
+    CompMgr().AddHist( "GenObs6_dist",  "O_{6}",  "Events", 50, -1, 1 );
+    CompMgr().AddHist( "GenObs12_dist", "O_{12}", "Events", 50, -1, 1 );
+    CompMgr().AddHist( "GenObs14_dist", "O_{14}", "Events", 50, -1, 1 );
 
     CompMgr().AddHist( "weighted_GenObs3", "O_{3}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "weighted_GenObs6", "O_{6}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "weighted_GenObs12", "O_{12}", "Events", 2, -1, 1 );
-    CompMgr().AddHist( "weighted_GenObs13", "O_{13}", "Events", 2, -1, 1 );
+    CompMgr().AddHist( "weighted_GenObs14", "O_{14}", "Events", 2, -1, 1 );
 
     /*******************************************************************************
     * bbSeparation
@@ -126,8 +147,11 @@ StoreCompare()
     /*******************************************************************************
     *  Reco TH1
     *******************************************************************************/
+    mgr::SaveToROOT( CompMgr().Hist( "Syst" ), filename, "Syst" );
     mgr::SaveToROOT( CompMgr().Hist( "lep_tmass" ), filename, "lep_tmass" );
+    mgr::SaveToROOT( CompMgr().Hist( "leptmass" ), filename, "leptmass" );
     mgr::SaveToROOT( CompMgr().Hist( "had_tmass" ), filename, "had_tmass" );
+    mgr::SaveToROOT( CompMgr().Hist( "jj_tmass" ),  filename, "jj_tmass" );
     mgr::SaveToROOT( CompMgr().Hist( "chi2" ),      filename, "chi2" );
     mgr::SaveToROOT( CompMgr().Hist( "nVtx" ),      filename, "nVtx" );
     mgr::SaveToROOT( CompMgr().Hist( "Rho" ),       filename, "Rho" );
@@ -170,20 +194,35 @@ StoreCompare()
     /*******************************************************************************
     *  Reco TH2
     *******************************************************************************/
-    mgr::SaveToROOT( CompMgr().Hist2D( "chi2_tmass" ),      filename, "chi2_tmass" );
+    mgr::SaveToROOT( CompMgr().Hist2D( "chi2_tmass"   ),    filename, "chi2_tmass" );
+    mgr::SaveToROOT( CompMgr().Hist2D( "chi2_jjmass"  ),    filename, "chi2_jjmass" );
+    mgr::SaveToROOT( CompMgr().Hist2D( "Obs3_leptmass"  ),    filename, "Obs3_leptmass" );
+    mgr::SaveToROOT( CompMgr().Hist2D( "Obs6_leptmass"  ),    filename, "Obs6_leptmass" );
+    mgr::SaveToROOT( CompMgr().Hist2D( "Obs12_leptmass" ),    filename, "Obs12_leptmass" );
+    mgr::SaveToROOT( CompMgr().Hist2D( "Obs14_leptmass" ),    filename, "Obs14_leptmass" );
 
     /*******************************************************************************
     *  Observable
     *******************************************************************************/
+    mgr::SaveToROOT( CompMgr().Hist( "Obs3_dist" ),         filename, "Obs3_dist" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs6_dist" ),         filename, "Obs6_dist" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs12_dist" ),        filename, "Obs12_dist" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs14_dist" ),        filename, "Obs14_dist" );
+    
     mgr::SaveToROOT( CompMgr().Hist( "Obs3" ),              filename, "Obs3" );
     mgr::SaveToROOT( CompMgr().Hist( "Obs6" ),              filename, "Obs6" );
     mgr::SaveToROOT( CompMgr().Hist( "Obs12" ),             filename, "Obs12" );
-    mgr::SaveToROOT( CompMgr().Hist( "Obs13" ),             filename, "Obs13" );
+    mgr::SaveToROOT( CompMgr().Hist( "Obs14" ),             filename, "Obs14" );
 
     mgr::SaveToROOT( CompMgr().Hist( "weighted_Obs3" ),     filename, "weighted_Obs3" );
     mgr::SaveToROOT( CompMgr().Hist( "weighted_Obs6" ),     filename, "weighted_Obs6" );
     mgr::SaveToROOT( CompMgr().Hist( "weighted_Obs12" ),    filename, "weighted_Obs12" );
-    mgr::SaveToROOT( CompMgr().Hist( "weighted_Obs13" ),    filename, "weighted_Obs13" );
+    mgr::SaveToROOT( CompMgr().Hist( "weighted_Obs14" ),    filename, "weighted_Obs14" );
+    
+    mgr::SaveToROOT( CompMgr().Hist( "Ratio_Obs3" ),              filename, "Ratio_Obs3" );
+    mgr::SaveToROOT( CompMgr().Hist( "Ratio_Obs6" ),              filename, "Ratio_Obs6" );
+    mgr::SaveToROOT( CompMgr().Hist( "Ratio_Obs12" ),             filename, "Ratio_Obs12" );
+    mgr::SaveToROOT( CompMgr().Hist( "Ratio_Obs14" ),             filename, "Ratio_Obs14" );
 
     /*******************************************************************************
     *  Intrinsci Acp
@@ -191,12 +230,17 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "GenObs3" ),           filename, "GenObs3" );
     mgr::SaveToROOT( CompMgr().Hist( "GenObs6" ),           filename, "GenObs6" );
     mgr::SaveToROOT( CompMgr().Hist( "GenObs12" ),          filename, "GenObs12" );
-    mgr::SaveToROOT( CompMgr().Hist( "GenObs13" ),          filename, "GenObs13" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs14" ),          filename, "GenObs14" );
+    
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs3_dist" ),      filename, "GenObs3_dist" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs6_dist" ),      filename, "GenObs6_dist" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs12_dist" ),     filename, "GenObs12_dist" );
+    mgr::SaveToROOT( CompMgr().Hist( "GenObs14_dist" ),     filename, "GenObs14_dist" );
 
     mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs3" ),  filename, "weighted_GenObs3" );
     mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs6" ),  filename, "weighted_GenObs6" );
     mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs12" ), filename, "weighted_GenObs12" );
-    mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs13" ), filename, "weighted_GenObs13" );
+    mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs14" ), filename, "weighted_GenObs14" );
 
     /*******************************************************************************
     * bbSeparation

@@ -1,16 +1,19 @@
 import sys
 import os
 import argparse
+from ManagerUtils.Common.progressbar import *
 
 class Parsemgr:
-    def __init__( self ):
+    def __init__( self, package="CPVAnalysis", subpackage="CompareDataMC" ):
+        self.base =  "{}/{}".format( os.environ['CMSSW_BASE'], "src" )
+        self.package = package
+        self.subpackage = subpackage
         self.parser = argparse.ArgumentParser("Plotmgr")
         self.parser.add_argument('-l', '--lepton',type=str,required=True)
         self.parser.add_argument('-y', '--year',type=str,required=True)
         self.parser.add_argument('-s', '--sample',type=str)
         self.inputoptionlst  = []
         self.outputoptionlst = []
-    
     # /*******************************************************************************
     # *   Initialize parsing
     # *******************************************************************************/
@@ -62,12 +65,21 @@ class Parsemgr:
         else:
             return ""
 
+    def PbarStart( self,nevt ):
+        widgets = [ Percentage(), ' ', Bar(), ' ', Timer(), ' ', AdaptiveETA(), ' ' ]
+        self.pbar = ProgressBar(widgets=widgets, maxval=nevt).start()
+        return self.pbar
+
     # /*******************************************************************************
     # *   Get file name
     # *******************************************************************************/
+    def SubpackagePath( self ):
+        return "{}/{}/{}".format( self.base, self.package, self.subpackage )
+
     def GetInputName( self, sample, prefix="Hist", type="root", dir="results" ):
-        
-        self.inputname  = "{}_{}_{}_{}".format( prefix, self.opt.year, self.opt.lepton, sample )
+        lepton = "{L}" if self.LeptonType() == "co" else self.LeptonType()
+        year   = "{Y}" if self.Year() == "RunII" else self.Year()
+        self.inputname  = "{}_{}_{}_{}".format( prefix, year, lepton, sample )
         for option in self.inputoptionlst :
             arg = getattr( self.opt, option )
             if arg:
@@ -76,12 +88,7 @@ class Parsemgr:
                 else:
                     self.inputname  += "_" + option + "_" + arg 
         
-        file = "{}/{}.{}".format(dir, self.inputname, type)
-        
-        if self.opt.lepton == "co":
-            haddfile = file.replace( self.opt.lepton, "*" )
-            os.system( "hadd -f {} {}".format( file, haddfile ) )
-        
+        file = "{}/{}/{}.{}".format( self.SubpackagePath(), dir, self.inputname, type)
         return file
 
     def GetOutputName( self, output, prefix="Stack", type="pdf", dir="results"):
@@ -94,7 +101,7 @@ class Parsemgr:
                 else:
                     self.outputname += "_" + option + "_" + arg
         
-        return "{}/{}.{}".format( dir, self.outputname, type )
+        return "{}/{}/{}.{}".format( self.SubpackagePath(), dir, self.outputname, type )
 
     # /*******************************************************************************
     # *   Default settings for lumi and entry
@@ -109,17 +116,17 @@ class Parsemgr:
         return self.opt.sample
 
     def Entry( self ):
-        lep  = "e" if self.opt.lepton == "el" else "#mu"
+        if self.opt.lepton == "el":
+            lep = "e"
+        elif self.opt.lepton == "mu":
+            lep = "#mu"
+        else:
+            lep = "lep"
+
         try :
             bjet = "2"
-            if self.opt.region == "WJets":
+            if self.opt.region:
                 bjet = "0"
-
-            if self.opt.region == "QCD":
-                bjet = "< 2"
-                if getattr( self.opt, "0bjet" ):
-                    bjet = "0"
-
         except:
             pass
         return "1 {}, #geq 4 jets ( {} b jets )".format( lep, bjet )
@@ -132,6 +139,6 @@ class Parsemgr:
         elif self.opt.year == "18":
             return 59690
         else:
-            return 0
+            return 35900 + 41540 + 59690
 
     

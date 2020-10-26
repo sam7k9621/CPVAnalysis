@@ -24,7 +24,7 @@ class Histor : public mgr::Pathmgr,
         Histor( const Histor& )            = delete;
         Histor& operator=( const Histor& ) = delete;
 
-        void AddSample( const std::string&, TChain* );
+        void AddSample( TChain* ch, const bool&, const std::string& );
         void AddSample( const std::string& );
 
         /*******************************************************************************
@@ -38,7 +38,8 @@ class Histor : public mgr::Pathmgr,
         bool                 PassFullLepton_CRWJets( const string& );
         std::string          GetResultsName( const std::string&, const std::string& );
         std::string          Discript( TH1* );
-        void                 Scale( const double x )            { _sample->Scale( x ); };
+        void                 Scale( const double x )            { _sample->Scale( x ); }
+        void                 Scale2D( const double x )            { _sample->Scale2D( x ); }
         TH1D*                Hist( const std::string& h )       { return _sample->Hist( h ); }
         const TH1D*          Hist( const std::string& h ) const { return _sample->Hist( h ); }
         void                 AddHist(
@@ -117,6 +118,10 @@ class Histor : public mgr::Pathmgr,
         float  GetPUWeightUp()             { return _sample->GetPUWeightUp(); }
         float  GetPUWeightDn()             { return _sample->GetPUWeightDn(); }
         float  GenWeight()                 { return _sample->GenWeight(); }
+        float  GetISRup()                  { return _sample->GetISRup(); }
+        float  GetISRdn()                  { return _sample->GetISRdn(); }
+        float  GetFSRup()                  { return _sample->GetFSRup(); }
+        float  GetFSRdn()                  { return _sample->GetFSRdn(); }
         double GetLepSF( TH2D*, const int& );
         double GetLepSFUp( TH2D*, const int& );
         double GetLepSFDn( TH2D*, const int& );
@@ -145,7 +150,6 @@ class Histor : public mgr::Pathmgr,
         int                    GetGenHardJet()                                             { return _sample->FindHardJet(); }
 
     private:
-
         BaseLineMgr* _sample;
 };
 

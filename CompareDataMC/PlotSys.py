@@ -6,39 +6,12 @@ import numpy as np
 import math 
 
 def GetBinError( mgr, unclst, nom, sample ):
-    err_lst, unc_pdf, unc_muFmuR = [], [], []
+    err_lst = []
     # systematically
     Nbins = nom.GetNcells()
     for u in unclst:
-        # if "PDF" in u:
-            # unc_pdf.append( mgr.GetMergedObj( sample, u + "." ) )
-            # print u, unc_pdf[-1].Integral()
-        # elif "muFmuR" in u:
-            # unc_muFmuR.append( mgr.GetMergedObj( sample, u + "." ) )
-            # print u, unc_muFmuR[-1].Integral()
-        # else:
        unc = mgr.GetMergedObj( sample, u )
-       # print u
-       # print [ unc.GetBinContent( i ) - nom.GetBinContent( i ) for i in range( 8, 10 ) ]
        err_lst.append( [ unc.GetBinContent( i ) - nom.GetBinContent( i ) for i in range( Nbins ) ] )
-
-    # max_pdf    = max( unc_pdf, key = lambda x: x.Integral() )
-    # min_pdf    = min( unc_pdf, key = lambda x: x.Integral() )
-    # max_muFmuR = max( unc_muFmuR, key = lambda x: x.Integral() )
-    # min_muFmuR = min( unc_muFmuR, key = lambda x: x.Integral() )
-    # print "pdf_up", max_pdf.Integral()
-    # print [ max_pdf.GetBinContent( i ) - nom.GetBinContent( i )    for i in range( 15, 18 ) ]
-    # print "pdf_dn", min_pdf.Integral()
-    # print [ min_pdf.GetBinContent( i ) - nom.GetBinContent( i )    for i in range( 15, 18 ) ]
-    # print "mufmur_up"
-    # print [ max_muFmuR.GetBinContent( i ) - nom.GetBinContent( i ) for i in range( 15, 18 ) ]
-    # print "mufmur_up"
-    # print [ min_muFmuR.GetBinContent( i ) - nom.GetBinContent( i ) for i in range( 15, 18 ) ]
-    
-    # err_lst.append( [ max_pdf.GetBinContent( i ) - nom.GetBinContent( i )    for i in range( Nbins ) ] )
-    # err_lst.append( [ min_pdf.GetBinContent( i ) - nom.GetBinContent( i )    for i in range( Nbins ) ] )
-    # err_lst.append( [ max_muFmuR.GetBinContent( i ) - nom.GetBinContent( i ) for i in range( Nbins ) ] )
-    # err_lst.append( [ min_muFmuR.GetBinContent( i ) - nom.GetBinContent( i ) for i in range( Nbins ) ] )
 
     return err_lst
 
@@ -46,7 +19,7 @@ def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "opt").AddInput("r", "region")
-    opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "p", "wopileup" ).AddFlag( "w", "wobtag" )
+    opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "p", "wopileup" ).AddFlag( "w", "wobtag" ).AddFlag("u", "wosyst" )
     
     opt.Parsing() 
     opt.AddInputName ( "chi2", "uncertainty", "opt", "region", "wopileup", "wobtag" )
@@ -56,22 +29,29 @@ def main() :
     histmgr = pltmgr.Plotmgr()
     region = opt.GetOption( "region" ).split("_")[0]
     input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
-    objlst=[ "had_tmass" ]
-    # objlst=[ "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LBJetEta", "HBJetEta", "LJetEta", "LepPt", "LepEta", "LepIso", "Njets" ]
-    mclst  = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
-    unclst = [ "DYJets", "WJets", "ttbar" ] if region == "WJets" else []
+    # objlst=[ "Syst", "had_tmass", "lep_tmass", "chi2", "LBJetPt", "HBJetPt", "LJetPt", "LBJetEta", "HBJetEta", "LJetEta", "LepPt", "LepEta", "LepIso", "Njets" ]
+    objlst=[ "lep_tmass", "had_tmass" ]
+    # objlst=[ "leptmass", "lep_tmass", "had_tmass" ]
+  
+    # Initialize uncertainty list
+    unclst = [ "DYJets", "WJets", "ttbar" ] if region == "WJets" else [ "ttbar" ]
+    if opt.GetOption( "wosyst" ):
+        unclst = []
+
+    # Initialize Syst. list
     syslst = input.uncertainty 
-    
     if opt.GetOption( "wobtag" ):
         syslst = [ x for x in syslst if "btag" not in x ]
 
+    # Initialize MC sample list
+    mclst  = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
     if not region:
-        unclst.append( "ttbar" )
         mclst.remove( "QCD" )
     else:
         mclst.remove( region )
         mclst.append( region ) # Dominant sample should be added last
    
+    # Read files
     for sample in input.samplelst:
         filename = opt.GetInputName( sample )
        
@@ -100,7 +80,6 @@ def main() :
         data = histmgr.GetObj( "Data_nom" )
         histlst = []
         for i, mc in enumerate( mclst ):
-            
             histlst.append( histmgr.GetMergedObj( mc, "nom" ) )
             histlst[i].SetLineColor( pltmgr.colorlst[ i ] )
             histlst[i].SetFillColor( pltmgr.colorlst[ i ] )
@@ -124,6 +103,8 @@ def main() :
 
         bg_sum   = pltmgr.SumHist( histlst )
         nom      = [ bg_sum.GetBinContent( i ) for i in range( bg_sum.GetNcells() ) ]
+        if not pos or not neg:
+            pos, neg = [ 0 ] * len( nom ), [ 0 ] * len( nom )
         pos = map( lambda x, y: math.sqrt( x ) / y if y > 0 else 0, pos, nom )
         neg = map( lambda x, y: math.sqrt( x ) / y if y > 0 else 0, neg, nom )
 
@@ -136,11 +117,15 @@ def main() :
                     bg_total += qcd_evt
                     h.Scale( qcd_evt ) 
         
-        if idx == 0:
-            print "{:<10}: {:10.2f}".format( "Data", da_total )
-            print "{:<10}: {:10.2f}".format( "MC",   bg_total )
-            for i, mc in enumerate( mclst ):
-                print "{:<10}: {:10.2f} {:5.2f}%".format( mc, histlst[i].Integral(), 100 * histlst[i].Integral() / bg_total ) 
+        if obj == "lep_tmass":
+            with open( opt.GetOutputName( obj, "ExpectedYield", "txt" ), "w" ) as outputfile:
+
+            # outputfile.write( "Positive Syst.", pos )
+            # outputfile.write( "Negative Syst.", neg )
+                outputfile.write( "{}: {:.2f}\n".format( "Data", da_total ) )
+                outputfile.write( "{}: {:.2f}\n".format( "MC",   bg_total ) )
+                for i, mc in enumerate( mclst ):
+                    outputfile.write( "{}: {:.2f} {:.2f}%\n".format( mc, histlst[i].Integral(), 100 * histlst[i].Integral() / bg_total ) )
 
         leg.AddEntry( data, "Data", "le" )
 
@@ -156,15 +141,16 @@ def main() :
         data.Draw( "EP same" )
         leg.Draw()
     
-        data.GetYaxis().SetTitle( "Events" ) 
         data.SetMaximum( max( pltmgr.GetHistYmax( bg_sum ), pltmgr.GetHistYmax( data ) ) * 1.5 )
         
-        pltmgr.SetTopPlotAxis( data )
         data.SetLineColor( 1 )
         data.SetLineWidth( 1 )
         data.SetMarkerSize( 0.5 )
         data.SetMarkerStyle( 20 )
     
+        top.Update()
+        pltmgr.SetTopPlotAxis( data )
+
         c.cd()
     
         bot = pltmgr.NewBottomPad()
@@ -178,16 +164,17 @@ def main() :
         upper = ROOT.TLine( xmin, 1.5, xmax, 1.5 )
         lower = ROOT.TLine( xmin, 0.5, xmax, 0.5 )
         rel   = pltmgr.DivideHist( data, bg_sum, 1 )
-  
-        err = pltmgr.GetErrRatioPlot( rel, pos, neg )
-        leg.AddEntry( err, "Syst. uncert.", "F" )
-        rel.Draw( "EP" )
-        err.Draw( "E2 same" )
+ 
+        rel.Draw( "E0 P" )
+        if unclst: 
+            err = pltmgr.GetErrRatioPlot( rel, pos, neg )
+            err.Draw( "E2 same" )
+            leg.AddEntry( err, "Syst. uncert.", "F" )
         upper.Draw( "same" )
         lower.Draw( "same" )
         line.Draw ( "same" )
-        rel.Draw( "sameaxis" )
         rel.Draw( "EP same" )
+        rel.Draw( "sameaxis" )
     
         line.SetLineColor( ROOT.kRed )
         line.SetLineStyle( 3  )
@@ -198,6 +185,8 @@ def main() :
         rel.SetMinimum( 0.4 )
         rel.GetYaxis().SetTitle( "Data/MC" )
         rel.GetXaxis().SetTitle( data.GetXaxis().GetTitle() )
+        
+        bot.Update()
         pltmgr.SetBottomPlotAxis( rel )
     
         c.cd()
@@ -206,13 +195,7 @@ def main() :
         pltmgr.DrawLuminosity( opt.Lumi() )
         pltmgr.DrawEntryLeft( opt.Entry() )
         
-        # ROOT.gPad.RedrawAxis()
         c.SaveAs( opt.GetOutputName( obj ) )
        
-        
-        # top.SetLogy( True )
-        # c.SaveAs( opt.GetResultName( obj + "_logy" ) )
-
-
 if __name__ == '__main__':
     main()

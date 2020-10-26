@@ -26,9 +26,10 @@ Histor::AddSample( const string& sample )
 }
 
 void
-Histor::AddSample( const string& sample, TChain* ch )
+Histor::AddSample( TChain* ch, const bool& is_data, const string& sample )
 {
-    _sample = new BaseLineMgr( GetOption<string>( "year" ) + "Selection.py", sample );
+    string readfile = is_data ? GetOption<string>( "year" ) + "DataSelection.py" : GetOption<string>( "year" ) + "MCSelection.py";
+    _sample = new BaseLineMgr( readfile, sample );
     _sample->Register( ch );
 }
 
@@ -239,5 +240,6 @@ Histor::WeightMC( const string& sample )
     double gen_num = GetParam<double>( sample, "evt" );
     double xs      = GetParam<double>( sample, "xsec" );
 
+    Scale2D( ( lumi * xs ) / gen_num );
     Scale( ( lumi * xs ) / gen_num );
 }

@@ -136,7 +136,7 @@ def main(args):
     pltmgr.SetSinglePad( c )
     frame   = c.DrawFrame( 0, 0, 1000, 1.4 )
     pltmgr.SetAxis( frame )
-    frame.GetXaxis().SetTitle("P_{T}")
+    frame.GetXaxis().SetTitle("P_{T} [GeV]")
     frame.GetYaxis().SetTitle("Efficiency")
     
     leg = pltmgr.NewLegend( 0.45, 0.65, 0.9, 0.85 )
@@ -160,7 +160,7 @@ def main(args):
     c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "Eta", opt.workingpt ) )
 
     if opt.output:
-        newfile = ROOT.TFile( "BtagEffPlot_{}_{}.root".format( opt.year, opt.sample ), 'RECREATE' )
+        newfile = ROOT.TFile( "data/BtagEffPlot_{}_{}.root".format( opt.year, opt.sample ), 'RECREATE' )
         for key, value in objdict.items():
             if key not in ["eff2D_b", "eff2D_c", "eff2D_l"] : continue
 

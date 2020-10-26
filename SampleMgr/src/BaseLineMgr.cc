@@ -18,6 +18,56 @@ BaseLineMgr::BaseLineMgr( const string& py, const string& sample ) :
     InitRoot( "process" );
     ReadConfig();
     _calib = NULL;
+
+    if( GetBool( "Jet", "JecUpdate" ) ){
+        cout<<">> Updating JEC version"<<endl;
+        cout<<">> Reading "<<GetStr( "Jet", "L1file" )<<endl;
+        cout<<">> Reading "<<GetStr( "Jet", "L2file" )<<endl;
+        cout<<">> Reading "<<GetStr( "Jet", "L3file" )<<endl;
+        cout<<">> Reading "<<GetStr( "Jet", "Resfile" )<<endl;
+        
+        _JetCorrector = new FactorizedJetCorrector( {
+        JetCorrectorParameters( GetStr( "Jet", "L1file" ) ),
+        JetCorrectorParameters( GetStr( "Jet", "L2file" ) ),
+        JetCorrectorParameters( GetStr( "Jet", "L3file" ) ),
+        JetCorrectorParameters( GetStr( "Jet", "Resfile" ) )
+        } );
+        cout<<">> Reading "<<GetStr( "Jet", "JecUncfile" )<<endl; 
+        _jecUnc = new JetCorrectionUncertainty( GetStr( "Jet", "JecUncfile" ) );
+    }
+    else{
+        _JetCorrector = NULL;
+        _jecUnc = NULL;
+    }
+
+    if( GetBool( "Jet", "JecSrcUpdate" ) ){
+        cout<<">> Including JEC systematic sources"<<endl;
+        cout<<">> Reading "<<GetStr( "Jet", "JecSrcfile" )<<endl;
+        
+        // Instantiate uncertainty sources
+        _jecSrc = new vector<JetCorrectionUncertainty*>;
+        vector<string> srcnames = { "FlavorPureGluon", "FlavorPureQuark", "FlavorPureCharm", "FlavorPureBottom" };
+        for (int i = 0; i < int(srcnames.size()); i++) {
+            JetCorrectorParameters *p = new JetCorrectorParameters( GetStr( "Jet", "JecSrcfile" ), srcnames[i] );
+            JetCorrectionUncertainty *unc = new JetCorrectionUncertainty(*p);
+            _jecSrc->push_back( unc );
+        }        
+    }
+    else{
+        _jecSrc = NULL;
+    }
+    if( GetBool( "Jet", "JerUpdate" ) ){
+        cout<<">> Updating JER version"<<endl;
+        cout<<">> Reading "<<GetStr( "Jet", "Jesfile" )<<endl;
+        cout<<">> Reading "<<GetStr( "Jet", "Jerfile" )<<endl;
+        _resolution = new JME::JetResolution( GetStr( "Jet", "Jesfile" ) );
+        _resolution_sf = new JME::JetResolutionScaleFactor( GetStr( "Jet", "Jerfile" ) );
+    }
+    else{
+        _resolution = NULL;
+        _resolution_sf = NULL;
+    }
+
 }
 
 BaseLineMgr::BaseLineMgr( const string& sample ) :
@@ -27,11 +77,21 @@ BaseLineMgr::BaseLineMgr( const string& sample ) :
     HistMgr( sample )
 {
     _calib = NULL;
+    _JetCorrector = NULL;
+    _jecUnc = NULL;
+    _jecSrc = NULL;
 }
 
 BaseLineMgr::~BaseLineMgr()
 {
     delete _calib;
+    delete _JetCorrector;
+    delete _jecUnc;
+    if( _jecSrc ){
+        for( auto jec: *_jecSrc ){
+            delete jec;
+        }
+    }
 }
 
 void
@@ -46,6 +106,13 @@ BaseLineMgr::AddVal( const string& PSet, const string& obj )
 {
     _valmap.erase( PSet + "_" + obj );// deleting existing instance if already exist
     _valmap[ PSet + "_" + obj ] = GetParam<double>( PSet, obj );
+}
+
+void 
+BaseLineMgr::AddBool( const string& PSet, const string& obj )
+{
+    _boolmap.erase( PSet + "_" + obj );
+    _boolmap[ PSet + "_" + obj ] = GetParam<bool>( PSet, obj );
 }
 
 double
@@ -65,6 +132,18 @@ BaseLineMgr::GetStr( const string& PSet, const std::string& obj )
 {
     try {
         return _strmap.at( PSet + "_" + obj );
+    }
+    catch( const std::out_of_range& oor ){
+        std::cerr << "Out of Range error: " << oor.what() << endl;
+        return "";
+    }
+}
+
+bool 
+BaseLineMgr::GetBool( const string& PSet, const string& obj )
+{
+    try {
+        return _boolmap.at( PSet + "_" + obj );
     }
     catch( const std::out_of_range& oor ){
         std::cerr << "Out of Range error: " << oor.what() << endl;
@@ -189,6 +268,87 @@ BaseLineMgr::MakeSmeared( const double& ressf, const double& res )
     }
     else{
         return scale;
+    }
+}
+
+void 
+BaseLineMgr::JERUpdate()
+{
+    if( !GetBool( "Jet", "JerUpdate" ) ){
+        return;
+    }
+    int js = Jsize();
+    JME::JetParameters para;
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+        para.setJetPt( JetPt() ).setJetEta( JetEta() ).setRho( EvtRho() );
+        SetJer( 
+                _resolution->getResolution( para ), 
+                _resolution_sf->getScaleFactor( para ),
+                _resolution_sf->getScaleFactor( para, Variation::UP ),
+                _resolution_sf->getScaleFactor( para, Variation::DOWN)
+                ); 
+    }
+}
+
+void 
+BaseLineMgr::JECUpdate()
+{
+    if( !GetBool( "Jet", "JecUpdate" ) ){
+        return;
+    }
+    int js = Jsize();
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+
+        _JetCorrector->setJetEta( JetEta() );
+        _JetCorrector->setJetPt( PtCorrRaw() );
+        _JetCorrector->setJetA( Area() );
+        _JetCorrector->setRho( EvtRho() );
+        TLorentzVector jetp4 = GetJetP4( i );
+       
+        jetp4 *= _JetCorrector->getCorrection() / Unc();
+        SetJetP4( jetp4 );
+    }
+}
+
+void 
+BaseLineMgr::JECUncUpdate()
+{
+    if( !GetBool( "Jet", "JecUpdate" ) ){
+        return;
+    }
+    int js = Jsize();
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+
+        _jecUnc->setJetEta( JetEta() );
+        _jecUnc->setJetPt( JetPt() );
+        SetJesUnc( _jecUnc->getUncertainty(true) );
+    }
+}
+
+void 
+BaseLineMgr::JECUncSrcUpdate()
+{
+    if( !GetBool( "Jet", "JecSrcUpdate" ) ){
+        return;
+    }
+    int js = Jsize();
+    for( int i = 0; i < js; i++ ){
+        SetIndex( i );
+ 
+        int idx = -1;
+        int flavor = fabs( GenJetFlavor() );
+        if( flavor == 21 ) idx = 0; 
+        else if( flavor == 1 || flavor == 2 || flavor == 3 ) idx = 1;
+        else if( flavor == 4 ) idx = 2; 
+        else if( flavor == 5 ) idx = 3;
+        else continue;
+        
+        _jecSrc->at( idx )->setJetEta( JetEta() );
+        _jecSrc->at( idx )->setJetPt(  JetPt() );
+        SetJesUnc( fabs( _jecSrc->at( idx )->getUncertainty(true) ) );
     }
 }
 

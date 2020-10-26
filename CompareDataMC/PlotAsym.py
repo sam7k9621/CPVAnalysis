@@ -3,33 +3,44 @@ import CPVAnalysis.CompareDataMC.PlotMgr as pltmgr
 import CPVAnalysis.CompareDataMC.ParseMgr as parmgr
 import ROOT
 import math
-def GetGraph( histmgr ) :
+import re
+def GetGraph( histmgr, D, D_err ) :
     
-    ACP = [-20, -15, -10, -5, 0, 5, 10, 15, 20]
-    x, y   = array( 'f' ), array( 'f' )
-    ex, ey = array( 'f' ), array( 'f' )
-    for a in ACP :
-        hist = histmgr.GetObj( "Acp_{}".format( str(a) ) )
+    input_acp = [-15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ]
+    eff_acp_x, eff_acp_y, true_acp_x, true_acp_y     = array( 'f' ), array( 'f' ), array( 'f' ), array( 'f' )
+    eff_acp_ex, eff_acp_ey, true_acp_ex, true_acp_ey = array( 'f' ), array( 'f' ), array( 'f' ), array( 'f' )
+    for a in input_acp:
+        hist = histmgr.GetMergedObj( "Acp_{}".format( a ) )
         
         nm  = hist.GetBinContent( 1 )
         np  = hist.GetBinContent( 2 )
         nm_err = hist.GetBinError( 1 )
         np_err = hist.GetBinError( 2 )
         
-        acp = 100 * ( np - nm ) / ( np + nm )
-        err_sq = 4 * ( ( nm * np_err )**2 + ( np * nm_err )**2 ) / ( ( np + nm  )**4 )
-        err    = 100 * math.sqrt( err_sq )
+        eff_acp     = 100 * ( np - nm ) / ( np + nm )
+        err_sq      = 4 * ( ( nm * np_err )**2 + ( np * nm_err )**2 ) / ( ( np + nm  )**4 )
+        eff_acp_err = 100 * math.sqrt( err_sq )
+       
+        # A'cp part
+        eff_acp_x. append( a )
+        eff_acp_y. append( eff_acp )
+        eff_acp_ex.append( 0 )
+        eff_acp_ey.append( eff_acp_err )
+
+        # Acp part ( Acp = D * A'cp )
+        true_acp     = eff_acp / D 
+        true_acp_err = abs(true_acp) * math.sqrt( ( eff_acp_err / eff_acp )**2 + ( D_err / D )**2 )
         
-        x.append( a )
-        y.append( acp )
-        ex.append( 0 )
-        ey.append( err )
-   
-    gr = ROOT.TGraphErrors( len(ACP), x, y, ex, ey )
-    return gr
+        true_acp_x .append( a )
+        true_acp_y .append( true_acp )
+        true_acp_ex.append( 0 )
+        true_acp_ey.append( 2 * true_acp_err )
+
+    gr_eff_acp  = ROOT.TGraphErrors( len(input_acp), eff_acp_x, eff_acp_y, eff_acp_ex, eff_acp_ey )
+    gr_true_acp = ROOT.TGraphErrors( len(input_acp), true_acp_x, true_acp_y, true_acp_ex, true_acp_ey )
+    return gr_true_acp, gr_eff_acp
 
 def main() :
-    
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddInput("o", "opt")
@@ -40,54 +51,79 @@ def main() :
   
     # Initiailze plot manager
     histmgr = pltmgr.Plotmgr()
-    filelst = [ opt.GetInputName( "ttbar" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in [-20, -15, -10, -5, 0, 5, 10, 15, 20] ]
-    objlst = [ "weighted_GenObs3", "weighted_Obs3", "weighted_GenObs6", "weighted_Obs6", "weighted_GenObs12", "weighted_Obs12", "weighted_GenObs13", "weighted_Obs13" ]
-    
-    for file in filelst:
-        histmgr.SetObjlst( file, objlst, file )
+    objlst = [ "weighted_Obs3", "weighted_Obs6", "weighted_Obs12", "weighted_Obs14" ]
+    yearlst = [ "16", "17", "18" ] if opt.Year() == "RunII" else [ opt.Year() ]
    
+    filelst_el, filelst_mu = [], []
+    for year in yearlst:
+        filelst_el += [ opt.GetInputName( "ttbar" ).format( year, "el" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in [ -15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ] ]
+        filelst_mu += [ opt.GetInputName( "ttbar" ).format( year, "mu" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in [ -15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ] ]
+
+    with open( opt.GetInputName( "DF", "Sim", "txt" ).format( "RunII", "co" ).replace( "Acp_", "" ), "r" ) as inputfile:
+        print inputfile.name 
+        DF_lst = [ x.lstrip().rstrip("\n") for x in inputfile.readlines() ]
+   
+    for file in filelst_el + filelst_mu:
+        histmgr.SetObjlst( file, objlst, file )
+ 
     # Loop object list
-    for obj in [ "Observable3", "Observable6", "Observable12", "Observable13" ] :
-        gr1 = GetGraph( histmgr )
-        gr2 = GetGraph( histmgr )
+    c = pltmgr.NewCanvas()
+    for i, obj in enumerate( [ "Obs3", "Obs6", "Obs12", "Obs14" ] ):
         
-        c = pltmgr.NewCanvas()
-        pltmgr.SetSinglePad( c )
+        for df in DF_lst:
+            if all( x in df for x in [obj, "Dilution"] ):
+                DF     = float( df.split(" ")[3] )
+                DF_err = float( df.split(" ")[5] )
+       
+        print DF, DF_err
+        gr1, gr2 = GetGraph( histmgr, DF, DF_err )
         
-        pltmgr.SetAxis( gr1 )
-        gr1.SetTitle( '' )
-        gr1.GetXaxis().SetTitle( "Input asymmetry A_{CP} [%]")
-        gr1.GetYaxis().SetTitle( "Output asymmetry A_{CP} [%]")
-        gr1.SetMarkerColor( ROOT.kAzure - 3 )
-        gr1.SetMarkerStyle( 20 )
-        gr1.SetMaximum( pltmgr.GetGraphYmax( gr1 ) * 1.1 ) 
-        gr1.SetMinimum( pltmgr.GetGraphYmin( gr1 ) * 1.1 ) 
+        gr1.Draw( 'AEP' )
+        gr2.Draw( 'EP same' )
         
         gr2.SetMarkerColor( ROOT.kRed - 7 )
-        gr2.SetMarkerStyle( 22 )
+        gr2.SetMarkerStyle( 20 )
+        gr2.SetMarkerSize( 1.2 )
 
+        label = lambda x: "O_{{{}}}".format( re.findall(r'\d+', x )[0] )
+        gr1.SetTitle( '' )
+        gr1.GetXaxis().SetTitle( "Input asymmetry A_{{CP}} in {} [%]".format( label( obj ) ) )
+        gr1.GetYaxis().SetTitle( "Output asymmetry A_{CP} [%]")
+        gr1.SetMarkerColor( ROOT.kAzure - 3 )
+        gr1.SetMarkerStyle( 33 )
+        gr1.SetMarkerSize( 1.5 )
+       
         fit_x1 = ROOT.TF1("fit_x1", "pol1", 0 )
         fit_x1.SetLineColor( ROOT.kAzure - 3 )
-        gr1.Fit( "fit_x1" )
-        
+        fit_x1.SetLineWidth( 3 )
+        gr1.Fit( "fit_x1")
+
         fit_x2 = ROOT.TF1("fit_x2", "pol1", 0 )
         fit_x2.SetLineColor( ROOT.kRed - 7 )
-        fit_x2.SetLineStyle( 7 )
+        fit_x2.SetLineStyle( 2 )
+        fit_x2.SetLineWidth( 3 )
         gr2.Fit( "fit_x2" )
-    
-        gr1.Draw( 'AEP' )
-        gr2.Draw( 'EP SAME' )
-        pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
-        pltmgr.DrawEntryLeft( "1 lep, #geq 4 jets ( 2 b jets )" ) 
+        
+        line = ROOT.TLine( -20, -20, 20, 20 )
+        line.SetLineStyle( 7 )
+        line.Draw()
 
         leg = pltmgr.NewLegend( 0.65, 0.2, 0.85, 0.5 )
-        leg.SetHeader( obj )
         leg.AddEntry( gr1, "A_{CP}", "P" )
         leg.AddEntry( gr2, "A'_{CP}", "P" )
         leg.AddEntry( fit_x1, "Fit to A_{CP}", "L" )
         leg.AddEntry( fit_x2, "Fit to A'_{CP}", "L" )
         leg.Draw()
 
+        gr1.Draw( "EP same" )
+
+        gr1.GetXaxis().SetLimits( -20, 20 )
+        gr1.SetMaximum( 20 ) 
+        gr1.SetMinimum( -20 ) 
+        pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
+        pltmgr.DrawEntryLeft( opt.Entry() ) 
+        pltmgr.SetSinglePad( c )
+        pltmgr.SetAxis( gr1 )
         c.SaveAs( opt.GetOutputName( obj, "Sim" ) )
 
 if __name__ == '__main__':

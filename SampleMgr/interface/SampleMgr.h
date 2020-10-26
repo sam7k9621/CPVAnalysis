@@ -47,6 +47,11 @@ namespace mgr{
             }
 
             float GenWeight(){ return _gen.Weight; }
+            float GetISRup() { return _gen.MEPSWeights[6]; }
+            float GetISRdn() { return _gen.MEPSWeights[8]; }
+            float GetFSRup() { return _gen.MEPSWeights[7]; }
+            float GetFSRdn() { return _gen.MEPSWeights[9]; }
+
             float EvtRho()   { return _evt.Rho; }
 
             /*******************************************************************************
@@ -54,6 +59,7 @@ namespace mgr{
             *******************************************************************************/
             double         RelIsoR04();
             double         Phi_mpi_pi( double );
+            double         Lep_Jet_DeltaR( const int&, const int& );
             bool           IsIsoLepton( const int&, const int& );
             TLorentzVector GetMET( const TLorentzVector& );
 
@@ -113,6 +119,9 @@ namespace mgr{
             /*******************************************************************************
             * Jet info
             *******************************************************************************/
+            float          PtCorrRaw();
+            float          Unc();
+            float          Area();
             float          JesUnc();
             float          JERPt();
             float          JERScale();
@@ -125,6 +134,9 @@ namespace mgr{
             float          GenJetPt();
             float          GenJetEta();
             float          GenJetPhi();
+            float          GenPt();
+            float          GenEta();
+            float          GenPhi();
             int            GenJetFlavor();
             int            JetNConstituents();
             float          JetNEF();
@@ -137,6 +149,8 @@ namespace mgr{
             // Jet smeared
             // https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution
             void SetJetP4( const TLorentzVector& );
+            void SetJesUnc( const double& ); 
+            void SetJer( const double&, const double&, const double&, const double& );
 
             // b-tagging
             float JetCSV();

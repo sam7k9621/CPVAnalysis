@@ -48,7 +48,7 @@ def main() :
         print ">> Adding data-driven CR QCD"
         qcd_histlst = [ histmgr.GetMergedObj( "CRQCD" ) for o in objlst ]
         histmgr.RemoveObj( "CRQCD" )
-        filename = opt.GetInputName( "Data" ).replace( "region_WJets", "region_QCD_0bjet" )
+        filename = opt.GetInputName( "Data" ).replace( ".", "_region_QCD_0b" + opt.GetOption( "wobtag", True ) + "." )
         histmgr.SetObjlst( filename, objlst, "CRQCD" ) 
     else:
         print "Please specify the template"
@@ -95,21 +95,21 @@ def main() :
         data    .SetLineWidth( 2 )
         # data_inv.SetLineWidth( 2 )
 
-        leg.SetHeader( opt.LeptonType() + "-channel" ) 
-        leg.AddEntry( data,     ( "CR data ( #chi^{2} < 20 )" ), "lep" )
+        leg.AddEntry( data,     ( "CR data" ), "lep" )
         # leg.AddEntry( data_inv, ( "CS data ( #chi^{2} > 20 )" ), "lep" )
         leg.AddEntry( bg_sum,   ( template + " bkg. MC" ), "lep" )
 
         pltmgr.SetNormToUnity( bg_sum   )
         pltmgr.SetNormToUnity( data     )
         # pltmgr.SetNormToUnity( data_inv )
+        
+        bg_sum.GetYaxis().SetTitle( "PDF" ) 
+        bg_sum.SetMaximum( pltmgr.GetHistYmax( bg_sum ) * 1.5 )
+        
         pltmgr.SetSinglePad( c )
         pltmgr.SetAxis( bg_sum )
         pltmgr.DrawCMSLabelOuter( pltmgr.PRELIMINARY )
         pltmgr.DrawLuminosity( opt.Lumi() )
-        
-        bg_sum.GetYaxis().SetTitle( "PDF" ) 
-        bg_sum.SetMaximum( pltmgr.GetHistYmax( bg_sum ) * 1.5 )
         c.SaveAs( opt.GetOutputName( template, "BGClosureTest" ) )
 
 if __name__ == '__main__':

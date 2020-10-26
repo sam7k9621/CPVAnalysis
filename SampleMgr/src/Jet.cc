@@ -7,6 +7,24 @@ namespace mgr{
     /*******************************************************************************
     * Jet info
     *******************************************************************************/
+    float 
+    SampleMgr::PtCorrRaw()
+    {
+        return _jet.PtCorrRaw[ _idx ];
+    }
+    
+    float 
+    SampleMgr::Unc()
+    {
+        return _jet.Unc[ _idx ];
+    }
+
+    float 
+    SampleMgr::Area()
+    {
+        return _jet.Area[ _idx ];
+    }
+
     float
     SampleMgr::JesUnc()
     {
@@ -79,6 +97,24 @@ namespace mgr{
         return _jet.GenJetPhi[ _idx ];
     }
 
+    float 
+    SampleMgr::GenPt()
+    {
+        return _jet.GenPt[ _idx ];
+    }
+
+    float 
+    SampleMgr::GenEta()
+    {
+        return _jet.GenEta[ _idx ];
+    }
+
+    float 
+    SampleMgr::GenPhi()
+    {
+        return _jet.GenPhi[ _idx ];
+    }
+
     int
     SampleMgr::GenJetFlavor()
     {
@@ -136,6 +172,21 @@ namespace mgr{
         _jet.Px[ _idx ]     = tl.Px();
         _jet.Py[ _idx ]     = tl.Py();
         _jet.Pz[ _idx ]     = tl.Pz();
+    }
+
+    void 
+    SampleMgr::SetJesUnc( const double& unc )
+    {
+        _jet.JesUnc[ _idx ] = unc;
+    }
+
+    void 
+    SampleMgr::SetJer( const double& res, const double& sf, const double& sf_up, const double& sf_dn  )
+    {
+        _jet.JERPt[ _idx ] = res;
+        _jet.JERScale[ _idx ] = sf;
+        _jet.JERScaleUp[ _idx ] = sf_up;
+        _jet.JERScaleDown[ _idx ] = sf_dn;
     }
 
     // b-tagging

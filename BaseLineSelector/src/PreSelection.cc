@@ -35,9 +35,10 @@ MakeBtagEff()
 
     TChain* ch    = new TChain( "bprimeKit/root" );
     string sample = PreMgr().GetOption<string>( "sample" );
+    bool is_data  = sample.find( "Run" ) != std::string::npos ? 1 : 0;
     string source = PreMgr().GetParam<string>( sample, "path" );
     ch->Add( source.c_str() );
-    PreMgr().AddSample( ch );
+    PreMgr().AddSample( ch, is_data, sample );
 
     // Looping events
     int events          = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
@@ -125,12 +126,13 @@ MakePreCut()
     TFile* newfile = TFile::Open( ( PreMgr().GetResultsName( "root", "PreCut" ) ).c_str(), "recreate" );
 
     string sample = PreMgr().GetOption<string>( "sample" );
-    string source = PreMgr().GetParam<string>( sample, "path" );
+    string filename = PreMgr().GetParam<string>( sample, "path" );
     bool is_data  = sample.find( "Run" ) != std::string::npos ? 1 : 0;
+    cout << ">> Adding " << filename << endl;
 
     TChain* ch = new TChain( "bprimeKit/root" );
-    ch->Add( source.c_str() );
-    PreMgr().AddSample( ch );
+    ch->Add( filename.c_str() );
+    PreMgr().AddSample( ch, is_data, sample );
 
     // Discard useless branches
     Discard( ch );
@@ -177,8 +179,8 @@ MakePreCut()
     double negative = 0.;
 
     // Looping events
+    cout << ">> Processing " << filename << endl;
     int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
-
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         PreMgr().process( events, i );
@@ -212,7 +214,7 @@ MakePreCut()
                 continue;
             }
         }
-
+        
         if( !is_data && year != "18" ){
             PreMgr().LeptonECorr();
         }
@@ -256,11 +258,13 @@ extern void
 MakeDataCard()
 {
     string sample = PreMgr().GetOption<string>( "sample" );
-    string source = PreMgr().GetParam<string>( sample, "path" );
+    string filename = PreMgr().GetParam<string>( sample, "path" );
+    bool is_data  = sample.find( "Run" ) != std::string::npos ? 1 : 0;
 
     TChain* ch = new TChain( "bprimeKit/root" );
-    ch->Add( source.c_str() );
-    PreMgr().AddSample( ch );
+    ch->Add( filename.c_str() );
+    PreMgr().AddSample( ch, is_data, sample );
+    cout << ">> Adding " << filename << endl;
 
     // Prepare Datacard
     int entries     = 0;
@@ -268,8 +272,8 @@ MakeDataCard()
     double negative = 0.;
 
     // Looping events
+    cout << ">> Processing " << filename << endl;
     int events = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
-
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         PreMgr().process( events, i );
