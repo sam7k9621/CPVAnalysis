@@ -97,6 +97,7 @@ MakeHist()
     Int_t lep_b;
     Int_t lep;
     Int_t Njets;
+    Int_t isWHF = 0;
     Float_t chi2mass;
     Float_t had_tmass;
     Float_t lep_tmass;
@@ -123,6 +124,10 @@ MakeHist()
     ch->SetBranchAddress( "light_weight_dn", &light_weight_dn );
     ch->SetBranchAddress( "jetidx",      &jetidx );
 
+    if( CompMgr().CheckOption("WHF") ){
+        ch->SetBranchAddress( "isWHF", &isWHF );
+    }
+    
     TH2D* LepID   = CompMgr().GetSFHist( lepton + "ID" );
     TH2D* LepRECO = CompMgr().GetSFHist( lepton + "RECO" );
     TH2D* LepHLT  = CompMgr().GetSFHist( lepton + "HLT" );
@@ -225,6 +230,15 @@ MakeHist()
             else{
                 weight *= CompMgr().GenWeight();
             }
+            
+            // Top pt-reweighting 
+            if( sample.find( "tt" ) !=std::string::npos ){
+                weight *= CompMgr().TopPtWeight();
+            }
+            // Raise heavy flavour in W+Jets 
+            if( isWHF ){
+                weight *= CompMgr().GetOption<int>("WHF");
+            }
         }
 
         /*******************************************************************************
@@ -257,6 +271,11 @@ MakeHist()
         CompMgr().Hist2D( "Obs12_leptmass" )->Fill( lep_tmass, o12 / ( 172.5 * 172.5 * 172.5 ), weight );
         CompMgr().Hist2D( "Obs14_leptmass" )->Fill( lep_tmass, o14 / ( 172.5 * 172.5 * 172.5 ), weight );
 
+        /*******************************************************************************
+        *  Lepton source
+        *******************************************************************************/
+        CompMgr().Hist( "lepton_src" )->Fill( CompMgr().GetLepMo1ID( lep ), weight );
+        
         /*******************************************************************************
         *  bbSeparation / Optimisation
         *******************************************************************************/
@@ -337,6 +356,7 @@ MakeHist()
         CompMgr().Hist( "jj_tmass" )->Fill( jj_mass, weight ); 
         CompMgr().Hist( "Njets" )->Fill( Njets, weight );
         CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
+        CompMgr().Hist( "isWHF" )->Fill( isWHF, weight );
 
         //CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
         //CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );

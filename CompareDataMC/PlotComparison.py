@@ -18,28 +18,29 @@ def GetBinError( mgr, unclst, nom, sample ):
 def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "opt").AddInput("r", "region").AddInput("n", "unc" )
+    opt.AddInput("c", "chi2").AddInput("e", "uncertainty").AddInput("o", "opt").AddInput("r", "region").AddInput("n", "unc" ).AddInput("f", "WHF").AddInput( "g", "dtg" )
     opt.AddFlag( "d", "driven" ).AddFlag( "b", "0bjet" ).AddFlag( "p", "wopileup" ).AddFlag( "w", "wobtag" ).AddFlag("u", "wosyst" )
     
     opt.Parsing() 
     opt.AddInputName ( "chi2", "opt", "region", "wopileup", "wobtag" )
-    opt.AddOutputName( "chi2", "unc", "opt", "region", "wopileup", "wobtag", "driven" )
+    opt.AddOutputName( "chi2", "unc", "opt", "region", "wopileup", "wobtag", "driven", "WHF" )
   
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     region = opt.GetOption( "region" ).split("_")[0]
     
     # Initialize sample list
-    # objlst=[ "lep_tmass", "had_tmass", "HBJetPt", "LBJetPt", "LepPt" ]
+    objlst=[ "lep_tmass", "had_tmass", "HBJetPt", "LBJetPt", "LepPt" ]
     # objlst=[ "Obs3_dist", "Obs6_dist", "Obs12_dist", "Obs14_dist" ]
-    objlst=[ "lep_tmass", "had_tmass" ]
+    # objlst=[ "lep_tmass", "had_tmass" ]
     yearlst = [ "16", "17", "18" ] if opt.Year() == "RunII" else [ opt.Year() ]
     unclst = [] if opt.GetOption( "wosyst" ) else [ "ttbar" ]
     qcd_histdict = {}
     # Initialize MC sample list
-    mclst  = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
+    mclst  = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttdilep", "ttbar" ]
     if not region:
-        mclst.remove( "QCD" )
+        pass
+        # mclst.remove( "QCD" )
     else:
         mclst.remove( region )
         mclst.append( region ) # Dominant sample should be added last
@@ -49,7 +50,10 @@ def main() :
         input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( year ) )
         syslst = opt.GetOption( "uncertainty" ).split()  if opt.GetOption( "uncertainty" ) else input.uncertainty
         for sample in input.samplelst:
-            histmgr.SetObjlst( opt.GetInputName( sample ).format( Y=year ), objlst, "{}_{}_nom".format( sample, year ) )
+            if "WJets" in sample and opt.GetOption( "WHF" ) :
+                histmgr.SetObjlst( opt.GetInputName( sample ).format( Y=year ).replace(".", "_WHF_{}.".format(opt.GetOption("WHF"))), objlst, "{}_{}_nom".format( sample, year ) )
+            else:
+                histmgr.SetObjlst( opt.GetInputName( sample ).format( Y=year ), objlst, "{}_{}_nom".format( sample, year ) )
          
             if any( s in sample for s in unclst ):
                 for unc in syslst: 
@@ -60,13 +64,16 @@ def main() :
             histmgr.RemoveObj( "QCD", year )
             histmgr.SetObjlst( opt.GetInputName( "Data" ).format( Y=year ).replace( opt.GetOption( "region", True ) + opt.GetOption( "wobtag", True ), "_region_QCD_0b_wobtag"), objlst, "QCD_{}_nom".format( year ) )
 
+    if opt.GetOption( "dtg" ):
+        histmgr.SetObjlst( opt.GetInputName("ttbar_dtg3").format( Y="17" ), objlst, "dtg3" )
+
     c = pltmgr.NewCanvas( )
     # Loop objlst
     for idx, obj in enumerate( objlst ):
         err_lst = []
         datalst = []
         histdict = {}
-        leg = pltmgr.NewLegend( 0.72, 0.31, 0.85, 0.81)
+        leg = pltmgr.NewLegend( 0.72, 0.25, 0.85, 0.81)
         bg = ROOT.THStack()
         
         # Retrieve data plots
@@ -137,14 +144,22 @@ def main() :
         top = pltmgr.NewTopPad()
         top.Draw()
         top.cd()
- 
+
         data.Draw("EP")
         bg.Draw("HIST same")
         stat.Draw("E2 same")
+
+        if opt.GetOption( "dtg" ):
+            dtg = histmgr.GetObj( "dtg3" )
+            dtg.SetLineStyle( 3 )
+            dtg.SetLineWidth( 2 )
+            dtg.SetLineColor( ROOT.kRed + 3 )
+            dtg.Draw("HIST same")
+        
         data.Draw( "sameaxis" )
         data.Draw( "EP same" )
         leg.Draw()
-    
+
         data.SetMaximum( max( pltmgr.GetHistYmax( bg_sum ), pltmgr.GetHistYmax( data ) ) * 1.5 )
         
         data.SetLineColor( 1 )
@@ -176,7 +191,11 @@ def main() :
             syst.SetFillColor( ROOT.kAzure - 9 )
             syst.SetLineColor( ROOT.kAzure - 9 )
             leg.AddEntry( syst, "Syst.", "F" )
-        
+       
+        if opt.GetOption( "dtg" ):
+            leg.AddEntry( 0, "", "");
+            leg.AddEntry( dtg, "d^{t}_{g}=3", "L" )
+
         upper.Draw( "same" )
         lower.Draw( "same" )
         line.Draw ( "same" )

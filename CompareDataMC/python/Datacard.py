@@ -24,6 +24,7 @@ mclst =[
      [ "SingleTop_tW_top",             "ST_tW_top",                  38.85            ],
      [ "SingleTop_tW_antitop",         "ST_tW_antitop",              38.85            ],
      [ "ttbar",                        "TTToSemiLeptonic_CP5Nom",      365.34           ],
+     [ "ttdilep",                      "TTJets_DiLept",                55           ],
      [ "ttbar_mtop1695",               "TTToSemiLeptonic_CP5mtop1695", 365.34           ],
      [ "ttbar_mtop1755",               "TTToSemiLeptonic_CP5mtop1755", 365.34           ],
      [ "ttbar_hdampDOWN",              "TTToSemiLeptonic_hdampDOWN",   365.34           ],

@@ -22,6 +22,7 @@ samplelst = [
     'SingleTop_tW_top',
     'SingleTop_tW_antitop',
     'ttbar',
+    'ttdilep',
     'VV_WW',
     'VV_WZ',
     'VV_ZZ',

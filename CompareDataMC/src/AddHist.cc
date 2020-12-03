@@ -40,6 +40,7 @@ AddHist()
     CompMgr().AddHist( "DeepCSV", "DeepCSV", "Events", 110, -2, 0.2 );
     CompMgr().AddHist( "bweight", "bweight", "Events", 50, 0.2, 1.2 );
     CompMgr().AddHist( "JetFlavor", "JetFlavor", "Events", 30, 0, 30 );
+    CompMgr().AddHist( "isWHF", "isWHF", "Events", 2, 0, 2 );
 
     CompMgr().AddHist( "LJetPt0", "Leading Jet Pt0", "Events", 40, 0, 200 );
     CompMgr().AddHist( "LJetPt1", "Leading Jet Pt1", "Events", 40, 0, 200 );
@@ -108,6 +109,11 @@ AddHist()
     CompMgr().AddHist( "weighted_GenObs14", "O_{14}", "Events", 2, -1, 1 );
 
     /*******************************************************************************
+    * Lepton source
+    *******************************************************************************/
+    CompMgr().AddHist( "lepton_src", "PDG ID", "Events",   50, 0, 50 );
+    
+    /*******************************************************************************
     * bbSeparation
     *******************************************************************************/
     CompMgr().AddHist( "tmass_Correct", "M_{jjb} [GeV]", "Events",   50, 50, 300 );
@@ -171,6 +177,7 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "DeepCSV" ),   filename, "DeepCSV" );
     mgr::SaveToROOT( CompMgr().Hist( "bweight" ),   filename, "bweight" );
     mgr::SaveToROOT( CompMgr().Hist( "JetFlavor" ), filename, "JetFlavor" );
+    mgr::SaveToROOT( CompMgr().Hist( "isWHF"     ), filename, "isWHF" );
 
     mgr::SaveToROOT( CompMgr().Hist( "LJetPt0" ),   filename, "LJetPt0" );
     mgr::SaveToROOT( CompMgr().Hist( "LJetPt1" ),   filename, "LJetPt1" );
@@ -241,6 +248,11 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs6" ),  filename, "weighted_GenObs6" );
     mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs12" ), filename, "weighted_GenObs12" );
     mgr::SaveToROOT( CompMgr().Hist( "weighted_GenObs14" ), filename, "weighted_GenObs14" );
+    
+    /*******************************************************************************
+    * Lepton source
+    *******************************************************************************/
+    mgr::SaveToROOT( CompMgr().Hist( "lepton_src" ),     filename, "lepton_src" );
 
     /*******************************************************************************
     * bbSeparation

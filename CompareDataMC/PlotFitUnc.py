@@ -9,7 +9,10 @@ import collections
 
 GetAcp    = lambda x, y: 100. * float( x - y ) / ( x + y )
 GetAcpErr = lambda x, y: 100. * math.sqrt( 4. * float(x) * y / ( (x + y )**3) ) 
-nevent    = lambda bkg, frac, pos, neg: [ GetAcp( p - b * f, n - b * (1-f) ) for b, f, p, n in zip( bkg, frac, pos, neg ) ] 
+
+pevent    = lambda bkg, frac, pos: [ p - b * f     for b, f, p in zip( bkg, frac, pos ) ]
+nevent    = lambda bkg, frac, neg: [ n - b * (1-f) for b, f, n in zip( bkg, frac, neg ) ] 
+
 neventerr = lambda bkg, frac, pos, neg: [ GetAcpErr( p - b * f, n - b * (1-f) ) for b, f, p, n in zip( bkg, frac, pos, neg ) ] 
 label = lambda x: "O_{{{}}}".format( re.findall(r'\d+', x )[0] )
 
@@ -38,13 +41,13 @@ def GetYldSyst( obj, nom, unc ):
         hist.Fill( v )
     return PlotSyst( obj, hist ) 
 
-def GetAcpSyst( obj, nom, unc ):
+def GetAcpSyst( obj, nomp, nomn, uncp, uncn ):
     hist = ROOT.TH1D( obj, "", 120, -0.011, 0.013 ) 
     hist.SetStats( False )
     hist.GetXaxis().SetTitle( "{} Syst. [%]".format( label( obj ) ) )
     hist.GetYaxis().SetTitle( "Events" )
-    for n, u in zip( nom, unc ):
-        hist.Fill( u-n )
+    for np, nn, up, un in zip( nomp, nomn, uncp, uncn ):
+        hist.Fill( GetAcp( up, un ) - GetAcp( np, nn ) )
     return PlotSyst( obj, hist )
 
 def PlotSyst( obj, hist ):
@@ -99,33 +102,52 @@ def FillHisto():
     objlst = [ "Obs3_leptmass", "Obs6_leptmass", "Obs12_leptmass", "Obs14_leptmass" ]
     opt.AddInputName( "opt" ) 
 
+    yearlst = [ "16", "17", "18" ] if opt.Year() == "RunII" else [ opt.Year() ]
     Sublst = lambda lst, idx: [x[idx] for x in lst]
-    nom_df = collections.OrderedDict( (k,[ [], [], [], [] ]) for k in objlst )
-    unc_df = collections.OrderedDict( (k,[ [], [], [], [] ]) for k in objlst )
+    nom_dict = { year: collections.OrderedDict( (k,[ [], [], [], [] ]) for k in objlst ) for year in yearlst }
+    unc_dict = { year: collections.OrderedDict( (k,[ [], [], [], [] ]) for k in objlst ) for year in yearlst }
     
     for i in range( int( opt.GetOption("seed") ) ):
         
-        nom_file = opt.GetInputName( "Yield", "Pseudo", "json" ).replace( ".", "_seed_{}.".format( i+1 ) )
-        unc_file = nom_file.replace( ".", "_uncertainty_{}.".format( opt.GetOption( "uncertainty" ) ) )
-        with open( nom_file, 'r' ) as nom_reader:
-            nom_jf = json.loads( nom_reader.read() )
-        with open( unc_file, 'r' ) as unc_reader:
-            unc_jf = json.loads( unc_reader.read() )
+        for year in yearlst:
+            nom_file = opt.GetInputName( "Yield", "Pseudo", "json" ).format( Y=year ).replace( ".", "_seed_{}.".format( i+1 ) )
+            unc_file = nom_file.replace( ".", "_uncertainty_{}.".format( opt.GetOption( "uncertainty" ) ) )
+            with open( nom_file, 'r' ) as nom_reader:
+                nom_jf = json.loads( nom_reader.read() )
+            with open( unc_file, 'r' ) as unc_reader:
+                unc_jf = json.loads( unc_reader.read() )
+
+            for obj in objlst:
+                nom_dict[ year ][ obj ][0] += Sublst( nom_jf[ obj ], 0 )
+                unc_dict[ year ][ obj ][0] += Sublst( unc_jf[ obj ], 0 )
+                nom_dict[ year ][ obj ][1] += Sublst( nom_jf[ obj ], 1 )
+                unc_dict[ year ][ obj ][1] += Sublst( unc_jf[ obj ], 1 )
+                nom_dict[ year ][ obj ][2] += pevent( Sublst( nom_jf[obj], 1 ), Sublst( nom_jf[obj], 2 ), Sublst( nom_jf[obj], 3 ) )
+                unc_dict[ year ][ obj ][2] += pevent( Sublst( unc_jf[obj], 1 ), Sublst( unc_jf[obj], 2 ), Sublst( unc_jf[obj], 3 ) )
+                nom_dict[ year ][ obj ][3] += nevent( Sublst( nom_jf[obj], 1 ), Sublst( nom_jf[obj], 2 ), Sublst( nom_jf[obj], 4 ) )
+                unc_dict[ year ][ obj ][3] += nevent( Sublst( unc_jf[obj], 1 ), Sublst( unc_jf[obj], 2 ), Sublst( unc_jf[obj], 4 ) )
+  
+    nom_df = collections.OrderedDict( (k,[ [], [], [], [] ]) for k in objlst )
+    unc_df = collections.OrderedDict( (k,[ [], [], [], [] ]) for k in objlst )
+    for obj in objlst:
+        nom_df[ obj ][0] = [ sum(x) for x in zip( *[ y[obj][0] for y in nom_dict.values() ] ) ]
+        nom_df[ obj ][1] = [ sum(x) for x in zip( *[ y[obj][1] for y in nom_dict.values() ] ) ]
+        nom_df[ obj ][2] = [ sum(x) for x in zip( *[ y[obj][2] for y in nom_dict.values() ] ) ]
+        nom_df[ obj ][3] = [ sum(x) for x in zip( *[ y[obj][3] for y in nom_dict.values() ] ) ]
         
-        for obj in objlst:
-            nom_df[ obj ][0] += Sublst( nom_jf[ obj ], 0 )
-            unc_df[ obj ][0] += Sublst( unc_jf[ obj ], 0 )
-            nom_df[ obj ][1] += Sublst( nom_jf[ obj ], 1 )
-            unc_df[ obj ][1] += Sublst( unc_jf[ obj ], 1 )
-            nom_df[ obj ][2] += nevent( Sublst( nom_jf[obj], 1 ), Sublst( nom_jf[obj], 2 ), Sublst( nom_jf[obj], 3 ), Sublst( nom_jf[obj], 4 ) )
-            unc_df[ obj ][2] += nevent( Sublst( unc_jf[obj], 1 ), Sublst( unc_jf[obj], 2 ), Sublst( unc_jf[obj], 3 ), Sublst( unc_jf[obj], 4 ) )
-        
+        unc_df[ obj ][0] = [ sum(x) for x in zip( *[ y[obj][0] for y in unc_dict.values() ] ) ]
+        unc_df[ obj ][1] = [ sum(x) for x in zip( *[ y[obj][1] for y in unc_dict.values() ] ) ]
+        unc_df[ obj ][2] = [ sum(x) for x in zip( *[ y[obj][2] for y in unc_dict.values() ] ) ]
+        unc_df[ obj ][3] = [ sum(x) for x in zip( *[ y[obj][3] for y in unc_dict.values() ] ) ]
+
+    print nom_df["Obs3_leptmass"][1][0]
+
     sig_syst, bkg_syst, acp_syst = [], [], []
     for obj in objlst:
         obs = obj.split("_")[0]
         sig_syst.append( GetYldSyst( "{}_sig".format( obs ), nom_df[obj][0], unc_df[obj][0] )[0] )
         bkg_syst.append( GetYldSyst( "{}_bkg".format( obs ), nom_df[obj][1], unc_df[obj][1] )[0] )
-        acp_syst.append( GetAcpSyst( "{}_acp".format( obs ), nom_df[obj][2], unc_df[obj][2] )[1] ) # use sigma as uncertainty
+        acp_syst.append( GetAcpSyst( "{}_acp".format( obs ), nom_df[obj][2], nom_df[obj][3], unc_df[obj][2], unc_df[obj][3] )[1] ) # use sigma as uncertainty
 
     print "& ${}1 \sigma$ & {} & {} & {} \\\\".format(
             "+" if "_up" in opt.GetOption( "uncertainty" ) else "-",
@@ -190,8 +212,6 @@ def main() :
     opt.Parsing() 
     opt.AddInputName ( "chi2" )
     opt.AddOutputName( "chi2", "opt", "seed", "uncertainty" )
-    input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
-    samplelst = [ x for x in input.samplelst if not any( y in x for y in [ "QCD", "Data" ] ) ]
    
     # Initialize plot manager
     global histmgr
@@ -206,6 +226,8 @@ def main() :
         return  
     
     # Declare variable
+    input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
+    samplelst = [ x for x in input.samplelst if not any( y in x for y in [ "QCD", "Data" ] ) ]
     x = ROOT.RooRealVar( "x", "x", 0, 500 )
     y = ROOT.RooRealVar( "y", "y", -1, 1 )
     x.setBins( 50 )
@@ -261,20 +283,28 @@ def main() :
                 histmgr.SetObjlst( opt.GetInputName( "ttbar" ), ["leptmass"], "ST" )
             else:
                 histmgr.SetObjlst( opt.GetInputName( sample ), ["leptmass"], "BT_{}".format( sample ) )
-        histmgr.SetObjlst( opt.GetInputName( "Data" ).replace( ".", "_region_WJets_0b_wobtag." ), objlst_pseudo, "DT" )
+    elif "WHF" in opt.GetOption( "uncertainty" ):
+        for sample in samplelst:
+            if "ttbar" in sample:
+                histmgr.SetObjlst( opt.GetInputName( "ttbar" ), ["leptmass"], "ST" )
+            elif "WJets" in sample:
+                histmgr.SetObjlst( opt.GetInputName( sample ).replace(".", "_{}.".format(opt.GetOption("uncertainty"))), ["leptmass"], "BT_{}".format( sample ) )
+            else:
+                histmgr.SetObjlst( opt.GetInputName( sample ), ["leptmass"], "BT_{}".format( sample ) )
     else:
         opt.AddInputName ( "uncertainty" )
         histmgr.SetObjlst( opt.GetInputName( "ttbar" ), ["leptmass"], "ST" )
         opt.RemoveInputName( "uncertainty" )
-        histmgr.SetObjlst( opt.GetInputName( "Data" ).replace( ".", "_region_WJets_0b_wobtag." ), objlst_pseudo, "DT" )
-        
+    
+    histmgr.SetObjlst( opt.GetInputName( "Data" ).replace( ".", "_region_WJets_0b_wobtag." ), objlst_pseudo, "DT" )
+       
     # Build signal template
     hist_ST = histmgr.GetObj( "ST" )
     data_ST = ROOT.RooDataHist( "data_ST", "data_ST", ROOT.RooArgList( x ), hist_ST )
     pdf_ST  = ROOT.RooHistPdf( "pdf_ST", "pdf_ST", ROOT.RooArgSet( x ), data_ST )
 
     # Build background template
-    if opt.GetOption( "uncertainty" ) == "background":
+    if opt.GetOption( "uncertainty" ) == "background" or "WHF" in opt.GetOption("uncertainty"):
         hist_BT = histmgr.GetMergedObj( "BT" )
         data_BT = ROOT.RooDataHist( "data_BT", "data_BT", ROOT.RooArgList(x), hist_BT ) 
         pdf_BT  = ROOT.RooHistPdf( "pdf_BT", "pdf_BT", ROOT.RooArgSet(x), data_BT )
@@ -297,7 +327,7 @@ def main() :
             pseudo_bg_full = data_DT.reduce("x<150")
             pseudo_bg_full_frac = pseudo_bg_full.reduce("y>0").sumEntries() / pseudo_bg_full.sumEntries()
            
-            if opt.GetOption( "uncertainty" ) != "background":
+            if opt.GetOption( "uncertainty" ) != "background" and "WHF" not in opt.GetOption( "uncertainty" ):
                 hist_BT = data_DT.createHistogram( "{}_{}".format( obj, i ), x )
                 pdf_BT  = ROOT.RooHistPdf( "pdf_BT", "pdf_BT", ROOT.RooArgSet( x ), data_DT.reduce(ROOT.RooArgSet(x) ) )
             
@@ -313,7 +343,6 @@ def main() :
             nsg_full = hist_ST.Integral( 0, hist_ST.FindBin( tmass ) -1 )
             pltmgr.SetNormToUnity( hist_BT ).Scale( nbg.getVal() )
             nbg_full = hist_BT.Integral( 0, hist_BT.FindBin( tmass ) -1 )
-
 
             pseudo_data_full = pseudo_data.reduce("x<150")
             pseudo_data_pos  = pseudo_data_full.reduce("y>0").sumEntries()

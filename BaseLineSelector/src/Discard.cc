@@ -104,7 +104,6 @@ Discard( TChain* ch )
     ch->SetBranchStatus( "EvtInfo.PuppiMETy",                                  0 );
 
     ch->SetBranchStatus( "GenInfo.PhotonFlag",                                 0 );
-    ch->SetBranchStatus( "GenInfo.Status",                                     0 );
     ch->SetBranchStatus( "GenInfo.Mo1Status",                                  0 );
     ch->SetBranchStatus( "GenInfo.Mo2Status",                                  0 );
     ch->SetBranchStatus( "GenInfo.GrandMo1PdgID",                              0 );

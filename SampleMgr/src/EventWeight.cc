@@ -86,19 +86,25 @@ BaseLineMgr::BtagScaleFactor( const int& idx, const BTagEntry::OperatingPoint& o
 double
 BaseLineMgr::TopPtWeight()
 {
+    bool   tweight = false;
+    bool   aweight = false;
     double topweight     = 1.;
     double antitopweight = 1.;
 
-    for( int i = 0; i < 20; i++ ){// should be in first 20 entries
-        if( _gen.PdgID[ i ] == 6 && _gen.nMo[ i ] >= 2 && topweight == 1 ){
-            topweight = exp( 0.0615 - 0.0005 * _gen.Pt[ i ] );
-        }
-        else if( _gen.PdgID[ i ] == -6 && _gen.nMo[ i ] >= 2 && topweight == 1 ){
-            antitopweight = exp( 0.0615 - 0.0005 * _gen.Pt[ i ] );
+    for( int i = 0; i < 20; i++ ){ // should be in first 20 entries
+        if( tweight && aweight ){
+            break;
         }
 
-        if( topweight != 1 && antitopweight != 1 ){
-            break;
+        double pt = _gen.Pt[i] > 500 ? 500 : _gen.Pt[i];
+
+        if( _gen.PdgID[ i ] == 6 && _gen.nMo[ i ] >= 2 ){
+            tweight = true;
+            topweight = exp( 0.0615 - 0.0005 * pt );
+        }
+        else if( _gen.PdgID[ i ] == -6 && _gen.nMo[ i ] >= 2 ){
+            aweight = false;
+            antitopweight = exp( 0.0615 - 0.0005 * pt );
         }
     }
 

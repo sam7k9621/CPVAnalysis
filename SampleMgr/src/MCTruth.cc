@@ -6,6 +6,21 @@
 using namespace std;
 
 namespace mgr{
+    bool
+    SampleMgr::IsWHF()
+    {
+        for( int i = 0; i < Gsize(); i++ ){
+            // Find First W particle and it's sister
+            if( fabs( _gen.PdgID[i] ) == 24 ){
+                int mo1 = GetDirectMo1( i );
+                int jet1 = fabs( _gen.Da1PdgID[ mo1 ] );
+                int jet2 = fabs( _gen.Da2PdgID[ mo1 ] );
+                return jet1 == 5 || jet2 == 5;
+            }
+        }
+        return false;
+    }
+    
     int
     SampleMgr::GetPdgID( const int& idx )
     {
@@ -104,7 +119,7 @@ namespace mgr{
                 int moid2 = abs( _gen.PdgID[ GetDirectMo2( i ) ] );
 
                 // Comes from W/Z
-                if( moid1 == 23 || moid1 == 24 || moid2 == 23 || moid2 == 24 ){
+                if( moid1 == 24 || moid2 == 24 ){
                     idx = i;
                     break;
                 }
@@ -219,5 +234,39 @@ namespace mgr{
                 return _gen.Mo2[ i ];
             }
         }
+    }
+
+    int 
+    SampleMgr::GetDirectMo1ID( const int& idx )
+    {
+        if( idx < 0 ){
+            return -1;
+        }
+
+        return _gen.PdgID[ GetDirectMo1( idx ) ];
+    }
+    
+    int 
+    SampleMgr::GetDirectMo2ID( const int& idx )
+    {
+        if( idx < 0 ){
+            return -1;
+        }
+
+        return _gen.PdgID[ GetDirectMo2( idx ) ];
+    }
+
+    int 
+    SampleMgr::GetLepMo1ID( const int& idx ){
+        int lepidx = MCTruthLep( idx );
+        if( lepidx < 0 ){
+            return lepidx;
+        }
+
+        int lepid  = abs( _gen.PdgID[ lepidx ] );
+        if( lepid != 13 && lepid != 11 ){
+            return -1;
+        }
+        return abs( GetDirectMo1ID( lepidx ) );
     }
 }

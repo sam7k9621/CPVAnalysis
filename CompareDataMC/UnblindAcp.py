@@ -16,6 +16,7 @@ def GetUncorrAcp( data, bg, norm, bias ):
 
     nm = data.GetBinContent( 1 ) - bgneg 
     np = data.GetBinContent( 2 ) - bgpos 
+    print np, nm
     nm_err = math.sqrt( nm ) 
     np_err = math.sqrt( np )
 

@@ -126,7 +126,7 @@ class Histor : public mgr::Pathmgr,
         double GetLepSFUp( TH2D*, const int& );
         double GetLepSFDn( TH2D*, const int& );
         TH2D*  GetSFHist( const std::string& );
-        double TopPtWeight();
+        double TopPtWeight(){ return _sample->TopPtWeight(); }
         void   WeightMC( const std::string& );
         float  PDFWeight( const int& );
         float  muFmuRWeight( const int& );
@@ -148,6 +148,7 @@ class Histor : public mgr::Pathmgr,
         int                    GetGenJet( const int& i )                                   { return _sample->FindJet( i ); }
         int                    GetGenLepton()                                              { return _sample->FindLepton(); }
         int                    GetGenHardJet()                                             { return _sample->FindHardJet(); }
+        int                    GetLepMo1ID( const int& i )                                 { return _sample->GetLepMo1ID( i ); }
 
     private:
         BaseLineMgr* _sample;

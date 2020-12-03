@@ -29,6 +29,7 @@ mclst = [
         ( 10, "TTToSemiLeptonic_CP5up"),
         ( 10, "TTToSemiLeptonic_CP5mtop1695"),
         ( 10, "TTToSemiLeptonic_CP5mtop1755"),
+        ( 5, "TTJets_DiLept" ),
         ( 5, "WJets_HT-100To200"),
         ( 10,"WJets_HT-1200To2500"),
         ( 5, "WJets_HT-200To400"),

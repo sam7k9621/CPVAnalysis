@@ -79,6 +79,7 @@ MakeFullCut()
     Int_t jet1;
     Int_t jet2;
     Int_t Njets;
+    Int_t isWHF;
     Float_t chi2mass;
     Float_t had_tmass;
     Float_t lep_tmass;
@@ -97,6 +98,7 @@ MakeFullCut()
     newtree->Branch( "jet1",        &jet1,        "jet1/I" );
     newtree->Branch( "jet2",        &jet2,        "jet2/I" );
     newtree->Branch( "Njets",       &Njets,       "Njets/I" );
+    newtree->Branch( "isWHF",       &isWHF,       "isWHF/I" );
     newtree->Branch( "chi2mass",    &chi2mass,    "chimass/F" );
     newtree->Branch( "had_tmass",   &had_tmass,   "had_tmass/F" );
     newtree->Branch( "lep_tmass",   &lep_tmass,   "lep_tmass/F" );
@@ -119,6 +121,9 @@ MakeFullCut()
         lepidx.clear();
         jetidx.clear();
         bjetidx.clear();
+
+        // Determine WHF or not 
+        isWHF = sample.find("WJets") != std::string::npos ? (int)FullMgr().IsWHF() : 0;
 
         // JEC JER update JEC central value didn't change
         if( is_data ){

@@ -159,6 +159,7 @@ namespace mgr{
             /*******************************************************************************
             *   MC Truth
             *******************************************************************************/
+            bool           IsWHF();
             int            GetPdgID( const int& );
             int            GetGenJetID( const int& );
             int            MCTruthJet( const int& );
@@ -174,6 +175,9 @@ namespace mgr{
             int AvoidDuplicate( const int& );
             int GetDirectMo1( const int& );
             int GetDirectMo2( const int& );
+            int GetDirectMo1ID( const int& );
+            int GetDirectMo2ID( const int& );
+            int GetLepMo1ID( const int& );
 
         protected:
 

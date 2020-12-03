@@ -215,12 +215,6 @@ Histor::GetSFHist( const string& tag )
     return h;
 }
 
-double
-Histor::TopPtWeight()
-{
-    return _sample->TopPtWeight();
-}
-
 float
 Histor::PDFWeight( const int& idx )
 {

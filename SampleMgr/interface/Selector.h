@@ -37,6 +37,7 @@ class Selector : public mgr::Pathmgr,
         std::string Discript( TH1* );
         bool        OptionContent( const std::string&, const std::string& );
         double      GetZmass( const std::vector<int>& );
+        bool        IsWHF(){ return _sample->IsWHF(); }
 
         float GetJetPt( const int& i )
         {
