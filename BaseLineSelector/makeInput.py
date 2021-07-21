@@ -48,43 +48,45 @@ def SplitFile( num ):
     elif num == 5:
         return [ "[0-1]", "[2-3]", "[4-5]", "[6-7]", "[8-9]" ]
 
-def MakeContent( dir, mclst, datalst ):
-    s = subprocess.Popen( 'ls ' + dir, shell=True, stdout=subprocess.PIPE )
-    outputlst, err = s.communicate()
-    outputlst = filter(None, outputlst.split('\n') )
-  
-    samplelst = []
-    for mc in mclst:
-        for output in outputlst:
-            if all( sub in output for sub in mc[1].split("_") ):
-                samplelst.append( ( output, mc ) )
-                outputlst.remove( output )
-                break
-
-    for data in datalst:
-        for output in outputlst:
-            temp = data[1].split("_")
-            if temp[0] in output:
-                samplelst.append( ( output + "/" + '_'.join( temp[1:] ), data ) )
-                break
-
+def MakeContent( dirlst, mclst, datalst ):
     content = OrderedDict()
-    for sample, tag in samplelst:
-        if tag[0] == 1:
-            content[ tag[1] + "_0" ] = dir + sample + "/*.root"
-        elif tag[0] < 10:
-            for i in range( tag[0] ):
-                content[ tag[1] + "_{}".format( str( i ) ) ] = dir + sample + "/*{}.root".format( SplitFile( tag[0] )[i] ) 
-        else:
-            if tag[0] == 10:
-                filelst = [x+y for x in SplitFile(2) for y in SplitFile(5) ] 
+    
+    for dir in dirlst:
+        s = subprocess.Popen( 'ls ' + dir, shell=True, stdout=subprocess.PIPE )
+        outputlst, err = s.communicate()
+        outputlst = filter(None, outputlst.split('\n') )
+
+        samplelst = []
+        for mc in mclst:
+            for output in outputlst:
+                if all( sub in output for sub in mc[1].split("_") ):
+                    samplelst.append( ( output, mc ) )
+                    outputlst.remove( output )
+                    break
+
+        for data in datalst:
+            for output in outputlst:
+                temp = data[1].split("_")
+                if temp[0] in output:
+                    samplelst.append( ( output + "/" + '_'.join( temp[1:] ), data ) )
+                    break
+
+        for sample, tag in samplelst:
+            if tag[0] == 1:
+                content[ tag[1] + "_0" ] = dir + sample + "/*.root"
+            elif tag[0] < 10:
+                for i in range( tag[0] ):
+                    content[ tag[1] + "_{}".format( str( i ) ) ] = dir + sample + "/*{}.root".format( SplitFile( tag[0] )[i] ) 
             else:
-                filelst = [x+y for x in SplitFile(3) for y in SplitFile(5) ] 
-            
-            for i in range( tag[0] ):
-                content[ tag[1] + "_{}".format( str( i ) ) ] = dir + sample + "/*{}.root".format( filelst[i] ) 
-            # include one-digit file
-            content[ tag[1] + "_{}".format( str( tag[0] ) ) ] = dir + sample + "/*_[0-9].root"
+                if tag[0] == 10:
+                    filelst = [x+y for x in SplitFile(2) for y in SplitFile(5) ] 
+                else:
+                    filelst = [x+y for x in SplitFile(3) for y in SplitFile(5) ] 
+                
+                for i in range( tag[0] ):
+                    content[ tag[1] + "_{}".format( str( i ) ) ] = dir + sample + "/*{}.root".format( filelst[i] ) 
+                # include one-digit file
+                content[ tag[1] + "_{}".format( str( tag[0] ) ) ] = dir + sample + "/*_[0-9].root"
 
     return content
 
@@ -183,17 +185,17 @@ def MakeSampleInfo( outputfile, year, content ):
 
 def main(args):
     sample16 = MakeContent( 
-            "/wk_cms2/youying/public/bprimekit_2016_Legacy/",
+            [ "/wk_cms2/youying/public/bprimekit_2016_Legacy/", "/wk_cms/youying/public/bprimekit_2016_Legacy/" ],
             s16.mclst, s16.datalst 
             )
     
     sample17 = MakeContent( 
-            "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/",
+            [ "/wk_cms2/youying/public/bprimekit_2017_ReMiniAODv2/", "/wk_cms/youying/public/bprimekit_2017_ReMiniAODv2/" ],
             s17.mclst, s17.datalst 
             )
     
     sample18 = MakeContent( 
-            "/wk_cms2/youying/public/bprimekit_2018_ReReco/",
+            [ "/wk_cms2/youying/public/bprimekit_2018_ReReco/", "/wk_cms/youying/public/bprimekit_2018_ReReco/" ],
             s18.mclst, s18.datalst 
             )
     

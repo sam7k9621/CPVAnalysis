@@ -112,7 +112,7 @@ MakeFullCut()
     // Looping events
     cout << ">> Processing " << filename << endl;
     string tag = FullMgr().GetOption<string>( "uncertainty" );
-    int events = FullMgr().CheckOption( "test" ) ? 100 : ch->GetEntries();
+    int events = FullMgr().CheckOption( "test" ) ? 1 : ch->GetEntries();
 
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
@@ -149,13 +149,11 @@ MakeFullCut()
         }
 
         // JEC
-        if( !is_data ){
-            if( tag == "JEC_up" ){
-                FullMgr().JECCorrUp();
-            }
-            else if( tag == "JEC_dn" ){
-                FullMgr().JECCorrDn();
-            }
+        if( tag == "JEC_up" ){
+            FullMgr().JECCorrUp();
+        }
+        else if( tag == "JEC_dn" ){
+            FullMgr().JECCorrDn();
         }
 
         if( !is_data ){

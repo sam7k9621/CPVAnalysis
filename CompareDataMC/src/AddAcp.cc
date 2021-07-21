@@ -7,6 +7,17 @@
 using namespace std;
 
 extern void
+SetBias( TLorentzVector& ans, const double& theta, const double& phi )
+{
+    if( ans.Phi() >= 0 && ans.Phi() < phi ){
+        if( ans.Theta() >= TMath::Pi()/2. && ans.Theta() < theta ){
+            ans.SetTheta( theta );
+            ans.SetPhi( phi );
+        }
+    }
+}
+
+extern void
 ReweighAcp()
 {
     // Initialize file
@@ -15,6 +26,7 @@ ReweighAcp()
     string lepton = CompMgr().GetOption<string>( "lepton" );
     string sample = CompMgr().GetOption<string>( "sample" );
     bool is_data  = ( sample == "Data" ) ? 1 : 0;
+    CompMgr().InitRoot( "sample" + year );
     fmt % year % lepton % sample;
     srand( 100 );
 
@@ -47,13 +59,15 @@ ReweighAcp()
     ch->SetBranchAddress(  "mcisolep", &mcisolep );
     ch->SetBranchAddress( "mchardjet", &mchardjet );
 
+    Float_t genweight;
+    ch->SetBranchAddress( "genweight", &genweight );
+    
     // Shuffle list
     vector<TLorentzVector> blst;
     vector<TLorentzVector> jlst;
 
     // Looping events
     int events = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
-
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         blst.push_back( *b );
@@ -98,10 +112,10 @@ ReweighAcp()
             acp12 = mco12 > 0;
             acp3  = mco3 > 0;
 
-            FillWeighObservable( "weighted_GenObs14", mco14, acp14 );
-            FillWeighObservable(  "weighted_GenObs6", mco6,  acp6 );
-            FillWeighObservable( "weighted_GenObs12", mco12, acp12 );
-            FillWeighObservable(  "weighted_GenObs3", mco3,  acp3 );
+            FillWeighObservable( 1, "weighted_GenObs14", mco14, acp14 );
+            FillWeighObservable( 1, "weighted_GenObs6",  mco6,  acp6 );
+            FillWeighObservable( 1, "weighted_GenObs12", mco12, acp12 );
+            FillWeighObservable( 1, "weighted_GenObs3",  mco3,  acp3 );
         }
         
         /*******************************************************************************
@@ -110,7 +124,14 @@ ReweighAcp()
         int idx = i;
         if( CompMgr().CheckOption( "mixed" ) ){
             int mix = CompMgr().GetOption<int>( "mixed" );
-            idx = mix > 0 ? ( i + mix ) % events : ( i + mix + events ) % events;
+            idx = mix > 0 ? ( i + mix ) % events : ( i - mix + events ) % events;
+        }
+        
+        if( CompMgr().CheckOption( "bias" ) ){
+            SetBias( blst[idx], 4.*TMath::Pi()/5., 2.*TMath::Pi()/3. );
+            SetBias( jlst[idx], 4.*TMath::Pi()/5., 2.*TMath::Pi()/3. );
+            SetBias( *bbar,     4.*TMath::Pi()/5., 2.*TMath::Pi()/3. );
+            SetBias( *isolep,   4.*TMath::Pi()/5., 2.*TMath::Pi()/3. );
         }
 
         // In Lab frame
@@ -135,14 +156,18 @@ ReweighAcp()
         FillMoreObservable( "Obs12", o12, acp12 );
         FillMoreObservable( "Obs3",  o3,  acp3 );
 
-        FillWeighObservable( "weighted_Obs14", o14, acp14 );
-        FillWeighObservable( "weighted_Obs6",  o6,  acp6 );
-        FillWeighObservable( "weighted_Obs12", o12, acp12 );
-        FillWeighObservable( "weighted_Obs3",  o3,  acp3 );
+        FillWeighObservable( genweight, "weighted_Obs14", o14, acp14 );
+        FillWeighObservable( genweight, "weighted_Obs6",  o6,  acp6 );
+        FillWeighObservable( genweight, "weighted_Obs12", o12, acp12 );
+        FillWeighObservable( genweight, "weighted_Obs3",  o3,  acp3 );
     }
-
+    if( !is_data ){
+        CompMgr().WeightMC( sample );
+        cout << ">>Weighting " << sample << endl;
+    }
     cout << endl;
     StoreCompare();
+
     delete ch;
 }
 
@@ -168,11 +193,12 @@ FillMoreObservable( const string& obs, const double& acp, const bool& flag )
 }
 
 extern void
-FillWeighObservable( const string& obs, const double& acp, const bool& flag )
+FillWeighObservable( const double& w, const string& obs, const double& acp, const bool& flag )
 {
     double weight = CompMgr().GetOption<int>( "Acp" ) / 100.;
     double val    = acp > 0 ? 0.5 : -0.5;
     weight = flag ? 1 + weight : 1 - weight;
+    weight *= w;
     CompMgr().Hist( obs )->Fill( val, weight );
 }
 
@@ -223,6 +249,7 @@ StoreTLV()
     TLorentzVector* mcbbar    = new TLorentzVector( 0., 0., 0., 0. );
     TLorentzVector* mcisolep  = new TLorentzVector( 0., 0., 0., 0. );
     TLorentzVector* mchardjet = new TLorentzVector( 0., 0., 0., 0. );
+    float genweight;
 
     tree->Branch(    "charge", &charge,          "charge/F" );
     tree->Branch(         "b", "TLorentzVector", &b );
@@ -234,6 +261,7 @@ StoreTLV()
     tree->Branch(    "mcbbar", "TLorentzVector", &mcbbar );
     tree->Branch(  "mcisolep", "TLorentzVector", &mcisolep );
     tree->Branch( "mchardjet", "TLorentzVector", &mchardjet );
+    tree->Branch(  "genweight", &genweight,        "genweight/F" );
 
     // Looping events
     int events   = CompMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
@@ -261,6 +289,16 @@ StoreTLV()
             }
         }
 
+        genweight = is_data ? 1 : CompMgr().GenWeight();
+        /*******************************************************************************
+        *  Reco Acp
+        *******************************************************************************/
+        charge = CompMgr().GetIsoLepCharge( lep );
+        SetTLV(  isolep, CompMgr().GetLepP4( lep ) );
+        SetTLV( hardjet, CompMgr().GetJetP4( jet1 ) );
+        charge < 0 ? SetTLV( b, CompMgr().GetJetP4( had_b ) ) : SetTLV( b, CompMgr().GetJetP4( lep_b ) );
+        charge < 0 ? SetTLV( bbar, CompMgr().GetJetP4( lep_b ) ) : SetTLV( bbar, CompMgr().GetJetP4( had_b ) );
+        
         /******************************************************************************
         * Gen-level Acp
         ******************************************************************************/
@@ -272,6 +310,7 @@ StoreTLV()
 
             // non-matched gen-level
             if( genbidx == -1 || genbbaridx == -1 || genlepidx == -1 || genjetidx == -1 ){
+                tree->Fill();
                 continue;
             }
 
@@ -282,14 +321,6 @@ StoreTLV()
             SetTLV( mchardjet, CompMgr().GetGenP4( genjetidx ) );
         }
 
-        /*******************************************************************************
-        *  Reco Acp
-        *******************************************************************************/
-        charge = CompMgr().GetIsoLepCharge( lep );
-        SetTLV(  isolep, CompMgr().GetLepP4( lep ) );
-        SetTLV( hardjet, CompMgr().GetJetP4( jet1 ) );
-        charge < 0 ? SetTLV( b, CompMgr().GetJetP4( had_b ) ) : SetTLV( b, CompMgr().GetJetP4( lep_b ) );
-        charge < 0 ? SetTLV( bbar, CompMgr().GetJetP4( lep_b ) ) : SetTLV( bbar, CompMgr().GetJetP4( had_b ) );
 
         tree->Fill();
     }

@@ -260,7 +260,7 @@ def main() :
     histmgr = pltmgr.Plotmgr()
     objlst = [ "chi2_tmass", "chi2_Correct", "chi2_Misid", "chi2_Mistag", "Cor_leptmass", "Misid_leptmass", "Mistag_leptmass" ]
     
-    sample = "ttbar" 
+    sample = "ttbar_semi" 
     
     yearlst = [ "16", "17", "18" ] if opt.Year() == "RunII" else [ opt.Year() ] 
     for year in yearlst:

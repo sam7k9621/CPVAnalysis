@@ -21,7 +21,7 @@ def GetExpectedYield( filename ):
         sg, bg = 0, 0
         for line in inputfile.readlines():
             if "ttbar" in line:
-                sg = float( line.split( " " )[1].lstrip("\n") )
+                sg += float( line.split( " " )[1].lstrip("\n") )
             if "MC" in line:                          
                 bg = float( line.split( " " )[1].lstrip("\n") )
     return sg, bg - sg
@@ -108,7 +108,6 @@ def FillHisto():
     unc_dict = { year: collections.OrderedDict( (k,[ [], [], [], [] ]) for k in objlst ) for year in yearlst }
     
     for i in range( int( opt.GetOption("seed") ) ):
-        
         for year in yearlst:
             nom_file = opt.GetInputName( "Yield", "Pseudo", "json" ).format( Y=year ).replace( ".", "_seed_{}.".format( i+1 ) )
             unc_file = nom_file.replace( ".", "_uncertainty_{}.".format( opt.GetOption( "uncertainty" ) ) )
@@ -140,8 +139,6 @@ def FillHisto():
         unc_df[ obj ][2] = [ sum(x) for x in zip( *[ y[obj][2] for y in unc_dict.values() ] ) ]
         unc_df[ obj ][3] = [ sum(x) for x in zip( *[ y[obj][3] for y in unc_dict.values() ] ) ]
 
-    print nom_df["Obs3_leptmass"][1][0]
-
     sig_syst, bkg_syst, acp_syst = [], [], []
     for obj in objlst:
         obs = obj.split("_")[0]
@@ -155,6 +152,10 @@ def FillHisto():
             " & ".join( "${:+0.2f}$".format(x) for x in bkg_syst ),
             " & ".join( "${:+0.3f}$".format(x) for x in acp_syst )
             )
+
+    with open( opt.GetOutputName( "AcpUnc", type="txt"), "w" ) as outputfile:
+        for idx, obj in enumerate(objlst): 
+            outputfile.write( "{} {:+0.3f}\n".format( obj.split("_")[0], acp_syst[idx] ) )
 
 def CheckHist( hist, obj, temp ):
     hist.SetName( temp )
@@ -236,19 +237,21 @@ def main() :
     # Build reference template
     objlst_pseudo = [ "Obs3_leptmass", "Obs6_leptmass", "Obs12_leptmass", "Obs14_leptmass" ]
     # objlst_pseudo = [ "Obs3_leptmass" ]
-    e_nsg, e_nbg = GetExpectedYield( opt.GetInputName( "lep_tmass", "ExpectedYield", "txt" ) )
+    e_nsg, e_nbg = GetExpectedYield( opt.GetInputName( "lep_tmass", "ExpectedYield", "txt" ).format( Y=opt.Year() ) )
+  
     pseudo_nsg = ROOT.RooRealVar( "pseudo_nsg", "pseudo_nsg", e_nsg )
     pseudo_nbg = ROOT.RooRealVar( "pseudo_nbg", "pseudo_nbg", e_nbg )
 
-    histmgr.SetObjlst( opt.GetInputName( "ttbar" ), objlst_pseudo, "CT_sg" )
-    histmgr.SetObjlst( opt.GetInputName( "Data" ).replace( ".", "_region_WJets_0b_wobtag." ), objlst_pseudo, "CT_bg" )
+    histmgr.SetObjlst( opt.GetInputName( "ttbar_semi" ).format( Y=opt.Year() ),  objlst_pseudo, "CT_sg_semi" )
+    histmgr.SetObjlst( opt.GetInputName( "ttbar_dilep" ).format( Y=opt.Year() ), objlst_pseudo, "CT_sg_dilep" )
+    histmgr.SetObjlst( opt.GetInputName( "Data" ).format( Y=opt.Year() ).replace( ".", "_region_WJets_0b_wobtag." ), objlst_pseudo, "CT_bg" )
     
     random = ROOT.TRandom3()
     random.SetSeed( int(opt.GetOption( "seed" )) )
     data_dict = collections.OrderedDict( (k,[]) for k in objlst_pseudo )
-    gEvt = 200
+    gEvt = 1
     for obj in objlst_pseudo:
-        hist_CT_sg = histmgr.GetObj( "CT_sg" )
+        hist_CT_sg = histmgr.GetMergedObj( "CT_sg" )
         data_CT_sg = ROOT.RooDataHist( "data_CT_sg", "data_CT_sg", ROOT.RooArgList(x,y), hist_CT_sg )
         pdf_CT_sg  = ROOT.RooHistPdf( "pdf_CT_sg", "pdf_CT_sg", ROOT.RooArgSet(x,y), data_CT_sg ) 
 
@@ -273,33 +276,36 @@ def main() :
                 CheckHist( hist_CT_sg, obj, "sg_template" )
                 CheckHist( hist_CT_bg, obj, "bg_template" )
                 return 
-      
+     
     #-----------------------------------------------------------------------------------------------------------------------------
     
     # Add fitting template
     if opt.GetOption( "uncertainty" ) == "background":
         for sample in samplelst:
             if "ttbar" in sample:
-                histmgr.SetObjlst( opt.GetInputName( "ttbar" ), ["leptmass"], "ST" )
+                histmgr.SetObjlst( opt.GetInputName( "ttbar_semi" ).format( Y=opt.Year() ),  ["leptmass"], "ST_semi" )
+                histmgr.SetObjlst( opt.GetInputName( "ttbar_dilep" ).format( Y=opt.Year() ), ["leptmass"], "ST_dilep" )
             else:
-                histmgr.SetObjlst( opt.GetInputName( sample ), ["leptmass"], "BT_{}".format( sample ) )
+                histmgr.SetObjlst( opt.GetInputName( sample ).format( Y=opt.Year() ), ["leptmass"], "BT_{}".format( sample ) )
     elif "WHF" in opt.GetOption( "uncertainty" ):
         for sample in samplelst:
             if "ttbar" in sample:
-                histmgr.SetObjlst( opt.GetInputName( "ttbar" ), ["leptmass"], "ST" )
+                histmgr.SetObjlst( opt.GetInputName( "ttbar_semi" ).format( Y=opt.Year() ),  ["leptmass"], "ST_semi" )
+                histmgr.SetObjlst( opt.GetInputName( "ttbar_dilep" ).format( Y=opt.Year() ), ["leptmass"], "ST_dilep" )
             elif "WJets" in sample:
-                histmgr.SetObjlst( opt.GetInputName( sample ).replace(".", "_{}.".format(opt.GetOption("uncertainty"))), ["leptmass"], "BT_{}".format( sample ) )
+                histmgr.SetObjlst( opt.GetInputName( sample ).format( Y=opt.Year() ).replace(".", "_{}.".format(opt.GetOption("uncertainty"))), ["leptmass"], "BT_{}".format( sample ) )
             else:
-                histmgr.SetObjlst( opt.GetInputName( sample ), ["leptmass"], "BT_{}".format( sample ) )
+                histmgr.SetObjlst( opt.GetInputName( sample ).format( Y=opt.Year() ), ["leptmass"], "BT_{}".format( sample ) )
     else:
         opt.AddInputName ( "uncertainty" )
-        histmgr.SetObjlst( opt.GetInputName( "ttbar" ), ["leptmass"], "ST" )
+        histmgr.SetObjlst( opt.GetInputName( "ttbar_semi" ).format( Y=opt.Year() ),  ["leptmass"], "ST_semi" )
+        histmgr.SetObjlst( opt.GetInputName( "ttbar_dilep" ).format( Y=opt.Year() ), ["leptmass"], "ST_dilep" )
         opt.RemoveInputName( "uncertainty" )
     
-    histmgr.SetObjlst( opt.GetInputName( "Data" ).replace( ".", "_region_WJets_0b_wobtag." ), objlst_pseudo, "DT" )
+    histmgr.SetObjlst( opt.GetInputName( "Data" ).format( Y=opt.Year() ).replace( ".", "_region_WJets_0b_wobtag." ), objlst_pseudo, "DT" )
        
     # Build signal template
-    hist_ST = histmgr.GetObj( "ST" )
+    hist_ST = histmgr.GetMergedObj( "ST" )
     data_ST = ROOT.RooDataHist( "data_ST", "data_ST", ROOT.RooArgList( x ), hist_ST )
     pdf_ST  = ROOT.RooHistPdf( "pdf_ST", "pdf_ST", ROOT.RooArgSet( x ), data_ST )
 
@@ -349,6 +355,7 @@ def main() :
             pseudo_data_neg  = pseudo_data_full.sumEntries() - pseudo_data_pos 
 
             yield_dict[ obj ].append( ( nsg_full, nbg_full, pseudo_bg_full_frac, pseudo_data_pos, pseudo_data_neg ) )
+            print obj, pseudo_data_full.sumEntries(), nsg_full, pseudo_data_pos - nbg_full*pseudo_bg_full_frac, pseudo_data_neg - nbg_full*(1-pseudo_bg_full_frac), GetAcp( pseudo_data_pos - nbg_full*pseudo_bg_full_frac, pseudo_data_neg - nbg_full*(1-pseudo_bg_full_frac) )
     
     with open( opt.GetOutputName( "Yield", "Pseudo", "json" ), 'w' ) as outfile:
         json.dump( yield_dict, outfile, indent=4 )

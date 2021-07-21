@@ -89,10 +89,10 @@ class Selector : public mgr::Pathmgr,
         /*******************************************************************************
         *   Weight
         *******************************************************************************/
-        void                 GetSelJet( std::vector<int>&, std::vector<int>& );
-        void                 Fill2DBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
-        void                 Fill1DBtagEff_Pt( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
-        void                 Fill1DBtagEff_Eta( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>&, const double& );
+        void                 GetSelJet( std::vector<int>&);
+        void                 Fill2DBtagEff( TEfficiency*, TEfficiency*, TEfficiency*, TEfficiency*, TEfficiency*, TEfficiency*, TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>& );
+        void                 Fill1DBtagEff_Pt( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>& );
+        void                 Fill1DBtagEff_Eta( TEfficiency*, TEfficiency*, TEfficiency*, const std::vector<int>& );
         double               GetLepSF( TH2D*, const int& );
         double               GetLepSFUp( TH2D*, const int& );
         double               GetLepSFDn( TH2D*, const int& );

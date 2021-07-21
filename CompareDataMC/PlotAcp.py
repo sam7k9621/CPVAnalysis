@@ -9,12 +9,12 @@ import numpy as np
 def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
-    opt.AddInput("c", "chi2").AddInput("A", "Acp").AddInput("o", "opt")
-    opt.AddFlag("t","test").AddFlag("x","mixed")
+    opt.AddInput("c", "chi2").AddInput("A", "Acp").AddInput("o", "opt").AddInput("e", "uncertainty")
+    opt.AddFlag("t","test").AddFlag("x","mixed").AddFlag("B", "bbSep")
     
     opt.Parsing() 
-    opt.AddInputName ( "chi2", "Acp", "opt", "mixed" )
-    opt.AddOutputName( "chi2", "Acp", "opt", "mixed" )
+    opt.AddInputName ( "chi2", "bbSep", "Acp", "opt", "uncertainty", "mixed" )
+    opt.AddOutputName( "chi2", "Acp", "opt", "mixed", "uncertainty" )
 
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
@@ -38,22 +38,23 @@ def main() :
         input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
         samplelst = [ x for x in input.samplelst if not any( y in x for y in ["QCD", "ttbar", "Data"] ) ]
 
+    if opt.SampleInfo() == "ttbar":
+        samplelst = ["ttbar_semi", "ttbar_dilep" ]
+
     # Loop objlst
     toys = 1000 if opt.GetOption( "mixed" ) else 1
     for i in [ x for x in range(1, toys + 1) ]:
-
         for sample in samplelst:
             inputfile = opt.GetInputName( sample )
-            
             if opt.GetOption( "mixed" ):
                 idx = inputfile.index(".")
                 inputfile = inputfile[:idx] + "_" + str(i) + inputfile[idx:]
             
             if opt.LeptonType() == "co":
-                histmgr.SetObjlst( inputfile.format( L="el" ), objlst, sample + "_el" )
-                histmgr.SetObjlst( inputfile.format( L="mu" ), objlst, sample + "_mu" )
+                histmgr.SetObjlst( inputfile.format( Y=opt.Year(), L="el" ), objlst, sample + "_el" )
+                histmgr.SetObjlst( inputfile.format( Y=opt.Year(), L="mu" ), objlst, sample + "_mu" )
             else:
-                histmgr.SetObjlst( inputfile, objlst, sample )
+                histmgr.SetObjlst( inputfile.format( Y=opt.Year() ), objlst, sample )
 
         for idx, obj in enumerate( objlst ):
             histlst = []

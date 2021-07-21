@@ -15,56 +15,51 @@ def main() :
     # Initialize plot manager
     histmgr = pltmgr.Plotmgr()
     objlst=[ "lep_tmass" ]
-    input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
+    yearlst = [ "16", "17", "18" ] if opt.Year() == "RunII" else [ opt.Year() ]
   
-    # Add data-driven shape
-    print "-" * 90
-    print ">> Adding CR data"
-    filename = opt.GetInputName( "Data" ).replace( ".", "_region_WJets_0b" + opt.GetOption( "worelax", True ) + opt.GetOption( "wobtag", True ) + "." )
-    histmgr.SetObjlst( filename, objlst, "Data" ) 
-    
     template = opt.GetOption( "template" )
-    if template == "SR":
-        # Add SR background MC
+    for year in yearlst:
+        input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( year ) )
+        # Add data-driven shape
         print "-" * 90
-        print ">> Adding SR bkg. MC"
-        for sample in input.samplelst:
-            if any( x in sample for x in [ "ttbar", "Data", "QCD" ] ):
-                continue
-            filename = opt.GetInputName( sample )
-            histmgr.SetObjlst( filename, objlst, "SR" + sample ) 
-    elif template == "CR":
-        # Add CR background MC
-        print "-" * 90
-        print ">> Adding CR bkg. MC"
-        for sample in input.samplelst:
-            if any( x in sample for x in [ "ttbar", "Data" ] ):
-                continue 
-            filename = opt.GetInputName( sample ).replace( ".", "_region_WJets_0b" + opt.GetOption( "worelax", True ) + opt.GetOption( "wobtag", True ) + "." )
-            histmgr.SetObjlst( filename, objlst, "CR" + sample ) 
-
-        # Change into data-driven CR QCD sample
-        print "-" * 90
-        print ">> Adding data-driven CR QCD"
-        qcd_histlst = [ histmgr.GetMergedObj( "CRQCD" ) for o in objlst ]
-        histmgr.RemoveObj( "CRQCD" )
-        filename = opt.GetInputName( "Data" ).replace( ".", "_region_QCD_0b" + opt.GetOption( "wobtag", True ) + "." )
-        histmgr.SetObjlst( filename, objlst, "CRQCD" ) 
-    else:
-        print "Please specify the template"
-        return
-    
-    # Add data-driven orthogonal shape
-#     print "-" * 90
-    # print ">> Adding orthogonal CS data"
-    # filename = filename.replace( "chi2", "invChi2" )
-    # histmgr.SetObjlst( filename, objlst, "invData" ) 
+        print ">> Adding CR data"
+        filename = opt.GetInputName( "Data" ).format( Y=year ).replace( ".", "_region_WJets_0b" + opt.GetOption( "worelax", True ) + opt.GetOption( "wobtag", True ) + "." )
+        histmgr.SetObjlst( filename, objlst, year + "_Data" ) 
    
+        if template == "SR":
+            # Add SR background MC
+            print "-" * 90
+            print ">> Adding SR bkg. MC"
+            for sample in input.samplelst:
+                if any( x in sample for x in [ "ttbar", "Data", "QCD" ] ):
+                    continue
+                filename = opt.GetInputName( sample ).format( Y=year )
+                histmgr.SetObjlst( filename, objlst, "{}_SR_{}".format( year, sample ) ) 
+        elif template == "CR":
+            # Add CR background MC
+            print "-" * 90
+            print ">> Adding CR bkg. MC"
+            for sample in input.samplelst:
+                if any( x in sample for x in [ "ttbar_semi", "ttbar_had", "ttbar_dilep", "Data" ] ):
+                    continue 
+                filename = opt.GetInputName( sample ).format( Y=year ).replace( ".", "_region_WJets_0b" + opt.GetOption( "worelax", True ) + opt.GetOption( "wobtag", True ) + "." )
+                histmgr.SetObjlst( filename, objlst, "{}_CR_{}".format( year, sample ) ) 
+
+            # Change into data-driven CR QCD sample
+            print "-" * 90
+            print ">> Adding data-driven CR QCD"
+            qcd_histlst = [ histmgr.GetMergedObj( year + "_CR_QCD" ) for o in objlst ]
+            histmgr.RemoveObj( "CR_QCD" )
+            filename = opt.GetInputName( "Data" ).format( Y=year ).replace( ".", "_region_QCD_0b" + opt.GetOption( "wobtag", True ) + "." )
+            histmgr.SetObjlst( filename, objlst, year + "_CR_QCD_" ) 
+        else:
+            print "Please specify the template"
+            return
+
     # Loop objlst
     for idx, obj in enumerate( objlst ):
-        
         # Retrieve hist
-        data = histmgr.GetObj( "Data" )
+        data = histmgr.GetMergedObj( "Data" )
         # data_inv = histmgr.GetObj( "invData" )
         histlst = []
         mclst = [ "DYJets", "SingleTop", "VV", "WJets", "QCD" ]
@@ -72,7 +67,7 @@ def main() :
             mclst.remove( "QCD" )
 
         for i, mc in enumerate( mclst ):
-            histlst.append( histmgr.GetMergedObj( template + mc ) )
+            histlst.append( histmgr.GetMergedObj( template, mc ) )
             if mc == "QCD":
                 pltmgr.SetNormToUnity( histlst[ i ] )
                 histlst[ i ].Scale( qcd_histlst[ idx ].Integral() )
@@ -108,7 +103,8 @@ def main() :
         
         pltmgr.SetSinglePad( c )
         pltmgr.SetAxis( bg_sum )
-        pltmgr.DrawCMSLabelOuter( pltmgr.PRELIMINARY )
+        pltmgr.DrawCMSLabelOuter()
+        # pltmgr.DrawCMSLabelOuter( pltmgr.PRELIMINARY )
         pltmgr.DrawLuminosity( opt.Lumi() )
         c.SaveAs( opt.GetOutputName( template, "BGClosureTest" ) )
 

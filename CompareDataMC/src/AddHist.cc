@@ -11,6 +11,7 @@ AddHist()
     *******************************************************************************/
     string lepton = CompMgr().GetOption<string>( "lepton" );
     CompMgr().AddHist( "Syst", "", "", 1, 0, 1 );
+    CompMgr().AddHist( "Syst_weighted", "", "", 1, 0, 1 );
     if( lepton == "mu" ){
         CompMgr().AddHist( "lep_tmass", "M_{#mub} [GeV]", "Events", 60, 0, 300 );
         CompMgr().AddHist( "leptmass", "M_{#mub} [GeV]", "Events", 50, 0, 500 );
@@ -62,10 +63,10 @@ AddHist()
     *******************************************************************************/
     CompMgr().AddHist2D( "chi2_tmass",   "M_{jjb} [GeV]", "#chi^{2}_{min}", 50, 50, 300, 40, 0, 200 );
     CompMgr().AddHist2D( "chi2_jjmass",  "M_{jj} [GeV]", "#chi^{2}_{min}", 60, 0, 300, 40, 0, 200 );
-    CompMgr().AddHist2D( "Obs3_leptmass",  "M_{lb} [GeV]", "O3",  50, 0, 500, 50, -1, 1 );
-    CompMgr().AddHist2D( "Obs6_leptmass",  "M_{lb} [GeV]", "O6",  50, 0, 500, 50, -1, 1 );
-    CompMgr().AddHist2D( "Obs12_leptmass", "M_{lb} [GeV]", "O12", 50, 0, 500, 50, -1, 1 );
-    CompMgr().AddHist2D( "Obs14_leptmass", "M_{lb} [GeV]", "O14", 50, 0, 500, 50, -1, 1 );
+    CompMgr().AddHist2D( "Obs3_leptmass",  "M_{lb} [GeV]", "O3",  250, 0, 500, 50, -1, 1 );
+    CompMgr().AddHist2D( "Obs6_leptmass",  "M_{lb} [GeV]", "O6",  250, 0, 500, 50, -1, 1 );
+    CompMgr().AddHist2D( "Obs12_leptmass", "M_{lb} [GeV]", "O12", 250, 0, 500, 50, -1, 1 );
+    CompMgr().AddHist2D( "Obs14_leptmass", "M_{lb} [GeV]", "O14", 250, 0, 500, 50, -1, 1 );
     
     /*******************************************************************************
     *  Observable
@@ -89,6 +90,15 @@ AddHist()
     CompMgr().AddHist( "Ratio_Obs6", "O_{6}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "Ratio_Obs12", "O_{12}", "Events", 2, -1, 1 );
     CompMgr().AddHist( "Ratio_Obs14", "O_{14}", "Events", 2, -1, 1 );
+    
+    CompMgr().AddHist( "lep_tmass_obs3_p",  "M_{eb} [GeV]", "Events", 250, 0, 500 );
+    CompMgr().AddHist( "lep_tmass_obs3_n",  "M_{eb} [GeV]", "Events", 250, 0, 500 );
+    CompMgr().AddHist( "lep_tmass_obs6_p",  "M_{eb} [GeV]", "Events", 250, 0, 500 );
+    CompMgr().AddHist( "lep_tmass_obs6_n",  "M_{eb} [GeV]", "Events", 250, 0, 500 );
+    CompMgr().AddHist( "lep_tmass_obs12_p", "M_{eb} [GeV]", "Events", 250, 0, 500 );
+    CompMgr().AddHist( "lep_tmass_obs12_n", "M_{eb} [GeV]", "Events", 250, 0, 500 );
+    CompMgr().AddHist( "lep_tmass_obs14_p", "M_{eb} [GeV]", "Events", 250, 0, 500 );
+    CompMgr().AddHist( "lep_tmass_obs14_n", "M_{eb} [GeV]", "Events", 250, 0, 500 );
     
     /*******************************************************************************
     *  Intrinsic Acp
@@ -154,6 +164,7 @@ StoreCompare()
     *  Reco TH1
     *******************************************************************************/
     mgr::SaveToROOT( CompMgr().Hist( "Syst" ), filename, "Syst" );
+    mgr::SaveToROOT( CompMgr().Hist( "Syst_weighted" ), filename, "Syst_weighted" );
     mgr::SaveToROOT( CompMgr().Hist( "lep_tmass" ), filename, "lep_tmass" );
     mgr::SaveToROOT( CompMgr().Hist( "leptmass" ), filename, "leptmass" );
     mgr::SaveToROOT( CompMgr().Hist( "had_tmass" ), filename, "had_tmass" );
@@ -230,6 +241,15 @@ StoreCompare()
     mgr::SaveToROOT( CompMgr().Hist( "Ratio_Obs6" ),              filename, "Ratio_Obs6" );
     mgr::SaveToROOT( CompMgr().Hist( "Ratio_Obs12" ),             filename, "Ratio_Obs12" );
     mgr::SaveToROOT( CompMgr().Hist( "Ratio_Obs14" ),             filename, "Ratio_Obs14" );
+    
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs3_p" ),              filename, "lep_tmass_obs3_p" );
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs3_n" ),              filename, "lep_tmass_obs3_n" );
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs6_p" ),              filename, "lep_tmass_obs6_p" );
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs6_n" ),              filename, "lep_tmass_obs6_n" );
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs12_p" ),             filename, "lep_tmass_obs12_p" );
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs12_n" ),             filename, "lep_tmass_obs12_n" );
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs14_p" ),             filename, "lep_tmass_obs14_p" );
+    mgr::SaveToROOT( CompMgr().Hist( "lep_tmass_obs14_n" ),             filename, "lep_tmass_obs14_n" );
 
     /*******************************************************************************
     *  Intrinsci Acp

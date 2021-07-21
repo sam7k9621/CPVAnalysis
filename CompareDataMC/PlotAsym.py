@@ -10,17 +10,17 @@ def GetGraph( histmgr, D, D_err ) :
     eff_acp_x, eff_acp_y, true_acp_x, true_acp_y     = array( 'f' ), array( 'f' ), array( 'f' ), array( 'f' )
     eff_acp_ex, eff_acp_ey, true_acp_ex, true_acp_ey = array( 'f' ), array( 'f' ), array( 'f' ), array( 'f' )
     for a in input_acp:
-        hist = histmgr.GetMergedObj( "Acp_{}".format( a ) )
+        hist = histmgr.GetMergedObj( "ttbar_semi", "Acp_{}".format( a ) )
         
         nm  = hist.GetBinContent( 1 )
         np  = hist.GetBinContent( 2 )
         nm_err = hist.GetBinError( 1 )
         np_err = hist.GetBinError( 2 )
-        
-        eff_acp     = 100 * ( np - nm ) / ( np + nm )
+       
+        eff_acp     = 100 * ( np - nm ) / ( np + nm + mistag_evt[a] )
         err_sq      = 4 * ( ( nm * np_err )**2 + ( np * nm_err )**2 ) / ( ( np + nm  )**4 )
         eff_acp_err = 100 * math.sqrt( err_sq )
-       
+      
         # A'cp part
         eff_acp_x. append( a )
         eff_acp_y. append( eff_acp )
@@ -30,7 +30,9 @@ def GetGraph( histmgr, D, D_err ) :
         # Acp part ( Acp = D * A'cp )
         true_acp     = eff_acp / D 
         true_acp_err = abs(true_acp) * math.sqrt( ( eff_acp_err / eff_acp )**2 + ( D_err / D )**2 )
-        
+       
+        print a, true_acp_err, math.sqrt( ( eff_acp_err / eff_acp )**2 + ( D_err / D )**2 )
+
         true_acp_x .append( a )
         true_acp_y .append( true_acp )
         true_acp_ex.append( 0 )
@@ -44,28 +46,45 @@ def main() :
     # Initialize parsing manager
     opt = parmgr.Parsemgr()
     opt.AddInput("c", "chi2").AddInput("o", "opt")
-    opt.AddFlag("a", "Acp" )
+    opt.AddFlag("a", "Acp" ).AddFlag("b", "bbSep" )
     opt.Parsing()
-    opt.AddInputName ( "chi2", "Acp", "opt" )
-    opt.AddOutputName( "chi2", "Acp", "opt" )
+    opt.AddInputName ( "chi2", "bbSep", "Acp", "opt" )
+    opt.AddOutputName( "chi2", "bbSep", "Acp", "opt" )
   
     # Initiailze plot manager
     histmgr = pltmgr.Plotmgr()
     objlst = [ "weighted_Obs3", "weighted_Obs6", "weighted_Obs12", "weighted_Obs14" ]
     yearlst = [ "16", "17", "18" ] if opt.Year() == "RunII" else [ opt.Year() ]
+    input_acp = [-15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ]
    
     filelst_el, filelst_mu = [], []
     for year in yearlst:
-        filelst_el += [ opt.GetInputName( "ttbar" ).format( year, "el" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in [ -15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ] ]
-        filelst_mu += [ opt.GetInputName( "ttbar" ).format( year, "mu" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in [ -15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ] ]
+        filelst_el += [ opt.GetInputName( "ttbar_semi" ).format( Y=year, L="el" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in input_acp ]
+        filelst_mu += [ opt.GetInputName( "ttbar_semi" ).format( Y=year, L="mu" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in input_acp ]
 
-    with open( opt.GetInputName( "DF", "Sim", "txt" ).format( "RunII", "co" ).replace( "Acp_", "" ), "r" ) as inputfile:
-        print inputfile.name 
-        DF_lst = [ x.lstrip().rstrip("\n") for x in inputfile.readlines() ]
-   
     for file in filelst_el + filelst_mu:
         histmgr.SetObjlst( file, objlst, file )
+    
+    filelst_el, filelst_mu = [], []
+    for year in yearlst:
+        filelst_el += [ opt.GetInputName( "ttbar_dilep" ).format( Y=year, L="el" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in input_acp ]
+        filelst_mu += [ opt.GetInputName( "ttbar_dilep" ).format( Y=year, L="mu" ).replace("Acp_", "Acp_{}_".format( x ) ) for x in input_acp ]
+
+    for file in filelst_el + filelst_mu:
+        histmgr.SetObjlst( file, ["Syst_weighted"], file )
  
+    global mistag_evt
+    mistag_evt = dict()
+    for a in input_acp:
+        hist = histmgr.GetMergedObj( "ttbar_dilep", "Acp_{}".format( a ) )
+        mistag_evt[a] = hist.Integral()
+
+    # Dilution factor
+    year = "RunII" if opt.Year() == "RunII" else opt.Year()
+    lept = "co" if opt.LeptonType() == "co" else opt.LeptonType()
+    with open( opt.GetInputName( "DF", "Sim", "txt" ).format( Y=year, L=lept ).replace( "bbSep_Acp_", "" ), "r" ) as inputfile:
+        DF_lst = [ x.lstrip().rstrip("\n") for x in inputfile.readlines() ]
+
     # Loop object list
     c = pltmgr.NewCanvas()
     for i, obj in enumerate( [ "Obs3", "Obs6", "Obs12", "Obs14" ] ):
@@ -73,9 +92,10 @@ def main() :
         for df in DF_lst:
             if all( x in df for x in [obj, "Dilution"] ):
                 DF     = float( df.split(" ")[3] )
-                DF_err = float( df.split(" ")[5] )
+                DF_stat = float( df.split(" ")[5] )
+                DF_syst = max( float( df.split(" ")[7] ), float( df.split(" ")[9] ) )
+                DF_err  = math.sqrt( DF_stat**2 + DF_syst**2 )
        
-        print DF, DF_err
         gr1, gr2 = GetGraph( histmgr, DF, DF_err )
         
         gr1.Draw( 'AEP' )

@@ -67,6 +67,9 @@ def main():
         data = json.loads( re.sub("//.*","", inputfile.read() ,flags=re.MULTILINE) ) 
 
     for job_detail, arglst in data.iteritems(): 
+        if not bool( int( job_detail.split("_", 1)[0] ) ):
+            continue 
+        detail = job_detail.split("_", 1)[1]
         commandlst = []
         for arg in arglst: 
             try:
@@ -98,23 +101,23 @@ def main():
        
         if par.Test:
             print "\n".join( commandlst )
-            print "[ Total jobs: %s | Wait time: %s | Max jobs: %s | Max queue jobs: %s ] " % tuple(  [colored( len(commandlst), 'red')] + job_detail.split("_" ) )
+            print "[ Total jobs: %s | Wait time: %s | Max jobs: %s | Max queue jobs: %s ] " % tuple(  [colored( len(commandlst), 'red')] + detail.split("_" ) )
             continue 
         
-        print "[ Total jobs: %s | Wait time: %s | Max jobs: %s | Max queue jobs: %s ] " % tuple(  [colored( len(commandlst), 'red')] + job_detail.split("_" ) )
+        print "[ Total jobs: %s | Wait time: %s | Max jobs: %s | Max queue jobs: %s ] " % tuple(  [colored( len(commandlst), 'red')] + detail.split("_" ) )
 
         # writing dat file
         if commandlst:
-            with open( "{}.dat".format( job_detail ), "w" ) as output_dat:
+            with open( "{}.dat".format( detail ), "w" ) as output_dat:
                 for command in commandlst:
                     command = ' '.join( command.split() )
                     output_dat.write(  '{0}, {1}\n'.format( CMSSW_BASE, command ) )
 
             if "lxplus" in HOSTNAME:
-                CondorJob( job_detail )
+                CondorJob( detail )
 
             elif "ntugrid5" in HOSTNAME:
-                QJob( job_detail )
+                QJob( detail )
     
 if __name__ == '__main__':
     main()

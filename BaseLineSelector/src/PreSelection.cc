@@ -30,7 +30,6 @@ MakeBtagEff()
 {
     // Build new file
     string year = PreMgr().GetOption<string>( "year" );
-    double csv  = PreMgr().GetOption<double>( "CSV" );
     PreMgr().InitRoot( "sample" + year );
 
     TChain* ch    = new TChain( "bprimeKit/root" );
@@ -41,77 +40,66 @@ MakeBtagEff()
     PreMgr().AddSample( ch, is_data, sample );
 
     // Looping events
-    int events          = PreMgr().CheckOption( "test" ) ? 10000 : ch->GetEntries();
+    int events          = PreMgr().CheckOption( "test" ) ? 1000000 : ch->GetEntries();
     vector<double> xlst = { 0., 20., 30., 50., 70., 100., 140., 200., 300., 600., 1000. };
     vector<double> ylst = { -2.4, -2.0, -1.6, -1.2, -0.8, -0.4, 0., 0.4, 0.8, 1.2, 1.6, 2.0, 2.4 };
 
     TEfficiency* eff2D_b      = new TEfficiency( "eff2D_b", "eff2D_b", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
     TEfficiency* eff2D_c      = new TEfficiency( "eff2D_c", "eff2D_c", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
     TEfficiency* eff2D_l      = new TEfficiency( "eff2D_l", "eff2D_l", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
-    TEfficiency* eff2D_b_test = new TEfficiency( "eff2D_b_test", "eff2D_b_test", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
-    TEfficiency* eff2D_c_test = new TEfficiency( "eff2D_c_test", "eff2D_c_test", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
-    TEfficiency* eff2D_l_test = new TEfficiency( "eff2D_l_test", "eff2D_l_test", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
+    
+    TEfficiency* eff2D_b_pos  = new TEfficiency( "eff2D_b_pos", "eff2D_b_pos", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
+    TEfficiency* eff2D_c_pos  = new TEfficiency( "eff2D_c_pos", "eff2D_c_pos", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
+    TEfficiency* eff2D_l_pos  = new TEfficiency( "eff2D_l_pos", "eff2D_l_pos", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
+    TEfficiency* eff2D_b_neg  = new TEfficiency( "eff2D_b_neg", "eff2D_b_neg", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
+    TEfficiency* eff2D_c_neg  = new TEfficiency( "eff2D_c_neg", "eff2D_c_neg", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
+    TEfficiency* eff2D_l_neg  = new TEfficiency( "eff2D_l_neg", "eff2D_l_neg", xlst.size() - 1, &( xlst[ 0 ] ), ylst.size() - 1, &( ylst[ 0 ] ) );
 
     TEfficiency* effPt_b      = new TEfficiency( "effPt_b", "effPt_b", xlst.size() - 1, &( xlst[ 0 ] ) );
     TEfficiency* effPt_c      = new TEfficiency( "effPt_c", "effPt_c", xlst.size() - 1, &( xlst[ 0 ] ) );
     TEfficiency* effPt_l      = new TEfficiency( "effPt_l", "effPt_l", xlst.size() - 1, &( xlst[ 0 ] ) );
-    TEfficiency* effPt_b_test = new TEfficiency( "effPt_b_test", "effPt_b_test", xlst.size() - 1, &( xlst[ 0 ] ) );
-    TEfficiency* effPt_c_test = new TEfficiency( "effPt_c_test", "effPt_c_test", xlst.size() - 1, &( xlst[ 0 ] ) );
-    TEfficiency* effPt_l_test = new TEfficiency( "effPt_l_test", "effPt_l_test", xlst.size() - 1, &( xlst[ 0 ] ) );
 
     TEfficiency* effEta_b      = new TEfficiency( "effEta_b", "effEta_b", ylst.size() - 1, &( ylst[ 0 ] ) );
     TEfficiency* effEta_c      = new TEfficiency( "effEta_c", "effEta_c", ylst.size() - 1, &( ylst[ 0 ] ) );
     TEfficiency* effEta_l      = new TEfficiency( "effEta_l", "effEta_l", ylst.size() - 1, &( ylst[ 0 ] ) );
-    TEfficiency* effEta_b_test = new TEfficiency( "effEta_b_test", "effEta_b_test", ylst.size() - 1, &( ylst[ 0 ] ) );
-    TEfficiency* effEta_c_test = new TEfficiency( "effEta_c_test", "effEta_c_test", ylst.size() - 1, &( ylst[ 0 ] ) );
-    TEfficiency* effEta_l_test = new TEfficiency( "effEta_l_test", "effEta_l_test", ylst.size() - 1, &( ylst[ 0 ] ) );
 
 
     vector<int> jetlst;
-    vector<int> jetlst_test;
-
     for( int i = 0; i < events; i++ ){
         ch->GetEntry( i );
         jetlst.clear();
-        jetlst_test.clear();
 
         PreMgr().process( events, i );
 
-        PreMgr().GetSelJet( jetlst, jetlst_test );
+        PreMgr().GetSelJet( jetlst );
 
-        if( jetlst.empty() && jetlst_test.empty() ){
+        if( jetlst.empty() ){
             continue;
         }
 
-        PreMgr().Fill2DBtagEff( eff2D_b, eff2D_c, eff2D_l, jetlst, csv );
-        PreMgr().Fill2DBtagEff( eff2D_b_test, eff2D_c_test, eff2D_l_test, jetlst_test, csv );
-        PreMgr().Fill1DBtagEff_Pt( effPt_b, effPt_c, effPt_l, jetlst, csv );
-        PreMgr().Fill1DBtagEff_Pt( effPt_b_test, effPt_c_test, effPt_l_test, jetlst_test, csv );
-        PreMgr().Fill1DBtagEff_Eta( effEta_b, effEta_c, effEta_l, jetlst, csv );
-        PreMgr().Fill1DBtagEff_Eta( effEta_b_test, effEta_c_test, effEta_l_test, jetlst_test, csv );
+        PreMgr().Fill2DBtagEff( eff2D_b, eff2D_b_pos, eff2D_b_neg, eff2D_c, eff2D_c_pos, eff2D_c_neg, eff2D_l, eff2D_l_pos, eff2D_l_neg, jetlst );
+        PreMgr().Fill1DBtagEff_Pt( effPt_b, effPt_c, effPt_l, jetlst );
+        PreMgr().Fill1DBtagEff_Eta( effEta_b, effEta_c, effEta_l, jetlst );
     }
 
     string filename = PreMgr().GetResultsName( "root", "BtagEff" );
     mgr::SaveToROOT( eff2D_b,       filename, "eff2D_b" );
     mgr::SaveToROOT( eff2D_c,       filename, "eff2D_c" );
     mgr::SaveToROOT( eff2D_l,       filename, "eff2D_l" );
-    mgr::SaveToROOT( eff2D_b_test,  filename, "eff2D_b_test" );
-    mgr::SaveToROOT( eff2D_c_test,  filename, "eff2D_c_test" );
-    mgr::SaveToROOT( eff2D_l_test,  filename, "eff2D_l_test" );
+    mgr::SaveToROOT( eff2D_b_pos,  filename, "eff2D_b_pos" );
+    mgr::SaveToROOT( eff2D_c_pos,  filename, "eff2D_c_pos" );
+    mgr::SaveToROOT( eff2D_l_pos,  filename, "eff2D_l_pos" );
+    mgr::SaveToROOT( eff2D_b_neg,  filename, "eff2D_b_neg" );
+    mgr::SaveToROOT( eff2D_c_neg,  filename, "eff2D_c_neg" );
+    mgr::SaveToROOT( eff2D_l_neg,  filename, "eff2D_l_neg" );
 
     mgr::SaveToROOT( effPt_b,       filename, "effPt_b" );
     mgr::SaveToROOT( effPt_c,       filename, "effPt_c" );
     mgr::SaveToROOT( effPt_l,       filename, "effPt_l" );
-    mgr::SaveToROOT( effPt_b_test,  filename, "effPt_b_test" );
-    mgr::SaveToROOT( effPt_c_test,  filename, "effPt_c_test" );
-    mgr::SaveToROOT( effPt_l_test,  filename, "effPt_l_test" );
 
     mgr::SaveToROOT( effEta_b,      filename, "effEta_b" );
     mgr::SaveToROOT( effEta_c,      filename, "effEta_c" );
     mgr::SaveToROOT( effEta_l,      filename, "effEta_l" );
-    mgr::SaveToROOT( effEta_b_test, filename, "effEta_b_test" );
-    mgr::SaveToROOT( effEta_c_test, filename, "effEta_c_test" );
-    mgr::SaveToROOT( effEta_l_test, filename, "effEta_l_test" );
 }
 
 /*******************************************************************************

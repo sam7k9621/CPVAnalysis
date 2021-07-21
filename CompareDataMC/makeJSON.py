@@ -33,6 +33,17 @@ acp = [
     ]
 """
 
+dtglst="""
+dtglst = [
+    'ttbar_dtg0',
+    'ttbar_dtg1',
+    'ttbar_dtg2',
+    'ttbar_dtg3',
+    'ttbar_dtg3',
+    'ttbar_dtg5'
+    ]
+"""
+
 def MakeWeightInfo( outputfile, year ):
    
     ###########################################################################################################################
@@ -49,6 +60,10 @@ def MakeWeightInfo( outputfile, year ):
     samplelst = []
     for mc in DC.mclst :
         # mc = [ "tag", "sample", cross_section ]
+        if gennumlst[ mc[1] ] <= 0:
+            print "Didn't find sample {} in {} ".format( mc[1], year )
+            continue
+
         outputfile.write( text1.format( year, mc[0], gennumlst[ mc[1] ], mc[2], sample_path + filename.format( mc[1] ) ) )
         samplelst.append( mc[0] )
     outputfile.write( text2.format( year, "Data", sample_path + filename.format( "Run*" ) ) )
@@ -64,7 +79,9 @@ def MakeWeightInfo( outputfile, year ):
             "pileup_up", "pileup_dn", "bctag_up", "bctag_dn", "lighttag_up", "lighttag_dn", "lepton_up", "lepton_dn", 
             "JER_up", "JER_dn", "JEC_up", "JEC_dn",
             "CP5CR1", "CP5CR2", "CP5down", "CP5up", "hdampDOWN", "hdampUP", "ISR_up", "ISR_dn", "FSR_up", "FSR_dn",
-            "PDF_up", "PDF_dn", "muFmuR_up", "muFmuR_dn", "FR_up", "FR_dn", "mtop1695", "mtop1755" ]
+            "PDF_up", "PDF_dn", "muFmuR_up", "muFmuR_dn", "FR_up", "FR_dn",
+            "mtop1695", "mtop1755", "resolution_10", "resolution_-10" ,"woTopPT"
+            ]
     uncertainty = ["'" + x  + "'" for x in uncertainty]
     
     with open( "python/MakeHist{}.py".format( year ), "w+" ) as fp:
@@ -75,6 +92,9 @@ def MakeWeightInfo( outputfile, year ):
             ", ".join( [ str(x) for x in range(1,1001) ] ),
             ", ".join( [ str(x) for x in [ -15, -10, -7, -5, -3, 0, 3, 5, 7, 10, 15 ] ] )
             ) )
+
+        if year == "17":
+            fp.write( dtglst )
     
     ###########################################################################################################################
     info_path = CMSSW_BASE + "/src/CPVAnalysis/CompareDataMC/data/"

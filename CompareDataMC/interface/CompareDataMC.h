@@ -17,12 +17,12 @@ extern void bbSeparation();
 *  Add Acp
 *******************************************************************************/
 extern void ReweighAcp();
-extern void FillWeighObservable( const string&, const double&, const bool& = false );
+extern void FillWeighObservable( const double&, const string&, const double&, const bool& = false );
 extern void FillMoreObservable( const string&, const double&, const bool&  = false );
 extern void FillObservableRatio( const string&, const double&, const double&, const double& );
 extern void SetTLV( TLorentzVector*, const TLorentzVector& );
 extern void StoreTLV();
-
+extern void SetBias( TLorentzVector&, const double&, const double& );
 /*******************************************************************************
 *  Check Acp
 *******************************************************************************/

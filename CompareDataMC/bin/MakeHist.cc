@@ -22,6 +22,7 @@ main( int argc, char* argv[] )
         ( "WHF,w", opt::value<int>(), "raise WHF fraction" )
         ( "wopileup", "without pileup running" )
         ( "wobtag", "withoutn btag" )
+        ( "bias,b", opt::value<double>(), "intrinsic detector bias" )
         ( "bbSep,B", "bbSeparation method" )
 
         ( "Acp,a", opt::value<int>(), "intrinsic Acp(%)" )
@@ -40,7 +41,7 @@ main( int argc, char* argv[] )
     }
 
     CompMgr().SetFileName( { "year", "lepton", "sample" } );
-    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "topmass", "uncertainty", "wopileup", "wobtag", "0bjet", "SIM", "TLV", "WHF" } );
+    CompMgr().AddCutName( { "test", "chi2", "invChi2", "bbSep", "Acp", "opt", "mixed", "region", "topmass", "uncertainty", "wopileup", "wobtag", "0bjet", "SIM", "TLV", "WHF", "bias" } );
 
     if( CompMgr().CheckOption( "SIM" ) ){
         CompMgr().InitRoot( "CheckAcp.json" );
@@ -49,9 +50,9 @@ main( int argc, char* argv[] )
     else if( CompMgr().CheckOption( "TLV" ) ){
         StoreTLV();
     }
-    else if( CompMgr().CheckOption( "Acp" ) ){
-        ReweighAcp();
-    }
+    //else if( CompMgr().CheckOption( "Acp" ) ){
+        //ReweighAcp();
+    //}
     else{
         MakeHist();
     }

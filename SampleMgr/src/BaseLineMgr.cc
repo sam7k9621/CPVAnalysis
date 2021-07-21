@@ -300,7 +300,7 @@ BaseLineMgr::JECUpdate()
     int js = Jsize();
     for( int i = 0; i < js; i++ ){
         SetIndex( i );
-
+        
         _JetCorrector->setJetEta( JetEta() );
         _JetCorrector->setJetPt( PtCorrRaw() );
         _JetCorrector->setJetA( Area() );
@@ -309,6 +309,10 @@ BaseLineMgr::JECUpdate()
        
         jetp4 *= _JetCorrector->getCorrection() / Unc();
         SetJetP4( jetp4 );
+        
+        _jecUnc->setJetEta( JetEta() );
+        _jecUnc->setJetPt( JetPt() );
+        SetJesUnc( _jecUnc->getUncertainty(true) );
     }
 }
 

@@ -78,7 +78,8 @@ class Parsemgr:
 
     def GetInputName( self, sample, prefix="Hist", type="root", dir="results" ):
         lepton = "{L}" if self.LeptonType() == "co" else self.LeptonType()
-        year   = "{Y}" if self.Year() == "RunII" else self.Year()
+        # year   = "{Y}" if self.Year() == "RunII" else self.Year()
+        year   = "{Y}" 
         self.inputname  = "{}_{}_{}_{}".format( prefix, year, lepton, sample )
         for option in self.inputoptionlst :
             arg = getattr( self.opt, option )
@@ -139,6 +140,6 @@ class Parsemgr:
         elif self.opt.year == "18":
             return 59690
         else:
-            return 35900 + 41540 + 59690
+            return 137000
 
     

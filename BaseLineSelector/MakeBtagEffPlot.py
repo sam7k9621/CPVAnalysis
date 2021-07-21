@@ -7,51 +7,34 @@ import ROOT
 import ManagerUtils.PlotUtils.PlotUtils as pltmgr
 from collections import OrderedDict 
 
-def Plot1DEff( opt, objdict, tag, leg ):
+def Plot1DEff( opt, hist, leg ):
 
-    for key, value in objdict.items():
-        if tag not in key : continue 
-
-        key   = key.split('_', 1)
-        entry = key[1]
-        if opt.year == "16":
-            entry = entry.split("_test")[0] + ( "_tightJetID" if "test" in entry else "_looseJetID" )
-        else:
-            entry = entry.split("_test")[0] + ( "_looseJetID" if "test" in entry else "_tightJetID" )
-       
-        plot = value.CreateGraph()
-        color = pltmgr.GetColor()
-        plot.SetLineColor( color )
-        plot.SetMarkerColor( color )
-        plot.SetMarkerStyle( pltmgr.GetMarker() )
-        plot.SetLineWidth( 2 )
-        plot.SetMarkerSize( 0.8 )
-        plot.Draw( "EP same" )
+    entry = hist.GetName().split("_")[1] 
+    entry += "_looseJetID" if opt.year == "16" else "_tightJetID"
+    plot = hist.CreateGraph()
+    color = pltmgr.GetColor()
+    plot.SetLineColor( color )
+    plot.SetMarkerColor( color )
+    plot.SetMarkerStyle( pltmgr.GetMarker() )
+    plot.SetLineWidth( 2 )
+    plot.SetMarkerSize( 0.8 )
+    plot.Draw( "EP same" )
   
-        leg.AddEntry( plot, entry, "LP" )
+    leg.AddEntry( plot, entry, "LP" )
     
     pltmgr.DrawCMSLabelOuter( pltmgr.SIMULATION )
     pltmgr.DrawEntryRight( "{}_{}_{}".format( opt.year, opt.sample, opt.workingpt ) )
 
-def Plot2DEff( opt, objdict, tag ):
-    for key, value in objdict.items():
-        if tag != key : continue
-        
-        key   = key.split('_', 1)
-        entry = key[1]
-        if opt.year == "16":
-            entry = entry.split("_test")[0] + ( "_tightJetID" if "test" in entry else "_looseJetID" )
-        else:
-            entry = entry.split("_test")[0] + ( "_looseJetID" if "test" in entry else "_tightJetID" )
-
-        plot = value.CreateHistogram()
-        plot.Draw( "COLZ" )
-        plot.SetTitle( "" )
-
-        pltmgr.SetAxis( plot )
-        pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
-        pltmgr.DrawEntryLeft( entry )
-        pltmgr.DrawEntryRight( "{}_{}_{}".format( opt.year, opt.sample, opt.workingpt ) )
+def Plot2DEff( opt, hist ):
+    entry = "_".join( hist.GetName().split("_")[1:] )
+    entry += "_looseJetID" if opt.year == "16" else "_tightJetID"
+    plot = hist.CreateHistogram()
+    plot.Draw( "COLZ" )
+    plot.SetTitle( "" )
+    pltmgr.SetAxis( plot, False )
+    pltmgr.DrawCMSLabel( pltmgr.SIMULATION )
+    pltmgr.DrawEntryLeft( entry )
+    pltmgr.DrawEntryRight( "{}_{}_{}".format( opt.year, opt.sample, opt.workingpt ) )
 
 def main(args):
     parser = argparse.ArgumentParser("")
@@ -63,12 +46,6 @@ def main(args):
             )
     parser.add_argument(
             '-w', '--workingpt',
-            help='testing command',
-            type=str,
-            required=True
-            )
-    parser.add_argument(
-            '-c', '--csv',
             help='testing command',
             type=str,
             required=True
@@ -92,16 +69,13 @@ def main(args):
 
       
     pos =  os.environ['CMSSW_BASE'] + "/src/CPVAnalysis/BaseLineSelector/results/"
-    dir =  "BtagEff*{}*{}*{}*root"
-    s = subprocess.Popen( 'ls ' + pos + dir.format( opt.year, opt.sample, opt.csv ), shell=True, stdout=subprocess.PIPE )
+    dir =  "BtagEff*{}*{}*_CSV.root"
+    s = subprocess.Popen( 'ls ' + pos + dir.format( opt.year, opt.sample ), shell=True, stdout=subprocess.PIPE )
     outputlst, err = s.communicate()
     outputlst = filter(None, outputlst.split('\n') )
     os.system( "hadd -f Btag_temp.root {}".format( " ".join( outputlst ) ) )
 
-    objlst1 = [ "effPt_b", "effPt_c", "effPt_l", "effEta_b", "effEta_c", "effEta_l", "eff2D_b", "eff2D_c", "eff2D_l" ]
-    objlst2 = [ x + "_test" for x in objlst1 ]
-    objlst  = ( objlst1 + objlst2 )
-    objlst.sort()
+    objlst = [ "effPt_b", "effPt_c", "effPt_l", "effEta_b", "effEta_c", "effEta_l", "eff2D_b", "eff2D_b_pos", "eff2D_b_neg", "eff2D_c", "eff2D_c_pos", "eff2D_c_neg", "eff2D_l", "eff2D_l_pos", "eff2D_l_neg"]
     
     objdict = OrderedDict()
     file = ROOT.TFile.Open( "Btag_temp.root", 'read' )
@@ -117,20 +91,47 @@ def main(args):
     # Plot 2D Eff
     c = pltmgr.NewCanvas()
     pltmgr.SetSinglePadWithPalette( c )
-    Plot2DEff( opt, objdict, "eff2D_b" )
+    Plot2DEff( opt, objdict["eff2D_b"] )
     c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_b", opt.workingpt ) )
-    Plot2DEff( opt, objdict, "eff2D_c" )
-    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c", opt.workingpt ) )
-    Plot2DEff( opt, objdict, "eff2D_l" )
-    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l", opt.workingpt ) )
+    Plot2DEff( opt, objdict["eff2D_b_pos"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_b_pos", opt.workingpt ) )
+    Plot2DEff( opt, objdict["eff2D_b_neg"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_b_neg", opt.workingpt ) )
     
-    Plot2DEff( opt, objdict, "eff2D_b_test" )
-    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_b_test", opt.workingpt ) )
-    Plot2DEff( opt, objdict, "eff2D_c_test" )
-    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c_test", opt.workingpt ) )
-    Plot2DEff( opt, objdict, "eff2D_l_test" )
-    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l_test", opt.workingpt ) )
-   
+    Plot2DEff( opt, objdict["eff2D_c"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c", opt.workingpt ) )
+    Plot2DEff( opt, objdict["eff2D_c_pos"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c_pos", opt.workingpt ) )
+    Plot2DEff( opt, objdict["eff2D_c_neg"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c_neg", opt.workingpt ) )
+    
+    Plot2DEff( opt, objdict["eff2D_l"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l", opt.workingpt ) )
+    Plot2DEff( opt, objdict["eff2D_l_pos"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l_pos", opt.workingpt ) )
+    Plot2DEff( opt, objdict["eff2D_l_neg"] )
+    c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l_neg", opt.workingpt ) )
+    return
+  #   c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_b", opt.workingpt ) )
+    # Plot2DEff( opt, objdict, "eff2D_c" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c", opt.workingpt ) )
+    # Plot2DEff( opt, objdict, "eff2D_l" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l", opt.workingpt ) )
+    
+    # Plot2DEff( opt, objdict, "eff2D_b_pos" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_b_pos", opt.workingpt ) )
+    # Plot2DEff( opt, objdict, "eff2D_b_neg" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_b_neg", opt.workingpt ) )
+    # Plot2DEff( opt, objdict, "eff2D_c_pos" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c_pos", opt.workingpt ) )
+    # Plot2DEff( opt, objdict, "eff2D_c_neg" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_c_neg", opt.workingpt ) )
+    # Plot2DEff( opt, objdict, "eff2D_l_pos" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l_pos", opt.workingpt ) )
+    # Plot2DEff( opt, objdict, "eff2D_l_neg" )
+    # c.SaveAs( "results/BtagEffPlot_{}_{}_{}_{}.pdf".format( opt.year, opt.sample, "eff2D_l_neg", opt.workingpt ) )
+  
+    # return
 
     # Plot Pt Eff
     pltmgr.SetSinglePad( c )

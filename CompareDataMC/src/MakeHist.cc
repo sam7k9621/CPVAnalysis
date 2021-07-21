@@ -233,7 +233,12 @@ MakeHist()
             
             // Top pt-reweighting 
             if( sample.find( "tt" ) !=std::string::npos ){
-                weight *= CompMgr().TopPtWeight();
+                if ( unc.find( "woTopPT" ) != string::npos ){
+
+                }
+                else{
+                    weight *= CompMgr().TopPtWeight();
+                }
             }
             // Raise heavy flavour in W+Jets 
             if( isWHF ){
@@ -271,15 +276,54 @@ MakeHist()
         CompMgr().Hist2D( "Obs12_leptmass" )->Fill( lep_tmass, o12 / ( 172.5 * 172.5 * 172.5 ), weight );
         CompMgr().Hist2D( "Obs14_leptmass" )->Fill( lep_tmass, o14 / ( 172.5 * 172.5 * 172.5 ), weight );
 
+        o3  > 0 ? CompMgr().Hist("lep_tmass_obs3_p") ->Fill( lep_tmass, weight ) : CompMgr().Hist("lep_tmass_obs3_n") ->Fill( lep_tmass, weight );
+        o6  > 0 ? CompMgr().Hist("lep_tmass_obs6_p") ->Fill( lep_tmass, weight ) : CompMgr().Hist("lep_tmass_obs6_n") ->Fill( lep_tmass, weight );
+        o12 > 0 ? CompMgr().Hist("lep_tmass_obs12_p")->Fill( lep_tmass, weight ) : CompMgr().Hist("lep_tmass_obs12_n")->Fill( lep_tmass, weight );
+        o14 > 0 ? CompMgr().Hist("lep_tmass_obs14_p")->Fill( lep_tmass, weight ) : CompMgr().Hist("lep_tmass_obs14_n")->Fill( lep_tmass, weight );
+
         /*******************************************************************************
         *  Lepton source
         *******************************************************************************/
         CompMgr().Hist( "lepton_src" )->Fill( CompMgr().GetLepMo1ID( lep ), weight );
         
         /*******************************************************************************
-        *  bbSeparation / Optimisation
+        *  Event filling
         *******************************************************************************/
         double jj_mass = ( CompMgr().GetJetP4( jet1 ) + CompMgr().GetJetP4( jet2 ) ).M(); 
+        CompMgr().Hist( "Syst" )->Fill( 0.5 );
+        CompMgr().Hist( "Syst_weighted" )->Fill( 0.5, weight );
+        CompMgr().Hist( "had_tmass" )->Fill( had_tmass, weight );
+        CompMgr().Hist( "lep_tmass" )->Fill( lep_tmass, weight );
+        CompMgr().Hist( "leptmass" )->Fill( lep_tmass, weight );
+        CompMgr().Hist( "jj_tmass" )->Fill( jj_mass, weight ); 
+        CompMgr().Hist( "Njets" )->Fill( Njets, weight );
+        CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
+        CompMgr().Hist( "isWHF" )->Fill( isWHF, weight );
+
+        //CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
+        //CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
+
+        int ljet = std::min( std::min( lep_b, had_b ), jet1 );
+        CompMgr().Hist( "LJetPt" )  ->Fill( CompMgr().GetJetPt ( ljet ),  weight );
+        CompMgr().Hist( "LJetEta" ) ->Fill( CompMgr().GetJetEta( ljet ),  weight );
+        CompMgr().Hist( "LJetCSV" ) ->Fill( CompMgr().GetJetCSV( ljet ),  weight );
+        CompMgr().Hist( "HBJetPt" ) ->Fill( CompMgr().GetJetPt ( had_b ), weight );
+        CompMgr().Hist( "HBJetEta" )->Fill( CompMgr().GetJetEta( had_b ), weight );
+        CompMgr().Hist( "LBJetPt" ) ->Fill( CompMgr().GetJetPt ( lep_b ), weight );
+        CompMgr().Hist( "LBJetEta" )->Fill( CompMgr().GetJetEta( lep_b ), weight );
+        CompMgr().Hist( "LepPt" )   ->Fill( CompMgr().GetLepPt ( lep ),   weight );
+        CompMgr().Hist( "LepEta" )  ->Fill( CompMgr().GetLepEta( lep ),   weight );
+
+        if( lepton == "el" ){
+            CompMgr().Hist( "LepIso" )->Fill( CompMgr().GetElISO( lep ), weight );
+        }
+        else if( lepton == "mu" ){
+            CompMgr().Hist( "LepIso" )->Fill( CompMgr().GetMuISO( lep ), weight );
+        }
+        
+        /*******************************************************************************
+        *  bbSeparation / Optimisation
+        *******************************************************************************/
         if( !is_data && CompMgr().CheckOption( "bbSep" ) ){
             BaseLineMgr::MatchType flag = CompMgr().bbSeparation( had_b, lep_b, lep );
 
@@ -335,48 +379,20 @@ MakeHist()
 
             double mco3 = Obs3( mcisolep.Vect(), mchardjet.Vect(), mcb.Vect(), mcbbar.Vect(), mccharge );
 
-            FillObservable( "GenObs3",  mco3,  weight );
-            FillObservable( "GenObs6",  mco6,  weight );
-            FillObservable( "GenObs12", mco12, weight );
-            FillObservable( "GenObs14", mco14, weight );
+            FillObservable( "GenObs3",  mco3,  1 );
+            FillObservable( "GenObs6",  mco6,  1 );
+            FillObservable( "GenObs12", mco12, 1 );
+            FillObservable( "GenObs14", mco14, 1 );
 
             FillObservableRatio( "Ratio_Obs3", mco3, o3, weight );
             FillObservableRatio( "Ratio_Obs6", mco6, o6, weight );
             FillObservableRatio( "Ratio_Obs12", mco12, o12, weight );
             FillObservableRatio( "Ratio_Obs14", mco14, o14, weight );
-        }
 
-        /*******************************************************************************
-        *  Event filling
-        *******************************************************************************/
-        CompMgr().Hist( "Syst" )->Fill( 0., weight );
-        CompMgr().Hist( "had_tmass" )->Fill( had_tmass, weight );
-        CompMgr().Hist( "lep_tmass" )->Fill( lep_tmass, weight );
-        CompMgr().Hist( "leptmass" )->Fill( lep_tmass, weight );
-        CompMgr().Hist( "jj_tmass" )->Fill( jj_mass, weight ); 
-        CompMgr().Hist( "Njets" )->Fill( Njets, weight );
-        CompMgr().Hist( "chi2" )->Fill( chi2mass, weight );
-        CompMgr().Hist( "isWHF" )->Fill( isWHF, weight );
-
-        //CompMgr().Hist( "nVtx" )->Fill( CompMgr().nVtx(), weight );
-        //CompMgr().Hist( "Rho" )->Fill( CompMgr().Rho(), weight );
-
-        int ljet = std::min( std::min( lep_b, had_b ), jet1 );
-        CompMgr().Hist( "LJetPt" )  ->Fill( CompMgr().GetJetPt ( ljet ),  weight );
-        CompMgr().Hist( "LJetEta" ) ->Fill( CompMgr().GetJetEta( ljet ),  weight );
-        CompMgr().Hist( "LJetCSV" ) ->Fill( CompMgr().GetJetCSV( ljet ),  weight );
-        CompMgr().Hist( "HBJetPt" ) ->Fill( CompMgr().GetJetPt ( had_b ), weight );
-        CompMgr().Hist( "HBJetEta" )->Fill( CompMgr().GetJetEta( had_b ), weight );
-        CompMgr().Hist( "LBJetPt" ) ->Fill( CompMgr().GetJetPt ( lep_b ), weight );
-        CompMgr().Hist( "LBJetEta" )->Fill( CompMgr().GetJetEta( lep_b ), weight );
-        CompMgr().Hist( "LepPt" )   ->Fill( CompMgr().GetLepPt ( lep ),   weight );
-        CompMgr().Hist( "LepEta" )  ->Fill( CompMgr().GetLepEta( lep ),   weight );
-
-        if( lepton == "el" ){
-            CompMgr().Hist( "LepIso" )->Fill( CompMgr().GetElISO( lep ), weight );
-        }
-        else if( lepton == "mu" ){
-            CompMgr().Hist( "LepIso" )->Fill( CompMgr().GetMuISO( lep ), weight );
+            FillWeighObservable( weight, "weighted_Obs3", o3, mco3 > 0 ); 
+            FillWeighObservable( weight, "weighted_Obs6", o6, mco6 > 0 ); 
+            FillWeighObservable( weight, "weighted_Obs12", o12, mco12 > 0 ); 
+            FillWeighObservable( weight, "weighted_Obs14", o14, mco14 > 0 ); 
         }
 
         /*******************************************************************************
@@ -386,11 +402,11 @@ MakeHist()
         /* if( !is_data ){*/
             //CompMgr().Hist( "bweight" )->Fill( b_weight );
         //}
-        sort( jetidx->begin(), jetidx->end() );
-        CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( had_b ), weight );
-        CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( lep_b ), weight );
-        for( size_t i = 0; i < jetidx->size(); i++ ){
-            CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( jetidx->at( i ) ), weight );
+        //sort( jetidx->begin(), jetidx->end() );
+        //CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( had_b ), weight );
+        //CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( lep_b ), weight );
+        //for( size_t i = 0; i < jetidx->size(); i++ ){
+            //CompMgr().Hist( "DeepCSV" )->Fill( CompMgr().GetJetCSV( jetidx->at( i ) ), weight );
             //if( !is_data ){
                 //CompMgr().Hist( "JetFlavor" )->Fill( CompMgr().GetJetFlavor( fabs( jetidx->at( i ) ) ), weight );
             //}
@@ -400,7 +416,7 @@ MakeHist()
             //string jid = to_string( i );
             //CompMgr().Hist( "LJetPt" + jid )->Fill( CompMgr().GetJetPt( jetidx->at( i ) ), weight );
             //CompMgr().Hist( "LJetEta" + jid )->Fill( CompMgr().GetJetEta( jetidx->at( i ) ), weight );
-        }
+        //}
     }
 
     cout << endl;

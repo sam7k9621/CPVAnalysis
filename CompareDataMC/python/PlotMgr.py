@@ -53,3 +53,14 @@ class Plotmgr:
         for h in histlst:
             hist.Add(h)
         return hist
+
+    def CustomTitle( self, hist ):
+        ytitle = hist.GetYaxis().GetTitle()
+        try:
+            t, p = ytitle.split( "(" )
+        except:
+            return 
+        title = t.split()
+        title.insert( 1, p.strip(")") )
+        hist.GetYaxis().SetTitle( " ".join( title ) )
+

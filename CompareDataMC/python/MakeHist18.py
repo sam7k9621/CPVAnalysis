@@ -21,8 +21,9 @@ samplelst = [
     'SingleTop_t-channel_antitop',
     'SingleTop_tW_top',
     'SingleTop_tW_antitop',
-    'ttbar',
-    'ttdilep',
+    'ttbar_semi',
+    'ttbar_dilep',
+    'ttbar_had',
     'VV_WW',
     'VV_WZ',
     'VV_ZZ',
@@ -67,7 +68,10 @@ uncertainty = [
     'FR_up',
     'FR_dn',
     'mtop1695',
-    'mtop1755'
+    'mtop1755',
+    'resolution_10',
+    'resolution_-10',
+    'woTopPT'
     ]
 
 pseudo = [

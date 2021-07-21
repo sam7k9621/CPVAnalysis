@@ -101,7 +101,7 @@ Selector::GetZmass( const vector<int>& lepidx )
 *   Weight
 *******************************************************************************/
 void
-Selector::GetSelJet( vector<int>& jetlst, vector<int>& jetlst_test )
+Selector::GetSelJet( vector<int>& jetlst )
 {
     for( int i = 0; i < _sample->Jsize(); i++ ){
         _sample->SetIndex( i );
@@ -109,61 +109,69 @@ Selector::GetSelJet( vector<int>& jetlst, vector<int>& jetlst_test )
         if( _sample->IsSelJet() ){
             jetlst.push_back( i );
         }
+    }
+}
 
-        if( _sample->IsSelJet_test() ){
-            jetlst_test.push_back( i );
+void
+Selector::Fill2DBtagEff( TEfficiency* eff_b, TEfficiency* eff_b_pos, TEfficiency* eff_b_neg,TEfficiency* eff_c, TEfficiency* eff_c_pos, TEfficiency* eff_c_neg, TEfficiency* eff_l, TEfficiency* eff_l_pos, TEfficiency* eff_l_neg, const vector<int>& jetlst )
+{
+    for( auto j : jetlst ){
+        _sample->SetIndex( j );
+
+        if( fabs( _sample->GenJetFlavor() ) == 5 ){
+            eff_b->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+
+            if ( _sample->GenJetFlavor() > 0 ){
+                eff_b_pos->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+            }
+            else{
+                eff_b_neg->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+            }
+        }
+        else if( fabs( _sample->GenJetFlavor() ) == 4 ){
+            eff_c->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+
+            if ( _sample->GenJetFlavor() > 0 ){
+                eff_c_pos->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+            }
+            else{
+                eff_c_neg->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+            }
+        }
+        else{
+            eff_l->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+
+            if ( _sample->GenJetFlavor() > 0 ){
+                eff_l_pos->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+            }
+            else{
+                eff_l_neg->Fill( _sample->PassDeepCSVM(), _sample->JetPt(), _sample->JetEta() );
+            }
         }
     }
 }
 
 void
-Selector::Fill2DBtagEff( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
+Selector::Fill1DBtagEff_Pt( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst )
 {
     for( auto j : jetlst ){
         _sample->SetIndex( j );
 
         if( fabs( _sample->GenJetFlavor() ) == 5 ){
             eff_b->Fill(
-                _sample->JetDeepCSV() >= csv,
-                _sample->JetPt(), _sample->JetEta()
+                _sample->PassDeepCSVM(),
+                _sample->JetPt()
                 );
         }
         else if( fabs( _sample->GenJetFlavor() ) == 4 ){
             eff_c->Fill(
-                _sample->JetDeepCSV() >= csv,
-                _sample->JetPt(), _sample->JetEta()
-                );
-        }
-        else{
-            eff_l->Fill(
-                _sample->JetDeepCSV() >= csv,
-                _sample->JetPt(), _sample->JetEta()
-                );
-        }
-    }
-}
-
-void
-Selector::Fill1DBtagEff_Pt( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
-{
-    for( auto j : jetlst ){
-        _sample->SetIndex( j );
-
-        if( fabs( _sample->GenJetFlavor() ) == 5 ){
-            eff_b->Fill(
-                _sample->JetDeepCSV() >= csv,
-                _sample->JetPt()
-                );
-        }
-        else if( fabs( _sample->GenJetFlavor() ) == 4 ){
-            eff_c->Fill(
-                _sample->JetDeepCSV() >= csv,
+                _sample->PassDeepCSVM(),
                 _sample->JetPt()
                 );
         }
         else{
             eff_l->Fill(
-                _sample->JetDeepCSV() >= csv,
+                _sample->PassDeepCSVM(),
                 _sample->JetPt()
                 );
         }
@@ -171,26 +179,26 @@ Selector::Fill1DBtagEff_Pt( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency*
 }
 
 void
-Selector::Fill1DBtagEff_Eta( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst, const double& csv )
+Selector::Fill1DBtagEff_Eta( TEfficiency* eff_b, TEfficiency* eff_c, TEfficiency* eff_l, const vector<int>& jetlst )
 {
     for( auto j : jetlst ){
         _sample->SetIndex( j );
 
         if( fabs( _sample->GenJetFlavor() ) == 5 ){
             eff_b->Fill(
-                _sample->JetDeepCSV() >= csv,
+                _sample->PassDeepCSVM(),
                 _sample->JetEta()
                 );
         }
         else if( fabs( _sample->GenJetFlavor() ) == 4 ){
             eff_c->Fill(
-                _sample->JetDeepCSV() >= csv,
+                _sample->PassDeepCSVM(),
                 _sample->JetEta()
                 );
         }
         else{
             eff_l->Fill(
-                _sample->JetDeepCSV() >= csv,
+                _sample->PassDeepCSVM(),
                 _sample->JetEta()
                 );
         }

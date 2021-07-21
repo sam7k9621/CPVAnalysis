@@ -23,7 +23,7 @@ def main() :
     input = importlib.import_module( "CPVAnalysis.CompareDataMC.MakeHist{}".format( opt.Year() ))
 
     # Initialize MC sample list
-    mclst  = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar" ]
+    mclst  = [ "QCD", "DYJets", "SingleTop", "VV", "WJets", "ttbar_dilep", "ttbar_semi" ]
     if not region:
         mclst.remove( "QCD" )
     else:
@@ -35,7 +35,7 @@ def main() :
         filename = opt.GetInputName( sample )
         histmgr.SetObjlst( filename, objlst, sample + "_nom" )
     
-        if sample == "ttbar":
+        if "dilep" in sample or "ttbar_semi" in sample:
             histmgr.SetObjlst( filename.replace(".", "_uncertainty_{}.".format( opt.GetOption( "uncertainty" ) ) ), objlst, sample + "_unc" ) 
         else:
             histmgr.SetObjlst( filename, objlst, sample + "_unc" )
@@ -51,12 +51,10 @@ def main() :
         histlst_unc = []
         for i, sample in enumerate( mclst ):
             
-            if "ttbar" not in sample:
+            if not "dilep" in sample and not "semi" in sample:
                 continue
             
             histlst_nom.append( histmgr.GetMergedObj( sample, "nom" ) )
-            # histlst_nom[i].SetLineColor( pltmgr.colorlst[i] )
-            # histlst_nom[i].SetFillColor( pltmgr.colorlst[i] )
             histlst_nom[-1].SetLineColorAlpha( pltmgr.Red, 0.4 )
             histlst_nom[-1].SetFillColorAlpha( pltmgr.Red, 0.4 )
             
