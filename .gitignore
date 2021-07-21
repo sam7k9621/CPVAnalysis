@@ -28,6 +28,7 @@ log*
 *.db
 .*
 *.out 
+*.json
 pusheng.cc
 
 # Specific file exclusion
